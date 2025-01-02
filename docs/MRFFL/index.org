@@ -33,8 +33,9 @@
 * Introduciton
 
 The functionality powering the programs published in the [[https://github.com/richmit/FortranFinance][FortranFinance]] repository is contained in the
-[[https://github.com/richmit/FortranFinance/MRFFL][MR Fortran Finance Library (MRFFL)]].  MRFFL is a collection of Fortran modules that include advanced TVM
-solver computations, cashflow stream analysis, US tax calculations, and some monte carlo capabilities (US interest rates & US stock market returns).  
+[[https://github.com/richmit/FortranFinance/tree/main/MRFFL][MR Fortran Finance Library (MRFFL)]].  MRFFL is a collection of Fortran modules that include
+advanced TVM solver computations, cashflow stream analysis, US tax calculations, and some monte carlo capabilities (US interest rates & US stock market
+returns).
 
 API documentation may be found here: [[https://www.mitchr.me/SS/FortranFinance/MRFFL_API_Docs/index.html][MR Fortran Finance Library (MRFFL) API Documentation]]
 
@@ -70,13 +71,13 @@ the same variables to populate a cashflow that can be further analyzed or printe
 
 You will find several programs, most of which use MRFFL, in various directories at the base of the
 [[https://github.com/richmit/FortranFinance][FortranFinance]] repository:
-  - [[https://github.com/richmit/FortranFinance/cashflows][cashflows]]                           (TBD -- in work) :: Some simple MRFFL cashflow examples.
-  - [[https://github.com/richmit/FortranFinance/loans][loans]]                                   (TBD -- in work) :: Illustrates how to use MRFFL TVM solvers in combination with cashflow series.
-  - [[https://github.com/richmit/FortranFinance/monte_carlo][monte_carlo]]                       (TBD -- in work) :: Illustrates basic resampling monte carlo for inflation and stock market returns.
-  - [[https://github.com/richmit/FortranFinance/MRFFL_functional_tests][MRFFL_functional_tests]]                  :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
-  - [[https://github.com/richmit/FortranFinance/MRFFL_unit_tests][MRFFL_unit_tests]]             (TBD -- in work) :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
-  - [[https://github.com/richmit/FortranFinance/retirement][retirement]]                         (TBD -- in work) :: Some TVM based retirement computations.
-  - [[https://github.com/richmit/FortranFinance/retirement_simulation][retirement_simulation]]   (TBD -- in work) :: A comprehensive simulator for a married couple's retirement (not much MRFFL used here)
+  - [[https://github.com/richmit/FortranFinance/tree/main/cashflows][cashflows]]                           (TBD -- in work) :: Some simple MRFFL cashflow examples.
+  - [[https://github.com/richmit/FortranFinance/tree/main/loans][loans]]                                   (TBD -- in work) :: Illustrates how to use MRFFL TVM solvers in combination with cashflow series.
+  - [[https://github.com/richmit/FortranFinance/tree/main/monte_carlo][monte_carlo]]                       (TBD -- in work) :: Illustrates basic resampling monte carlo for inflation and stock market returns.
+  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_functional_tests][MRFFL_functional_tests]]                  :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
+  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_unit_tests][MRFFL_unit_tests]]             (TBD -- in work) :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
+  - [[https://github.com/richmit/FortranFinance/tree/main/retirement][retirement]]                         (TBD -- in work) :: Some TVM based retirement computations.
+  - [[https://github.com/richmit/FortranFinance/tree/main/retirement_simulation][retirement_simulation]]   (TBD -- in work) :: A comprehensive simulator for a married couple's retirement (not much MRFFL used here)
 
 I use a GNU make based build flow.  You *must* use GNU make to utilize it as I've used some GNU make'isms in the makefiles.  If you don't use GNU make you are
 pretty much on your own.
@@ -130,11 +131,11 @@ All of the code is in the module source files with no external dependencies at a
 compile/link everything together.
 
 
-To help with that compile/link part, a makefile fragment has been provided ([[https://github.com/richmit/FortranFinance/MRFFL/include.mk][~include.mk~]]).
-Note it works with GNU make and is designed for UNIX-like environments (Mac OS X, Linux, MSYS2 on Windows 11, WSL on Windows 11).  I mostly use MSYS2 on
-Windows 11 so that is where it gets the most testing.  The makefile in the [[https://github.com/richmit/FortranFinance/MRFFL_functional_tests][functional
-tests directory]] is a good guide on how to use [[https://github.com/richmit/FortranFinance/MRFFL/include.mk][~include.mk~]].  In essence you do the following
-in your makefile:
+To help with that compile/link part, a makefile fragment has been provided
+([[https://github.com/richmit/FortranFinance/tree/main/MRFFL/include.mk][~include.mk~]]).  Note it works with GNU make and is designed for UNIX-like
+environments (Mac OS X, Linux, MSYS2 on Windows 11, WSL on Windows 11).  I mostly use MSYS2 on Windows 11 so that is where it gets the most testing.  The
+makefile in the [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_functional_tests][functional tests directory]] is a good guide on how to use
+[[https://github.com/richmit/FortranFinance/tree/main/MRFFL/include.mk][~include.mk~]].  In essence you do the following in your makefile:
 
   1) Set MRFFL_PATH in your makefile to the path of the MRFFL source directory -- that's the one with the ~include.mk~ file.
   2) Set FC, FFLAGS, & AR if necessary -- most of the time you can use the defaults.
