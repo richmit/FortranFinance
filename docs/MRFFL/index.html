@@ -1,0 +1,504 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-01-02 Thu 16:04 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=1024, initial-scale=1" />
+<title>MR Fortran Finance Library (MRFFL)</title>
+<meta name="author" content="Mitch Richling" />
+<meta name="description" content="MR Fortran Finance Library (MRFFL) documentation landing page" />
+<meta name="keywords" content="finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<style>body { width: 95%; margin: 2% auto; font-size: 18px; line-height: 1.4em; font-family: Georgia, serif; color: black; background-color: white; }</style>
+<style>body { min-width: 500px; max-width: 1024px; }</style>
+<style>h1,h2,h3,h4,h5,h6 { color: #A5573E; line-height: 1em; font-family: Helvetica, sans-serif; }</style>
+<style>h1,h2,h3 { line-height: 1.4em; }</style>
+<style>h1.title { font-size: 3em; }</style>
+<style>.subtitle { font-size: 0.6em; }</style>
+<style>h4,h5,h6 { font-size: 1em; }</style>
+<style>.org-src-container { border: 1px solid #ccc; box-shadow: 3px 3px 3px #eee; font-family: Lucida Console, monospace; font-size: 80%; margin: 0px; padding: 0px 0px; position: relative; }</style>
+<style>.org-src-container>pre { line-height: 1.2em; padding-top: 1.5em; margin: 0.5em; background-color: #404040; color: white; overflow: auto; }</style>
+<style>.org-src-container>pre:before { display: block; position: absolute; background-color: #b3b3b3; top: 0; right: 0; padding: 0 0.2em 0 0.4em; border-bottom-left-radius: 8px; border: 0; color: white; font-size: 100%; font-family: Helvetica, sans-serif;}</style>
+<style>pre.example { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -o-pre-wrap; font-family: Lucida Console, monospace; font-size: 80%; background: #404040; color: white; display: block; padding: 0em; border: 2px solid black; }</style>
+<style>blockquote { margin-bottom: 0.5em; padding: 0.5em; background-color: #FFF8DC; border-left: 2px solid #A5573E; border-left-color: rgb(255, 228, 102); display: block; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 5em; margin-inline-end: 5em; } </style>
+<style>#content { max-width: 60em; }</style>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href="https://richmit.github.io/FortranFinance/index.html"> UP </a>
+ |
+ <a accesskey="H" href="https://github.com/richmit/FortranFinance"> HOME </a>
+</div><div id="content" class="content">
+<h1 class="title">MR Fortran Finance Library (MRFFL)</h1>
+
+<div id="outline-container-org3801ef1" class="outline-2">
+<h2 id="org3801ef1"><span class="section-number-2">1.</span> Introduciton</h2>
+<div class="outline-text-2" id="text-1">
+<p>
+The functionality powering the programs published in the <a href="https://github.com/richmit/FortranFinance">FortranFinance</a> repository is contained in the
+<a href="https://github.com/richmit/FortranFinance/MRFFL">MR Fortran Finance Library (MRFFL)</a>.  MRFFL is a collection of Fortran modules that include advanced TVM
+solver computations, cashflow stream analysis, US tax calculations, and some monte carlo capabilities (US interest rates &amp; US stock market returns).  
+</p>
+
+<p>
+API documentation may be found here: <a href="https://www.mitchr.me/SS/FortranFinance/MRFFL_API_Docs/index.html">MR Fortran Finance Library (MRFFL) API Documentation</a>
+</p>
+
+<p>
+The TVM solvers differs from other TVM software I've used in that both annuities (level/geometric/arithmatic) and lump sums are generalized.  Annuity payments
+can stop and start on arbitrary period boundaries within the term.  Similarly, lump sums can occur at any payment boundary.  This means the solvers can handle
+a variety of lump sum &amp; annuity types (due, ordinary, delayed, early ending).  Together this allows one to solve some difficult, non-standard TVM problems.
+</p>
+
+<p>
+The cashflow stream module uses a similar generalization in that cashflows can be placed at any period boundary.  This eliminates the need to treat the
+cashflow at time zero as special.  It also eliminates the need to bother with that BEGIN or END mode nonsense.  Without these complications we can group
+cashflow sequences together without worry about the mode of each or period alignment issues that plague some other cashflow software.  The module includes
+cashflow series builders using the same notation and variables as the TVM solvers allowing one to use the TVM solvers to find necessary values, and then use
+the same variables to populate a cashflow that can be further analyzed or printed.
+</p>
+</div>
+</div>
+
+<div id="outline-container-org80d8f1a" class="outline-2">
+<h2 id="org80d8f1a"><span class="section-number-2">2.</span> MRFFL (MR Fortran Finance Library) Modules</h2>
+<div class="outline-text-2" id="text-2">
+<dl class="org-dl">
+<dt>Financial applications</dt><dd><dl class="org-dl">
+<dt><code>mrffl_config</code>      </dt><dd>Contains parameters used to configure the rest of the modules.</dd>
+<dt><code>mrffl_cashflows</code>   </dt><dd>TVM problems involving cash flows.</dd>
+<dt><code>mrffl_percentages</code> </dt><dd>Working with percentages</dd>
+<dt><code>mrffl_us_inflation</code></dt><dd>Historical US inflation data.  Adjust values across years.  Random inflation generation via resampling.</dd>
+<dt><code>mrffl_us_markets</code>  </dt><dd>Historical stock market annual return data.  Includes random return generation via resampling.</dd>
+<dt><code>mrffl_us_taxes</code>    </dt><dd>Basic US tax information and computation for filing joint or single.</dd>
+<dt><code>mrffl_tvm</code>         </dt><dd>TVM solvers for: deferred lump sums and  generalized level/geometric/arithmatic annuities.</dd>
+<dt><code>mrffl_tvm12</code>       </dt><dd>Classic financial calculator style TVM solver and amortization.</dd>
+<dt><code>mrffl_prt_sets</code>    </dt><dd>Constants to specify things to print (used by <code>*_print</code> routines)</dd>
+<dt><code>mrffl_var_sets</code>    </dt><dd>Constants to specify variables (used by TVM solvers to specify unknown variables)</dd>
+</dl></dd>
+<dt>Support Modules       </dt><dd><dl class="org-dl">
+<dt><code>mrffl_solver</code>      </dt><dd>Solves equations using bisection &#x2013; used by the TVM solvers in the <code>tvm</code> &amp; <code>tvm12</code> modules.</dd>
+<dt><code>mrffl_stats</code>       </dt><dd>Statistics stuff &#x2013; resamplers, random variables (gamma &amp; log-gamma), etc&#x2026;</dd>
+<dt><code>mrffl_bitset</code>      </dt><dd>Bitsets used by TVM solvers for unknown variables.</dd>
+</dl></dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-org17eb060" class="outline-2">
+<h2 id="org17eb060"><span class="section-number-2">3.</span> Example Programs</h2>
+<div class="outline-text-2" id="text-3">
+<p>
+You will find several programs, most of which use MRFFL, in various directories at the base of the
+<a href="https://github.com/richmit/FortranFinance">FortranFinance</a> repository:
+</p>
+<dl class="org-dl">
+<dt><a href="https://github.com/richmit/FortranFinance/cashflows">cashflows</a>                           (TBD &#x2013; in work)</dt><dd>Some simple MRFFL cashflow examples.</dd>
+<dt><a href="https://github.com/richmit/FortranFinance/loans">loans</a>                                   (TBD &#x2013; in work)</dt><dd>Illustrates how to use MRFFL TVM solvers in combination with cashflow series.</dd>
+<dt><a href="https://github.com/richmit/FortranFinance/monte_carlo">monte_carlo</a>                       (TBD &#x2013; in work)</dt><dd>Illustrates basic resampling monte carlo for inflation and stock market returns.</dd>
+<dt><a href="https://github.com/richmit/FortranFinance/MRFFL_functional_tests">MRFFL_functional_tests</a>                 </dt><dd>Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.</dd>
+<dt><a href="https://github.com/richmit/FortranFinance/MRFFL_unit_tests">MRFFL_unit_tests</a>             (TBD &#x2013; in work)</dt><dd>Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.</dd>
+<dt><a href="https://github.com/richmit/FortranFinance/retirement">retirement</a>                         (TBD &#x2013; in work)</dt><dd>Some TVM based retirement computations.</dd>
+<dt><a href="https://github.com/richmit/FortranFinance/retirement_simulation">retirement_simulation</a>   (TBD &#x2013; in work)</dt><dd>A comprehensive simulator for a married couple's retirement (not much MRFFL used here)</dd>
+</dl>
+
+<p>
+I use a GNU make based build flow.  You <b>must</b> use GNU make to utilize it as I've used some GNU make'isms in the makefiles.  If you don't use GNU make you are
+pretty much on your own.
+</p>
+
+<p>
+In order to compile these on your platform you may need to modify the <code>makefile</code> in each directory to use your favorite Fortran compiler.  At the top of each
+makefile you will find something like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-makefile"><span style="color: #ffa500;">################################################</span>
+
+<span style="color: #7fffd4;">MRFFL_PATH</span> = ../MRFFL
+
+<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">MRFFL_PATH</span>)/tools_gfortran.mk
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">include $(</span><span style="color: #7fffd4;">MRFFL_PATH</span><span style="color: #ff7f24;">)/tools_flang.mk</span>
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">include $(</span><span style="color: #7fffd4;">MRFFL_PATH</span><span style="color: #ff7f24;">)/tools_ifx.mk</span>
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">include $(</span><span style="color: #7fffd4;">MRFFL_PATH</span><span style="color: #ff7f24;">)/tools_lfortran.mk</span>
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">include $(</span><span style="color: #7fffd4;">MRFFL_PATH</span><span style="color: #ff7f24;">)/tools_nvfortran.mk</span>
+
+<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">MRFFL_PATH</span>)/include.mk
+
+<span style="color: #ffa500;">################################################</span>
+</pre>
+</div>
+
+<p>
+If you are using <code>gfortran</code> on a UNIX'ish system, then you can probably just leave it as is.  If you want to use a different compiler, then you may be able to
+simply uncomment the appropriate line if your system is similarly configured to mine.  If you are unlucky, then you may need to set some variables.  In
+particular, you might need to comment out the <code>gfortran</code> include and add something like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-makefile"><span style="color: #7fffd4;">AR</span> := ar
+<span style="color: #7fffd4;">FC</span> := nvfortran
+<span style="color: #7fffd4;">FFLAGS</span> := -O3 -Wall  -W -Xlinker -z -Xlinker execstack
+<span style="color: #7fffd4;">FSHFLG</span> = -o $(<span style="color: #7fffd4;">MRFFL_SHARED_LIB_FILE</span>) -shared $(<span style="color: #7fffd4;">MRFFL_OBJ_FILES</span>)
+</pre>
+</div>
+
+<p>
+The only tricky one is the <code>FSHFLG</code> variable.  Luckily you only need the <code>FSHFLG</code> variable if you plan on building a shared library.  The shared library is
+completely unnecessary for making full use of the modules, so you you can safely ignore that one unless you really, really want to use a shared library. <code>;)</code>
+</p>
+</div>
+</div>
+
+<div id="outline-container-org9ff2ad9" class="outline-2">
+<h2 id="org9ff2ad9"><span class="section-number-2">4.</span> Using MRFFL (MR Fortran Finance Library) Modules</h2>
+<div class="outline-text-2" id="text-4">
+<p>
+All of the code is in the module source files with no external dependencies at all.  So you just need to call the modules from your code, and then
+compile/link everything together.
+</p>
+
+
+<p>
+To help with that compile/link part, a makefile fragment has been provided (<a href="https://github.com/richmit/FortranFinance/MRFFL/include.mk"><code>include.mk</code></a>).
+Note it works with GNU make and is designed for UNIX-like environments (Mac OS X, Linux, MSYS2 on Windows 11, WSL on Windows 11).  I mostly use MSYS2 on
+Windows 11 so that is where it gets the most testing.  The makefile in the <a href="https://github.com/richmit/FortranFinance/MRFFL_functional_tests">functional
+tests directory</a> is a good guide on how to use <a href="https://github.com/richmit/FortranFinance/MRFFL/include.mk"><code>include.mk</code></a>.  In essence you do the following
+in your makefile:
+</p>
+
+<ol class="org-ol">
+<li>Set MRFFL_PATH in your makefile to the path of the MRFFL source directory &#x2013; that's the one with the <code>include.mk</code> file.</li>
+<li>Set FC, FFLAGS, &amp; AR if necessary &#x2013; most of the time you can use the defaults.</li>
+<li>Include the "<code>include.mk</code>" file in the MRFFL source directory.</li>
+<li>Add a build rule for your program.</li>
+</ol>
+
+<p>
+Your makefile will look something like this:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-makefile"><span style="color: #7fffd4;">MRFFL_PATH</span> = ../MRFFL
+
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set FC, FFLAGS, &amp; AR here.  The include below has the settings I use on my system.    </span>
+<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">MRFFL_PATH</span>)/tools_gfortran.mk 
+
+<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">MRFFL_PATH</span>)/include.mk
+
+<span style="color: #00fa9a; font-weight: bold;">your_program</span> : your_program.f90 $(<span style="color: #7fffd4;">MRFFL_OBJ_FILES</span>)
+    $(<span style="color: #7fffd4;">FC</span>) $(<span style="color: #7fffd4;">FFLAGS</span>) $<span style="color: #8470ff; font-weight: bold;">^</span> -o <span style="color: #00fa9a; font-weight: bold;">$</span><span style="color: #8470ff; font-weight: bold;">@</span>
+</pre>
+</div>
+
+<p>
+Note the rule in the makefile above takes the lazy approach of adding every MRFFL module as a dependency regardless of if your program actually needs them
+all.  This is how most people use the modules because it's simple.  The cost might be a couple seconds of extra compile time.  You can explicitly list out the
+modules in the makefile if you wish.  Such a rule might look like the following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-makefile"><span style="color: #00fa9a; font-weight: bold;">your_program</span> : your_program.f90 mrffl_config$(<span style="color: #7fffd4;">OBJ_SUFFIX</span>) mrffl_tvm$(<span style="color: #7fffd4;">OBJ_SUFFIX</span>) mrffl_solver$(<span style="color: #7fffd4;">OBJ_SUFFIX</span>) 
+    $(<span style="color: #7fffd4;">FC</span>) $(<span style="color: #7fffd4;">FFLAGS</span>) $<span style="color: #8470ff; font-weight: bold;">^</span> -o <span style="color: #00fa9a; font-weight: bold;">$</span><span style="color: #8470ff; font-weight: bold;">@</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org128af38" class="outline-2">
+<h2 id="org128af38"><span class="section-number-2">5.</span> Notes about <code>include.mk</code></h2>
+<div class="outline-text-2" id="text-5">
+</div>
+<div id="outline-container-org106940c" class="outline-3">
+<h3 id="org106940c"><span class="section-number-3">5.1.</span> Names of files</h3>
+<div class="outline-text-3" id="text-5-1">
+<dl class="org-dl">
+<dt>File extensions on Windows (outside of WSL)</dt><dd><ul class="org-ul">
+<li>Executable files use <code>.exe</code></li>
+<li>Shared libraries use <code>.dll</code></li>
+<li>Object files will <code>.obj</code></li>
+</ul></dd>
+<dt>On UNIX systems (not including MSYS2)</dt><dd><ul class="org-ul">
+<li>Executable files have no extension</li>
+<li>Shared libraries use <code>.so</code></li>
+<li>Object files will use <code>.o</code></li>
+</ul></dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-orge0fd70b" class="outline-3">
+<h3 id="orge0fd70b"><span class="section-number-3">5.2.</span> Useful Variables</h3>
+<div class="outline-text-3" id="text-5-2">
+<dl class="org-dl">
+<dt><code>MRFFL_MOD_FILES</code>      </dt><dd>All the module (<code>.mod</code>) files.  These will appear in your build directory.</dd>
+<dt><code>MRFFL_OBJ_FILES</code>      </dt><dd>All the object (<code>.obj</code> or <code>.o</code>) files.  These will appear in your build directory.</dd>
+<dt><code>MRFFL_STATIC_LIB_FILE</code></dt><dd>The name of the static library file.  It's not created by default.  It will appear in your build directory if it is listed as a dependency on one of your targets.</dd>
+<dt><code>MRFFL_SHARED_LIB_FILE</code></dt><dd>The name of the shared library file.  It's not created by default.  It will appear in your build directory if it is listed as a dependency on one of your targets.</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-org37c70b5" class="outline-3">
+<h3 id="org37c70b5"><span class="section-number-3">5.3.</span> Useful Targets</h3>
+<div class="outline-text-3" id="text-5-3">
+<dl class="org-dl">
+<dt><code>all_mrffl_lib</code>    </dt><dd>Builds the library files.</dd>
+<dt><code>all_mrffl_mod</code>    </dt><dd>Builds the module (<code>.mod</code>) files</dd>
+<dt><code>all_mrffl_obj</code>    </dt><dd>Builds the object (<code>.obj</code> or <code>.o</code>) files</dd>
+<dt><code>clean_mrffl_mod</code>  </dt><dd>Deletes all the MRFFL module (<code>.mod</code>) files in the build directory.</dd>
+<dt><code>clean_mrffl_obj</code>  </dt><dd>Deletes all the MRFFL object (<code>.obj</code> or <code>.o</code>) files in the build directory.</dd>
+<dt><code>clean_mrffl_lib</code>  </dt><dd>Deletes all the library files in the build directory.</dd>
+<dt><code>clean_mrffl</code>      </dt><dd>Simply calls the following targets: <code>clean_mrffl_mod</code>, <code>clean_mrffl_obj</code>, &amp; <code>clean_mrffl_lib</code></dd>
+<dt><code>clean_multi_mrffl</code></dt><dd>The previous clean targets will only remove products from the current platform.  For example, the <code>clean_mrffl_obj</code> target will
+delete object files with an extension of <code>.obj</code> on windows and an extension of <code>.o</code> on UNIX'ish platforms.  I use the same directories to
+build for all platforms, so I sometimes want to clean up the build products from all platforms at once.  That's what this target will do.</dd>
+</dl>
+</div>
+</div>
+
+<div id="outline-container-org544febe" class="outline-3">
+<h3 id="org544febe"><span class="section-number-3">5.4.</span> Static Library</h3>
+<div class="outline-text-3" id="text-5-4">
+<p>
+A rule to make a static library is included in <code>include.mk</code>.  A build rule like the following should build that library and link it to your executable.  Note
+I'm just including the library file on the command line instead of linker like options (i.e. <code>-L</code> and <code>-l</code> for GNU compilers).  That's because simply including
+the library on the command line is broadly supported across more compilers &#x2013; this way I don't have to document how to do the same thing for each one. ;)
+</p>
+
+<div class="org-src-container">
+<pre class="src src-makefile"><span style="color: #00fa9a; font-weight: bold;">your_program</span> : your_program.f90 $(<span style="color: #7fffd4;">MRFFL_STATIC_LIB_FILE</span>)
+    $(<span style="color: #7fffd4;">FC</span>) $(<span style="color: #7fffd4;">FFLAGS</span>) $<span style="color: #8470ff; font-weight: bold;">^</span> $(<span style="color: #7fffd4;">MRFFL_STATIC_LIB_FILE</span>) -o <span style="color: #00fa9a; font-weight: bold;">$</span><span style="color: #8470ff; font-weight: bold;">@</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org4be42d1" class="outline-3">
+<h3 id="org4be42d1"><span class="section-number-3">5.5.</span> Dynamic Library (<code>.so</code> and <code>.dll</code> files)</h3>
+<div class="outline-text-3" id="text-5-5">
+<p>
+A rule to make a static library is included in <code>include.mk</code>.  You can build it with the target <code>clean_mrffl_lib</code>, or by using <code>$(MRFFL_SHARED_LIB_FILE)</code> as a
+dependency in your build rule.  As the options to link to a shared library differ wildly across platforms and compilers/linkers, I don't provide an example of
+how to do that.
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-org677683e" class="outline-2">
+<h2 id="org677683e"><span class="section-number-2">6.</span> Tested Environments</h2>
+<div class="outline-text-2" id="text-6">
+<dl class="org-dl">
+<dt>MSYS2 running on Windows 11</dt><dd><ul class="org-ul">
+<li>GNU Fortran (Rev2, Built by MSYS2 project) 14.2.0 : Everything works</li>
+<li>LFortran 0.42.0 LLVM 19.1.3 : Nothing works.  Compiler crashes during compile.</li>
+<li>Intel ifx 2024.1.0 Build 20240308 : Everything works</li>
+<li>flang 19.1.6 : TBD</li>
+</ul></dd>
+<dt>Debian 12.8 running in WSL on Windows 11</dt><dd><ul class="org-ul">
+<li>GNU Fortran (Debian 14.2.0-8) 14.2.0 from debian-testing: Everything works</li>
+<li>LFortran 0.42.0 LLVM 19.1.3 : Nothing works.  Compiler crashes during compile.</li>
+<li>Intel ifx 2025.0.4 20241205 : Everything works</li>
+<li>nvfortran 24.11-0 64-bit target on x86-64 Linux : Everything works.</li>
+<li>flang-new version 19.1.6 : TBD</li>
+</ul></dd>
+</dl>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+</div>
+</body>
+</html>

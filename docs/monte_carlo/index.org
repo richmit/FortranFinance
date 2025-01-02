@@ -1,0 +1,96 @@
+# -*- Mode:Org; Coding:utf-8; fill-column:158 -*-
+# ######################################################################################################################################################.H.S.##
+# FILE:        index.org
+#+TITLE:       MRFFL (MR Fortran Finance Library)
+#+SUBTITLE:    Monte Carlo Simulation
+#+AUTHOR:      Mitch Richling
+#+EMAIL:       http://www.mitchr.me/
+#+DATE:        2024-12-31
+#+DESCRIPTION: DESCRIPTION FIXME
+#+KEYWORDS:    KEYWORDS FIXME
+#+LANGUAGE:    en
+#+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil 
+# FIXME: When uncommented the following line will render latex equations as images embedded into exported HTML, when commented MathJax will be used
+# #+OPTIONS:     tex:dvipng
+# FIXME: Select ONE of the three TODO lines below
+# #+SEQ_TODO:    ACTION:NEW(t!) ACTION:ASSIGNED(a!@) ACTION:WORK(w!) ACTION:HOLD(h@) | ACTION:FUTURE(f) ACTION:DONE(d!) ACTION:CANCELED(c!)
+# #+SEQ_TODO:    TODO:NEW(T!)                        TODO:WORK(W!)   TODO:HOLD(H@)   |                  TODO:DONE(D!)   TODO:CANCELED(C!)
+#+SEQ_TODO:    TODO:NEW(t)                         TODO:WORK(w)    TODO:HOLD(h)    | TODO:FUTURE(f)   TODO:DONE(d)    TODO:CANCELED(c)
+#+PROPERTY: header-args :eval never-export
+#+HTML_HEAD: <style>body { width: 95%; margin: 2% auto; font-size: 18px; line-height: 1.4em; font-family: Georgia, serif; color: black; background-color: white; }</style>
+# Change max-width to get wider output -- also note #content style below
+#+HTML_HEAD: <style>body { min-width: 500px; max-width: 1024px; }</style>
+#+HTML_HEAD: <style>h1,h2,h3,h4,h5,h6 { color: #A5573E; line-height: 1em; font-family: Helvetica, sans-serif; }</style>
+#+HTML_HEAD: <style>h1,h2,h3 { line-height: 1.4em; }</style>
+#+HTML_HEAD: <style>h1.title { font-size: 3em; }</style>
+#+HTML_HEAD: <style>.subtitle { font-size: 0.6em; }</style>
+#+HTML_HEAD: <style>h4,h5,h6 { font-size: 1em; }</style>
+#+HTML_HEAD: <style>.org-src-container { border: 1px solid #ccc; box-shadow: 3px 3px 3px #eee; font-family: Lucida Console, monospace; font-size: 80%; margin: 0px; padding: 0px 0px; position: relative; }</style>
+#+HTML_HEAD: <style>.org-src-container>pre { line-height: 1.2em; padding-top: 1.5em; margin: 0.5em; background-color: #404040; color: white; overflow: auto; }</style>
+#+HTML_HEAD: <style>.org-src-container>pre:before { display: block; position: absolute; background-color: #b3b3b3; top: 0; right: 0; padding: 0 0.2em 0 0.4em; border-bottom-left-radius: 8px; border: 0; color: white; font-size: 100%; font-family: Helvetica, sans-serif;}</style>
+#+HTML_HEAD: <style>pre.example { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -o-pre-wrap; font-family: Lucida Console, monospace; font-size: 80%; background: #404040; color: white; display: block; padding: 0em; border: 2px solid black; }</style>
+#+HTML_HEAD: <style>blockquote { margin-bottom: 0.5em; padding: 0.5em; background-color: #FFF8DC; border-left: 2px solid #A5573E; border-left-color: rgb(255, 228, 102); display: block; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 5em; margin-inline-end: 5em; } </style>
+# Change the following to get wider output -- also note body style above
+#+HTML_HEAD: <style>#content { max-width: 60em; }</style>
+#+HTML_LINK_HOME: https://github.com/richmit/FortranFinance
+#+HTML_LINK_UP: https://richmit.github.io/FortranFinance/index.html
+# ######################################################################################################################################################.H.E.##
+
+#+ATTR_HTML: :border 2 solid #ccc :frame hsides :align center
+|          <r> | <l>                                          |
+|    *Author:* | /{{{author}}}/                               |
+|   *Updated:* | /{{{modification-time(%Y-%m-%d %H:%M:%S)}}}/ |
+| *Generated:* | /{{{time(%Y-%m-%d %H:%M:%S)}}}/              |
+#+ATTR_HTML: :align center
+Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
+
+#+TOC: headlines 5
+
+These examples both use simple, resampling monte carlo on historical US financial data.  Both examples include both Fortran code to run the simulations, and R
+code to visualize them.  One of the examples illustrates endpoint distribution forecasting while the other illustrates trajectory forecasting.
+
+* ~inflation.f90~ & ~inflation.R~
+:PROPERTIES:
+:CUSTOM_ID: inflation
+:END:
+
+#+begin_src sh :results output raw :exports results 
+~/core/codeBits/bin/srcHdrInfo -i details inflation.f90
+#+end_src
+
+#+RESULTS:
+
+  This program runs 200000 (trials) inflation simulations on $100 (initial_value).  Each simulation is over 20 (years) years of
+  inflation using the last 30 (mc_history_years) years of historical US inflation data.  This program prints the value after 20
+  years for each simulation to STDOUT.  If placed in a file, this data may be consumed by inflation.R to produce a nice
+  histogram showing the probability of the value after 100 years.
+
+  This is sometimes called "trajectory" Monte Carlo because we record the entire trajectory, the steps, of each simulation.
+  See inflation.f90 for an example of "end point" Monte Carlo -- where we only store the final step of each simulation.
+
+  [[file:pics/inflation.png][file:pics/inflation_512.png]]
+
+* ~stocks.f90~ & ~stocks.R~
+:PROPERTIES:
+:CUSTOM_ID: stocks
+:END:
+
+#+begin_src sh :results output raw :exports results 
+~/core/codeBits/bin/srcHdrInfo -i details stocks.f90
+#+end_src
+
+#+RESULTS:
+
+  This program runs 2000 (trials) stocks simulations on $100 (initial_value).  Each simulation is over 20 (years) years of
+  stocks using the last 30 (mc_history_years) years of historical US stocks data.  This program prints the resulting
+  value of each simulation to STDOUT.  If placed in a file, this data may be consumed by stocks.R to produce a
+  nice histogram showing the probability of the value after 100 years.
+
+  This technique is frequently called "monte carlo" in finance circles.  The heart of the idea is pretty simple.  Simulate the
+  scenario using resampled values from historical data, and then analyze the result.
+
+
+  [[file:pics/stocks_paths.png][file:pics/stocks_paths_512.png]]
+
+  [[file:pics/stocks_ranges.png][file:pics/stocks_ranges_512.png]]
+
