@@ -8,8 +8,6 @@ modeling course.  Over the years it has collected more functionality
 as my needs have expanded -- mostly investment applications.  Most
 recently I've added quite a bit of stuff around retirement planning.
 
-**WARNING: I only have a tiny bit of code in the repo right now, but I'm working to add the rest as time permits.**
-
 Much of the functionality is contained in a set of modules I call [MR Fortran Finance Library](https://richmit.github.io/FortranFinance/MRFFL/index.html).
 
 You will find a few directories at the root of the repository covering
@@ -17,6 +15,7 @@ various computational finance topics:
 
   - monte_carlo : Illustrates basic resampling monte carlo for inflation and stock market returns.
   - MRFFL_functional_tests : Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
+  - **More are on the way. I'm working to add the rest as time permits.**
 
 ### WARNING
 
