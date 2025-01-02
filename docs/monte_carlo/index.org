@@ -1,20 +1,15 @@
 # -*- Mode:Org; Coding:utf-8; fill-column:158 -*-
 # ######################################################################################################################################################.H.S.##
 # FILE:        index.org
-#+TITLE:       MRFFL (MR Fortran Finance Library)
+#+TITLE:       Fortran Finance
 #+SUBTITLE:    Monte Carlo Simulation
 #+AUTHOR:      Mitch Richling
 #+EMAIL:       http://www.mitchr.me/
-#+DATE:        2024-12-31
-#+DESCRIPTION: DESCRIPTION FIXME
-#+KEYWORDS:    KEYWORDS FIXME
+#+DATE:        2025-01-02
+#+DESCRIPTION: Documentation for monte carlo examples in the Fortran Finance repository.
+#+KEYWORDS:    finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 #+LANGUAGE:    en
 #+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil 
-# FIXME: When uncommented the following line will render latex equations as images embedded into exported HTML, when commented MathJax will be used
-# #+OPTIONS:     tex:dvipng
-# FIXME: Select ONE of the three TODO lines below
-# #+SEQ_TODO:    ACTION:NEW(t!) ACTION:ASSIGNED(a!@) ACTION:WORK(w!) ACTION:HOLD(h@) | ACTION:FUTURE(f) ACTION:DONE(d!) ACTION:CANCELED(c!)
-# #+SEQ_TODO:    TODO:NEW(T!)                        TODO:WORK(W!)   TODO:HOLD(H@)   |                  TODO:DONE(D!)   TODO:CANCELED(C!)
 #+SEQ_TODO:    TODO:NEW(t)                         TODO:WORK(w)    TODO:HOLD(h)    | TODO:FUTURE(f)   TODO:DONE(d)    TODO:CANCELED(c)
 #+PROPERTY: header-args :eval never-export
 #+HTML_HEAD: <style>body { width: 95%; margin: 2% auto; font-size: 18px; line-height: 1.4em; font-family: Georgia, serif; color: black; background-color: white; }</style>

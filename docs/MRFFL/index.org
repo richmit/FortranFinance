@@ -2,6 +2,7 @@
 # ######################################################################################################################################################.H.S.##
 # FILE:        README.org
 #+TITLE:       MR Fortran Finance Library (MRFFL)
+#+SUBTITLE:    Primary Documentation
 #+AUTHOR:      Mitch Richling
 #+EMAIL:       http://www.mitchr.me/
 #+DATE:        2025-01-02
