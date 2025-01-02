@@ -1,0 +1,31 @@
+# Fortran Finance
+
+Theoretical Finance Computation Using Fortran
+
+Parts of this code have been with me for quite some time.  I
+originally started this in college to help with a mathematical
+modeling course.  Over the years it has collected more functionality
+as my needs have expanded -- mostly investment applications.  Most
+recently I've added quite a bit of stuff around retirement planning.
+
+**WARNING: I only have a tiny bit of code in the repo right now, but I'm working to add the rest as time permits.**
+
+Much of the functionality is contained in a set of modules I call [MR Fortran Finance Library](https://richmit.github.io/FortranFinance/MRFFL/index.html).
+
+You will find a few directories at the root of the repository covering
+various computational finance topics:
+
+  - monte_carlo : Illustrates basic resampling monte carlo for inflation and stock market returns.
+  - MRFFL_functional_tests : Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
+
+### WARNING
+
+Lastly, a warning.  I'm not a finance expert -- just an amateur
+investor trying to plan my retirement.  So don't take anything you see
+here as expert advice -- or even assume it's correct.  In fact, expect
+errors!  Double check any results you get.  Keep an eye out for bugs,
+and report what you find!
+
+-mitch
+
+PS: Have Fun!
