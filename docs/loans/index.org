@@ -1,0 +1,99 @@
+# -*- Mode:Org; Coding:utf-8; fill-column:158 -*-
+# ######################################################################################################################################################.H.S.##
+# FILE:        index.org
+#+TITLE:       Fortran Finance
+#+SUBTITLE:    Loan Amortization
+#+AUTHOR:      Mitch Richling
+#+EMAIL:       http://www.mitchr.me/
+#+DATE:        2025-01-02
+#+DESCRIPTION: Documentation for loan examples in the Fortran Finance repository.
+#+KEYWORDS:    finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
+#+LANGUAGE:    en
+#+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil 
+#+SEQ_TODO:    TODO:NEW(t)                         TODO:WORK(w)    TODO:HOLD(h)    | TODO:FUTURE(f)   TODO:DONE(d)    TODO:CANCELED(c)
+#+PROPERTY: header-args :eval never-export
+#+HTML_HEAD: <style>body { width: 95%; margin: 2% auto; font-size: 18px; line-height: 1.4em; font-family: Georgia, serif; color: black; background-color: white; }</style>
+# Change max-width to get wider output -- also note #content style below
+#+HTML_HEAD: <style>body { min-width: 500px; max-width: 1024px; }</style>
+#+HTML_HEAD: <style>h1,h2,h3,h4,h5,h6 { color: #A5573E; line-height: 1em; font-family: Helvetica, sans-serif; }</style>
+#+HTML_HEAD: <style>h1,h2,h3 { line-height: 1.4em; }</style>
+#+HTML_HEAD: <style>h1.title { font-size: 3em; }</style>
+#+HTML_HEAD: <style>.subtitle { font-size: 0.6em; }</style>
+#+HTML_HEAD: <style>h4,h5,h6 { font-size: 1em; }</style>
+#+HTML_HEAD: <style>.org-src-container { border: 1px solid #ccc; box-shadow: 3px 3px 3px #eee; font-family: Lucida Console, monospace; font-size: 80%; margin: 0px; padding: 0px 0px; position: relative; }</style>
+#+HTML_HEAD: <style>.org-src-container>pre { line-height: 1.2em; padding-top: 1.5em; margin: 0.5em; background-color: #404040; color: white; overflow: auto; }</style>
+#+HTML_HEAD: <style>.org-src-container>pre:before { display: block; position: absolute; background-color: #b3b3b3; top: 0; right: 0; padding: 0 0.2em 0 0.4em; border-bottom-left-radius: 8px; border: 0; color: white; font-size: 100%; font-family: Helvetica, sans-serif;}</style>
+#+HTML_HEAD: <style>pre.example { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -o-pre-wrap; font-family: Lucida Console, monospace; font-size: 80%; background: #404040; color: white; display: block; padding: 0em; border: 2px solid black; }</style>
+#+HTML_HEAD: <style>blockquote { margin-bottom: 0.5em; padding: 0.5em; background-color: #FFF8DC; border-left: 2px solid #A5573E; border-left-color: rgb(255, 228, 102); display: block; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 5em; margin-inline-end: 5em; } </style>
+# Change the following to get wider output -- also note body style above
+#+HTML_HEAD: <style>#content { max-width: 60em; }</style>
+#+HTML_LINK_HOME: https://github.com/richmit/FortranFinance
+#+HTML_LINK_UP: https://richmit.github.io/FortranFinance/index.html
+# ######################################################################################################################################################.H.E.##
+
+#+ATTR_HTML: :border 2 solid #ccc :frame hsides :align center
+|          <r> | <l>                                          |
+|    *Author:* | /{{{author}}}/                               |
+|   *Updated:* | /{{{modification-time(%Y-%m-%d %H:%M:%S)}}}/ |
+| *Generated:* | /{{{time(%Y-%m-%d %H:%M:%S)}}}/              |
+#+ATTR_HTML: :align center
+Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
+
+#+TOC: headlines 5
+
+* ~loan_level_payments.f90~
+
+#+begin_src sh :results output raw :exports results 
+~/core/codeBits/bin/srcHdrInfo -i details loan_level_payments.f90
+#+end_src
+
+#+RESULTS:
+
+  The typical approach to solving loan problems is to equate the present value of the principal with the present value of the
+  payment cashflow stream in a single equation and solve for the payment.  With only one principal payment occurring at the
+  beginning and a payment stream consisting of a level annuity certain, this is pretty simple.  Unfortunately things get much
+  more complex if the payment structure (for principal or repayment) changes from this baseline.  These more difficult
+  situations can be easily handled by considering the problem as multiple cashflow streams.  In order to illustrate how to
+  approach such problems using a multiple cashflow methodology, this program applies the technique to solve the familiar
+  problem of the simple loan.
+
+  We can model a loan as a pair of parallel cashflows: 
+    - Money paid by the lender (i.e. the principal) -- a negative cash flow from the lender's perspective
+    - Money paid to the lender (i.e. loan payments) -- a positive cash flow from the lender's perspective
+  These two cash flows should have equal magnitude PV & FV, but of opposite sign.
+
+* ~loan_geometric_payments.f90~
+
+#+begin_src sh :results output raw :exports results 
+~/core/codeBits/bin/srcHdrInfo -i details loan_geometric_payments.f90
+#+end_src
+
+#+RESULTS:
+
+  This program extends the example from loan_level_payments.f90 to geometric payments.  Not much changes in the flow except the
+  annuity type.
+
+  If you are curious about how such a loan might come about, then consider the following scenario:
+
+  A business needs a 1M load.  They wish to make annual payments, and to pay down the loan as quickly as possible.  At the end
+  of the year they can afford to pay 95K.  The business has been experiencing 11% revenue growth for the last 5 years with
+  projections showing that to continue.  Based on growth projections, they wish to increase loan payments by 10% per year.  We
+  wish to extend them the loan, and make 7%.
+
+* ~loan_up_down_payments.f90~
+
+#+begin_src sh :results output raw :exports results 
+~/core/codeBits/bin/srcHdrInfo -i details loan_up_down_payments.f90
+#+end_src
+
+#+RESULTS:
+
+  This program extends the examples from loan_level_payments.f90 and loan_geometric_payments.f90 to a unequal, non-standard
+  annuity designed to make payments round cent values.
+
+  One way to amortize a loan is to round all payments but the last one up to the nearest penny, and then adjust the last
+  payment lower to accommodate the difference -- this last payment is rounded DOWN to the nearest cent.  This insures that the
+  lender will not loose more than a fractional cent on the entire transaction, and the borrower don't pay more than the agreed
+  upon rate (this second condition is required by law in many jurisdictions).  Note this method is unsuitable for very long
+  term loans as it may shorten the overall term.
+  
