@@ -232,7 +232,7 @@ contains
   real(kind=rk) pure elemental function fv_from_pv_n_i(pv, n, i)
     integer(kind=ik), intent(in) :: n
     real(kind=rk),    intent(in) :: pv, i
-    fv_from_pv_n_i = pv * (1+i) ** n
+    fv_from_pv_n_i = pv * (1+p2f(i)) ** n
   end function fv_from_pv_n_i
 
   !----------------------------------------------------------------------------------------------------------------------------

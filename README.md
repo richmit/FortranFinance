@@ -15,6 +15,7 @@ various computational finance topics:
 
   - monte_carlo : Illustrates basic resampling monte carlo for inflation and stock market returns.
   - MRFFL_functional_tests : Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
+  - MRFFL_unit_tests : Unit tests for MRFFL.  
   - **More are on the way. I'm working to add the rest as time permits.**
 
 ### WARNING
