@@ -6,7 +6,7 @@
 !! @date      2024-12-16
 !! @brief     Value of a roth conversion.@EOL
 !! @std       F2023
-!! @see       roth_conversion.f90
+!! @see       https://github.com/richmit/FortranFinance
 !! @copyright 
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.

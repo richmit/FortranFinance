@@ -59,10 +59,10 @@
 !!    As such, "fixed annuities" are called "level annuities" in this package.
 !!
 !!  - I avoid the term "annuity-immediate" because many confuse it with annuities that are not "deferred" -- i.e. pay immediately
-!!    upon purchase.  As such I use the phrase
+!!    upon purchase.  As such I use the phrase "ordinary annuity".
 !!
-!!  - I avoid the adjective "guaranteed" and "guarantee" with regard to annuities because they are confused with the term "non
-!!    contingent". As such I use the word "certain".  In this module all annuities are certain, so it is save to assume an
+!!  - I avoid the adjectives "guaranteed" and "guarantee" with regard to annuities because they are confused with the term
+!!    "non-contingent". As such I use the word "certain".  In this module all annuities are certain, so it is safe to assume an
 !!    annuity is certain when it's not explicity specified.
 !! 
 !!  - I avoid the adjective "growing" with regard to annuities simply because it is too generic and offends my mathematical sense
@@ -78,7 +78,7 @@
 !!
 !! Most TVM problems may be broken down into distinct components corresponding to well known, fundamental TVM problems.  It is
 !! frequently possible to solve the overall problem by solving these smaller, well known problems in isolation. For example a
-!! loan can be thought of as two cashflow sequences: An ordinary lump sum and aj ordinary annuity certain -- we simply require
+!! loan can be thought of as two cashflow sequences: An ordinary lump sum and an ordinary annuity certain -- we simply require
 !! that each of these two cashflows have equal future values.
 !!
 !! This module encourages this second method of solving TVM problems by providing very generic TVM solvers for some very common
@@ -90,14 +90,14 @@
 !! The annuity solvers in this module are uniquely flexible.  In most software annuities are defined as a fixed number of periods
 !! with a single payment occurring in each period such that all payments occur either at the beginning (ordinary annuities) or
 !! end (annuities due) of the period.  Instead of associating payments with periods, this module ties them directly to the
-!! *boundaries* between periods -- an n period annuity has n+1 boundaries (one at time zero, one at time n, and n-1 between
-!! periods).
+!! *boundaries* between periods -- an @f$n@f$ period annuity has @f$n+1@f$ boundaries (one at time zero, one at time @f$n@f$, and
+!! @f$n-1@f$ between periods).
 !!
-!! In this module the number of periods (n) and the boundaries at which the payments start (d) and end (e) are each free
+!! In this module the number of periods (`n`) and the boundaries at which the payments start (`d`) and end (`e`) are each free
 !! variables in the definition of an annuity. This allows us to handle ordinary annuities, annuities due, differed annuities, and
 !! truncated annuities with just a single solver!  In addition we can use this flexibility to base PV/FV computations on a term
-!! different from the natural term of the annuity -- for example we can compute the PV for an annuity due on n-1 periods instead
-!! of n periods.  Using this notation, we can obtain typical annuities like so:
+!! different from the natural term of the annuity -- for example we can compute the PV for an annuity due on @f$n-1@f$ periods
+!! instead of @f$n@f$ periods.  Using this notation, we can obtain typical annuities like so:
 !!
 !!   - An N payment ordinary annuity:   n=N, d=1, e=0
 !!   - An N payment annuity due:        n=N, d=0, e=1
@@ -113,17 +113,17 @@
 !! paid at the beginning of the first period, this library allows one to specify the payment on any period boundary.  
 !!
 !!   - For an "ordinary lump sum" use d=0
-!!     Note that some packages call this "a lump sum with payment mode BEGIN"
+!!     Note that some packages call this "a lump sum with payment mode `BEGIN`"
 !!     Because this is a very common case, a "helper" function exists to make this easier: tvm_lump_sum_solve
 !!   - For a "lump sum due" use d=1
-!!     Note that some packages call this "a lump sum with payment mode END"
+!!     Note that some packages call this "a lump sum with payment mode `END`"
 !!
 !! @par Solvers
 !!
 !! First we should define what we mean by a "solver".  The TVM problems this module works with are each governed by a pair of
-!! formulas (one for fv and one for pv) in terms of n, i, g, q, & a.  Most of the time we want pv & fv, so we just evaluate the
-!! formulas.  Sometimes we already know pv and fv and want another variable.  The "solvers" in this package provide an interface
-!! through which we may ask for any two variables to be found with respect to the others.
+!! formulas (one for `fv` and one for `pv`) in terms of `n, `i`, `g`, `q`, & `a`.  Most of the time we want `pv` & `fv`, so we
+!! just evaluate the formulas.  Sometimes we already know pv and fv and want another variable.  The "solvers" in this package
+!! provide an interface through which we may ask for any two variables to be found with respect to the others.
 !!
 !! The primary solver functions are:
 !!
@@ -133,9 +133,9 @@
 !!   - tvm_delayed_arithmetic_annuity_solve()
 !!
 !! These functions operate in largely the same manner.  The first 5 or 6 arguments are variables in the TVM equations.  These
-!! first arguments are all ~intent(inout)~ arguments -- they hold known values upon entry and hold solved values upon exit.
-!! These arguments are followed by the delay (d) argument.  For annuities this is followed by the early end argument.  Next is
-!! the ~unknown~ argument that specifies what variables we wish to solve for.  Lastly is a ~status~ argument used to return
+!! first arguments are all `intent(inout)` arguments -- they hold known values upon entry and hold solved values upon exit.
+!! These arguments are followed by the delay (`d`) argument.  For annuities this is followed by the early end argument (`e`).  Next
+!! is the `unknown` argument that specifies what variables we wish to solve for.  Lastly is a `status` argument used to return
 !! errors.
 !! 
 !!                                                                              delay
@@ -150,7 +150,7 @@
 !!                                                                                    Specifies unknown variables
 !!
 !! Every one of these solvers works with *two* equations (one for pv and one for fv).  As a system of two equations, we can
-!! normally solve for two unknowns.  The unknowns we wish to find are specified in the ~unknowns~ argument using a sum of
+!! normally solve for two unknowns.  The unknowns we wish to find are specified in the `unknowns` argument using a sum of
 !! variable constants.  For example, we would request that PV and FV be found with a sum like this:
 !!
 !!                                     var_pv + var_fv
@@ -173,7 +173,7 @@
 !!   - tvm_delayed_geometric_annuity_check()
 !!   - tvm_delayed_arithmetic_annuity_check()
 !!
-!! Aside from not taking the ~unknowns~ argument, the consistency checkers follow the same argument pattern as the solvers.
+!! Aside from not taking the `unknowns` argument, the consistency checkers follow the same argument pattern as the solvers.
 !!
 !! Solving for n.
 !!
@@ -239,8 +239,8 @@ contains
   !> Sum the payments from a geometric annuity.
   !! Ex: Sum of inflation adjusted payments.
   !!
-  !! The payment sequence is the same no matter when it starts.  The first non-zero payment is A, and the
-  !! last non-zero payment is A(1+i)^{n-1}:
+  !! The payment sequence is the same no matter when it starts.  The first non-zero payment is @f$A@f$, and the
+  !! last non-zero payment is @f$ A(1+g)^{n-1}@f$:
   !!
   !! @f[ \begin{array}{ll}
   !!       V_1 & = A            \\
@@ -279,12 +279,12 @@ contains
   !----------------------------------------------------------------------------------------------------------------------------
   !> Return the number of payments given the period count (n), delay (d), and early end (e).
   !! 
-  !! Examples: 
-  !!     d      0 1 2 3 4 5 6 7 8 9
-  !!     period 0 1 2 3 4 5 6 7 8 9
-  !!     e      9 8 7 6 5 4 3 2 1 0
-  !!              |           |   |
-  !!         d=1 -+      e=2 -+   +- n=9   -> num_payments = 1+n-e-d = 7
+  !!                 Example: 
+  !!                     d      0 1 2 3 4 5 6 7 8 9
+  !!                     period 0 1 2 3 4 5 6 7 8 9
+  !!                     e      9 8 7 6 5 4 3 2 1 0
+  !!                              |           |   |
+  !!                         d=1 -+      e=2 -+   +- n=9   -> num_payments = 1+n-e-d = 7
   !! 
   !! @param n         Number of periods.
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
@@ -703,16 +703,15 @@ contains
   !----------------------------------------------------------------------------------------------------------------------------
   !> Solve for TVM parameters for a guaranteed geometric annuity.
   !!
-  !! The equations this solver uses are as follows:
+  !! The equations this solver uses when @f$i\ne g@f$ are as follows:
   !! @f[ \mathit{fv} =  a \frac{\left(1+g \right)^{1+n -e -d} \left(1+i \right)^{e}-\left(1+i \right)^{1+n -d}}{g -i}  @f]
   !! @f[ \mathit{pv} =  a \frac{\left(1+g \right) \left(\frac{1+g}{1+i}\right)^{n -e}-\left(\frac{1+g}{1+i}\right)^{d} \left(1+i \right)}{(g-i)(1+g)^{-d}} @f]
   !!
-  !! This routine can solve for var_n, var_n+var_fv, and any combination of two or fewer of the following: var_a, var_fv, var_pv
+  !! The equations this solver uses when @f$i=e g@f$ are as follows:
+  !! @f[ \mathit{fv} = a \left(1+n-e-d\right) \left(1+i\right)^{n-d}  @f]
+  !! @f[ \mathit{pv} = a \left(1+n-e-d\right) \left(1+i\right)^{-d}   @f]
   !!
-  !! Use cases:
-  !!  1: Q: In retirement bill needs $75,000 dollars per year adjusted for 3% inflation, he has $1,000,000 invested today, and he
-  !!        expects to see a 5% return on investments.  How long before he runs out of money?
-  !!     A: Set pv=1000000, fv=0, a=75000, i=5, g=3.  Solve for n.
+  !! This routine can solve for `var_n`, `var_n+var_fv`, and any combination of two or fewer of the following: `var_a`, `var_fv`, `var_pv`
   !!
   !! @param n         Number of compounding periods
   !! @param i         Discount rate as a percentage.

@@ -7,7 +7,7 @@
 !! @brief     Standard loan problem solved with multiple cashflows.@EOL
 !! @keywords  mrffl finance
 !! @std       F2023
-!! @see       loan_geometric_payments.f90
+!! @see       https://github.com/richmit/FortranFinance
 !! @copyright 
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.

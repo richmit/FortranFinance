@@ -7,7 +7,7 @@
 # @brief     Include file for the NVIDIA HPC Fortran compiler.@EOL
 # @keywords  
 # @std       GNUmake
-# @see       https://github.com/richmit/FortranFinance/MRFFL
+# @see       https://github.com/richmit/FortranFinance
 # @copyright 
 #  @parblock
 #  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.

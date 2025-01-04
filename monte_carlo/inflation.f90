@@ -7,7 +7,7 @@
 !! @brief     Predict the value of $100 after 20 years using monte carlo simulation.@EOL
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
-!! @see       https://github.com/richmit/FortranFinance/monte_carlo
+!! @see       https://github.com/richmit/FortranFinance
 !! @copyright 
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.

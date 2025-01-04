@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-02 Thu 23:02 -->
+<!-- 2025-01-04 Sat 14:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>MR Fortran Finance Library (MRFFL)</title>
@@ -220,9 +220,9 @@
 <span class="subtitle">Primary Documentation</span>
 </h1>
 
-<div id="outline-container-org1aee5b2" class="outline-2">
-<h2 id="org1aee5b2"><span class="section-number-2">1.</span> Introduciton</h2>
-<div class="outline-text-2" id="text-1">
+<div id="outline-container-intro" class="outline-2">
+<h2 id="intro"><span class="section-number-2">1.</span> Introduciton</h2>
+<div class="outline-text-2" id="text-intro">
 <p>
 The functionality powering the programs published in the <a href="https://github.com/richmit/FortranFinance">FortranFinance</a> repository is contained in the
 <a href="https://github.com/richmit/FortranFinance/tree/main/MRFFL">MR Fortran Finance Library (MRFFL)</a>.  MRFFL is a collection of Fortran modules that include
@@ -250,9 +250,9 @@ the same variables to populate a cashflow that can be further analyzed or printe
 </div>
 </div>
 
-<div id="outline-container-org7d356c9" class="outline-2">
-<h2 id="org7d356c9"><span class="section-number-2">2.</span> MRFFL (MR Fortran Finance Library) Modules</h2>
-<div class="outline-text-2" id="text-2">
+<div id="outline-container-modlist" class="outline-2">
+<h2 id="modlist"><span class="section-number-2">2.</span> MRFFL (MR Fortran Finance Library) Modules</h2>
+<div class="outline-text-2" id="text-modlist">
 <dl class="org-dl">
 <dt>Financial applications</dt><dd><dl class="org-dl">
 <dt><code>mrffl_config</code>      </dt><dd>Contains parameters used to configure the rest of the modules.</dd>
@@ -275,9 +275,9 @@ the same variables to populate a cashflow that can be further analyzed or printe
 </div>
 </div>
 
-<div id="outline-container-org4989ce6" class="outline-2">
-<h2 id="org4989ce6"><span class="section-number-2">3.</span> Example Programs</h2>
-<div class="outline-text-2" id="text-3">
+<div id="outline-container-examples" class="outline-2">
+<h2 id="examples"><span class="section-number-2">3.</span> Example Programs</h2>
+<div class="outline-text-2" id="text-examples">
 <p>
 You will find several programs, most of which use MRFFL, in various directories at the base of the
 <a href="https://github.com/richmit/FortranFinance">FortranFinance</a> repository:
@@ -340,9 +340,9 @@ completely unnecessary for making full use of the modules, so you you can safely
 </div>
 </div>
 
-<div id="outline-container-orgf5316c6" class="outline-2">
-<h2 id="orgf5316c6"><span class="section-number-2">4.</span> Using MRFFL (MR Fortran Finance Library) Modules</h2>
-<div class="outline-text-2" id="text-4">
+<div id="outline-container-use" class="outline-2">
+<h2 id="use"><span class="section-number-2">4.</span> Using MRFFL (MR Fortran Finance Library) Modules</h2>
+<div class="outline-text-2" id="text-use">
 <p>
 All of the code is in the module source files with no external dependencies at all.  So you just need to call the modules from your code, and then
 compile/link everything together.
@@ -395,13 +395,14 @@ modules in the makefile if you wish.  Such a rule might look like the following:
 </div>
 </div>
 
-<div id="outline-container-orgc9a300a" class="outline-2">
-<h2 id="orgc9a300a"><span class="section-number-2">5.</span> Notes about <code>include.mk</code></h2>
-<div class="outline-text-2" id="text-5">
+<div id="outline-container-makeinc" class="outline-2">
+<h2 id="makeinc"><span class="section-number-2">5.</span> Notes about <code>include.mk</code></h2>
+<div class="outline-text-2" id="text-makeinc">
 </div>
-<div id="outline-container-org7e3e5ef" class="outline-3">
-<h3 id="org7e3e5ef"><span class="section-number-3">5.1.</span> Names of files</h3>
-<div class="outline-text-3" id="text-5-1">
+
+<div id="outline-container-makeinc-names" class="outline-3">
+<h3 id="makeinc-names"><span class="section-number-3">5.1.</span> Names of files</h3>
+<div class="outline-text-3" id="text-makeinc-names">
 <dl class="org-dl">
 <dt>File extensions on Windows (outside of WSL)</dt><dd><ul class="org-ul">
 <li>Executable files use <code>.exe</code></li>
@@ -417,9 +418,9 @@ modules in the makefile if you wish.  Such a rule might look like the following:
 </div>
 </div>
 
-<div id="outline-container-orga223f78" class="outline-3">
-<h3 id="orga223f78"><span class="section-number-3">5.2.</span> Useful Variables</h3>
-<div class="outline-text-3" id="text-5-2">
+<div id="outline-container-makeinc-vars" class="outline-3">
+<h3 id="makeinc-vars"><span class="section-number-3">5.2.</span> Useful Variables</h3>
+<div class="outline-text-3" id="text-makeinc-vars">
 <dl class="org-dl">
 <dt><code>MRFFL_MOD_FILES</code>      </dt><dd>All the module (<code>.mod</code>) files.  These will appear in your build directory.</dd>
 <dt><code>MRFFL_OBJ_FILES</code>      </dt><dd>All the object (<code>.obj</code> or <code>.o</code>) files.  These will appear in your build directory.</dd>
@@ -429,9 +430,9 @@ modules in the makefile if you wish.  Such a rule might look like the following:
 </div>
 </div>
 
-<div id="outline-container-org8551898" class="outline-3">
-<h3 id="org8551898"><span class="section-number-3">5.3.</span> Useful Targets</h3>
-<div class="outline-text-3" id="text-5-3">
+<div id="outline-container-makeinc-target" class="outline-3">
+<h3 id="makeinc-target"><span class="section-number-3">5.3.</span> Useful Targets</h3>
+<div class="outline-text-3" id="text-makeinc-target">
 <dl class="org-dl">
 <dt><code>all_mrffl_lib</code>    </dt><dd>Builds the library files.</dd>
 <dt><code>all_mrffl_mod</code>    </dt><dd>Builds the module (<code>.mod</code>) files</dd>
@@ -447,9 +448,9 @@ build for all platforms, so I sometimes want to clean up the build products from
 </div>
 </div>
 
-<div id="outline-container-org229991a" class="outline-3">
-<h3 id="org229991a"><span class="section-number-3">5.4.</span> Static Library</h3>
-<div class="outline-text-3" id="text-5-4">
+<div id="outline-container-makeinc-stlib" class="outline-3">
+<h3 id="makeinc-stlib"><span class="section-number-3">5.4.</span> Static Library</h3>
+<div class="outline-text-3" id="text-makeinc-stlib">
 <p>
 A rule to make a static library is included in <code>include.mk</code>.  A build rule like the following should build that library and link it to your executable.  Note
 I'm just including the library file on the command line instead of linker like options (i.e. <code>-L</code> and <code>-l</code> for GNU compilers).  That's because simply including
@@ -464,9 +465,9 @@ the library on the command line is broadly supported across more compilers &#x20
 </div>
 </div>
 
-<div id="outline-container-orgeae800d" class="outline-3">
-<h3 id="orgeae800d"><span class="section-number-3">5.5.</span> Dynamic Library (<code>.so</code> and <code>.dll</code> files)</h3>
-<div class="outline-text-3" id="text-5-5">
+<div id="outline-container-makeinc-dylib" class="outline-3">
+<h3 id="makeinc-dylib"><span class="section-number-3">5.5.</span> Dynamic Library (<code>.so</code> and <code>.dll</code> files)</h3>
+<div class="outline-text-3" id="text-makeinc-dylib">
 <p>
 A rule to make a static library is included in <code>include.mk</code>.  You can build it with the target <code>clean_mrffl_lib</code>, or by using <code>$(MRFFL_SHARED_LIB_FILE)</code> as a
 dependency in your build rule.  As the options to link to a shared library differ wildly across platforms and compilers/linkers, I don't provide an example of
@@ -476,9 +477,9 @@ how to do that.
 </div>
 </div>
 
-<div id="outline-container-org593b424" class="outline-2">
-<h2 id="org593b424"><span class="section-number-2">6.</span> Tested Environments</h2>
-<div class="outline-text-2" id="text-6">
+<div id="outline-container-testenv" class="outline-2">
+<h2 id="testenv"><span class="section-number-2">6.</span> Tested Environments</h2>
+<div class="outline-text-2" id="text-testenv">
 <dl class="org-dl">
 <dt>MSYS2 running on Windows 11</dt><dd><ul class="org-ul">
 <li>GNU Fortran (Rev2, Built by MSYS2 project) 14.2.0 : Everything works</li>

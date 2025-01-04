@@ -32,6 +32,9 @@
 # ######################################################################################################################################################.H.E.##
 
 * Introduciton
+:PROPERTIES:
+:CUSTOM_ID: intro
+:END:
 
 The functionality powering the programs published in the [[https://github.com/richmit/FortranFinance][FortranFinance]] repository is contained in the
 [[https://github.com/richmit/FortranFinance/tree/main/MRFFL][MR Fortran Finance Library (MRFFL)]].  MRFFL is a collection of Fortran modules that include
@@ -51,6 +54,9 @@ cashflow series builders using the same notation and variables as the TVM solver
 the same variables to populate a cashflow that can be further analyzed or printed.
 
 * MRFFL (MR Fortran Finance Library) Modules
+:PROPERTIES:
+:CUSTOM_ID: modlist
+:END:
 
   - Financial applications ::
     - ~mrffl_config~       :: Contains parameters used to configure the rest of the modules.
@@ -69,6 +75,9 @@ the same variables to populate a cashflow that can be further analyzed or printe
     - ~mrffl_bitset~       :: Bitsets used by TVM solvers for unknown variables.
 
 * Example Programs
+:PROPERTIES:
+:CUSTOM_ID: examples
+:END:
 
 You will find several programs, most of which use MRFFL, in various directories at the base of the
 [[https://github.com/richmit/FortranFinance][FortranFinance]] repository:
@@ -127,6 +136,9 @@ The only tricky one is the ~FSHFLG~ variable.  Luckily you only need the ~FSHFLG
 completely unnecessary for making full use of the modules, so you you can safely ignore that one unless you really, really want to use a shared library. ~;)~
 
 * Using MRFFL (MR Fortran Finance Library) Modules
+:PROPERTIES:
+:CUSTOM_ID: use
+:END:
 
 All of the code is in the module source files with no external dependencies at all.  So you just need to call the modules from your code, and then
 compile/link everything together.
@@ -167,8 +179,14 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
 #+end_src
 
 * Notes about ~include.mk~
+:PROPERTIES:
+:CUSTOM_ID: makeinc
+:END:
 
 ** Names of files
+:PROPERTIES:
+:CUSTOM_ID: makeinc-names
+:END:
 
   - File extensions on Windows (outside of WSL) ::
    - Executable files use ~.exe~
@@ -180,6 +198,9 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
    - Object files will use ~.o~
 
 ** Useful Variables
+:PROPERTIES:
+:CUSTOM_ID: makeinc-vars
+:END:
 
   - ~MRFFL_MOD_FILES~       :: All the module (~.mod~) files.  These will appear in your build directory.
   - ~MRFFL_OBJ_FILES~       :: All the object (~.obj~ or ~.o~) files.  These will appear in your build directory.
@@ -187,6 +208,9 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
   - ~MRFFL_SHARED_LIB_FILE~ :: The name of the shared library file.  It's not created by default.  It will appear in your build directory if it is listed as a dependency on one of your targets.
 
 ** Useful Targets
+:PROPERTIES:
+:CUSTOM_ID: makeinc-target
+:END:
 
   - ~all_mrffl_lib~     :: Builds the library files.
   - ~all_mrffl_mod~     :: Builds the module (~.mod~) files
@@ -200,6 +224,9 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
                            build for all platforms, so I sometimes want to clean up the build products from all platforms at once.  That's what this target will do.
 
 ** Static Library
+:PROPERTIES:
+:CUSTOM_ID: makeinc-stlib
+:END:
 
 A rule to make a static library is included in ~include.mk~.  A build rule like the following should build that library and link it to your executable.  Note
 I'm just including the library file on the command line instead of linker like options (i.e. ~-L~ and ~-l~ for GNU compilers).  That's because simply including
@@ -211,12 +238,18 @@ your_program : your_program.f90 $(MRFFL_STATIC_LIB_FILE)
 #+end_src
 
 ** Dynamic Library (~.so~ and ~.dll~ files)
+:PROPERTIES:
+:CUSTOM_ID: makeinc-dylib
+:END:
 
 A rule to make a static library is included in ~include.mk~.  You can build it with the target ~clean_mrffl_lib~, or by using ~$(MRFFL_SHARED_LIB_FILE)~ as a
 dependency in your build rule.  As the options to link to a shared library differ wildly across platforms and compilers/linkers, I don't provide an example of
 how to do that.
 
 * Tested Environments
+:PROPERTIES:
+:CUSTOM_ID: testenv
+:END:
 
  - MSYS2 running on Windows 11 :: 
    - GNU Fortran (Rev2, Built by MSYS2 project) 14.2.0 : Everything works

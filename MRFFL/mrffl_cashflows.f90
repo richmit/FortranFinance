@@ -55,14 +55,14 @@
 !! of period 1; however, we could think of this payment as occurring at the beginning of period 2. For this example, th cashflow
 !! array would be: [1000, -172.55, -172.55, -172.55, -172.55, -172.55, -172.55].  In tabular form:
 !!
-!!  Array Index   Cashflow
-!!            1    1000.00   ==> Time 0 (start of 1st period)
-!!            2    -172.55
-!!            3    -172.55
-!!            4    -172.55
-!!            5    -172.55
-!!            6    -172.55
-!!            7    -172.55   ==> Time 6 (end of 6th period)
+!!                          Array Index   Cashflow
+!!                                    1    1000.00   ==> Time 0 (start of 1st period)
+!!                                    2    -172.55
+!!                                    3    -172.55
+!!                                    4    -172.55
+!!                                    5    -172.55
+!!                                    6    -172.55
+!!                                    7    -172.55   ==> Time 6 (end of 6th period)
 !!
 !! This library encourages the use of multiple cashflow series for problem solving.  Each cashflow sequence is stored as the
 !! column of a matrix.  The entire matrix may then be used for TVM calculations.
