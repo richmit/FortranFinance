@@ -1,0 +1,83 @@
+! -*- Mode:f90; Coding:us-ascii-unix; fill-column:120 -*-
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+!-----------------------------------------------------------------------------------------------------------------------
+! Here we have a couple starting to save for retirement at age 25.  They both have good jobs earning 100K, and they
+! spend 100K per year on expenses.  Work income is growing at 2.5%. They currently have no retirement savings, but wish
+! to start saving aggressively.  The believe they can earn 4% on investments, and inflation will be about 3%.  Note work
+! income is not keeping up with inflation. They have 10K in checking and 10K in an emergency fund.  The checking account
+! earns 0.01% interest, and the emergency fund is in CDs earning 3%.
+
+!-----------------------------------------------------------------------------------------------------------------------
+&SIMPARM
+monte_carlo_years                   = 40,       !! Years of reference data to use
+monte_carlo_runs                    = 10000,    !! Number of sims
+
+initial_brokerage_balance           = 0.0,      !! Sum of all normally taxable accounts
+initial_ira_balance_p1              = 0.0,      !! Sum of all tax deferred accounts for p1
+initial_ira_balance_p2              = 0.0,      !! Sum of all tax deferred accounts for p2
+initial_roth_balance_p2             = 0.0,      !! Sum of all roth-like tax deferred accounts for p2
+initial_roth_balance_p1             = 0.0,      !! Sum of all roth-like tax deferred accounts for p1
+
+high_investment_p                   = 100.0,    !! percentage of investments at high growth
+mid_investment_p                    = 0.0,      !! percentage of investments at medium growth
+low_investment_p                    = 0.0,      !! percentage of investments at low growth
+                                     
+high_investment_apr                 = 4.0,      !! apr for investments at high growth
+                                                !! Used for retirement accounts and the brokerage!
+                                                !! If negative, then do monte carlo on this value
+mid_investment_apr                  = 0.0,      !! apr for investments at medium growth
+                                                !! Used for retirement accounts and the brokerage!
+                                                !! If negative, then set to high_investment_apr/2
+low_investment_apr                  = 0.0,      !! apr for investments at low growth
+                                                !! Used for retirement accounts and the brokerage.
+                                                !! If negative, then set to max(0, high_investment_apr/4)
+cash_position_growth                = 2.5,      !! par for cash position in investment accounts
+                                                !! Used for retirement accounts and the brokerage.
+
+initial_cash_reserves               = 10000.0,  !! Sum of all cash reserves
+cash_reserves_growth                = 0.01,     !! Growth for cash reserves account
+
+initial_emergency_fund              = 10000.0,  !! Near zero risk investments
+emergency_fund_growth               = 3.0,      !! Rate at which the emergency account grows
+                                                !! If negative, then set to low_investment_apr
+
+first_year_tax                      = 1000.0,   !! Taxes to pay the first year of the simulation
+
+worst_case_inflation_rate           = -5.0,     !! Used for investment cuff-off decisions
+                                                !! If negative, don't use a cutoff
+fixed_inflation_rate                = 3.0,      !! Inflation impacts annual expenses
+                                                !! If negative, then do monte carlo
+
+initial_expected_annual_expenses    = 100000.0, !! First year expenses.
+
+social_security_start_age_p1        = 65,       !! First year we get SS for p1
+social_security_start_age_p2        = 65,       !! First year we get SS for p2
+initial_social_security_monthly     = 1000.0,   !! Just a guess.  Probably low.
+social_security_growth              = 3.0,      !! Usually matches inflation
+                                                !! If negative, then set to inflation
+
+initial_gross_work_salary_p1        = 100000.0, !! Taxable part of p1's salary
+initial_gross_work_salary_p2        = 100000.0, !! Taxable part of p2's salary
+work_salary_growth                  = 2.0,      !! Hard to estimate
+                                                !! If negative, then set to max(0, inflation/2)
+
+initial_annual_ira_contrib_base     = 23000.0,  !! Starting base contribution
+initial_annual_ira_contrib_catchup  = 7000.0,   !! Starting catchup contribution
+annual_ira_contrib_growth           = -3.0,     !! Grow 401k contribution (inflation?)
+                                                !! If negative, then set to inflation
+
+initial_annual_roth_contrib_base    = 0.0,      !! Starting base contribution
+initial_annual_roth_contrib_catchup = 0.0,      !! Starting catchup contribution
+annual_roth_contrib_growth          = 0.0,      !! Grow 401k contribution
+                                                !! If negative, then set to inflation
+
+surplus_reinvest                    = 100.0,    !! Percentage of ExtraNS to reinvest
+
+retirement_year_p1                  = 2065,     !! First year p1 is fully retired
+retirement_year_p2                  = 2065,     !! First year p2 is fully retired
+birthday_p1                         = 2000,     !!
+birthday_p2                         = 2000,     !!
+life_expectancy_p1                  = 110,      !!
+life_expectancy_p2                  = 110       !!
+/

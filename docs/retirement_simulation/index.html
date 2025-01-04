@@ -1,0 +1,878 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+<!-- 2025-01-04 Sat 15:02 -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
+<meta name="viewport" content="width=1024, initial-scale=1" />
+<title>Fortran Finance</title>
+<meta name="author" content="Mitch Richling" />
+<meta name="description" content="Documentation for monte carlo examples in the Fortran Finance repository." />
+<meta name="keywords" content="finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market" />
+<meta name="generator" content="Org Mode" />
+<style>
+  #content { max-width: 60em; margin: auto; }
+  .title  { text-align: center;
+             margin-bottom: .2em; }
+  .subtitle { text-align: center;
+              font-size: medium;
+              font-weight: bold;
+              margin-top:0; }
+  .todo   { font-family: monospace; color: red; }
+  .done   { font-family: monospace; color: green; }
+  .priority { font-family: monospace; color: orange; }
+  .tag    { background-color: #eee; font-family: monospace;
+            padding: 2px; font-size: 80%; font-weight: normal; }
+  .timestamp { color: #bebebe; }
+  .timestamp-kwd { color: #5f9ea0; }
+  .org-right  { margin-left: auto; margin-right: 0px;  text-align: right; }
+  .org-left   { margin-left: 0px;  margin-right: auto; text-align: left; }
+  .org-center { margin-left: auto; margin-right: auto; text-align: center; }
+  .underline { text-decoration: underline; }
+  #postamble p, #preamble p { font-size: 90%; margin: .2em; }
+  p.verse { margin-left: 3%; }
+  pre {
+    border: 1px solid #e6e6e6;
+    border-radius: 3px;
+    background-color: #f2f2f2;
+    padding: 8pt;
+    font-family: monospace;
+    overflow: auto;
+    margin: 1.2em;
+  }
+  pre.src {
+    position: relative;
+    overflow: auto;
+  }
+  pre.src:before {
+    display: none;
+    position: absolute;
+    top: -8px;
+    right: 12px;
+    padding: 3px;
+    color: #555;
+    background-color: #f2f2f299;
+  }
+  pre.src:hover:before { display: inline; margin-top: 14px;}
+  /* Languages per Org manual */
+  pre.src-asymptote:before { content: 'Asymptote'; }
+  pre.src-awk:before { content: 'Awk'; }
+  pre.src-authinfo::before { content: 'Authinfo'; }
+  pre.src-C:before { content: 'C'; }
+  /* pre.src-C++ doesn't work in CSS */
+  pre.src-clojure:before { content: 'Clojure'; }
+  pre.src-css:before { content: 'CSS'; }
+  pre.src-D:before { content: 'D'; }
+  pre.src-ditaa:before { content: 'ditaa'; }
+  pre.src-dot:before { content: 'Graphviz'; }
+  pre.src-calc:before { content: 'Emacs Calc'; }
+  pre.src-emacs-lisp:before { content: 'Emacs Lisp'; }
+  pre.src-fortran:before { content: 'Fortran'; }
+  pre.src-gnuplot:before { content: 'gnuplot'; }
+  pre.src-haskell:before { content: 'Haskell'; }
+  pre.src-hledger:before { content: 'hledger'; }
+  pre.src-java:before { content: 'Java'; }
+  pre.src-js:before { content: 'Javascript'; }
+  pre.src-latex:before { content: 'LaTeX'; }
+  pre.src-ledger:before { content: 'Ledger'; }
+  pre.src-lisp:before { content: 'Lisp'; }
+  pre.src-lilypond:before { content: 'Lilypond'; }
+  pre.src-lua:before { content: 'Lua'; }
+  pre.src-matlab:before { content: 'MATLAB'; }
+  pre.src-mscgen:before { content: 'Mscgen'; }
+  pre.src-ocaml:before { content: 'Objective Caml'; }
+  pre.src-octave:before { content: 'Octave'; }
+  pre.src-org:before { content: 'Org mode'; }
+  pre.src-oz:before { content: 'OZ'; }
+  pre.src-plantuml:before { content: 'Plantuml'; }
+  pre.src-processing:before { content: 'Processing.js'; }
+  pre.src-python:before { content: 'Python'; }
+  pre.src-R:before { content: 'R'; }
+  pre.src-ruby:before { content: 'Ruby'; }
+  pre.src-sass:before { content: 'Sass'; }
+  pre.src-scheme:before { content: 'Scheme'; }
+  pre.src-screen:before { content: 'Gnu Screen'; }
+  pre.src-sed:before { content: 'Sed'; }
+  pre.src-sh:before { content: 'shell'; }
+  pre.src-sql:before { content: 'SQL'; }
+  pre.src-sqlite:before { content: 'SQLite'; }
+  /* additional languages in org.el's org-babel-load-languages alist */
+  pre.src-forth:before { content: 'Forth'; }
+  pre.src-io:before { content: 'IO'; }
+  pre.src-J:before { content: 'J'; }
+  pre.src-makefile:before { content: 'Makefile'; }
+  pre.src-maxima:before { content: 'Maxima'; }
+  pre.src-perl:before { content: 'Perl'; }
+  pre.src-picolisp:before { content: 'Pico Lisp'; }
+  pre.src-scala:before { content: 'Scala'; }
+  pre.src-shell:before { content: 'Shell Script'; }
+  pre.src-ebnf2ps:before { content: 'ebfn2ps'; }
+  /* additional language identifiers per "defun org-babel-execute"
+       in ob-*.el */
+  pre.src-cpp:before  { content: 'C++'; }
+  pre.src-abc:before  { content: 'ABC'; }
+  pre.src-coq:before  { content: 'Coq'; }
+  pre.src-groovy:before  { content: 'Groovy'; }
+  /* additional language identifiers from org-babel-shell-names in
+     ob-shell.el: ob-shell is the only babel language using a lambda to put
+     the execution function name together. */
+  pre.src-bash:before  { content: 'bash'; }
+  pre.src-csh:before  { content: 'csh'; }
+  pre.src-ash:before  { content: 'ash'; }
+  pre.src-dash:before  { content: 'dash'; }
+  pre.src-ksh:before  { content: 'ksh'; }
+  pre.src-mksh:before  { content: 'mksh'; }
+  pre.src-posh:before  { content: 'posh'; }
+  /* Additional Emacs modes also supported by the LaTeX listings package */
+  pre.src-ada:before { content: 'Ada'; }
+  pre.src-asm:before { content: 'Assembler'; }
+  pre.src-caml:before { content: 'Caml'; }
+  pre.src-delphi:before { content: 'Delphi'; }
+  pre.src-html:before { content: 'HTML'; }
+  pre.src-idl:before { content: 'IDL'; }
+  pre.src-mercury:before { content: 'Mercury'; }
+  pre.src-metapost:before { content: 'MetaPost'; }
+  pre.src-modula-2:before { content: 'Modula-2'; }
+  pre.src-pascal:before { content: 'Pascal'; }
+  pre.src-ps:before { content: 'PostScript'; }
+  pre.src-prolog:before { content: 'Prolog'; }
+  pre.src-simula:before { content: 'Simula'; }
+  pre.src-tcl:before { content: 'tcl'; }
+  pre.src-tex:before { content: 'TeX'; }
+  pre.src-plain-tex:before { content: 'Plain TeX'; }
+  pre.src-verilog:before { content: 'Verilog'; }
+  pre.src-vhdl:before { content: 'VHDL'; }
+  pre.src-xml:before { content: 'XML'; }
+  pre.src-nxml:before { content: 'XML'; }
+  /* add a generic configuration mode; LaTeX export needs an additional
+     (add-to-list 'org-latex-listings-langs '(conf " ")) in .emacs */
+  pre.src-conf:before { content: 'Configuration File'; }
+
+  table { border-collapse:collapse; }
+  caption.t-above { caption-side: top; }
+  caption.t-bottom { caption-side: bottom; }
+  td, th { vertical-align:top;  }
+  th.org-right  { text-align: center;  }
+  th.org-left   { text-align: center;   }
+  th.org-center { text-align: center; }
+  td.org-right  { text-align: right;  }
+  td.org-left   { text-align: left;   }
+  td.org-center { text-align: center; }
+  dt { font-weight: bold; }
+  .footpara { display: inline; }
+  .footdef  { margin-bottom: 1em; }
+  .figure { padding: 1em; }
+  .figure p { text-align: center; }
+  .equation-container {
+    display: table;
+    text-align: center;
+    width: 100%;
+  }
+  .equation {
+    vertical-align: middle;
+  }
+  .equation-label {
+    display: table-cell;
+    text-align: right;
+    vertical-align: middle;
+  }
+  .inlinetask {
+    padding: 10px;
+    border: 2px solid gray;
+    margin: 10px;
+    background: #ffffcc;
+  }
+  #org-div-home-and-up
+   { text-align: right; font-size: 70%; white-space: nowrap; }
+  textarea { overflow-x: auto; }
+  .linenr { font-size: smaller }
+  .code-highlighted { background-color: #ffff00; }
+  .org-info-js_info-navigation { border-style: none; }
+  #org-info-js_console-label
+    { font-size: 10px; font-weight: bold; white-space: nowrap; }
+  .org-info-js_search-highlight
+    { background-color: #ffff00; color: #000000; font-weight: bold; }
+  .org-svg { }
+</style>
+<style>body { width: 95%; margin: 2% auto; font-size: 18px; line-height: 1.4em; font-family: Georgia, serif; color: black; background-color: white; }</style>
+<style>body { min-width: 500px; max-width: 1024px; }</style>
+<style>h1,h2,h3,h4,h5,h6 { color: #A5573E; line-height: 1em; font-family: Helvetica, sans-serif; }</style>
+<style>h1,h2,h3 { line-height: 1.4em; }</style>
+<style>h1.title { font-size: 3em; }</style>
+<style>.subtitle { font-size: 0.6em; }</style>
+<style>h4,h5,h6 { font-size: 1em; }</style>
+<style>.org-src-container { border: 1px solid #ccc; box-shadow: 3px 3px 3px #eee; font-family: Lucida Console, monospace; font-size: 80%; margin: 0px; padding: 0px 0px; position: relative; }</style>
+<style>.org-src-container>pre { line-height: 1.2em; padding-top: 1.5em; margin: 0.5em; background-color: #404040; color: white; overflow: auto; }</style>
+<style>.org-src-container>pre:before { display: block; position: absolute; background-color: #b3b3b3; top: 0; right: 0; padding: 0 0.2em 0 0.4em; border-bottom-left-radius: 8px; border: 0; color: white; font-size: 100%; font-family: Helvetica, sans-serif;}</style>
+<style>pre.example { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -o-pre-wrap; font-family: Lucida Console, monospace; font-size: 80%; background: #404040; color: white; display: block; padding: 0em; border: 2px solid black; }</style>
+<style>blockquote { margin-bottom: 0.5em; padding: 0.5em; background-color: #FFF8DC; border-left: 2px solid #A5573E; border-left-color: rgb(255, 228, 102); display: block; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 5em; margin-inline-end: 5em; } </style>
+<style>#content { max-width: 60em; }</style>
+</head>
+<body>
+<div id="org-div-home-and-up">
+ <a accesskey="h" href="https://richmit.github.io/FortranFinance/index.html"> UP </a>
+ |
+ <a accesskey="H" href="https://github.com/richmit/FortranFinance"> HOME </a>
+</div><div id="content" class="content">
+<h1 class="title">Fortran Finance
+<br />
+<span class="subtitle">Retirement Simulation</span>
+</h1>
+<table border="2 solid #ccc" cellspacing="0" cellpadding="6" rules="groups" frame="hsides" align="center">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right"><b>Author:</b></td>
+<td class="org-left"><i>Mitch Richling</i></td>
+</tr>
+
+<tr>
+<td class="org-right"><b>Updated:</b></td>
+<td class="org-left"><i>2025-01-04 15:02:31</i></td>
+</tr>
+
+<tr>
+<td class="org-right"><b>Generated:</b></td>
+<td class="org-left"><i>2025-01-04 15:02:39</i></td>
+</tr>
+</tbody>
+</table>
+<p align="center">
+Copyright &copy; 2025 Mitch Richling. All rights reserved.
+</p>
+
+<div id="table-of-contents" role="doc-toc">
+<h2>Table of Contents</h2>
+<div id="text-table-of-contents" role="doc-toc">
+<ul>
+<li><a href="#intro">1. Introduction</a>
+<ul>
+<li><a href="#model">1.1. The Model</a></li>
+<li><a href="#obs">1.2. Some Observations</a></li>
+<li><a href="#future">1.3. Future Plans</a></li>
+</ul>
+</li>
+<li><a href="#ops">2. Operation</a>
+<ul>
+<li><a href="#env">2.1. Environment</a></li>
+<li><a href="#down">2.2. Download</a></li>
+<li><a href="#build">2.3. Software Build</a></li>
+<li><a href="#dowrun">2.4. Running The Simulator</a></li>
+</ul>
+</li>
+<li><a href="#examples">3. Examples</a>
+<ul>
+<li><a href="#case_20_intro">3.1. Just Starting Out</a>
+<ul>
+<li><a href="#case_20_fixed">3.1.1. Fixed</a></li>
+<li><a href="#case_20_mc">3.1.2. MC</a></li>
+<li><a href="#case_20_config">3.1.3. Config File</a></li>
+</ul>
+</li>
+<li><a href="#case_60_intro">3.2. Approaching Retirement</a>
+<ul>
+<li><a href="#case_60_danger">3.2.1. A Risky Plan</a></li>
+<li><a href="#case_60_ml">3.2.2. An Alternate Plan</a></li>
+<li><a href="#case_60_config">3.2.3. Config Files</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-intro" class="outline-2">
+<h2 id="intro"><span class="section-number-2">1.</span> Introduction</h2>
+<div class="outline-text-2" id="text-intro">
+<p>
+One can go quite far in answering retirement questions with nothing but TVM computations with fixed approximations for things like taxes, investment growth,
+and inflation.  Unfortunately I found myself asking questions these kinds of approximations simply couldn't address.  I spent quite a lot of time evaluating
+various retirement planning and wealth management tools, and found them all wanting in one way or another.  In the end I decided to just write a simple tool
+that essentially simulates the annual financial transactions for a retired couple.  
+</p>
+</div>
+
+<div id="outline-container-model" class="outline-3">
+<h3 id="model"><span class="section-number-3">1.1.</span> The Model</h3>
+<div class="outline-text-3" id="text-model">
+<ul class="org-ul">
+<li>Inflation can be a fixed rate or monte carlo.</li>
+<li>The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.  
+<ul class="org-ul">
+<li>Expenses are met with a well defined withdraw strategy drawing down from the following sources in order: income, brokerage, IRA, Roth, &amp; emergency.</li>
+<li>The simulator will not draw funds from an IRA funds before the person is 60.</li>
+</ul></li>
+<li>They share a checking account in which they maintain a fixed balance growing with inflation.</li>
+<li>Retirement Savings
+<ul class="org-ul">
+<li>Each partner has an IRA and a Roth IRA</li>
+<li>They share a brokerage account</li>
+<li>Savings investments
+<ul class="org-ul">
+<li>All accounts share the same blend of investments: high returns, medium returns, low returns, and cash position</li>
+<li>Each group has it's own return characteristics (fixed APR or monte carlo)</li>
+<li>All funds can be moved to the cash position if total assets are sufficient to meet future expenses under a worst case inflation condition.</li>
+</ul></li>
+</ul></li>
+<li>Each partner has a job.  
+<ul class="org-ul">
+<li>They each have a retirement date at which they will stop working.</li>
+<li>While they work, they contribute to to their IRA. Maximum contributions are comprehended including "catch up" contributions after age 50.</li>
+<li>Some percentage of unused income expenses can be saved in the brokerage account.</li>
+</ul></li>
+<li>Each partner will eventually draw Social Security
+<ul class="org-ul">
+<li>They each have a year at which they will draw benefits.</li>
+<li>Benefits are expected to grow &#x2013; this can be tied to inflation, or set an an alternate fixed rate.</li>
+</ul></li>
+<li>Taxes are estimated for each year including
+<ul class="org-ul">
+<li>Income taxes</li>
+<li>Tax impact of IRA withdrawals</li>
+<li>Capital gains in the brokerage &amp; emergency fund
+<ul class="org-ul">
+<li>These are taxed in the year they are made at the short range rate</li>
+</ul></li>
+<li>Tax brackets are projected forward with inflation.</li>
+<li>They take the standard deduction.</li>
+<li>They file joint until one of them dies.</li>
+</ul></li>
+<li>They share an "emergency" fund invested in low risk investments.  Funds used as a last resort.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-obs" class="outline-3">
+<h3 id="obs"><span class="section-number-3">1.2.</span> Some Observations</h3>
+<div class="outline-text-3" id="text-obs">
+<ul class="org-ul">
+<li>For my situation in particular, careful tax panning is a larger factor in a successful retirement than my portfolio mix!</li>
+<li>Proper portfolio mix and balancing is critical for maximizing income and minimizing risk.</li>
+<li>Roth conversions can be a huge deal in maximizing long term growth.</li>
+<li>Good visualizations are very important for understanding what's going on</li>
+<li>Monte carlo is an important component in understanding and mitigating risk, but it requires very careful analysis.</li>
+<li>Inflation really must be comprehended at every level.</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-future" class="outline-3">
+<h3 id="future"><span class="section-number-3">1.3.</span> Future Plans</h3>
+<div class="outline-text-3" id="text-future">
+<ul class="org-ul">
+<li>IRA to Roth IRA conversions (<b>in work</b>)
+<ul class="org-ul">
+<li>I want to trigger conversions early in the retirement phase when we have low taxes from using the brokerage.</li>
+<li>The idea will be to set a target tax rate, and convert enough each year to meet that target.</li>
+<li>Tax impact of regular IRA to Roth IRA conversions</li>
+</ul></li>
+<li>Correlated banded and inflation MC</li>
+<li>Black–Scholes MC</li>
+<li>Social Security survivor benefits</li>
+</ul>
+</div>
+</div>
+</div>
+
+<div id="outline-container-ops" class="outline-2">
+<h2 id="ops"><span class="section-number-2">2.</span> Operation</h2>
+<div class="outline-text-2" id="text-ops">
+<p>
+The simulator may be found in the <a href="https://github.com/richmit/FortranFinance">FortranFinance</a> package under the sub-directory <code>retirement_simulation</code>.  This
+document forms the primary documentation, and its permanent home is <a href="https://richmit.github.io/FortranFinance/retirement_simulation/index.html">here</a>.
+</p>
+</div>
+
+<div id="outline-container-env" class="outline-3">
+<h3 id="env"><span class="section-number-3">2.1.</span> Environment</h3>
+<div class="outline-text-3" id="text-env">
+<p>
+The simulator is designed to run in a command line environment (MSYS2 on Windows, UNIX, Linux, Linux on WSL, MacOS X).  I expect that you already have a
+<a href="https://www.mitchr.me/SS/tools/index.html#fortran">Fortran development environment</a>, <a href="https://www.mitchr.me/SS/tools/index.html#scm">git</a>, and
+<a href="https://www.mitchr.me/SS/tools/index.html#code-build">GNU Make</a> installed.  In order to run the visualizations, you will need
+<a href="https://www.mitchr.me/SS/tools/index.html#stats">R</a> and the following CRAN packages installed: <code>knitr</code>, <code>jsonlite</code>, <code>quantmod</code>, <code>gridExtra</code>, <code>data.table</code>,
+<code>dplyr</code>, <code>tidyr</code>, <code>ggplot2</code>, <code>scales</code>, <code>RColorBrewer</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-down" class="outline-3">
+<h3 id="down"><span class="section-number-3">2.2.</span> Download</h3>
+<div class="outline-text-3" id="text-down">
+<p>
+The easiest way to download everything is to clone with git:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">git clone <span style="color: #fa8072;">'https://github.com/richmit/FortranFinance.git'</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-build" class="outline-3">
+<h3 id="build"><span class="section-number-3">2.3.</span> Software Build</h3>
+<div class="outline-text-3" id="text-build">
+<p>
+The simulator is in the <code>retirement_simulation</code> directory.  That directory contains a <code>makefile</code> that will build the application.  You may need
+to edit that makefile for your system configuration &#x2013; follow the instructions  <a href="../MRFFL/index.html#examples">here</a>.  Once you have the
+<code>makefile</code> working, you can build with the following command:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">make retire
+</pre>
+</div>
+
+<p>
+This will result in a executable (named "<code>retire</code>" on most UNIX-like platforms, and "<code>retire.exe</code>" on Windows).  
+</p>
+</div>
+</div>
+
+<div id="outline-container-dowrun" class="outline-3">
+<h3 id="dowrun"><span class="section-number-3">2.4.</span> Running The Simulator</h3>
+<div class="outline-text-3" id="text-dowrun">
+<p>
+The <code>retire</code> command takes a single &#x2013; the config file that describes the parameters of the simulation &#x2013; see examples later in this document:
+<a href="#case_20_config">config_20.nml</a> and <a href="#case_60_config">config_60.nml</a>.  When run it will produce a file called "<code>retire.out</code>".
+</p>
+
+<p>
+This is a simple text file that you could load into Excel to analyze.  I use an <a href="https://www.mitchr.me/SS/tools/index.html#stats">R</a> script for the analysis
+called "<code>retire.R</code>".  If you run this script, you will get lots of graphics (see the <a href="#examples">Examples</a> section below.  In summary, you might do the
+following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">./retire.exe my_config.nml
+R -q -f retire.R
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-examples" class="outline-2">
+<h2 id="examples"><span class="section-number-2">3.</span> Examples</h2>
+<div class="outline-text-2" id="text-examples">
+</div>
+
+<div id="outline-container-case_20_intro" class="outline-3">
+<h3 id="case_20_intro"><span class="section-number-3">3.1.</span> Just Starting Out</h3>
+<div class="outline-text-3" id="text-case_20_intro">
+<p>
+Here we have a couple starting to save for retirement at age 25.  They both have good jobs earning 100K, and they
+spend 100K per year on expenses.  Work income is growing at 2.5%. They currently have no retirement savings, but wish
+to start saving aggressively.  The believe they can earn 4% on investments, and inflation will be about 3%.  Note work
+income is not keeping up with inflation. They have 10K in checking and 10K in an emergency fund.  The checking account
+earns 0.01% interest, and the emergency fund is in CDs earning 3%.
+</p>
+</div>
+
+<div id="outline-container-case_20_fixed" class="outline-4">
+<h4 id="case_20_fixed"><span class="section-number-4">3.1.1.</span> Fixed</h4>
+<div class="outline-text-4" id="text-case_20_fixed">
+<p>
+The graphs in this section are what you get from <code>retire.R</code> when the simulation has no monte carlo.  This is similar to what most retirement calculators will
+generate.
+</p>
+
+<p>
+This first graph simply shows total savings balance by account type.
+</p>
+
+
+<div id="orgd52ffb4" class="figure">
+<p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
+</p>
+</div>
+
+<p>
+This graph shows us paid vs unpaid expenses.  Expenses are broken into two categories (taxes &amp; living expenses).
+</p>
+
+
+<div id="org8bf1973" class="figure">
+<p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
+</p>
+</div>
+
+<p>
+This graph also deals with expenses, but shows how the expenses are paid.
+</p>
+
+
+<div id="org4f5b5e8" class="figure">
+<p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-case_20_mc" class="outline-4">
+<h4 id="case_20_mc"><span class="section-number-4">3.1.2.</span> MC</h4>
+<div class="outline-text-4" id="text-case_20_mc">
+<p>
+The graphs in this section are what you get from <code>retire.R</code> when the simulation has monte carlo.  
+</p>
+
+<p>
+This first graph shows the probability the savings balance trajectory will be within the color band.  For example the inner green band contains 50% of all
+simulation runs.  The yellow band, which includes the green band, contains 80% of all simulation runs.  You can change the bands in the <code>retire.R</code> script.
+</p>
+
+
+<div id="org56a529e" class="figure">
+<p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
+</p>
+</div>
+
+<p>
+This graph shows 2000 savings trajectories, all the failure trajectories (when we went broke), and an envelope for the highest balance for a trajectories that
+failed.  In essence the green line shows a "safe" balance at which we are unlikely to see failure.
+</p>
+
+
+<div id="org7d5a6f4" class="figure">
+<p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
+</p>
+</div>
+
+<p>
+This graph is similar to the probability band graph, but is a more traditional presentation for people accustom to box plots.
+</p>
+
+
+<div id="org565ec1c" class="figure">
+<p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
+</p>
+</div>
+
+<p>
+This graph shows us the ages at which simulations went broke, and how frequently it occurred for each age group.  Each bar spans three years.
+</p>
+
+
+<div id="org007e275" class="figure">
+<p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
+</p>
+</div>
+
+<p>
+Lastly we have a graph that shows us the probability distribution of final savings balance at the end of the simulation.
+</p>
+
+
+<div id="org9f59ee2" class="figure">
+<p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-case_20_config" class="outline-4">
+<h4 id="case_20_config"><span class="section-number-4">3.1.3.</span> Config File</h4>
+<div class="outline-text-4" id="text-case_20_config">
+<div class="org-src-container">
+<pre class="src src-f90">&amp;SIMPARM
+monte_carlo_years                   = 40,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Years of reference data to use</span>
+monte_carlo_runs                    = 10000,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Number of sims</span>
+
+initial_brokerage_balance           = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all normally taxable accounts</span>
+initial_ira_balance_p1              = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p1</span>
+initial_ira_balance_p2              = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p2</span>
+initial_roth_balance_p2             = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all roth-like tax deferred accounts for p2</span>
+initial_roth_balance_p1             = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all roth-like tax deferred accounts for p1</span>
+
+high_investment_p                   = 100.0,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at high growth</span>
+mid_investment_p                    = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at medium growth</span>
+low_investment_p                    = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at low growth</span>
+
+high_investment_apr                 = 4.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at high growth</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage!</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then do monte carlo on this value</span>
+mid_investment_apr                  = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at medium growth</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage!</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to high_investment_apr/2</span>
+low_investment_apr                  = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at low growth</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage.</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to max(0, high_investment_apr/4)</span>
+cash_position_growth                = 2.5,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">par for cash position in investment accounts</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage.</span>
+
+initial_cash_reserves               = 10000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all cash reserves</span>
+cash_reserves_growth                = 0.01,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Growth for cash reserves account</span>
+
+initial_emergency_fund              = 10000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Near zero risk investments</span>
+emergency_fund_growth               = 3.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Rate at which the emergency account grows</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to low_investment_apr</span>
+
+first_year_tax                      = 1000.0,   <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Taxes to pay the first year of the simulation</span>
+
+worst_case_inflation_rate           = -5.0,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for investment cuff-off decisions</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, don't use a cutoff</span>
+fixed_inflation_rate                = 3.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Inflation impacts annual expenses</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then do monte carlo</span>
+
+initial_expected_annual_expenses    = 100000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
+
+social_security_start_age_p1        = 65,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year we get SS for p1</span>
+social_security_start_age_p2        = 65,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year we get SS for p2</span>
+initial_social_security_monthly     = 1000.0,   <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Just a guess.  Probably low.</span>
+social_security_growth              = 3.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Usually matches inflation</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
+
+initial_gross_work_salary_p1        = 100000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Taxable part of p1's salary</span>
+initial_gross_work_salary_p2        = 100000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Taxable part of p2's salary</span>
+work_salary_growth                  = 2.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Hard to estimate</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to max(0, inflation/2)</span>
+
+initial_annual_ira_contrib_base     = 23000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting base contribution</span>
+initial_annual_ira_contrib_catchup  = 7000.0,   <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting catchup contribution</span>
+annual_ira_contrib_growth           = -3.0,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Grow 401k contribution (inflation?)</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
+
+initial_annual_roth_contrib_base    = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting base contribution</span>
+initial_annual_roth_contrib_catchup = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting catchup contribution</span>
+annual_roth_contrib_growth          = 0.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Grow 401k contribution</span>
+                                                <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
+
+surplus_reinvest                    = 100.0,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Percentage of ExtraNS to reinvest</span>
+
+retirement_year_p1                  = 2065,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year p1 is fully retired</span>
+retirement_year_p2                  = 2065,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year p2 is fully retired</span>
+birthday_p1                         = 2000,     <span style="color: #ffa500;">!!</span>
+birthday_p2                         = 2000,     <span style="color: #ffa500;">!!</span>
+life_expectancy_p1                  = 110,      <span style="color: #ffa500;">!!</span>
+life_expectancy_p2                  = 110       <span style="color: #ffa500;">!!</span>
+/
+</pre>
+</div>
+</div>
+</div>
+</div>
+
+
+
+<div id="outline-container-case_60_intro" class="outline-3">
+<h3 id="case_60_intro"><span class="section-number-3">3.2.</span> Approaching Retirement</h3>
+<div class="outline-text-3" id="text-case_60_intro">
+<p>
+Here we have a couple (47 &amp; 55 years old).  Each have 500k in a 401k.  They plan on putting 50% in the S&amp;P, and 50% in
+low risk 5% funds. They also have 100k balances in both an emergency fund and checking account.  The checking account
+earns 0.01% interest, and the emergency fund is in CDs earning 3%. They are both employed, and are have aggressively
+saving at the maximum rate into a 401k.  They spend 110K per year on expenses.  They believe inflation will be about
+3%.  They both wish to stop working when they are 60. The younger person will start taking SS at 63 while the older
+one will start at age 70.
+</p>
+</div>
+
+<div id="outline-container-case_60_danger" class="outline-4">
+<h4 id="case_60_danger"><span class="section-number-4">3.2.1.</span> A Risky Plan</h4>
+<div class="outline-text-4" id="text-case_60_danger">
+<p>
+In my opinion, this plan is too aggressive.  I know the S&amp;P 500 has an average return of 10% over the last couple decades, but depending on a 7% return is just
+too risky.  This is especially true with only 1M in total savings.
+</p>
+
+<p>
+Things look just fine if we consider a simulation using ideal, fixed growth and inflation.  Here is what the overall savings balance looks:
+</p>
+
+
+<div id="org624453e" class="figure">
+<p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
+</p>
+</div>
+
+<p>
+If we take a look at the savings probability bands, we see a very different picture:
+</p>
+
+
+<div id="orgad3c3e5" class="figure">
+<p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
+</p>
+</div>
+
+<p>
+And if we look at a few paths and the account collapse cases, things look pretty scary:
+</p>
+
+
+<div id="org415930e" class="figure">
+<p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
+</p>
+</div>
+
+<p>
+Another way to look at this is the distribution of final savings.  That huge bar on the left tells us that the single most probable outcome of this plan is to
+run out of money.
+</p>
+
+
+<div id="orgd3d815d" class="figure">
+<p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-case_60_ml" class="outline-4">
+<h4 id="case_60_ml"><span class="section-number-4">3.2.2.</span> An Alternate Plan</h4>
+<div class="outline-text-4" id="text-case_60_ml">
+<p>
+They can dramatically improve the chances of success by saving more (bumping up total savings by 250k), and spending less (drop annual expenses by 1k).  
+</p>
+
+<p>
+The new savings probability bands are much more positive:
+</p>
+
+
+<div id="org0ecf92b" class="figure">
+<p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
+</p>
+</div>
+
+<p>
+And the overall path picture is much more positive:
+</p>
+
+
+<div id="org5bc718b" class="figure">
+<p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
+</p>
+</div>
+
+<p>
+Lastly, the distribution of final savings no longer shows dying broke as the highest probably outcome.
+</p>
+
+
+<div id="orgd795b5e" class="figure">
+<p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
+</p>
+</div>
+</div>
+</div>
+
+<div id="outline-container-case_60_config" class="outline-4">
+<h4 id="case_60_config"><span class="section-number-4">3.2.3.</span> Config Files</h4>
+<div class="outline-text-4" id="text-case_60_config">
+<p>
+The original plan config file is here:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-f90">&amp;SIMPARM
+monte_carlo_years                   = 40,        <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Years of reference data to use</span>
+monte_carlo_runs                    = 10000,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Number of sims</span>
+
+initial_brokerage_balance           = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all normally taxable accounts</span>
+initial_ira_balance_p1              = 1000000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p1</span>
+initial_ira_balance_p2              = 1000000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p2</span>
+initial_roth_balance_p2             = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all roth-like tax deferred accounts for p2</span>
+initial_roth_balance_p1             = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all roth-like tax deferred accounts for p1</span>
+
+high_investment_p                   = 50.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at high growth</span>
+mid_investment_p                    = 50.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at medium growth</span>
+low_investment_p                    = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at low growth</span>
+
+high_investment_apr                 = 7.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at high growth</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage!</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then do monte carlo on this value</span>
+mid_investment_apr                  = 4.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at medium growth</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage!</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to high_investment_apr/2</span>
+low_investment_apr                  = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at low growth</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage.</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to max(0, high_investment_apr/4)</span>
+cash_position_growth                = 2.5,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">par for cash position in investment accounts</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage.</span>
+
+initial_cash_reserves               = 100000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all cash reserves</span>
+cash_reserves_growth                = 0.01,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Growth for cash reserves account</span>
+
+initial_emergency_fund              = 100000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Near zero risk investments</span>
+emergency_fund_growth               = 3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Rate at which the safety account grows</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to low_investment_apr</span>
+
+first_year_tax                      = 50000.0,   <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Taxes to pay the first year of the simulation</span>
+
+worst_case_inflation_rate           = -5.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for investment cuffoff decisions</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, don't use a cutoff</span>
+fixed_inflation_rate                = 3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Inflation impacts annual expenses</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then do monte carlo</span>
+
+initial_expected_annual_expenses    = 110000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
+
+social_security_start_age_p1        = 63,        <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year we get SS for p1</span>
+social_security_start_age_p2        = 70,        <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year we get SS for p2</span>
+initial_social_security_monthly     = 1000.0,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Just a guess.  Probably low.</span>
+social_security_growth              = 3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Usually matches inflation</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
+
+initial_gross_work_salary_p1        = 170000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Taxable part of p1's salary</span>
+initial_gross_work_salary_p2        = 180000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Taxable part of p2's salary</span>
+work_salary_growth                  = 2.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Hard to estimate</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to max(0, inflation/2)</span>
+
+initial_annual_ira_contrib_base     = 23000.0,   <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting base contribution</span>
+initial_annual_ira_contrib_catchup  = 7000.0,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting catchup contribution</span>
+annual_ira_contrib_growth           = -3.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Grow 401k contribution (inflation?)</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
+
+initial_annual_roth_contrib_base    = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting base contribution</span>
+initial_annual_roth_contrib_catchup = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting catchup contribution</span>
+annual_roth_contrib_growth          = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Grow 401k contribution</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
+
+surplus_reinvest                    = 100.0,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Percentage of ExtraNS to reinvest</span>
+
+retirement_year_p1                  = 2037,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year p1 is fully retired</span>
+retirement_year_p2                  = 2029,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year p2 is fully retired</span>
+birthday_p1                         = 1977,      <span style="color: #ffa500;">!!</span>
+birthday_p2                         = 1969,      <span style="color: #ffa500;">!!</span>
+life_expectancy_p1                  = 110,       <span style="color: #ffa500;">!!</span>
+life_expectancy_p2                  = 110        <span style="color: #ffa500;">!!</span>
+/
+</pre>
+</div>
+
+<p>
+The updated plan changes these lines
+</p>
+
+<div class="org-src-container">
+<pre class="src src-f90">initial_ira_balance_p1              = 625000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p1</span>
+initial_ira_balance_p2              = 625000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p2</span>
+high_investment_p                   = 80.0,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at high growth</span>
+mid_investment_p                    = 20.0,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at medium growth</span>
+mid_investment_apr                  = 5.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at medium growth</span>
+initial_expected_annual_expenses    = 100000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="postamble" class="status">
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+<br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br /> <br />
+</div>
+</body>
+</html>

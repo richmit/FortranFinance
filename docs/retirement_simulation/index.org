@@ -1,0 +1,490 @@
+# -*- Mode:Org; Coding:utf-8; fill-column:158 -*-
+# ######################################################################################################################################################.H.S.##
+# FILE:        index.org
+#+TITLE:       Fortran Finance
+#+SUBTITLE:    Retirement Simulation
+#+AUTHOR:      Mitch Richling
+#+EMAIL:       http://www.mitchr.me/
+#+DATE:        2025-01-02
+#+DESCRIPTION: Documentation for monte carlo examples in the Fortran Finance repository.
+#+KEYWORDS:    finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
+#+LANGUAGE:    en
+#+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil 
+#+SEQ_TODO:    TODO:NEW(t)                         TODO:WORK(w)    TODO:HOLD(h)    | TODO:FUTURE(f)   TODO:DONE(d)    TODO:CANCELED(c)
+#+PROPERTY: header-args :eval never-export
+#+HTML_HEAD: <style>body { width: 95%; margin: 2% auto; font-size: 18px; line-height: 1.4em; font-family: Georgia, serif; color: black; background-color: white; }</style>
+# Change max-width to get wider output -- also note #content style below
+#+HTML_HEAD: <style>body { min-width: 500px; max-width: 1024px; }</style>
+#+HTML_HEAD: <style>h1,h2,h3,h4,h5,h6 { color: #A5573E; line-height: 1em; font-family: Helvetica, sans-serif; }</style>
+#+HTML_HEAD: <style>h1,h2,h3 { line-height: 1.4em; }</style>
+#+HTML_HEAD: <style>h1.title { font-size: 3em; }</style>
+#+HTML_HEAD: <style>.subtitle { font-size: 0.6em; }</style>
+#+HTML_HEAD: <style>h4,h5,h6 { font-size: 1em; }</style>
+#+HTML_HEAD: <style>.org-src-container { border: 1px solid #ccc; box-shadow: 3px 3px 3px #eee; font-family: Lucida Console, monospace; font-size: 80%; margin: 0px; padding: 0px 0px; position: relative; }</style>
+#+HTML_HEAD: <style>.org-src-container>pre { line-height: 1.2em; padding-top: 1.5em; margin: 0.5em; background-color: #404040; color: white; overflow: auto; }</style>
+#+HTML_HEAD: <style>.org-src-container>pre:before { display: block; position: absolute; background-color: #b3b3b3; top: 0; right: 0; padding: 0 0.2em 0 0.4em; border-bottom-left-radius: 8px; border: 0; color: white; font-size: 100%; font-family: Helvetica, sans-serif;}</style>
+#+HTML_HEAD: <style>pre.example { white-space: pre-wrap; white-space: -moz-pre-wrap; white-space: -o-pre-wrap; font-family: Lucida Console, monospace; font-size: 80%; background: #404040; color: white; display: block; padding: 0em; border: 2px solid black; }</style>
+#+HTML_HEAD: <style>blockquote { margin-bottom: 0.5em; padding: 0.5em; background-color: #FFF8DC; border-left: 2px solid #A5573E; border-left-color: rgb(255, 228, 102); display: block; margin-block-start: 1em; margin-block-end: 1em; margin-inline-start: 5em; margin-inline-end: 5em; } </style>
+# Change the following to get wider output -- also note body style above
+#+HTML_HEAD: <style>#content { max-width: 60em; }</style>
+#+HTML_LINK_HOME: https://github.com/richmit/FortranFinance
+#+HTML_LINK_UP: https://richmit.github.io/FortranFinance/index.html
+# ######################################################################################################################################################.H.E.##
+
+#+ATTR_HTML: :border 2 solid #ccc :frame hsides :align center
+|          <r> | <l>                                          |
+|    *Author:* | /{{{author}}}/                               |
+|   *Updated:* | /{{{modification-time(%Y-%m-%d %H:%M:%S)}}}/ |
+| *Generated:* | /{{{time(%Y-%m-%d %H:%M:%S)}}}/              |
+#+ATTR_HTML: :align center
+Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
+
+#+TOC: headlines 5
+
+* Introduction
+:PROPERTIES:
+:CUSTOM_ID: intro
+:END:
+
+One can go quite far in answering retirement questions with nothing but TVM computations with fixed approximations for things like taxes, investment growth,
+and inflation.  Unfortunately I found myself asking questions these kinds of approximations simply couldn't address.  I spent quite a lot of time evaluating
+various retirement planning and wealth management tools, and found them all wanting in one way or another.  In the end I decided to just write a simple tool
+that essentially simulates the annual financial transactions for a retired couple.  
+
+** The Model
+:PROPERTIES:
+:CUSTOM_ID: model
+:END:
+
+  - Inflation can be a fixed rate or monte carlo. 
+  - The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.  
+    - Expenses are met with a well defined withdraw strategy drawing down from the following sources in order: income, brokerage, IRA, Roth, & emergency.
+    - The simulator will not draw funds from an IRA funds before the person is 60.
+  - They share a checking account in which they maintain a fixed balance growing with inflation.
+  - Retirement Savings
+    - Each partner has an IRA and a Roth IRA
+    - They share a brokerage account
+    - Savings investments
+      - All accounts share the same blend of investments: high returns, medium returns, low returns, and cash position
+      - Each group has it's own return characteristics (fixed APR or monte carlo)
+      - All funds can be moved to the cash position if total assets are sufficient to meet future expenses under a worst case inflation condition.
+  - Each partner has a job.  
+    - They each have a retirement date at which they will stop working.
+    - While they work, they contribute to to their IRA. Maximum contributions are comprehended including "catch up" contributions after age 50.
+    - Some percentage of unused income expenses can be saved in the brokerage account.
+  - Each partner will eventually draw Social Security
+    - They each have a year at which they will draw benefits.
+    - Benefits are expected to grow -- this can be tied to inflation, or set an an alternate fixed rate.
+  - Taxes are estimated for each year including
+    - Income taxes
+    - Tax impact of IRA withdrawals
+    - Capital gains in the brokerage & emergency fund
+      - These are taxed in the year they are made at the short range rate
+    - Tax brackets are projected forward with inflation.
+    - They take the standard deduction.
+    - They file joint until one of them dies.
+  - They share an "emergency" fund invested in low risk investments.  Funds used as a last resort.
+
+** Some Observations
+:PROPERTIES:
+:CUSTOM_ID: obs
+:END:
+
+  - For my situation in particular, careful tax panning is a larger factor in a successful retirement than my portfolio mix!
+  - Proper portfolio mix and balancing is critical for maximizing income and minimizing risk.
+  - Roth conversions can be a huge deal in maximizing long term growth.
+  - Good visualizations are very important for understanding what's going on
+  - Monte carlo is an important component in understanding and mitigating risk, but it requires very careful analysis.
+  - Inflation really must be comprehended at every level.
+
+** Future Plans
+:PROPERTIES:
+:CUSTOM_ID: future
+:END:
+
+  - IRA to Roth IRA conversions (*in work*)
+    - I want to trigger conversions early in the retirement phase when we have low taxes from using the brokerage.
+    - The idea will be to set a target tax rate, and convert enough each year to meet that target.
+    - Tax impact of regular IRA to Roth IRA conversions 
+  - Correlated banded and inflation MC
+  - Black–Scholes MC
+  - Social Security survivor benefits
+
+* Operation
+:PROPERTIES:
+:CUSTOM_ID: ops
+:END:
+
+The simulator may be found in the [[https://github.com/richmit/FortranFinance][FortranFinance]] package under the sub-directory ~retirement_simulation~.  This
+document forms the primary documentation, and its permanent home is [[https://richmit.github.io/FortranFinance/retirement_simulation/index.html][here]].
+
+** Environment
+:PROPERTIES:
+:CUSTOM_ID: env
+:END:
+
+The simulator is designed to run in a command line environment (MSYS2 on Windows, UNIX, Linux, Linux on WSL, MacOS X).  I expect that you already have a
+[[https://www.mitchr.me/SS/tools/index.html#fortran][Fortran development environment]], [[https://www.mitchr.me/SS/tools/index.html#scm][git]], and
+[[https://www.mitchr.me/SS/tools/index.html#code-build][GNU Make]] installed.  In order to run the visualizations, you will need
+[[https://www.mitchr.me/SS/tools/index.html#stats][R]] and the following CRAN packages installed: ~knitr~, ~jsonlite~, ~quantmod~, ~gridExtra~, ~data.table~,
+~dplyr~, ~tidyr~, ~ggplot2~, ~scales~, ~RColorBrewer~.
+
+** Download 
+:PROPERTIES:
+:CUSTOM_ID: down
+:END:
+
+The easiest way to download everything is to clone with git:
+
+#+begin_src sh
+git clone 'https://github.com/richmit/FortranFinance.git'
+#+end_src
+
+** Software Build
+:PROPERTIES:
+:CUSTOM_ID: build
+:END:
+
+The simulator is in the ~retirement_simulation~ directory.  That directory contains a ~makefile~ that will build the application.  You may need
+to edit that makefile for your system configuration -- follow the instructions  [[file:../MRFFL/index.html#examples][here]].  Once you have the
+~makefile~ working, you can build with the following command:
+
+#+begin_src sh
+make retire
+#+end_src
+
+This will result in a executable (named "~retire~" on most UNIX-like platforms, and "~retire.exe~" on Windows).  
+
+** Running The Simulator
+:PROPERTIES:
+:CUSTOM_ID: dowrun
+:END:
+
+The ~retire~ command takes a single -- the config file that describes the parameters of the simulation -- see examples later in this document:
+[[#case_20_config][config_20.nml]] and [[#case_60_config][config_60.nml]].  When run it will produce a file called "~retire.out~".
+
+This is a simple text file that you could load into Excel to analyze.  I use an [[https://www.mitchr.me/SS/tools/index.html#stats][R]] script for the analysis
+called "~retire.R~".  If you run this script, you will get lots of graphics (see the [[#examples][Examples]] section below.  In summary, you might do the
+following:
+
+#+begin_src sh
+./retire.exe my_config.nml
+R -q -f retire.R
+#+end_src
+
+* Examples
+:PROPERTIES:
+:CUSTOM_ID: examples
+:END:
+
+** Just Starting Out
+:PROPERTIES:
+:CUSTOM_ID: case_20_intro
+:END:
+
+#+begin_src sh :results output raw :exports results 
+grep -v '^ *$' ~/world/my_prog/finance/FortranFinance/retirement_simulation/config_20.nml | grep -B 10 '^!---' | grep -A 10 '^!---' | grep -v '^!---' | sed 's/^! *//'
+#+end_src
+
+#+RESULTS:
+Here we have a couple starting to save for retirement at age 25.  They both have good jobs earning 100K, and they
+spend 100K per year on expenses.  Work income is growing at 2.5%. They currently have no retirement savings, but wish
+to start saving aggressively.  The believe they can earn 4% on investments, and inflation will be about 3%.  Note work
+income is not keeping up with inflation. They have 10K in checking and 10K in an emergency fund.  The checking account
+earns 0.01% interest, and the emergency fund is in CDs earning 3%.
+
+*** Fixed
+:PROPERTIES:
+:CUSTOM_ID: case_20_fixed
+:END:
+
+The graphs in this section are what you get from ~retire.R~ when the simulation has no monte carlo.  This is similar to what most retirement calculators will
+generate.
+
+This first graph simply shows total savings balance by account type.
+
+  [[file:pics/savings_20_fix_full.png][file:pics/savings_20_fix_800x.png]]
+
+This graph shows us paid vs unpaid expenses.  Expenses are broken into two categories (taxes & living expenses).
+
+  [[file:pics/paidunpaid_20_fix_full.png][file:pics/paidunpaid_20_fix_800x.png]]
+
+This graph also deals with expenses, but shows how the expenses are paid.
+
+  [[file:pics/paidsource_20_fix_full.png][file:pics/paidsource_20_fix_800x.png]]
+
+*** MC
+:PROPERTIES:
+:CUSTOM_ID: case_20_mc
+:END:
+
+The graphs in this section are what you get from ~retire.R~ when the simulation has monte carlo.  
+
+This first graph shows the probability the savings balance trajectory will be within the color band.  For example the inner green band contains 50% of all
+simulation runs.  The yellow band, which includes the green band, contains 80% of all simulation runs.  You can change the bands in the ~retire.R~ script.
+
+  [[file:pics/savings_crg_20_mc_full.png][file:pics/savings_crg_20_mc_800x.png]]
+
+This graph shows 2000 savings trajectories, all the failure trajectories (when we went broke), and an envelope for the highest balance for a trajectories that
+failed.  In essence the green line shows a "safe" balance at which we are unlikely to see failure.
+
+  [[file:pics/compColCases_20_mc_full.png][file:pics/compColCases_20_mc_800x.png]]
+
+This graph is similar to the probability band graph, but is a more traditional presentation for people accustom to box plots.
+
+  [[file:pics/simCompBox_20_mc_full.png][file:pics/simCompBox_20_mc_800x.png]]
+
+This graph shows us the ages at which simulations went broke, and how frequently it occurred for each age group.  Each bar spans three years.
+
+  [[file:pics/brokeAge_20_mc_full.png][file:pics/brokeAge_20_mc_800x.png]]
+
+Lastly we have a graph that shows us the probability distribution of final savings balance at the end of the simulation.
+
+  [[file:pics/endSavings_20_mc_full.png][file:pics/endSavings_20_mc_800x.png]]
+
+*** Config File
+:PROPERTIES:
+:CUSTOM_ID: case_20_config
+:END:
+
+#+begin_src sh :results output verbatum :exports results :wrap "src f90 :eval never :tangle no"
+grep -A 1000 '^&SIMPARM' ~/world/my_prog/finance/FortranFinance/retirement_simulation/config_20.nml
+#+end_src
+
+#+RESULTS:
+#+begin_src f90 :eval never :tangle no
+&SIMPARM
+monte_carlo_years                   = 40,       !! Years of reference data to use
+monte_carlo_runs                    = 10000,    !! Number of sims
+
+initial_brokerage_balance           = 0.0,      !! Sum of all normally taxable accounts
+initial_ira_balance_p1              = 0.0,      !! Sum of all tax deferred accounts for p1
+initial_ira_balance_p2              = 0.0,      !! Sum of all tax deferred accounts for p2
+initial_roth_balance_p2             = 0.0,      !! Sum of all roth-like tax deferred accounts for p2
+initial_roth_balance_p1             = 0.0,      !! Sum of all roth-like tax deferred accounts for p1
+
+high_investment_p                   = 100.0,    !! percentage of investments at high growth
+mid_investment_p                    = 0.0,      !! percentage of investments at medium growth
+low_investment_p                    = 0.0,      !! percentage of investments at low growth
+                                     
+high_investment_apr                 = 4.0,      !! apr for investments at high growth
+                                                !! Used for retirement accounts and the brokerage!
+                                                !! If negative, then do monte carlo on this value
+mid_investment_apr                  = 0.0,      !! apr for investments at medium growth
+                                                !! Used for retirement accounts and the brokerage!
+                                                !! If negative, then set to high_investment_apr/2
+low_investment_apr                  = 0.0,      !! apr for investments at low growth
+                                                !! Used for retirement accounts and the brokerage.
+                                                !! If negative, then set to max(0, high_investment_apr/4)
+cash_position_growth                = 2.5,      !! par for cash position in investment accounts
+                                                !! Used for retirement accounts and the brokerage.
+
+initial_cash_reserves               = 10000.0,  !! Sum of all cash reserves
+cash_reserves_growth                = 0.01,     !! Growth for cash reserves account
+
+initial_emergency_fund              = 10000.0,  !! Near zero risk investments
+emergency_fund_growth               = 3.0,      !! Rate at which the emergency account grows
+                                                !! If negative, then set to low_investment_apr
+
+first_year_tax                      = 1000.0,   !! Taxes to pay the first year of the simulation
+
+worst_case_inflation_rate           = -5.0,     !! Used for investment cuff-off decisions
+                                                !! If negative, don't use a cutoff
+fixed_inflation_rate                = 3.0,      !! Inflation impacts annual expenses
+                                                !! If negative, then do monte carlo
+
+initial_expected_annual_expenses    = 100000.0, !! First year expenses.
+
+social_security_start_age_p1        = 65,       !! First year we get SS for p1
+social_security_start_age_p2        = 65,       !! First year we get SS for p2
+initial_social_security_monthly     = 1000.0,   !! Just a guess.  Probably low.
+social_security_growth              = 3.0,      !! Usually matches inflation
+                                                !! If negative, then set to inflation
+
+initial_gross_work_salary_p1        = 100000.0, !! Taxable part of p1's salary
+initial_gross_work_salary_p2        = 100000.0, !! Taxable part of p2's salary
+work_salary_growth                  = 2.0,      !! Hard to estimate
+                                                !! If negative, then set to max(0, inflation/2)
+
+initial_annual_ira_contrib_base     = 23000.0,  !! Starting base contribution
+initial_annual_ira_contrib_catchup  = 7000.0,   !! Starting catchup contribution
+annual_ira_contrib_growth           = -3.0,     !! Grow 401k contribution (inflation?)
+                                                !! If negative, then set to inflation
+
+initial_annual_roth_contrib_base    = 0.0,      !! Starting base contribution
+initial_annual_roth_contrib_catchup = 0.0,      !! Starting catchup contribution
+annual_roth_contrib_growth          = 0.0,      !! Grow 401k contribution
+                                                !! If negative, then set to inflation
+
+surplus_reinvest                    = 100.0,    !! Percentage of ExtraNS to reinvest
+
+retirement_year_p1                  = 2065,     !! First year p1 is fully retired
+retirement_year_p2                  = 2065,     !! First year p2 is fully retired
+birthday_p1                         = 2000,     !!
+birthday_p2                         = 2000,     !!
+life_expectancy_p1                  = 110,      !!
+life_expectancy_p2                  = 110       !!
+/
+#+end_src
+
+
+
+** Approaching Retirement
+:PROPERTIES:
+:CUSTOM_ID: case_60_intro
+:END:
+
+#+begin_src sh :results output raw :exports results 
+grep -v '^ *$' ~/world/my_prog/finance/FortranFinance/retirement_simulation/config_60.nml | grep -B 10 '^!---' | grep -A 10 '^!---' | grep -v '^!---' | sed 's/^! *//'
+#+end_src
+
+#+RESULTS:
+Here we have a couple (47 & 55 years old).  Each have 500k in a 401k.  They plan on putting 50% in the S&P, and 50% in
+low risk 5% funds. They also have 100k balances in both an emergency fund and checking account.  The checking account
+earns 0.01% interest, and the emergency fund is in CDs earning 3%. They are both employed, and are have aggressively
+saving at the maximum rate into a 401k.  They spend 110K per year on expenses.  They believe inflation will be about
+3%.  They both wish to stop working when they are 60. The younger person will start taking SS at 63 while the older
+one will start at age 70.
+
+*** A Risky Plan
+:PROPERTIES:
+:CUSTOM_ID: case_60_danger
+:END:
+
+In my opinion, this plan is too aggressive.  I know the S&P 500 has an average return of 10% over the last couple decades, but depending on a 7% return is just
+too risky.  This is especially true with only 1M in total savings.
+
+Things look just fine if we consider a simulation using ideal, fixed growth and inflation.  Here is what the overall savings balance looks:
+
+  [[file:pics/savings_60_fix_full.png][file:pics/savings_60_fix_800x.png]]
+
+If we take a look at the savings probability bands, we see a very different picture:
+
+  [[file:pics/savings_crg_60_mc_full.png][file:pics/savings_crg_60_mc_800x.png]]
+
+And if we look at a few paths and the account collapse cases, things look pretty scary:
+
+  [[file:pics/compColCases_60_mc_full.png][file:pics/compColCases_60_mc_800x.png]]
+
+Another way to look at this is the distribution of final savings.  That huge bar on the left tells us that the single most probable outcome of this plan is to
+run out of money.
+
+  [[file:pics/endSavings_60_mc_full.png][file:pics/endSavings_60_mc_800x.png]]
+
+*** An Alternate Plan
+:PROPERTIES:
+:CUSTOM_ID: case_60_ml
+:END:
+
+They can dramatically improve the chances of success by saving more (bumping up total savings by 250k), and spending less (drop annual expenses by 1k).  
+
+The new savings probability bands are much more positive:
+
+  [[file:pics/savings_crg_60ml_mc_full.png][file:pics/savings_crg_60ml_mc_800x.png]]
+
+And the overall path picture is much more positive:
+
+  [[file:pics/compColCases_60ml_mc_full.png][file:pics/compColCases_60ml_mc_800x.png]]
+
+Lastly, the distribution of final savings no longer shows dying broke as the highest probably outcome.
+
+  [[file:pics/endSavings_60ml_mc_full.png][file:pics/endSavings_60ml_mc_800x.png]]
+
+*** Config Files
+:PROPERTIES:
+:CUSTOM_ID: case_60_config
+:END:
+
+The original plan config file is here:
+
+#+begin_src sh :results output verbatum :exports results :wrap "src f90 :eval never :tangle no"
+grep -A 1000 '^&SIMPARM' ~/world/my_prog/finance/FortranFinance/retirement_simulation/config_60.nml
+#+end_src
+
+#+RESULTS:
+#+begin_src f90 :eval never :tangle no
+&SIMPARM
+monte_carlo_years                   = 40,        !! Years of reference data to use
+monte_carlo_runs                    = 10000,     !! Number of sims
+
+initial_brokerage_balance           = 0.0,       !! Sum of all normally taxable accounts
+initial_ira_balance_p1              = 1000000.0, !! Sum of all tax deferred accounts for p1
+initial_ira_balance_p2              = 1000000.0, !! Sum of all tax deferred accounts for p2
+initial_roth_balance_p2             = 0.0,       !! Sum of all roth-like tax deferred accounts for p2
+initial_roth_balance_p1             = 0.0,       !! Sum of all roth-like tax deferred accounts for p1
+
+high_investment_p                   = 50.0,      !! percentage of investments at high growth
+mid_investment_p                    = 50.0,      !! percentage of investments at medium growth
+low_investment_p                    = 0.0,       !! percentage of investments at low growth
+                                     
+high_investment_apr                 = 7.0,       !! apr for investments at high growth
+                                                 !! Used for retirement accounts and the brokerage!
+                                                 !! If negative, then do monte carlo on this value
+mid_investment_apr                  = 4.0,       !! apr for investments at medium growth
+                                                 !! Used for retirement accounts and the brokerage!
+                                                 !! If negative, then set to high_investment_apr/2
+low_investment_apr                  = 0.0,       !! apr for investments at low growth
+                                                 !! Used for retirement accounts and the brokerage.
+                                                 !! If negative, then set to max(0, high_investment_apr/4)
+cash_position_growth                = 2.5,       !! par for cash position in investment accounts
+                                                 !! Used for retirement accounts and the brokerage.
+
+initial_cash_reserves               = 100000.0,  !! Sum of all cash reserves
+cash_reserves_growth                = 0.01,      !! Growth for cash reserves account
+
+initial_emergency_fund              = 100000.0,  !! Near zero risk investments
+emergency_fund_growth               = 3.0,       !! Rate at which the safety account grows
+                                                 !! If negative, then set to low_investment_apr
+
+first_year_tax                      = 50000.0,   !! Taxes to pay the first year of the simulation
+
+worst_case_inflation_rate           = -5.0,      !! Used for investment cuffoff decisions
+                                                 !! If negative, don't use a cutoff
+fixed_inflation_rate                = 3.0,       !! Inflation impacts annual expenses
+                                                 !! If negative, then do monte carlo
+
+initial_expected_annual_expenses    = 110000.0,  !! First year expenses.
+
+social_security_start_age_p1        = 63,        !! First year we get SS for p1
+social_security_start_age_p2        = 70,        !! First year we get SS for p2
+initial_social_security_monthly     = 1000.0,    !! Just a guess.  Probably low.
+social_security_growth              = 3.0,       !! Usually matches inflation
+                                                 !! If negative, then set to inflation
+
+initial_gross_work_salary_p1        = 170000.0,  !! Taxable part of p1's salary
+initial_gross_work_salary_p2        = 180000.0,  !! Taxable part of p2's salary
+work_salary_growth                  = 2.0,       !! Hard to estimate
+                                                 !! If negative, then set to max(0, inflation/2)
+
+initial_annual_ira_contrib_base     = 23000.0,   !! Starting base contribution
+initial_annual_ira_contrib_catchup  = 7000.0,    !! Starting catchup contribution
+annual_ira_contrib_growth           = -3.0,      !! Grow 401k contribution (inflation?)
+                                                 !! If negative, then set to inflation
+
+initial_annual_roth_contrib_base    = 0.0,       !! Starting base contribution
+initial_annual_roth_contrib_catchup = 0.0,       !! Starting catchup contribution
+annual_roth_contrib_growth          = 0.0,       !! Grow 401k contribution
+                                                 !! If negative, then set to inflation
+
+surplus_reinvest                    = 100.0,     !! Percentage of ExtraNS to reinvest
+
+retirement_year_p1                  = 2037,      !! First year p1 is fully retired
+retirement_year_p2                  = 2029,      !! First year p2 is fully retired
+birthday_p1                         = 1977,      !!
+birthday_p2                         = 1969,      !!
+life_expectancy_p1                  = 110,       !!
+life_expectancy_p2                  = 110        !!
+/
+#+end_src
+
+The updated plan changes these lines
+
+#+begin_src f90
+initial_ira_balance_p1              = 625000.0, !! Sum of all tax deferred accounts for p1
+initial_ira_balance_p2              = 625000.0, !! Sum of all tax deferred accounts for p2
+high_investment_p                   = 80.0,     !! percentage of investments at high growth
+mid_investment_p                    = 20.0,     !! percentage of investments at medium growth
+mid_investment_apr                  = 5.0,      !! apr for investments at medium growth
+initial_expected_annual_expenses    = 100000.0, !! First year expenses.
+#+end_src
+

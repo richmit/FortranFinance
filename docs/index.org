@@ -42,5 +42,6 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
 #+TOC: headlines 5
 
   - [[file:MRFFL/index.html][MRFFL Documentation]]
+  - [[file:retirement_simulation/index.html][Retirement Simulator]]
   - [[file:monte_carlo/index.html][Monte Carlo Examples]]
   - [[file:loans/index.html][Loans]]
