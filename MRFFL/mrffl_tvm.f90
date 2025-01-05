@@ -333,9 +333,20 @@ contains
   !----------------------------------------------------------------------------------------------------------------------------
   !> Solve for TVM parameters for a generalized lump sum.
   !!
+  !!  @f[ \begin{array}{cccc}
+  !!       t       &  V_t   & \mathrm{pv}_t           & \mathrm{fv}_t  \\  
+  !!       0       &  0     & 0                       & 0              \\  
+  !!       ...     &  ...   & ...                     & ...            \\
+  !!       {d-1}   &  0     & 0                       & 0              \\
+  !!       d       &  a     & \frac{a}{(1+i)^{d}}     & a(1+i)^{n-d}   \\  
+  !!       {d+1}   &  0     & 0                       & 0              \\  
+  !!       ...     &   ...  & ...                     & ...            \\
+  !!       n       &  0     & 0                       & 0              \\
+  !!  \end{array} @f]
+  !!
   !! The equations this solver uses are as follows:
-  !! @f[ \mathit{fv} = a \left(1+q \right)^{n -d} @f]
-  !! @f[ \mathit{pv} = a \left(1+q \right)^{-d}   @f]
+  !! @f[ \mathrm{fv} = a \left(1+i \right)^{n -d} @f]
+  !! @f[ \mathrm{pv} = a \left(1+i \right)^{-d}   @f]
   !!
   !! Normally TVM software assumes a lump sum cashflow occurs at the beginning of the first period.  This solver allows the
   !! cashflow to occur at the beginning or end of any period.
@@ -498,13 +509,34 @@ contains
   !----------------------------------------------------------------------------------------------------------------------------
   !> Solve for TVM parameters for a level annuity.
   !!
+  !!  @f[ \begin{array}{cccc}
+  !!       t       &  V_t   & \mathrm{pv}_t           & \mathrm{fv}_t  \\  
+  !!       0       &  0     & 0                       & 0              \\  
+  !!       ...     &  ...   & ...                     & ...            \\
+  !!       {d-1}   &  0     & 0                       & 0              \\
+  !!       d       &  a     & \frac{a}{(1+i)^{d}}     & a(1+i)^{n-d}   \\  
+  !!       {d+1}   &  a     & \frac{a}{(1+i)^{d+1}}   & a(1+i)^{n-d-1} \\  
+  !!       ...     &  ...   & ...                     & ...            \\
+  !!       {t}     &  a     & \frac{a}{(1+i)^{t}}     & a(1+i)^{n-t}   \\
+  !!       ...     &  ...   & ...                     & ...            \\
+  !!       {n-e-1} &  a     & \frac{a}{(1+i)^{n-e-1}} & a(1+i)^{e+1}   \\
+  !!       {n-e}   &  a     & \frac{a}{(1+i)^{n-e}}   & a(1+i)^{e}     \\
+  !!       {n-e+1} &  0     & 0                       & 0              \\
+  !!       ...     &   ...  & ...                     & ...            \\
+  !!       n       &  0     & 0                       & 0              \\
+  !!  \end{array} @f]
+  !!
+  !! Total pv & fv are given by:
+  !! @f[ \mathrm{fv} = \sum_{t=d}^{n-e} a(1+i)^{n-t}        @f]
+  !! @f[ \mathrm{pv} = \sum_{t=d}^{n-e} \frac{a}{(1+i)^{t}} @f]
+  !!
   !! The equations this solver uses are as follows:
-  !! @f[ \mathit{fv} = \frac{\left(-\left(1+i \right)^{d}+\left(1+i \right)^{n +1-d}\right) a}{i}  @f]
-  !! @f[ \mathit{pv} = \frac{\left(-\left(1+i \right)^{-n +d}+\left(1+i \right)^{1-d}\right) a}{i} @f]
+  !! @f[ \mathrm{fv} = a\frac{\left(1+i \right)^{n +1-d}-\left(1+i \right)^{d}   }{i} @f]
+  !! @f[ \mathrm{pv} = a\frac{\left(1+i \right)^{1-d}   -\left(1+i \right)^{-n+d}}{i} @f]
   !!
   !! This routine is capable of searching for any combination of 1 or 2 of the following variables: n, i, pv, fv, & a
   !! 
-  !! Solving for i.
+  !! @par Solving for i
   !! When possible a closed for solution is used.  In some cases (var_i+var_fv, var_i+var_pv, var_i+var_n when d or e is greater
   !! than 1) bisection is used to numerically solve for i.  When bisection is used, this routine will search for values for i
   !! that are within the following intervals (in the order listed):
@@ -701,15 +733,36 @@ contains
   end subroutine tvm_delayed_level_annuity_check
 
   !----------------------------------------------------------------------------------------------------------------------------
-  !> Solve for TVM parameters for a guaranteed geometric annuity.
+  !> Solve for TVM parameters for a geometric annuity certain.
   !!
-  !! The equations this solver uses when @f$i\ne g@f$ are as follows:
-  !! @f[ \mathit{fv} =  a \frac{\left(1+g \right)^{1+n -e -d} \left(1+i \right)^{e}-\left(1+i \right)^{1+n -d}}{g -i}  @f]
-  !! @f[ \mathit{pv} =  a \frac{\left(1+g \right) \left(\frac{1+g}{1+i}\right)^{n -e}-\left(\frac{1+g}{1+i}\right)^{d} \left(1+i \right)}{(g-i)(1+g)^{-d}} @f]
+  !!  @f[ \begin{array}{cccc}
+  !!       t       &  V_t              & \mathrm{pv}_t                          & \mathrm{fv}_t                 \\  
+  !!       0       &  0                & 0                                      & 0                             \\  
+  !!       ...     &   ...             & ...                                    & ...                           \\
+  !!       {d-1}   &  0                & 0                                      & 0                             \\
+  !!       d       &  a(1+g)^{0}       & a\frac{(1+g)^{0}}{(1+i)^{d}}           & a(1+g)^{0}(1+i)^{n-d}         \\  
+  !!       {d+1}   &  a(1+g)^{1}       & a\frac{(1+g)^{1}}{(1+i)^{d+1}}         & a(1+g)^{1}(1+i)^{n-d-1}       \\  
+  !!       ...     &   ...             & ...                                    & ...                           \\
+  !!       {t}     &  a(1+g)^{t-d}     & a\frac{(1+g)^{t-d}}{(1+i)^{t}}         & a(1+g)^{t-d}(1+i)^{n-t}       \\
+  !!       ...     &   ...             & ...                                    & ...                           \\
+  !!       {n-e-1} &  a(1+g)^{n-e-1-d} & a\frac{(1+g)^{n-e-1-d}}{(1+i)^{n-e-1}} & a(1+g)^{n-e-d-1}(1+i)^{e+1}   \\
+  !!       {n-e}   &  a(1+g)^{n-e-d}   & a\frac{(1+g)^{n-e-d}}{(1+i)^{n-e}}     & a(1+g)^{n-e-d}(1+i)^{e}      \\
+  !!       {n-e+1} &  0                & 0                                      & 0                             \\
+  !!       ...     &   ...             & ...                                    & ...                           \\
+  !!       n       &  0                & 0                                      & 0                             \\
+  !!  \end{array} @f]
   !!
-  !! The equations this solver uses when @f$i=e g@f$ are as follows:
-  !! @f[ \mathit{fv} = a \left(1+n-e-d\right) \left(1+i\right)^{n-d}  @f]
-  !! @f[ \mathit{pv} = a \left(1+n-e-d\right) \left(1+i\right)^{-d}   @f]
+  !! Total pv & fv are given by:
+  !! @f[ \mathrm{fv} = \sum_{t=d}^{n-e} a(1+g)^{t-d}(1+i)^{n-t}        @f]
+  !! @f[ \mathrm{pv} = \sum_{t=d}^{n-e} a\frac{(1+g)^{t-d}}{(1+i)^{t}} @f]
+  !!
+  !! When @f$i\ne g@f$, the total pv & fv are given by:
+  !! @f[ \mathrm{fv} =  a \frac{\left(1+g \right)^{1+n-e-d} \left(1+i \right)^{e}-\left(1+i\right)^{1+n-d}}{g -i}  @f]
+  !! @f[ \mathrm{pv} =  a \frac{\left(1+g \right) \left(\frac{1+g}{1+i}\right)^{n -e}-\left(\frac{1+g}{1+i}\right)^{d} \left(1+i \right)}{(g-i)(1+g)^{-d}} @f]
+  !!
+  !! When @f$i=g@f$, the total pv & fv are given by:
+  !! @f[ \mathrm{fv} = a \left(1+n-e-d\right) \left(1+i\right)^{n-d}  @f]
+  !! @f[ \mathrm{pv} = a \left(1+n-e-d\right) \left(1+i\right)^{-d}   @f]
   !!
   !! This routine can solve for `var_n`, `var_n+var_fv`, and any combination of two or fewer of the following: `var_a`, `var_fv`, `var_pv`
   !!
@@ -803,7 +856,7 @@ contains
   end subroutine tvm_delayed_geometric_annuity_solve
 
   !----------------------------------------------------------------------------------------------------------------------------
-  !> Check TVM parameters for a guaranteed geometric annuity.
+  !> Check TVM parameters for a geometric annuity certain.
   !!
   !! @param n         Number of compounding periods
   !! @param i         Discount rate as a percentage.
@@ -890,14 +943,35 @@ contains
   end subroutine tvm_delayed_geometric_annuity_check
 
   !----------------------------------------------------------------------------------------------------------------------------
-  !> Solve for TVM parameters for a guaranteed arithmetic annuity.
+  !> Solve for TVM parameters for a arithmetic annuity certain.
+  !!
+  !!  @f[ \begin{array}{cccc}
+  !!       t       &  V_t                & \mathrm{pv}_t                            & \mathrm{fv}_t                   \\  
+  !!       0       &  0                  & 0                                        & 0                               \\  
+  !!       ...     &   ...               & ...                                      & ...                             \\
+  !!       {d-1}   &  0                  & 0                                        & 0                               \\
+  !!       d       &  a+q\cdot 0         & \frac{a+q\cdot 0}{(1+i)^{d}}             & (a+q\cdot 0)(1+i)^{n-d}         \\  
+  !!       {d+1}   &  a+q\cdot 1         & \frac{a+q\cdot 1}{(1+i)^{d+1}}           & (a+q\cdot 1)(1+i)^{n-d-1}       \\  
+  !!       ...     &   ...               & ...                                      & ...                             \\
+  !!       {t}     &  a+q\cdot (t-d)     & \frac{a+q\cdot (t-d)}{(1+i)^{t}}         & (a+q\cdot (t-d))(1+i)^{n-t}     \\
+  !!       ...     &   ...               & ...                                      & ...                             \\
+  !!       {n-e-1} &  a+q\cdot (n-e-1-d) & \frac{a+q\cdot (n-e-1-d)}{(1+i)^{n-e-1}} & (a+q\cdot (n-e-1-d))(1+i)^{e+1} \\
+  !!       {n-e}   &  a+q\cdot (n-e-d)   & \frac{a+q\cdot (n-e-d)}{(1+i)^{n-e}}     & (a+q\cdot (n-e-d))(1+i)^{e}     \\
+  !!       {n-e+1} &  0                  & 0                                        & 0                               \\
+  !!       ...     &   ...               & ...                                      & ...                             \\
+  !!       n       &  0                  & 0                                        & 0                               \\
+  !!  \end{array} @f]
+  !!
+  !! Total pv & fv are given by:
+  !! @f[ \mathrm{fv} = \sum_{t=d}^{n-e} (a+q t-q d)(1+i)^{n-t}        @f]
+  !! @f[ \mathrm{pv} = \sum_{t=d}^{n-e} \frac{a+q t-q d}{(1+i)^{t}} @f]
   !!
   !! The equations this solver uses are as follows:
-  !! @f[ \mathit{fv} = \frac{\left(1+i \right)^{1+n -d} \left(a i +q \right)-\left(1+i \right)^{e} \left(\left(\left(1+n -e -d \right) q +a \right) i +q \right)}{i^{2}} @f]
-  !! @f[ \mathit{pv} = \frac{\left(\left(\left(d -1-n +e \right) q -a \right) i -q \right) \left(\frac{1}{1+i}\right)^{n -e}+\left(a i +q \right) \left(1+i \right) \left(\frac{1}{1+i}\right)^{d}}{i^{2}} @f]
+  !! @f[ \mathrm{fv} = \frac{\left(1+i \right)^{1+n -d} \left(a i +q \right)-\left(1+i \right)^{e} \left(\left(\left(1+n -e -d \right) q +a \right) i +q \right)}{i^{2}} @f]
+  !! @f[ \mathrm{pv} = \frac{\left(\left(\left(d -1-n +e \right) q -a \right) i -q \right) \left(\frac{1}{1+i}\right)^{n -e}+\left(a i +q \right) \left(1+i \right) \left(\frac{1}{1+i}\right)^{d}}{i^{2}} @f]
   !!
   !! This routine can solve one or two variables except for the following combinations:
-  !!    var_n+var_i, var_n+var_q, var_n+var_pv, var_n+var_fv, var_i+var_pv, var_i+var_fv, var_q+var_a
+  !!    `var_n+var_i`, `var_n+var_q`, `var_n+var_pv`, `var_n+var_fv`, `var_i+var_pv`, `var_i+var_fv`, `var_q+var_a`
   !!
   !! @param n         Number of compounding periods
   !! @param i         Discount rate as a percentage.
@@ -972,7 +1046,7 @@ contains
   end subroutine tvm_delayed_arithmetic_annuity_solve
 
   !----------------------------------------------------------------------------------------------------------------------------
-  !> Check TVM parameters for a guaranteed arithmatic annuity.
+  !> Check TVM parameters for a arithmatic annuity certain.
   !!
   !! @param n         Number of compounding periods
   !! @param i         Discount rate as a percentage.
