@@ -51,7 +51,7 @@ program test_tvm_delayed_level_annuity_solve
 
   print "(a)", repeat("=", 98)
   call setem(1)
-  print "(a3,i5,5(f15.4),3(i5),a10)", "BF", status, n, i, pv, fv, a, d, e, var_n+var_i+var_fv, "bad:too many"
+  print "(a3,i5,5(f15.4),3(i5),a10)", "BF", status, n, i, pv, fv, a, d, e, var_n+var_i+var_fv, " bad:many"
   call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_n+var_i+var_fv, status)
   print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_n+var_i+var_fv
 
@@ -69,7 +69,7 @@ program test_tvm_delayed_level_annuity_solve
   !! fv, fv+a
   !! a
 
-  do k=1,7
+  do k=1,11
      print "(a)", repeat("=", 98)
      call setem(k)
      print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_NONE
@@ -161,6 +161,7 @@ program test_tvm_delayed_level_annuity_solve
      print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_fv+var_pv
      call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_fv+var_pv, status)
      print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_fv+var_pv
+     !print *, pv, fv
 
      print "(a)", repeat("=", 98)
      call setem(k)
@@ -196,7 +197,71 @@ program test_tvm_delayed_level_annuity_solve
 contains
   subroutine setem(k)
     integer, intent(in) :: k
+
+    ! Special cases when solving for i with n unknown:
+    !   - d=0, e=0 -> Uses closed form solution
+    !   - d=0, e=1 -> Uses closed form solution
+    !   - d=1, e=0 -> Uses closed form solution
+    !   - d=1, e=1 -> Uses closed form solution
+    !   - else     -> uses bisection
+    ! Solving for i with fv or pv unknown uses bisection
+    !
+    ! All bisection cases have three special cases:  i>0, -100<i<0, and i<-100
+    ! They also have edge cases: i near 0 and  i near -100
+
+    ! MJR TODO NOTE <2024-12-17T23:31:30-0600> setem: Add more -100<i<0 cases
+    ! MJR TODO NOTE <2024-12-17T23:31:40-0600> setem: Add i<-100 cases and fix solver to handle them if possible
+    ! ! d>1, e>1, i<-100%
+    ! n        =  7
+    ! i        =  -110
+    ! pv       =  9000000      
+    ! fv       =  -0.9
+    ! a        =  1000
+    ! d        =  3
+    ! e        =  3
+    ! status   =  -1
+
     if (k==1) then
+       ! d=1, e=1, i>0,  
+       n        =  7
+       i        =  10
+       pv       =  4355.2606994622283           
+       fv       =  8487.1710000000112     
+       a        =  1000
+       d        =  1
+       e        =  1
+       status   =  -1
+    else if (k==2) then
+       ! d=0, e=0, i>0,  
+       n        =  7
+       i        =  10
+       pv       =  5868.4188176929347        
+       fv       =  11435.888100000011     
+       a        =  1000
+       d        =  0
+       e        =  0
+       status   =  -1
+    else if (k==3) then
+       ! d=1, e=0, i>0,  ordinary
+       n        =  7
+       i        =  10
+       pv       =  4868.4188176929347        
+       fv       =  9487.1710000000130     
+       a        =  1000
+       d        =  1
+       e        =  0
+       status   =  -1
+    else if (k==4) then
+       ! d=0, e=1, i>0,  due
+       n        =  7
+       i        =  10
+       pv       =  5355.2606994622283        
+       fv       =  10435.888100000011   
+       a        =  1000
+       d        =  0
+       e        =  1
+       status   =  -1
+    else if (k==5) then
        ! d=0, e>1, i>0
        n        =  7
        i        =  10
@@ -206,7 +271,7 @@ contains
        d        =  0
        e        =  6
        status   =  -1
-    else if (k==2) then
+    else if (k==6) then
        ! d=1, e>1, i>0
        n        =  7
        i        =  10
@@ -216,7 +281,7 @@ contains
        d        =  1
        e        =  5
        status   =  -1
-    else if (k==3) then
+    else if (k==7) then
        ! d>1, e>1, i>0
        n        =  7
        i        =  10
@@ -226,7 +291,7 @@ contains
        d        =  3
        e        =  3
        status   =  -1
-    else if (k==4) then
+    else if (k==8) then
        ! d>1, e=0, i>0
        n        =  7
        i        =  10
@@ -236,7 +301,7 @@ contains
        d        =  6
        e        =  0
        status   =  -1
-    else if (k==5) then
+    else if (k==9) then
        ! d>1, e=1, i>0
        n        =  7
        i        =  10
@@ -246,7 +311,7 @@ contains
        d        =  5
        e        =  1
        status   =  -1
-    else if (k==6) then
+    else if (k==10) then
        ! d>1, e=1, -100<i<0
        n        =  7
        i        =  -10
@@ -256,7 +321,7 @@ contains
        d        =  5
        e        =  1
        status   =  -1
-    else if (k==7) then
+    else if (k==11) then
        ! d>1, e>1, -100<i<0
        n        =  7
        i        =  -10
@@ -267,20 +332,6 @@ contains
        e        =  3
        status   =  -1
     end if
-
-    ! MJR TODO NOTE <2024-12-17T23:31:30-0600> setem: Add more -100<i<0 cases
-    ! MJR TODO NOTE <2024-12-17T23:31:40-0600> setem: Add i<-100 cases and fix solver to handle them if possible
-    ! MJR TODO NOTE <2024-12-17T23:31:57-0600> setem: Add d=0 & e=0 case
-
-    ! ! d>1, e>1, i<-100%
-    ! n        =  7
-    ! i        =  -110
-    ! pv       =  9000000      
-    ! fv       =  -0.9
-    ! a        =  1000
-    ! d        =  3
-    ! e        =  3
-    ! status   =  -1
   end subroutine setem
 end program test_tvm_delayed_level_annuity_solve
 
