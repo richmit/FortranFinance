@@ -49,52 +49,32 @@ program test_tvm_delayed_level_annuity_solve
   print "(a)", repeat("=", 98)
   print "(a3,a5,5(a15),3(a5))", "BF", "stat", "n", "i", "pv", "fv", "a", "d", "e", "var"
 
-  ! MJR TODO NOTE: Add cases for variable errors (too many or unknown)
+  print "(a)", repeat("=", 98)
+  call setem(1)
+  print "(a3,i5,5(f15.4),3(i5),a10)", "BF", status, n, i, pv, fv, a, d, e, var_n+var_i+var_fv, "bad:too many"
+  call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_n+var_i+var_fv, status)
+  print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_n+var_i+var_fv
+
+  print "(a)", repeat("=", 98)
+  call setem(1)
+  print "(a3,i5,5(f15.4),3(i5),a10)", "BF", status, n, i, pv, fv, a, d, e, var_pmt, "bad:unk v"
+  call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_pmt, status)
+  print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_pmt
+
+  !! Var Combos:
+  !! NONE
+  !! n, n+i, n+pv, n+fv, n+a
+  !! i, i+pv, i+fv, i+a
+  !! pv, pv+fv, pv+a
+  !! fv, fv+a
+  !! a
+
   do k=1,7
      print "(a)", repeat("=", 98)
      call setem(k)
      print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_NONE
      call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_NONE, status)
      print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_NONE
-
-     print "(a)", repeat("=", 98)
-     call setem(k)
-     a = -1
-     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a
-     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a, status)
-     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a
-
-     print "(a)", repeat("=", 98)
-     call setem(k)
-     a = -1
-     i = -1
-     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a+var_i
-     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a+var_i, status)
-     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a+var_i
-
-     print "(a)", repeat("=", 98)
-     call setem(k)
-     a = -1
-     pv = -1
-     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a+var_pv
-     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a+var_pv, status)
-     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a+var_pv
-
-     print "(a)", repeat("=", 98)
-     call setem(k)
-     a = -1
-     fv = -1
-     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a+var_fv
-     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a+var_fv, status)
-     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a+var_fv
-
-     print "(a)", repeat("=", 98)
-     call setem(k)
-     a = -1
-     n = -1
-     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a+var_n
-     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a+var_n, status)
-     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a+var_n
 
      print "(a)", repeat("=", 98)
      call setem(k)
@@ -110,7 +90,7 @@ program test_tvm_delayed_level_annuity_solve
      print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_n+var_i
      call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_n+var_i, status)
      print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_n+var_i
-     ! Need i<-100%, and -100%<i<0 cases for above
+     ! MJR TODO NOTE: Need i<-100%, and -100%<i<0 cases for above
 
      print "(a)", repeat("=", 98)
      call setem(k)
@@ -130,9 +110,26 @@ program test_tvm_delayed_level_annuity_solve
 
      print "(a)", repeat("=", 98)
      call setem(k)
+     n = -1
+     a = -1
+     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a+var_n
+     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a+var_n, status)
+     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a+var_n
+
+     print "(a)", repeat("=", 98)
+     call setem(k)
+     i = -1
      print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_i
      call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_i, status)
      print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_i
+
+     print "(a)", repeat("=", 98)
+     call setem(k)
+     i = -1
+     pv = -1
+     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_i+var_pv
+     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_i+var_pv, status)
+     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_i+var_pv
 
      print "(a)", repeat("=", 98)
      call setem(k)
@@ -145,17 +142,10 @@ program test_tvm_delayed_level_annuity_solve
      print "(a)", repeat("=", 98)
      call setem(k)
      i = -1
-     pv = -1
-     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_i+var_pv
-     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_i+var_pv, status)
-     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_i+var_pv
-
-     print "(a)", repeat("=", 98)
-     call setem(k)
-     fv = -1
-     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_fv
-     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_fv, status)
-     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_fv
+     a = -1
+     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a+var_i
+     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a+var_i, status)
+     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a+var_i
 
      print "(a)", repeat("=", 98)
      call setem(k)
@@ -166,11 +156,41 @@ program test_tvm_delayed_level_annuity_solve
 
      print "(a)", repeat("=", 98)
      call setem(k)
-     fv = -1
      pv = -1
+     fv = -1
      print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_fv+var_pv
      call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_fv+var_pv, status)
      print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_fv+var_pv
+
+     print "(a)", repeat("=", 98)
+     call setem(k)
+     pv = -1
+     a = -1
+     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a+var_pv
+     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a+var_pv, status)
+     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a+var_pv
+
+     print "(a)", repeat("=", 98)
+     call setem(k)
+     fv = -1
+     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_fv
+     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_fv, status)
+     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_fv
+
+     print "(a)", repeat("=", 98)
+     call setem(k)
+     fv = -1
+     a = -1
+     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a+var_fv
+     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a+var_fv, status)
+     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a+var_fv
+
+     print "(a)", repeat("=", 98)
+     call setem(k)
+     a = -1
+     print "(a3,i5,5(f15.4),3(i5))", "BF", status, n, i, pv, fv, a, d, e, var_a
+     call tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, var_a, status)
+     print "(a3,i5,5(f15.4),3(i5))", "AF", status, n, i, pv, fv, a, d, e, var_a
   end do
   print "(a)", repeat("=", 98)
 contains
