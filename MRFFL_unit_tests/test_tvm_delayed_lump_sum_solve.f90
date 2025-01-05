@@ -64,54 +64,23 @@ program test_tvm_delayed_lump_sum_solve
   call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_g, status)
   print "(a3,i7,5(f20.4),i4,i7,a)", "AF", status, n, i, pv, fv, a, d, var_g, " ERROR unk"  
 
-  do k=1,1,4
+  !! Var Combos:
+  !! NONE
+  !! n, n+i, n+pv, n+fv, n+a
+  !! i, i+pv, i+fv, i+a
+  !! pv, pv+fv, pv+a
+  !! fv, fv+a
+  !! a
+
+  do k=1,4
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
-     a = -1
-     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a
-     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a, status)
-     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a
+     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_NONE
+     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_NONE, status)
+     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_NONE
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
-     a = -1
-     i = -1
-     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a+var_i
-     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a+var_i, status)
-     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a+var_i
-
-     print "(a)", repeat("=", 121)
-     call setem(k)
-     status = -1
-     a = -1
-     pv = -1
-     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a+var_pv
-     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a+var_pv, status)
-     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a+var_pv
-
-     print "(a)", repeat("=", 121)
-     call setem(k)
-     status = -1
-     a = -1
-     fv = -1
-     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a+var_fv
-     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a+var_fv, status)
-     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a+var_fv
-
-     print "(a)", repeat("=", 121)
-     call setem(k)
-     status = -1
-     a = -1
-     n = -1
-     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a+var_n
-     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a+var_n, status)
-     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a+var_n
-
-     print "(a)", repeat("=", 121)
-     call setem(k)
-     status = -1
      n = -1
      print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_n
      call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_n, status)
@@ -119,7 +88,6 @@ program test_tvm_delayed_lump_sum_solve
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
      n = -1
      i = -1
      print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_n+var_i
@@ -128,7 +96,6 @@ program test_tvm_delayed_lump_sum_solve
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
      n = -1
      pv = -1
      print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_n+var_pv
@@ -137,16 +104,22 @@ program test_tvm_delayed_lump_sum_solve
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
      n = -1
      fv = -1
      print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_n+var_fv
      call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_n+var_fv, status)
-     print "(a3,i7,5(f20.4),i4,i7,a)", "AF", status, n, i, pv, fv, a, d, var_n+var_fv, " ERROR"
+     print "(a3,i7,5(f20.4),i4,i7,a)", "AF", status, n, i, pv, fv, a, d, var_n+var_fv, " bad:n+fv"
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
+     n = -1
+     a = -1
+     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a+var_n
+     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a+var_n, status)
+     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a+var_n
+
+     print "(a)", repeat("=", 121)
+     call setem(k)
      i = -1
      print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_i
      call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_i, status)
@@ -154,7 +127,6 @@ program test_tvm_delayed_lump_sum_solve
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
      i = -1
      pv = -1
      print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_i+var_pv
@@ -163,7 +135,6 @@ program test_tvm_delayed_lump_sum_solve
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
      i = -1
      fv = -1
      print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_i+var_fv
@@ -172,15 +143,14 @@ program test_tvm_delayed_lump_sum_solve
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
-     fv = -1
-     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_fv
-     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_fv, status)
-     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_fv
+     i = -1
+     a = -1
+     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a+var_i
+     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a+var_i, status)
+     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a+var_i
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
      pv = -1
      print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_pv
      call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_pv, status)
@@ -188,12 +158,41 @@ program test_tvm_delayed_lump_sum_solve
 
      print "(a)", repeat("=", 121)
      call setem(k)
-     status = -1
-     fv = -1
      pv = -1
+     a = -1
+     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a+var_pv
+     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a+var_pv, status)
+     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a+var_pv
+
+     print "(a)", repeat("=", 121)
+     call setem(k)
+     pv = -1
+     fv = -1
      print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_fv+var_pv
      call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_fv+var_pv, status)
      print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_fv+var_pv
+
+     print "(a)", repeat("=", 121)
+     call setem(k)
+     fv = -1
+     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_fv
+     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_fv, status)
+     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_fv
+
+     print "(a)", repeat("=", 121)
+     call setem(k)
+     fv = -1
+     a = -1
+     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a+var_fv
+     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a+var_fv, status)
+     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a+var_fv
+
+     print "(a)", repeat("=", 121)
+     call setem(k)
+     a = -1
+     print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_a
+     call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a, status)
+     print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a
   end do
   print "(a)", repeat("=", 121)  
 contains
