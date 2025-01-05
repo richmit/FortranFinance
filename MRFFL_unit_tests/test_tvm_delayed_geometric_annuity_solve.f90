@@ -49,39 +49,31 @@ program test_tvm_delayed_geometric_annuity_solve
 
   print "(a)", repeat("=", 119)
   call setem(1)
-  print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_a+var_fv+var_pv
+  print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_a+var_fv+var_pv, "bad:too many"
   call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_a+var_fv+var_pv, status)
   print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_a+var_fv+var_pv
 
   print "(a)", repeat("=", 119)
   call setem(1)
-  print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_pmt
+  print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_pmt, "bad:unk v"
   call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_pmt, status)
   print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_pmt
+
+  !! All possible combos
+  !! NONE
+  !! n n+i n+g n+pv n+fv n+a
+  !! i i+g i+pv i+fv i+a
+  !! g g+pv g+fv g+a
+  !! pv pv+fv pv+a
+  !! fv fv+a
+  !! a
 
   do k=1,4
      print "(a)", repeat("=", 119)
      call setem(k)
-     a = -1
-     print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_a
-     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_a, status)
-     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_a
-
-     print "(a)", repeat("=", 119)
-     call setem(k)
-     a = -1
-     pv = -1
-     print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_a+var_pv
-     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_a+var_pv, status)
-     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_a+var_pv
-
-     print "(a)", repeat("=", 119)
-     call setem(k)
-     a = -1
-     fv = -1
-     print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_a+var_fv
-     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_a+var_fv, status)
-     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_a+var_fv
+     print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_NONE
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_NONE, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_NONE
 
      print "(a)", repeat("=", 119)
      call setem(k)
@@ -93,6 +85,30 @@ program test_tvm_delayed_geometric_annuity_solve
      print "(a)", repeat("=", 119)
      call setem(k)
      n = -1
+     i = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_n+var_i, "bad:n+i"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_n+var_i, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_n+var_i
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     n = -1
+     g = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_n+var_g, "bad:n+g"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_n+var_g, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_n+var_g
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     n = -1
+     pv = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_n+var_pv, "bad:n+pv"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_n+var_pv, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_n+var_pv
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     n = -1
      fv = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_n+var_fv
      call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_n+var_fv, status)
@@ -100,10 +116,81 @@ program test_tvm_delayed_geometric_annuity_solve
 
      print "(a)", repeat("=", 119)
      call setem(k)
+     n = -1
+     a = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_n+var_a, "bad:n+a"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_n+var_a, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_n+var_a
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     i = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_i, "bad:i"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_i, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_i
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     i = -1
+     g = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_i+var_g, "bad:i+g"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_i+var_g, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_i+var_g
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     i = -1
+     pv = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_i+var_pv, "bad:i+pv"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_i+var_pv, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_i+var_pv
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     i = -1
      fv = -1
-     print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_fv
-     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_fv, status)
-     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_fv
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_i+var_fv, "bad:i+fv"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_i+var_fv, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_i+var_fv
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     i = -1
+     a = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_i+var_a, "bad:i+a"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_i+var_a, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_i+var_a
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     g = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_g, "bad:g"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_g, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_g
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     g = -1
+     pv = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_g+var_pv, "bad:g+pv"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_g+var_pv, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_g+var_pv
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     g = -1
+     fv = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_g+var_fv, "bad:g+fv"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_g+var_fv, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_g+var_fv
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     g = -1
+     a = -1
+     print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, g, pv, fv, a, d, e, var_g+var_a, "bad:g+a"
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_g+var_a, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_g+var_a
 
      print "(a)", repeat("=", 119)
      call setem(k)
@@ -119,6 +206,37 @@ program test_tvm_delayed_geometric_annuity_solve
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_fv+var_pv
      call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_fv+var_pv, status)
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_fv+var_pv
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     a = -1
+     pv = -1
+     print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_a+var_pv
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_a+var_pv, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_a+var_pv
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     fv = -1
+     print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_fv
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_fv, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_fv
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     a = -1
+     fv = -1
+     print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_a+var_fv
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_a+var_fv, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_a+var_fv
+
+     print "(a)", repeat("=", 119)
+     call setem(k)
+     a = -1
+     print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, g, pv, fv, a, d, e, var_a
+     call tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, var_a, status)
+     print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, g, pv, fv, a, d, e, var_a
+
   end do
   print "(a)", repeat("=", 119)
 contains
