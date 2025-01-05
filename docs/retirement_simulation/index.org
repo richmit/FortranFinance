@@ -90,7 +90,7 @@ that essentially simulates the annual financial transactions for a retired coupl
 :CUSTOM_ID: obs
 :END:
 
-  - For my situation in particular, careful tax panning is a larger factor in a successful retirement than my portfolio mix!
+  - Careful tax panning may be a larger factor in a successful retirement than portfolio mix!
   - Proper portfolio mix and balancing is critical for maximizing income and minimizing risk.
   - Roth conversions can be a huge deal in maximizing long term growth.
   - Good visualizations are very important for understanding what's going on
@@ -102,7 +102,7 @@ that essentially simulates the annual financial transactions for a retired coupl
 :CUSTOM_ID: future
 :END:
 
-  - IRA to Roth IRA conversions (*in work*)
+  - IRA to Roth IRA conversions
     - I want to trigger conversions early in the retirement phase when we have low taxes from using the brokerage.
     - The idea will be to set a target tax rate, and convert enough each year to meet that target.
     - Tax impact of regular IRA to Roth IRA conversions 
