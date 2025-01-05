@@ -81,13 +81,13 @@ the same variables to populate a cashflow that can be further analyzed or printe
 
 You will find several programs, most of which use MRFFL, in various directories at the base of the
 [[https://github.com/richmit/FortranFinance][FortranFinance]] repository:
-  - [[https://github.com/richmit/FortranFinance/tree/main/cashflows][cashflows]]                           (TBD -- in work) :: Some simple MRFFL cashflow examples.
-  - [[https://github.com/richmit/FortranFinance/tree/main/loans][loans]]                                   (TBD -- in work) :: Illustrates how to use MRFFL TVM solvers in combination with cashflow series.
-  - [[https://github.com/richmit/FortranFinance/tree/main/monte_carlo][monte_carlo]]                       (TBD -- in work) :: Illustrates basic resampling monte carlo for inflation and stock market returns.
-  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_functional_tests][MRFFL_functional_tests]]                  :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
-  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_unit_tests][MRFFL_unit_tests]]             (TBD -- in work) :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
-  - [[https://github.com/richmit/FortranFinance/tree/main/retirement][retirement]]                         (TBD -- in work) :: Some TVM based retirement computations.
-  - [[https://github.com/richmit/FortranFinance/tree/main/retirement_simulation][retirement_simulation]]   (TBD -- in work) :: A comprehensive simulator for a married couple's retirement (not much MRFFL used here)
+  - [[https://github.com/richmit/FortranFinance/tree/main/cashflows][cashflows]]                           :: Some simple MRFFL cashflow examples.
+  - [[https://github.com/richmit/FortranFinance/tree/main/loans][loans]]                                   :: Illustrates how to use MRFFL TVM solvers in combination with cashflow series.
+  - [[https://github.com/richmit/FortranFinance/tree/main/monte_carlo][monte_carlo]]                       :: Illustrates basic resampling monte carlo for inflation and stock market returns.
+  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_functional_tests][MRFFL_functional_tests]] :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
+  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_unit_tests][MRFFL_unit_tests]]             :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
+  - [[https://github.com/richmit/FortranFinance/tree/main/retirement][retirement]]                         :: Some TVM based retirement computations.
+  - [[https://github.com/richmit/FortranFinance/tree/main/retirement_simulation][retirement_simulation]]   :: A comprehensive simulator for a married couple's retirement (not much MRFFL used here)
 
 I use a GNU make based build flow.  You *must* use GNU make to utilize it as I've used some GNU make'isms in the makefiles.  If you don't use GNU make you are
 pretty much on your own.
@@ -255,7 +255,7 @@ how to do that.
    - GNU Fortran (Rev2, Built by MSYS2 project) 14.2.0 : Everything works
    - LFortran 0.42.0 LLVM 19.1.3 : Nothing works.  Compiler crashes during compile.
    - Intel ifx 2024.1.0 Build 20240308 : Everything works
-   - flang 19.1.6 inside clang: Nexted functions cause a seg fault, and I don't know how to get the linker to do the right thing.
+   - flang 19.1.6 inside clang: Nested functions cause a seg fault, and I don't know how to get the linker to do the right thing.
  - Debian 12.8 running in WSL on Windows 11 ::
    - GNU Fortran (Debian 14.2.0-8) 14.2.0 from debian-testing: Everything works
    - LFortran 0.42.0 LLVM 19.1.3 : Nothing works.  Compiler crashes during compile.
