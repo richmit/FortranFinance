@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-04 Sat 14:30 -->
+<!-- 2025-01-05 Sun 14:44 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>MR Fortran Finance Library (MRFFL)</title>
@@ -485,14 +485,14 @@ how to do that.
 <li>GNU Fortran (Rev2, Built by MSYS2 project) 14.2.0 : Everything works</li>
 <li>LFortran 0.42.0 LLVM 19.1.3 : Nothing works.  Compiler crashes during compile.</li>
 <li>Intel ifx 2024.1.0 Build 20240308 : Everything works</li>
-<li>flang 19.1.6 : TBD</li>
+<li>flang 19.1.6 inside clang: Nexted functions cause a seg fault, and I don't know how to get the linker to do the right thing.</li>
 </ul></dd>
 <dt>Debian 12.8 running in WSL on Windows 11</dt><dd><ul class="org-ul">
 <li>GNU Fortran (Debian 14.2.0-8) 14.2.0 from debian-testing: Everything works</li>
 <li>LFortran 0.42.0 LLVM 19.1.3 : Nothing works.  Compiler crashes during compile.</li>
 <li>Intel ifx 2025.0.4 20241205 : Everything works</li>
 <li>nvfortran 24.11-0 64-bit target on x86-64 Linux : Everything works.</li>
-<li>flang-new version 19.1.6 : TBD</li>
+<li>flang-new version 19.1.6 : Everything works.</li>
 </ul></dd>
 </dl>
 </div>
