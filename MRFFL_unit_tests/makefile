@@ -216,6 +216,7 @@ clean : clean_multi_mrffl
 	rm -f $(addsuffix $(EXE_SUFFIX), $(EXE_TARGETS)) 
 	rm -f $(addsuffix $(OBJ_SUFFIX), $(EXE_TARGETS))
 	rm -f $(addsuffix .exe, $(EXE_TARGETS))
+	rm -f $(EXE_TARGETS)
 
 .PHONY: all
 all : $(EXE_TARGETS) 
