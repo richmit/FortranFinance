@@ -34,7 +34,7 @@
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 ifeq ($(OS),Windows_NT)
   AR := ar
-  FC := flang
+  FC := flang 
   FFLAGS := -pedantic -std=f2018
   FSHFLG = -o $(MRFFL_SHARED_LIB_FILE) -shared $(MRFFL_OBJ_FILES)
 else

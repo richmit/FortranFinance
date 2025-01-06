@@ -50,7 +50,7 @@ else
 endif
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-MRFFL_MODS := mrffl_config mrffl_stats mrffl_bitset mrffl_prt_sets mrffl_var_sets mrffl_percentages mrffl_us_inflation mrffl_solver mrffl_tvm mrffl_us_taxes mrffl_cashflows mrffl_tvm12 mrffl_us_markets 
+MRFFL_MODS := mrffl_config mrffl_stats mrffl_bitset mrffl_prt_sets mrffl_var_sets mrffl_percentages mrffl_us_inflation mrffl_solver mrffl_solver_ne mrffl_tvm mrffl_us_taxes mrffl_cashflows mrffl_tvm12 mrffl_us_markets 
 
 MRFFL_MOD_FILES := $(addsuffix .mod,$(MRFFL_MODS))
 MRFFL_OBJ_FILES := $(addsuffix $(OBJ_SUFFIX),$(MRFFL_MODS))
@@ -75,6 +75,9 @@ mrffl_var_sets$(OBJ_SUFFIX) mrffl_var_sets.mod &: $(MRFFL_PATH)/mrffl_var_sets.f
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
 mrffl_solver$(OBJ_SUFFIX) mrffl_solver.mod &: $(MRFFL_PATH)/mrffl_solver.f90 mrffl_config.mod
+	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
+
+mrffl_solver_ne$(OBJ_SUFFIX) mrffl_solver_ne.mod &: $(MRFFL_PATH)/mrffl_solver_ne.f90 mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
 mrffl_tvm12$(OBJ_SUFFIX) mrffl_tvm12.mod &: $(MRFFL_PATH)/mrffl_tvm12.f90 mrffl_percentages.mod mrffl_solver.mod mrffl_tvm.mod mrffl_config.mod

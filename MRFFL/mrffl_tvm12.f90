@@ -51,6 +51,7 @@ module mrffl_tvm12
   use mrffl_bitset;
   use mrffl_var_sets, only: var_i, var_n, var_pv, var_fv, var_pmt
   use mrffl_solver, only: multi_bisection
+  ! use mrffl_solver_ne, only: multi_bisection
   use mrffl_prt_sets, only: prt_param, prt_table, prt_title
   implicit none  
   private
@@ -95,8 +96,8 @@ contains
     real(kind=rk),    intent(inout) :: i, pv, pmt, fv
     integer(kind=ik), intent(in)    :: pmt_time, unknown
     integer(kind=ik), intent(out)   :: status
-    real (kind=rk)                  :: ip1tn, tmp1, tmp2
-    real(kind=rk)                   :: islvivl0(3), islvivl1(3)
+    real (kind=rk)                  :: ip1tn, tmp1, tmp2, islvivl0(3), islvivl1(3), r_dat(4)
+    integer(kind=ik)                :: i_dat(2)
     if (unknown /= var_n) then
        if (n == 0) then
           status = 3001 ! "ERROR(tvm_solve): n==0!"
@@ -116,6 +117,8 @@ contains
           return
        end if
     end if    
+    r_dat = [ i, pv, pmt, fv ]
+    i_dat = [ n, pmt_time ]
     islvivl0  = [ 0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
     islvivl1  = [          99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
     ip1tn = (1+i) ** n
@@ -125,6 +128,7 @@ contains
           status = 0
        else if (unknown == var_i) then
           call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0d-5, 1.0d-5, 1000, status, .false.)
+          !call multi_bisection(i, islvivl0, islvivl1, i_slv_func, r_dat, i_dat, 1.0d-5, 1.0d-5, 1000, status, .false.)
           if (status /= 0) then
              status = 3005 ! "ERROR(tvm_solve): Unable to solve for i!"
           end if
@@ -150,6 +154,7 @@ contains
           status = 0
        else if (unknown == var_i) then
           call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0d-5, 1.0d-5, 1000, status, .false.)
+          !call multi_bisection(i, islvivl0, islvivl1, i_slv_func, r_dat, i_dat, 1.0d-5, 1.0d-5, 1000, status, .false.)
           if (status /= 0) then
              status = 3007 ! "ERROR(tvm_solve): Unable to solve for i!"
           end if
@@ -181,6 +186,24 @@ contains
       i_slv_func = (((-pmt_time * pmt + fv) * x - pmt) * (1 + x) ** (-n) + (pmt_time * pmt + pv) * x + pmt) / x
     end  function i_slv_func
   end subroutine tvm12_solve
+
+
+  ! real(kind=rk) function i_slv_func(x, r_dat, i_dat)
+  !   implicit none
+  !   real(kind=rk),    intent(in) :: x
+  !   real(kind=rk),    intent(in) :: r_dat(:)
+  !   integer(kind=ik), intent(in) :: i_dat(:)
+  !   integer(kind=ik)             :: n, pmt_time
+  !   real(kind=rk)                :: i, pv, pmt, fv
+  !   i        = r_dat(1)
+  !   pv       = r_dat(2)
+  !   pmt      = r_dat(3)
+  !   fv       = r_dat(4)
+  !   n        = i_dat(1)
+  !   pmt_time = i_dat(2)
+  !   i_slv_func = (((-pmt_time * pmt + fv) * x - pmt) * (1 + x) ** (-n) + (pmt_time * pmt + pv) * x + pmt) / x
+  ! end  function i_slv_func
+
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Print TVM Problem (variables and/or table)
