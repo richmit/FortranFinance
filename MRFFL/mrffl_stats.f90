@@ -44,9 +44,32 @@ module mrffl_stats
 
   public  :: resample_tail, resample_head
   public  :: mean_and_variance
+  public  :: rand_int, rand_real
   public  :: rand_norm_std, rand_norm, rand_log_norm
 
 contains
+
+  !--------------------------------------------------------------------------------------------------------------------------------
+  !> Return random integer in U([0,bound))
+  !!
+  integer(kind=ik) function rand_int(bound)
+    implicit none
+    integer(kind=ik), intent(in) :: bound
+   real(kind=rk)                 :: r  ! Random Number in [0, 1)
+   call random_number(r)
+   rand_int = int(r * bound)
+  end function rand_int
+
+  !--------------------------------------------------------------------------------------------------------------------------------
+  !> Return random real value on U([0,bound)).
+  !!
+  real(kind=rk) function rand_real(bound)
+    implicit none
+    real(kind=rk), intent(in) :: bound
+    real(kind=rk)             :: r  ! Random Number in [0, 1)
+   call random_number(r)
+   rand_real = r * bound
+  end function rand_real
 
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Return random value from among the last tail_length elements of data.
@@ -55,10 +78,8 @@ contains
     implicit none
     real(kind=rk), intent(in)    :: data(:)
     integer(kind=ik), intent(in) :: tail_length
-   real(kind=rk)                 :: r  ! Random Number in (0, 1]
-   integer(kind=ik)              :: i  ! Random Index into dat
-   call random_number(r)
-    i = ubound(data, 1) - int(r * min(tail_length, size(data)))
+    integer(kind=ik)             :: i
+    i = ubound(data, 1) - rand_int(min(tail_length, size(data)))
     i = max(i, lbound(data, 1))
     i = min(i, ubound(data, 1))
     resample_tail = data(i)
@@ -71,10 +92,8 @@ contains
     implicit none
     real(kind=rk), intent(in)    :: data(:)
     integer(kind=ik), intent(in) :: head_length
-   real(kind=rk)                 :: r  ! Random Number in (0, 1]
-   integer(kind=ik)              :: i  ! Random Index into dat
-   call random_number(r)
-    i = lbound(data, 1) + int(r * min(head_length, size(data)))
+    integer(kind=ik)             :: i
+    i = lbound(data, 1) + rand_int(min(tail_length, size(data)))
     i = max(i, lbound(data, 1))
     i = min(i, ubound(data, 1))
     resample_head = data(i)
