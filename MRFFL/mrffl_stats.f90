@@ -93,7 +93,7 @@ contains
     real(kind=rk), intent(in)    :: data(:)
     integer(kind=ik), intent(in) :: head_length
     integer(kind=ik)             :: i
-    i = lbound(data, 1) + rand_int(min(tail_length, size(data)))
+    i = lbound(data, 1) + rand_int(min(head_length, size(data)))
     i = max(i, lbound(data, 1))
     i = min(i, ubound(data, 1))
     resample_head = data(i)
