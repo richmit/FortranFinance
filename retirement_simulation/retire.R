@@ -86,21 +86,8 @@ if (nSims > 1) {
   ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
   if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
-  n <- pmin(2000, nSims)
-  gp <- ggplot(daDat %>% filter(Sim<=n)) + 
-    geom_line(aes(x=Year, y=total_savings1p, group=Sim), linewidth=2, alpha=0.01, show.legend=FALSE) + 
-    scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), trans='log10') + 
-    scale_x_continuous(name='', breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
-    coord_cartesian(ylim=c(1, max(daDat$total_savings1p))) + 
-    theme(panel.grid.minor.x = element_blank()) + 
-    labs(title=paste('Composite of ', n, ' Simulation Runs Of ', nSims, ' Total Runs', sep='')) +
-    ylab('Total Savings')
-  fname <- "simCompLine.png"
-  ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
-  if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
-
   nColps <- sum(bySimSum$min_savings<=0)
-  if (nColps > 0) {
+  if ((nColps > 0) && (nColps < 4000)) {
     n <- pmin(2000, nSims)
     gp <- ggplot() + 
       geom_line(data=daDat %>% filter(Sim<=n),
@@ -120,6 +107,19 @@ if (nSims > 1) {
       labs(title=paste('Composite of ', n, ' Simulation Runs and ', nColps, ' failure Runs Of ', nSims, ' Total Runs', sep='')) +
       ylab('Total Savings')
     fname <- "compColCases.png"
+    ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
+    if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
+  } else {
+    n <- pmin(2000, nSims)
+    gp <- ggplot(daDat %>% filter(Sim<=n)) + 
+      geom_line(aes(x=Year, y=total_savings1p, group=Sim), linewidth=2, alpha=0.01, show.legend=FALSE) + 
+      scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), trans='log10') + 
+      scale_x_continuous(name='', breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
+      coord_cartesian(ylim=c(1, max(daDat$total_savings1p))) + 
+      theme(panel.grid.minor.x = element_blank()) + 
+      labs(title=paste('Composite of ', n, ' Simulation Runs Of ', nSims, ' Total Runs', sep='')) +
+      ylab('Total Savings')
+    fname <- "simCompLine.png"
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
   }
