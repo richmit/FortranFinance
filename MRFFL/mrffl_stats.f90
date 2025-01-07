@@ -48,27 +48,39 @@ module mrffl_stats
   public  :: rand_norm_std, rand_norm, rand_log_norm
 
 contains
-
+  
   !--------------------------------------------------------------------------------------------------------------------------------
-  !> Return random integer in U([0,bound))
+  !> Return random integer in U([optional_lower_bound,upper_bound)) -- optional_lower_bound is 0 if missing.
   !!
-  integer(kind=ik) function rand_int(bound)
+  integer(kind=ik) function rand_int(upper_bound, optional_lower_bound)
     implicit none
-    integer(kind=ik), intent(in) :: bound
-   real(kind=rk)                 :: r  ! Random Number in [0, 1)
-   call random_number(r)
-   rand_int = int(r * bound)
+    integer(kind=ik),           intent(in) :: upper_bound
+    integer(kind=ik), optional, intent(in) :: optional_lower_bound
+    integer(kind=ik)                       :: lower_bound = 0
+    real(kind=rk)                          :: r
+    if (present(optional_lower_bound)) lower_bound = optional_lower_bound
+    if (lower_bound > upper_bound) then
+       error stop "ERROR(rand_int): lower_bound > upper_bound!"
+    end if
+    call random_number(r) ! Random Number in [0, 1)
+    rand_int = lower_bound + int(r * (upper_bound - lower_bound))
   end function rand_int
 
   !--------------------------------------------------------------------------------------------------------------------------------
-  !> Return random real value on U([0,bound)).
+  !> Return random real value in U([optional_lower_bound,upper_bound)) -- optional_lower_bound is 0 if missing.
   !!
-  real(kind=rk) function rand_real(bound)
+  real(kind=rk) function rand_real(upper_bound, optional_lower_bound)
     implicit none
-    real(kind=rk), intent(in) :: bound
-    real(kind=rk)             :: r  ! Random Number in [0, 1)
-   call random_number(r)
-   rand_real = r * bound
+    real(kind=rk),           intent(in) :: upper_bound
+    real(kind=rk), optional, intent(in) :: optional_lower_bound
+    real(kind=rk)                       :: lower_bound = 0
+    real(kind=rk)                       :: r  
+    if (present(optional_lower_bound)) lower_bound = optional_lower_bound
+    if (lower_bound > upper_bound) then
+       error stop "ERROR(rand_real): lower_bound > upper_bound!"
+    end if
+    call random_number(r) ! Random Number in [0, 1)
+    rand_real = lower_bound + r * (upper_bound - lower_bound)
   end function rand_real
 
   !--------------------------------------------------------------------------------------------------------------------------------
