@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-07 Tue 14:04 -->
+<!-- 2025-01-07 Tue 16:19 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-07 14:03:58</i></td>
+<td class="org-left"><i>2025-01-07 16:17:45</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-07 14:04:01</i></td>
+<td class="org-left"><i>2025-01-07 16:19:35</i></td>
 </tr>
 </tbody>
 </table>
@@ -257,6 +257,7 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <li><a href="#model">1.1. The Model</a></li>
 <li><a href="#obs">1.2. Some Observations</a></li>
 <li><a href="#future">1.3. Future Plans</a></li>
+<li><a href="#commonprob">1.4. Evaluating retirement planning software</a></li>
 </ul>
 </li>
 <li><a href="#ops">2. Operation</a>
@@ -312,10 +313,15 @@ that essentially simulates the annual financial transactions for a retired coupl
 <li>Inflation can be a fixed rate or monte carlo.</li>
 <li>The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.  
 <ul class="org-ul">
-<li>Expenses are met with a well defined withdraw strategy drawing down from the following sources in order: income, brokerage, IRA, Roth, &amp; emergency.</li>
-<li>The simulator will not draw funds from an IRA funds before the person is 60.</li>
+<li>Expenses are met with a well defined withdraw strategy drawing down from the following sources in order: income, brokerage, IRA, Roth, &amp; emergency.
+This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.  If you don't have that going on, you may
+want to change the draw down to subroutine to keep your tax rate level over time instead.</li>
+<li>The simulator will not draw funds from an IRA before the person is 60.</li>
 </ul></li>
-<li>They share a checking account in which they maintain a fixed balance growing with inflation.</li>
+<li>They share a checking account in which they maintain a fixed balance growing with inflation.
+<ul class="org-ul">
+<li>If necessary, savings in other accounts are used to maintain that balance.</li>
+</ul></li>
 <li>Retirement Savings
 <ul class="org-ul">
 <li>Each partner has an IRA and a Roth IRA</li>
@@ -331,12 +337,13 @@ that essentially simulates the annual financial transactions for a retired coupl
 <ul class="org-ul">
 <li>They each have a retirement date at which they will stop working.</li>
 <li>While they work, they contribute to to their IRA. Maximum contributions are comprehended including "catch up" contributions after age 50.</li>
-<li>Some percentage of unused income expenses can be saved in the brokerage account.</li>
+<li>Some percentage of unused income (income not used for expenses) can be saved in the brokerage account.</li>
 </ul></li>
 <li>Each partner will eventually draw Social Security
 <ul class="org-ul">
 <li>They each have a year at which they will draw benefits.</li>
 <li>Benefits are expected to grow &#x2013; this can be tied to inflation, or set an an alternate fixed rate.</li>
+<li>They each receive the same benefit level.</li>
 </ul></li>
 <li>Taxes are estimated for each year including
 <ul class="org-ul">
@@ -376,16 +383,104 @@ that essentially simulates the annual financial transactions for a retired coupl
 <li>IRA to Roth IRA conversions
 <ul class="org-ul">
 <li>Idea: Trigger conversions early in the retirement phase when we have lower taxes.</li>
-<li>Set a target tax rate that grows with inflation, and convert enough each year to meet that target.</li>
+<li>Set a target tax rate, and convert enough each year to meet that target.</li>
+<li>Need to make sure we don't convert funds we need to withdrawal within 5 years. ;)</li>
 <li>Add tax impact of regular IRA to Roth IRA conversions to tax computation</li>
 <li>Comprehend 5 year withdrawal delay to newly formed Roth accounts.</li>
 </ul></li>
-<li><del>Add 10 year US treasury bond yield</del> (Completed 2025-01-07)</li>
-<li>Black–Scholes MC</li>
+<li><del>Add 10 year US treasury bond yield</del> (Completed 2025-01-06)</li>
+<li>Black–Scholes MC &#x2013; this is mostly an academic curiosity for me.</li>
 <li><del>Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.</del> (Completed 2025-01-07)</li>
-<li>Social Security survivor benefits</li>
+<li>Social Security survivor benefits &#x2013; not sure I need to do this&#x2026;</li>
 <li>Support systems without STDOUT redirection: Make input file name argument required, and add optional output file name argument</li>
+<li>Support different SSI benefit levels.</li>
+<li>Add SSI life tables
+<ul class="org-ul">
+<li>Probably computations on survival.</li>
+<li>Combined probably computations with survival and account collapse with a probability time series graph.</li>
+<li>Do MC life span.</li>
+</ul></li>
 </ul>
+</div>
+</div>
+
+<div id="outline-container-commonprob" class="outline-3">
+<h3 id="commonprob"><span class="section-number-3">1.4.</span> Evaluating retirement planning software</h3>
+<div class="outline-text-3" id="text-commonprob">
+<p>
+I did a ton of research before I wrote this simulator.  I looked at dozens of wealth management and retirement planning tools.  Some free and some very
+expensive.  Some embarrassingly bad, and some quite sophisticated.  Still, I couldn't find everything I was looking for.
+</p>
+
+<p>
+That's not to say this simulator has all the things I was looking for.  In fact, it doesn't have everything, and that's why I use it in combination with other
+tools.  What I get from this simulator is additional insight into my particular scenario. At the end of the day it's all about your financial situation and
+goals that determine if a tool will help you or not. So, it is important that you do your research.
+</p>
+
+<p>
+In this section I have documented some of the common issues I found with various tools.  My hope is that it may help you in doing your own research.
+</p>
+
+<ul class="org-ul">
+<li>Monte carlo deficiencies 
+<ul class="org-ul">
+<li>Not using historical data for simulation parameters.
+<ul class="org-ul">
+<li>Seriously.  Several of the online JavaScript "free retirement" calculators were just doing uniform random numbers between -7 and 7 for market returns.
+That's pure trash.</li>
+</ul></li>
+<li>Uncorrelated GBM models for blended investments!
+<ul class="org-ul">
+<li>This is particularly bad when the blend includes securities of radically different types (bonds mixed with stocks, REITs mixed with dissimilar debit
+instruments, etc&#x2026;).</li>
+</ul></li>
+<li>GBM models with undocumented or dubious source parameters &#x2013; especially variance figures.</li>
+<li>Ignoring the correlation between inflation and bond returns!</li>
+<li>Only doing MC on investment returns and not inflation.</li>
+<li>Poor visualization and analysis capabilities for the results of MC simulations.
+<ul class="org-ul">
+<li>This was really a sticking point.  Many tools really didn't provide much information at all &#x2013; just a "probability of success" in the worst cases.  As I
+side note, I have become convinced that some of these tools exist only to publish the "probably of failure" metric as a marketing ploy.  They hope to
+scare people into paying for a financial advisor.</li>
+</ul></li>
+<li>Unwillingness to divulge the underlying models and assumptions.  
+<ul class="org-ul">
+<li>This is a deal breaker for me.  This stuff is generally not "secret sauce" or "proprietary intellectual property", but essential information required
+to understand the results.  How can we trust the "stock returns" MC if we don't even know what part of the market it's modeling?  Is it comprehending
+dividends and splits as part of the adjusted rate of return?  How is the REIT model incorporating dividends, and what is the reinvestment model?</li>
+</ul></li>
+</ul></li>
+<li>Poor tax estimation 
+<ul class="org-ul">
+<li>Blindly assuming a fixed tax rate over time is very common.
+<ul class="org-ul">
+<li>Note that some of the large banks do this, but they tune the rate to you.  They use your net worth and expenses to fit a fixed tax rate under the
+assumption of a savings draw-down strategy that will flatten out your taxes over time.  So the fixed tax rate thing isn't always bad, but you need to
+make sure the tool is being intelligent and not just "blindly picking a number".</li>
+</ul></li>
+<li>Not adjusting tax brackets for inflation.</li>
+<li>Inability to specify tax filing status and deduction methodology.</li>
+<li>Not considering early withdrawal penalties for retirement accounts.</li>
+</ul></li>
+<li>Roth conversions 
+<ul class="org-ul">
+<li>Most tools simply don't have the ability to plan for them at all</li>
+<li>Failing to comprehend the 5 year withdrawal penalties</li>
+<li>Failing to correctly compute tax consequences at time of conversion.</li>
+</ul></li>
+<li>Social Security 
+<ul class="org-ul">
+<li>Not comprehending when one partner dies, or only having one SSI monthly value for the couple.</li>
+<li>Not supporting, or incorrectly supporting, survivor benefits.</li>
+</ul></li>
+<li>Most tools don't allow you to use MC on life span</li>
+</ul>
+
+<p>
+In my research, one stand out tool was <a href="https://projectionlab.com/">Projection Lab</a>.  It's very flexible, and reasonably easy to use given the complex
+nature of what they are trying to support.
+</p>
 </div>
 </div>
 </div>
@@ -450,7 +545,7 @@ This will result in a executable (named "<code>retire</code>" on most UNIX-like 
 <h3 id="dowrun"><span class="section-number-3">2.4.</span> Running The Simulator</h3>
 <div class="outline-text-3" id="text-dowrun">
 <p>
-The <code>retire</code> command takes a single &#x2013; the config file that describes the parameters of the simulation &#x2013; see examples later in this document:
+The <code>retire</code> command takes a single &#x2013; the configuration file that describes the parameters of the simulation &#x2013; see examples later in this document:
 <a href="#case_20_config">config_20.nml</a> and <a href="#case_60_config">config_60.nml</a>.  When run it will produce a file called "<code>retire.out</code>".
 </p>
 
@@ -499,7 +594,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="org4041f4f" class="figure">
+<div id="org06bb200" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -509,7 +604,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="orgb2af958" class="figure">
+<div id="org16366ea" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -520,7 +615,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org4c840c9" class="figure">
+<div id="org9b348d3" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -541,7 +636,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="orge3208e7" class="figure">
+<div id="org6e4a8b7" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -552,7 +647,7 @@ failed.  In essence the green line shows a "safe" balance at which we are unlike
 </p>
 
 
-<div id="orgff8e62a" class="figure">
+<div id="org442899d" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -562,7 +657,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="orgd7556ea" class="figure">
+<div id="org2da6f3c" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -572,7 +667,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org6832139" class="figure">
+<div id="org172b333" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -582,7 +677,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="orge88e8c8" class="figure">
+<div id="org6310718" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -699,7 +794,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org5468c2a" class="figure">
+<div id="orgf02bf29" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -709,7 +804,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="orgd1f303b" class="figure">
+<div id="org65902fc" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -719,7 +814,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org13700b4" class="figure">
+<div id="org5a746f7" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -730,7 +825,7 @@ run out of money.
 </p>
 
 
-<div id="org19a5e34" class="figure">
+<div id="org34fef4c" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -749,7 +844,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org5ccbac5" class="figure">
+<div id="org466fb30" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -759,7 +854,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="orgf53be04" class="figure">
+<div id="orge53f3a4" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -769,7 +864,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org9d87c89" class="figure">
+<div id="orgb2bf938" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>

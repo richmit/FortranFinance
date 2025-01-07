@@ -59,8 +59,11 @@ that essentially simulates the annual financial transactions for a retired coupl
   - Inflation can be a fixed rate or monte carlo. 
   - The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.  
     - Expenses are met with a well defined withdraw strategy drawing down from the following sources in order: income, brokerage, IRA, Roth, & emergency.
-    - The simulator will not draw funds from an IRA funds before the person is 60.
+      This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.  If you don't have that going on, you may
+      want to change the draw down to subroutine to keep your tax rate level over time instead.
+    - The simulator will not draw funds from an IRA before the person is 60.
   - They share a checking account in which they maintain a fixed balance growing with inflation.
+    - If necessary, savings in other accounts are used to maintain that balance.
   - Retirement Savings
     - Each partner has an IRA and a Roth IRA
     - They share a brokerage account
@@ -71,10 +74,11 @@ that essentially simulates the annual financial transactions for a retired coupl
   - Each partner has a job.  
     - They each have a retirement date at which they will stop working.
     - While they work, they contribute to to their IRA. Maximum contributions are comprehended including "catch up" contributions after age 50.
-    - Some percentage of unused income expenses can be saved in the brokerage account.
+    - Some percentage of unused income (income not used for expenses) can be saved in the brokerage account.
   - Each partner will eventually draw Social Security
     - They each have a year at which they will draw benefits.
     - Benefits are expected to grow -- this can be tied to inflation, or set an an alternate fixed rate.
+    - They each receive the same benefit level.
   - Taxes are estimated for each year including
     - Income taxes
     - Tax impact of IRA withdrawals
@@ -104,14 +108,72 @@ that essentially simulates the annual financial transactions for a retired coupl
 
   - IRA to Roth IRA conversions
     - Idea: Trigger conversions early in the retirement phase when we have lower taxes.
-    - Set a target tax rate that grows with inflation, and convert enough each year to meet that target.
+    - Set a target tax rate, and convert enough each year to meet that target.  
+    - Need to make sure we don't convert funds we need to withdrawal within 5 years. ;)
     - Add tax impact of regular IRA to Roth IRA conversions to tax computation
     - Comprehend 5 year withdrawal delay to newly formed Roth accounts.
-  - +Add 10 year US treasury bond yield+ (Completed 2025-01-07)
-  - Black–Scholes MC
+  - +Add 10 year US treasury bond yield+ (Completed 2025-01-06)
+  - Black–Scholes MC -- this is mostly an academic curiosity for me.
   - +Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.+ (Completed 2025-01-07)
-  - Social Security survivor benefits
+  - Social Security survivor benefits -- not sure I need to do this...
   - Support systems without STDOUT redirection: Make input file name argument required, and add optional output file name argument
+  - Support different SSI benefit levels.
+  - Add SSI life tables
+    - Probably computations on survival.
+    - Combined probably computations with survival and account collapse with a probability time series graph.
+    - Do MC life span.
+
+** Evaluating retirement planning software
+:PROPERTIES:
+:CUSTOM_ID: commonprob
+:END:
+
+I did a ton of research before I wrote this simulator.  I looked at dozens of wealth management and retirement planning tools.  Some free and some very
+expensive.  Some embarrassingly bad, and some quite sophisticated.  Still, I couldn't find everything I was looking for.
+
+That's not to say this simulator has all the things I was looking for.  In fact, it doesn't have everything, and that's why I use it in combination with other
+tools.  What I get from this simulator is additional insight into my particular scenario. At the end of the day it's all about your financial situation and
+goals that determine if a tool will help you or not. So, it is important that you do your research.
+
+In this section I have documented some of the common issues I found with various tools.  My hope is that it may help you in doing your own research.
+
+ - Monte carlo deficiencies 
+   - Not using historical data for simulation parameters.
+     - Seriously.  Several of the online JavaScript "free retirement" calculators were just doing uniform random numbers between -7 and 7 for market returns.
+       That's pure trash.
+   - Uncorrelated GBM models for blended investments!
+     - This is particularly bad when the blend includes securities of radically different types (bonds mixed with stocks, REITs mixed with dissimilar debit
+       instruments, etc...).
+   - GBM models with undocumented or dubious source parameters -- especially variance figures.
+   - Ignoring the correlation between inflation and bond returns!
+   - Only doing MC on investment returns and not inflation.
+   - Poor visualization and analysis capabilities for the results of MC simulations.
+     - This was really a sticking point.  Many tools really didn't provide much information at all -- just a "probability of success" in the worst cases.  As I
+       side note, I have become convinced that some of these tools exist only to publish the "probably of failure" metric as a marketing ploy.  They hope to
+       scare people into paying for a financial advisor.
+   - Unwillingness to divulge the underlying models and assumptions.  
+     - This is a deal breaker for me.  This stuff is generally not "secret sauce" or "proprietary intellectual property", but essential information required
+       to understand the results.  How can we trust the "stock returns" MC if we don't even know what part of the market it's modeling?  Is it comprehending
+       dividends and splits as part of the adjusted rate of return?  How is the REIT model incorporating dividends, and what is the reinvestment model?
+ - Poor tax estimation 
+   - Blindly assuming a fixed tax rate over time is very common.
+     - Note that some of the large banks do this, but they tune the rate to you.  They use your net worth and expenses to fit a fixed tax rate under the
+       assumption of a savings draw-down strategy that will flatten out your taxes over time.  So the fixed tax rate thing isn't always bad, but you need to
+       make sure the tool is being intelligent and not just "blindly picking a number".
+   - Not adjusting tax brackets for inflation.
+   - Inability to specify tax filing status and deduction methodology.
+   - Not considering early withdrawal penalties for retirement accounts.
+ - Roth conversions 
+   - Most tools simply don't have the ability to plan for them at all
+   - Failing to comprehend the 5 year withdrawal penalties
+   - Failing to correctly compute tax consequences at time of conversion.
+ - Social Security 
+   - Not comprehending when one partner dies, or only having one SSI monthly value for the couple.
+   - Not supporting, or incorrectly supporting, survivor benefits.
+ - Most tools don't allow you to use MC on life span
+
+In my research, one stand out tool was [[https://projectionlab.com/][Projection Lab]].  It's very flexible, and reasonably easy to use given the complex
+nature of what they are trying to support.
 
 * Operation
 :PROPERTIES:
@@ -163,7 +225,7 @@ This will result in a executable (named "~retire~" on most UNIX-like platforms, 
 :CUSTOM_ID: dowrun
 :END:
 
-The ~retire~ command takes a single -- the config file that describes the parameters of the simulation -- see examples later in this document:
+The ~retire~ command takes a single -- the configuration file that describes the parameters of the simulation -- see examples later in this document:
 [[#case_20_config][config_20.nml]] and [[#case_60_config][config_60.nml]].  When run it will produce a file called "~retire.out~".
 
 This is a simple text file that you could load into Excel to analyze.  I use an [[https://www.mitchr.me/SS/tools/index.html#stats][R]] script for the analysis
