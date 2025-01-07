@@ -103,10 +103,11 @@ that essentially simulates the annual financial transactions for a retired coupl
 :END:
 
   - IRA to Roth IRA conversions
-    - I want to trigger conversions early in the retirement phase when we have low taxes from using the brokerage.
-    - The idea will be to set a target tax rate, and convert enough each year to meet that target.
-    - Tax impact of regular IRA to Roth IRA conversions 
-  - Correlated banded and inflation MC
+    - Idea: Trigger conversions early in the retirement phase when we have lower taxes.
+    - Set a target tax rate that grows with inflation, and convert enough each year to meet that target.
+    - Add tax impact of regular IRA to Roth IRA conversions to tax computation
+    - Comprehend 5 year withdrawal delay to newly formed Roth accounts.
+  - +Add 10 year US treasury bond yield+ (Completed 2025-01-07)
   - Black–Scholes MC
   - Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.
   - Social Security survivor benefits
@@ -190,7 +191,7 @@ grep -v '^ *$' ~/world/my_prog/finance/FortranFinance/retirement_simulation/conf
 #+RESULTS:
 Here we have a couple starting to save for retirement at age 25.  They both have good jobs earning 100K, and they
 spend 100K per year on expenses.  Work income is growing at 2.5%. They currently have no retirement savings, but wish
-to start saving aggressively.  The believe they can earn 4% on investments, and inflation will be about 3%.  Note work
+to start saving aggressively.  They believe they can earn 4% on investments, and inflation will be about 3%.  Note work
 income is not keeping up with inflation. They have 10K in checking and 10K in an emergency fund.  The checking account
 earns 0.01% interest, and the emergency fund is in CDs earning 3%.
 
@@ -210,7 +211,8 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 
   [[file:pics/paidunpaid_20_fix_full.png][file:pics/paidunpaid_20_fix_800x.png]]
 
-This graph also deals with expenses, but shows how the expenses are paid.
+This graph also deals with expenses, but shows how the expenses are paid.  Note the pink bit starting 2050 showing the couple using savings for expenses well
+before retirement.  This is what happens when salary doesn't keep up with inflation!
 
   [[file:pics/paidsource_20_fix_full.png][file:pics/paidsource_20_fix_800x.png]]
 
@@ -222,16 +224,17 @@ This graph also deals with expenses, but shows how the expenses are paid.
 The graphs in this section are what you get from ~retire.R~ when the simulation has monte carlo.  
 
 This first graph shows the probability the savings balance trajectory will be within the color band.  For example the inner green band contains 50% of all
-simulation runs.  The yellow band, which includes the green band, contains 80% of all simulation runs.  You can change the bands in the ~retire.R~ script.
+simulation runs.  The yellow band, which includes the green band, contains 80% of all simulation runs.  You can change the number and bounds for the bands in
+the ~retire.R~ script.
 
   [[file:pics/savings_crg_20_mc_full.png][file:pics/savings_crg_20_mc_800x.png]]
 
-This graph shows 2000 savings trajectories, all the failure trajectories (when we went broke), and an envelope for the highest balance for a trajectories that
+This graph shows 2000 savings trajectories, all the failure trajectories (when we went broke), and an envelope for the highest balance for trajectories that
 failed.  In essence the green line shows a "safe" balance at which we are unlikely to see failure.
 
   [[file:pics/compColCases_20_mc_full.png][file:pics/compColCases_20_mc_800x.png]]
 
-This graph is similar to the probability band graph, but is a more traditional presentation for people accustom to box plots.
+This graph is similar to the probability band graph, but is a more traditional presentation for people accustomed to box plots.
 
   [[file:pics/simCompBox_20_mc_full.png][file:pics/simCompBox_20_mc_800x.png]]
 

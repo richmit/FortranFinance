@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-06 Mon 23:20 -->
+<!-- 2025-01-07 Tue 12:46 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-06 23:20:08</i></td>
+<td class="org-left"><i>2025-01-07 12:46:30</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-06 23:20:09</i></td>
+<td class="org-left"><i>2025-01-07 12:46:30</i></td>
 </tr>
 </tbody>
 </table>
@@ -375,11 +375,12 @@ that essentially simulates the annual financial transactions for a retired coupl
 <ul class="org-ul">
 <li>IRA to Roth IRA conversions
 <ul class="org-ul">
-<li>I want to trigger conversions early in the retirement phase when we have low taxes from using the brokerage.</li>
-<li>The idea will be to set a target tax rate, and convert enough each year to meet that target.</li>
-<li>Tax impact of regular IRA to Roth IRA conversions</li>
+<li>Idea: Trigger conversions early in the retirement phase when we have lower taxes.</li>
+<li>Set a target tax rate that grows with inflation, and convert enough each year to meet that target.</li>
+<li>Add tax impact of regular IRA to Roth IRA conversions to tax computation</li>
+<li>Comprehend 5 year withdrawal delay to newly formed Roth accounts.</li>
 </ul></li>
-<li>Correlated banded and inflation MC</li>
+<li><del>Add 10 year US treasury bond yield</del> (Completed 2025-01-07)</li>
 <li>Black–Scholes MC</li>
 <li>Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.</li>
 <li>Social Security survivor benefits</li>
@@ -478,7 +479,7 @@ R -q -f retire.R
 <p>
 Here we have a couple starting to save for retirement at age 25.  They both have good jobs earning 100K, and they
 spend 100K per year on expenses.  Work income is growing at 2.5%. They currently have no retirement savings, but wish
-to start saving aggressively.  The believe they can earn 4% on investments, and inflation will be about 3%.  Note work
+to start saving aggressively.  They believe they can earn 4% on investments, and inflation will be about 3%.  Note work
 income is not keeping up with inflation. They have 10K in checking and 10K in an emergency fund.  The checking account
 earns 0.01% interest, and the emergency fund is in CDs earning 3%.
 </p>
@@ -497,7 +498,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="org7f21c27" class="figure">
+<div id="orgbb01ae4" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -507,17 +508,18 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="orgd50310a" class="figure">
+<div id="org4dc371e" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
 
 <p>
-This graph also deals with expenses, but shows how the expenses are paid.
+This graph also deals with expenses, but shows how the expenses are paid.  Note the pink bit starting 2050 showing the couple using savings for expenses well
+before retirement.  This is what happens when salary doesn't keep up with inflation!
 </p>
 
 
-<div id="org52e2321" class="figure">
+<div id="org5c112ed" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -533,32 +535,33 @@ The graphs in this section are what you get from <code>retire.R</code> when the 
 
 <p>
 This first graph shows the probability the savings balance trajectory will be within the color band.  For example the inner green band contains 50% of all
-simulation runs.  The yellow band, which includes the green band, contains 80% of all simulation runs.  You can change the bands in the <code>retire.R</code> script.
+simulation runs.  The yellow band, which includes the green band, contains 80% of all simulation runs.  You can change the number and bounds for the bands in
+the <code>retire.R</code> script.
 </p>
 
 
-<div id="orgbdcb199" class="figure">
+<div id="orge99395f" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
 
 <p>
-This graph shows 2000 savings trajectories, all the failure trajectories (when we went broke), and an envelope for the highest balance for a trajectories that
+This graph shows 2000 savings trajectories, all the failure trajectories (when we went broke), and an envelope for the highest balance for trajectories that
 failed.  In essence the green line shows a "safe" balance at which we are unlikely to see failure.
 </p>
 
 
-<div id="orgfb15a8f" class="figure">
+<div id="orge0ab98c" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
 
 <p>
-This graph is similar to the probability band graph, but is a more traditional presentation for people accustom to box plots.
+This graph is similar to the probability band graph, but is a more traditional presentation for people accustomed to box plots.
 </p>
 
 
-<div id="org455b4e6" class="figure">
+<div id="org155b712" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -568,7 +571,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="orga6e383a" class="figure">
+<div id="org6cc8899" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -578,7 +581,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="org251c081" class="figure">
+<div id="orgbccf194" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -695,7 +698,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org7f2d585" class="figure">
+<div id="org5594768" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -705,7 +708,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="orgc4aea76" class="figure">
+<div id="org4dd2c50" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -715,7 +718,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org294f21a" class="figure">
+<div id="orgeaa555d" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -726,7 +729,7 @@ run out of money.
 </p>
 
 
-<div id="org471e00c" class="figure">
+<div id="org4519cf8" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -745,7 +748,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org0f9881f" class="figure">
+<div id="orgb3199cf" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -755,7 +758,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org3c8304e" class="figure">
+<div id="org6312105" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -765,7 +768,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="orgb6abe21" class="figure">
+<div id="orged131f7" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>

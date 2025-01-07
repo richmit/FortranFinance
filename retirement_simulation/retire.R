@@ -33,7 +33,6 @@ nSims <- length(unique(daDat$Sim))
   timeLabs <- sapply(timeBrks, y2lab)
   timeLabs[1] <- 'Year\nAge1\nAge2'
 
-
 if (nSims > 1) {
 
   bySimSum <- 
