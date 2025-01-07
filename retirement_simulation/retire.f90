@@ -41,12 +41,14 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program retire
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
-  use mrffl_percentages, only: p_of=>percentage_of, add_p=>add_percentage, percentage_of_total
-  use mrffl_us_taxes, only: seed_tax_year, tax, std_tax_deduction_single, std_tax_deduction_joint, tax_bracket_breaks_single, tax_bracket_rates, tax_bracket_breaks_joint
-  use mrffl_tvm, only: tvm_geometric_annuity_sum_a
-  use mrffl_us_markets, only: snp_resample, dgs10_resample
-  use mrffl_us_inflation, only: inf_resample
+  use, intrinsic :: iso_fortran_env,    only: output_unit, error_unit
+  use            :: mrffl_config,       only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
+  use            :: mrffl_percentages,  only: p_of=>percentage_of, add_p=>add_percentage, percentage_of_total
+  use            :: mrffl_us_taxes,     only: seed_tax_year, tax, std_tax_deduction_single, std_tax_deduction_joint, tax_bracket_breaks_single, tax_bracket_rates, tax_bracket_breaks_joint
+  use            :: mrffl_tvm,          only: tvm_geometric_annuity_sum_a
+  use            :: mrffl_stats,        only: rand_int
+  use            :: mrffl_us_markets,   only: snp_resample, dgs10_resample, snp_dat, dgs10_dat
+  use            :: mrffl_us_inflation, only: inf_resample, inf_dat
 
   implicit none
 
@@ -110,7 +112,7 @@ program retire
   integer(kind=ik)  :: simulation_year_start               = seed_tax_year       
 
   ! Global runtime variables used by the simulation
-  integer(kind=ik)  :: age_p1, age_p2, simulation_year_end, year, tmp_j, num_runs
+  integer(kind=ik)  :: age_p1, age_p2, simulation_year_end, year, tmp_j, num_runs, mc_year_low, mc_year_high
   real(kind=rk)     :: brokerage_balance, ira_balance_p2, ira_balance_p1, emergency_fund, roth_balance_p2, roth_balance_p1
   real(kind=rk)     :: cash_reserves, cash_income, expected_annual_expenses
 
@@ -125,6 +127,34 @@ program retire
   else
      num_runs = 1
   end if
+
+  ! Set mc_year_high & mc_year_low -- even if we don't do MC.
+  mc_year_high = simulation_year_start + 10000
+  if ((high_investment_apr < 0) .or. (mid_investment_apr < 0)) then
+     mc_year_high = min(mc_year_high, ubound(snp_dat, 1))
+  end if
+  if (low_investment_apr < 0) then
+     mc_year_high = min(mc_year_high, ubound(dgs10_dat, 1))
+  end if
+  if (fixed_inflation_rate < 0) then
+     mc_year_high = min(mc_year_high, ubound(inf_dat, 1))
+  end if
+  
+  mc_year_low  = mc_year_high - monte_carlo_years
+  if ((high_investment_apr < 0) .or. (mid_investment_apr < 0)) then
+     mc_year_low  = max(mc_year_low,  lbound(snp_dat, 1))
+  end if
+  if (low_investment_apr < 0) then
+     mc_year_low  = max(mc_year_low,  lbound(dgs10_dat, 1))
+  end if
+  if (fixed_inflation_rate < 0) then
+     mc_year_low  = max(mc_year_low,  lbound(inf_dat, 1))
+  end if
+
+  if ( (mc_year_high - mc_year_low) < monte_carlo_years) then
+     error stop "Not enough historical data to support monte_carlo_years setting"
+  end if
+  !write (error_unit, *) "MCH: ", mc_year_low, mc_year_high
 
   do tmp_j=1,num_runs
      call main_sim(tmp_j)
@@ -152,17 +182,18 @@ contains
      real(kind=rk)     :: start_cash_income
      real(kind=rk)     :: cur_tax_bracket_breaks_single(size(tax_bracket_breaks_single))
      real(kind=rk)     :: cur_tax_bracket_breaks_joint(size(tax_bracket_breaks_joint))
+     integer(kind=ik)  :: mc_year
 
      !                                         s   y a1 a2    cr         inf       CpI/ST/SI/SR  ef B I12 R12  apr          ss1/2 wrk1/2 sav1 sav2 exp epI/T/I/R  taxbl      bkt       tax tpI/T/SI/SR
      character(len=*), parameter  :: fmt_n = "(i7, 3(1x, i4), 1x, f12.2, 1x, f5.1, 4(1x, f10.2), 6(1x, f16.2), 3(1x, f6.1), 4(1x, f9.2), 2(1x, f8.2), 5(1x, f11.2), 1x, f14.2, 1x, f6.2, 5(1x, f14.2))"
      character(len=*), parameter  :: fmt_h = "(a7, 3(1x, a4), 1x, a12,   1x, a5,   4(1x, a10),   6(1x, a16),   3(1x, a6),   4(1x, a9),   2(1x, a8),   5(1x, a11),   1x, a14,   1x, a6,   5(1x, a14) )"
 
      if (sim == 1) then
-        print fmt_h, &
+        write (output_unit, fmt_h) &
              "Sim", "Year", "Age1", "Age2", & 
              "SavingsC", "Inf", "CPaidI", "CPaidST", "CPaidSI", "CPaidSR", &
              "SavingsE", "SavingsB", "SavingsI1", "SavingsI2", "SavingsR1", "SavingsR2", "aprH", "arpM", "aprL", &
-             "SS1","SS2","Wrk1","Wrk2", &
+             "SS1", "SS2", "Wrk1", "Wrk2", &
              "Sav1", "Sav2", &
              "Expenses", "EPaidI", "EPaidST", "EPaidSI", "EPaidSR", &
              "Taxable", "Bkt", "Taxes", "TPaidI", "TPaidST", "TPaidSI", "TPaidSR"
@@ -198,21 +229,24 @@ contains
      do year=simulation_year_start, simulation_year_end
 
         ! ------------------------------------------------------------------------------------------------------------------------
-        ! Fix a value for monte carlo variables
+        ! We always do MC even when num_runs==1..
+        mc_year = rand_int(mc_year_high, mc_year_low)
+
+        ! ------------------------------------------------------------------------------------------------------------------------
+        ! Fix a value for investments (invest or use cash)
         if ((worst_case_inflation_rate < 0) .or. &
              (cash_reserves + emergency_fund + brokerage_balance + ira_balance_p1 + ira_balance_p2 + roth_balance_p1 + roth_balance_p2 < &
              tvm_geometric_annuity_sum_a(1+simulation_year_end-year, worst_case_inflation_rate, expected_annual_expenses))) then
-           cur_investment_apr(1)  = alt_if_neg(high_investment_apr, snp_resample(monte_carlo_years))
+           cur_investment_apr(1)  = alt_if_neg(high_investment_apr, snp_dat(mc_year))
            cur_investment_apr(2)  = alt_if_neg(mid_investment_apr,  cur_investment_apr(1)/2)
-           cur_investment_apr(3)  = alt_if_neg(low_investment_apr,  dgs10_resample(monte_carlo_years))
+           cur_investment_apr(3)  = alt_if_neg(low_investment_apr,  dgs10_dat(mc_year))
         else
            ! we have so much money at this point we don't need to aggressively invest
            cur_investment_apr  = cash_position_growth
         end if
 
-        ! MJR TODO NOTE <2025-01-01T22:11:50-0600> main_sim: FIX NEXT TWO LINES!!!
         cur_emergency_fund_growth        = alt_if_neg(emergency_fund_growth,      cur_investment_apr(3))
-        cur_inflation_rate               = alt_if_neg(fixed_inflation_rate,       inf_resample(monte_carlo_years))
+        cur_inflation_rate               = alt_if_neg(fixed_inflation_rate,       inf_dat(mc_year))
         cur_work_salary_growth           = alt_if_neg(work_salary_growth,         max(0.0_rk, cur_inflation_rate/2))
         cur_social_security_growth       = alt_if_neg(social_security_growth,     max(0.0_rk, cur_inflation_rate))
         cur_annual_ira_contrib_growth    = alt_if_neg(annual_ira_contrib_growth,  max(0.0_rk, cur_inflation_rate))
@@ -343,7 +377,7 @@ contains
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Print status to STDOUT
-        print fmt_n, &
+        write (output_unit, fmt_n) &
              sim, year, age_p1, age_p2, &
              cash_reserves, cur_inflation_rate, cr_paied_cash, cr_paied_savings, cr_paied_ira, cr_paied_roth, &
              emergency_fund, brokerage_balance, ira_balance_p1, ira_balance_p2,roth_balance_p1, roth_balance_p2, &

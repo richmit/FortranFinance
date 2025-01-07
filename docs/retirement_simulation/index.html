@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-07 Tue 12:46 -->
+<!-- 2025-01-07 Tue 14:04 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-07 12:46:30</i></td>
+<td class="org-left"><i>2025-01-07 14:03:58</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-07 12:46:30</i></td>
+<td class="org-left"><i>2025-01-07 14:04:01</i></td>
 </tr>
 </tbody>
 </table>
@@ -382,8 +382,9 @@ that essentially simulates the annual financial transactions for a retired coupl
 </ul></li>
 <li><del>Add 10 year US treasury bond yield</del> (Completed 2025-01-07)</li>
 <li>Black–Scholes MC</li>
-<li>Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.</li>
+<li><del>Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.</del> (Completed 2025-01-07)</li>
 <li>Social Security survivor benefits</li>
+<li>Support systems without STDOUT redirection: Make input file name argument required, and add optional output file name argument</li>
 </ul>
 </div>
 </div>
@@ -498,7 +499,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="orgbb01ae4" class="figure">
+<div id="org4041f4f" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -508,7 +509,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org4dc371e" class="figure">
+<div id="orgb2af958" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -519,7 +520,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org5c112ed" class="figure">
+<div id="org4c840c9" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -540,7 +541,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="orge99395f" class="figure">
+<div id="orge3208e7" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -551,7 +552,7 @@ failed.  In essence the green line shows a "safe" balance at which we are unlike
 </p>
 
 
-<div id="orge0ab98c" class="figure">
+<div id="orgff8e62a" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -561,7 +562,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="org155b712" class="figure">
+<div id="orgd7556ea" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -571,7 +572,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org6cc8899" class="figure">
+<div id="org6832139" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -581,7 +582,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="orgbccf194" class="figure">
+<div id="orge88e8c8" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -698,7 +699,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org5594768" class="figure">
+<div id="org5468c2a" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -708,7 +709,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org4dd2c50" class="figure">
+<div id="orgd1f303b" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -718,7 +719,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="orgeaa555d" class="figure">
+<div id="org13700b4" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -729,7 +730,7 @@ run out of money.
 </p>
 
 
-<div id="org4519cf8" class="figure">
+<div id="org19a5e34" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -748,7 +749,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="orgb3199cf" class="figure">
+<div id="org5ccbac5" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -758,7 +759,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org6312105" class="figure">
+<div id="orgf53be04" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -768,7 +769,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="orged131f7" class="figure">
+<div id="org9d87c89" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>

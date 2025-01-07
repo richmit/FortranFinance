@@ -109,8 +109,9 @@ that essentially simulates the annual financial transactions for a retired coupl
     - Comprehend 5 year withdrawal delay to newly formed Roth accounts.
   - +Add 10 year US treasury bond yield+ (Completed 2025-01-07)
   - Black–Scholes MC
-  - Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.
+  - +Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.+ (Completed 2025-01-07)
   - Social Security survivor benefits
+  - Support systems without STDOUT redirection: Make input file name argument required, and add optional output file name argument
 
 * Operation
 :PROPERTIES:
