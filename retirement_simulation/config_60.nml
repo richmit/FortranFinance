@@ -26,7 +26,7 @@ low_investment_p                    = 0.0,       !! percentage of investments at
                                      
 high_investment_apr                 = 7.0,       !! apr for investments at high growth
                                                  !! Used for retirement accounts and the brokerage!
-                                                 !! If negative, then do monte carlo on this value
+                                                 !! If negative, then do monte carlo with snp_resample
 mid_investment_apr                  = 4.0,       !! apr for investments at medium growth
                                                  !! Used for retirement accounts and the brokerage!
                                                  !! If negative, then set to high_investment_apr/2

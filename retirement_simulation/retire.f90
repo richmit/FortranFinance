@@ -45,7 +45,7 @@ program retire
   use mrffl_percentages, only: p_of=>percentage_of, add_p=>add_percentage, percentage_of_total
   use mrffl_us_taxes, only: seed_tax_year, tax, std_tax_deduction_single, std_tax_deduction_joint, tax_bracket_breaks_single, tax_bracket_rates, tax_bracket_breaks_joint
   use mrffl_tvm, only: tvm_geometric_annuity_sum_a
-  use mrffl_us_markets, only: snp_resample
+  use mrffl_us_markets, only: snp_resample, dgs10_resample
   use mrffl_us_inflation, only: inf_resample
 
   implicit none
@@ -204,7 +204,7 @@ contains
              tvm_geometric_annuity_sum_a(1+simulation_year_end-year, worst_case_inflation_rate, expected_annual_expenses))) then
            cur_investment_apr(1)  = alt_if_neg(high_investment_apr, snp_resample(monte_carlo_years))
            cur_investment_apr(2)  = alt_if_neg(mid_investment_apr,  cur_investment_apr(1)/2)
-           cur_investment_apr(3)  = alt_if_neg(low_investment_apr,  max(0.0_rk, cur_investment_apr(1)/4))
+           cur_investment_apr(3)  = alt_if_neg(low_investment_apr,  dgs10_resample(monte_carlo_years))
         else
            ! we have so much money at this point we don't need to aggressively invest
            cur_investment_apr  = cash_position_growth
