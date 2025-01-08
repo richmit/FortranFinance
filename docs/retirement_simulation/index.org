@@ -116,7 +116,7 @@ tool that essentially simulates the annual financial transactions for a retired 
   - Social Security survivor benefits -- not sure I need to do this...
   - +Support systems without STDOUT redirection.+ (Completed 2025-01-08)
   - +Print error messages to STDERR instead of STDOUT+ (Completed 2025-01-08)
-  - Add support for progress messages to STDOUT
+  - +Add support for progress messages to STDOUT+ (Completed 2025-01-08)
   - +Support different SSI benefit levels.+ (Completed 2025-01-08)
   - Add SSI life tables
     - Probably computations on survival.

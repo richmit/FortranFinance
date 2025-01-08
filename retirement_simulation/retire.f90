@@ -111,6 +111,8 @@ program retire
   integer(kind=ik)  :: life_expectancy_p2                  = 110
   integer(kind=ik)  :: simulation_year_start               = seed_tax_year
 
+  integer(kind=ik)  :: verbosity                           = 10 
+
   ! Global runtime variables used by the simulation
   integer(kind=ik)   :: age_p1, age_p2, simulation_year_end, year, tmp_j, num_runs, mc_year_low, mc_year_high
   real(kind=rk)      :: brokerage_balance, ira_balance_p2, ira_balance_p1, emergency_fund, roth_balance_p2, roth_balance_p1
@@ -119,6 +121,7 @@ program retire
   integer            :: out_io_stat, out_io_unit
   character(len=512) :: out_io_msg
 
+  if (verbosity >= 10)write (output_unit, '(a40)') "Reading Config"
   call read_config();
 
   if (high_investment_p + mid_investment_p + low_investment_p - 100 > zero_epsilon) then
@@ -130,33 +133,23 @@ program retire
   else
      num_runs = 1
   end if
+  if (verbosity >= 30) write (output_unit, '(a40,i20)') "num_runs:", num_runs
 
   mc_year_high = simulation_year_start + 10000
-  if ((high_investment_apr < 0) .or. (mid_investment_apr < 0)) then
-     mc_year_high = min(mc_year_high, ubound(snp_dat, 1))
-  end if
-  if (low_investment_apr < 0) then
-     mc_year_high = min(mc_year_high, ubound(dgs10_dat, 1))
-  end if
-  if (fixed_inflation_rate < 0) then
-     mc_year_high = min(mc_year_high, ubound(inf_dat, 1))
-  end if
+  mc_year_high = min(mc_year_high, ubound(snp_dat, 1))
+  mc_year_high = min(mc_year_high, ubound(dgs10_dat, 1))
+  mc_year_high = min(mc_year_high, ubound(inf_dat, 1))
+  if (verbosity >= 30) write (output_unit, '(a40,i20)') "mc_year_high:", mc_year_high
 
   mc_year_low  = mc_year_high - monte_carlo_years
-  if ((high_investment_apr < 0) .or. (mid_investment_apr < 0)) then
-     mc_year_low  = max(mc_year_low,  lbound(snp_dat, 1))
-  end if
-  if (low_investment_apr < 0) then
-     mc_year_low  = max(mc_year_low,  lbound(dgs10_dat, 1))
-  end if
-  if (fixed_inflation_rate < 0) then
-     mc_year_low  = max(mc_year_low,  lbound(inf_dat, 1))
-  end if
+  mc_year_low  = max(mc_year_low,  lbound(snp_dat, 1))
+  mc_year_low  = max(mc_year_low,  lbound(dgs10_dat, 1))
+  mc_year_low  = max(mc_year_low,  lbound(inf_dat, 1))
+  if (verbosity >= 30) write (output_unit, '(a40,i20)') "mc_year_low:", mc_year_low
 
   if ( (mc_year_high - mc_year_low) < monte_carlo_years) then
      error stop "Not enough historical data to support monte_carlo_years setting"
   end if
-  !write (error_unit, *) "MCH: ", mc_year_low, mc_year_high
 
   open(newunit=out_io_unit, file=out_file_name, form='formatted', action='write', iostat=out_io_stat, iomsg=out_io_msg)
   if (out_io_stat /= 0) then
@@ -164,9 +157,12 @@ program retire
      error stop "Unable to open output file"
   end if
 
+  if (verbosity >= 10)write (output_unit, '(a40)') "Running Simulations"
   do tmp_j=1,num_runs
      call main_sim(tmp_j)
+     if ((verbosity >= 10) .and. (mod(tmp_j, max(1, num_runs/10)) == 0)) write (output_unit, '(a40,i20)') "runs complete:", tmp_j
   end do
+  if (verbosity >= 10)write (output_unit, '(a40)') "Simulations Complete"
 
   close(unit=out_io_unit, status='keep', iostat=out_io_stat, iomsg=out_io_msg)
   if (out_io_stat /= 0) then
@@ -535,6 +531,7 @@ contains
      namelist /SIMPARM/ retirement_year_p1, retirement_year_p2
      namelist /SIMPARM/ birthday_p1, birthday_p2
      namelist /SIMPARM/ life_expectancy_p1, life_expectancy_p2
+     namelist /SIMPARM/ verbosity
 
      ! Variables for config file
      integer                       :: in_io_stat, in_io_unit, in_file_name_len
@@ -565,6 +562,7 @@ contains
         write (error_unit, '(a)') trim(in_io_msg)
         error stop "I/O error closing file"
      end if
+
    end subroutine read_config
 
  end program retire

@@ -82,4 +82,10 @@ birthday_p1                         = 1977,      !!
 birthday_p2                         = 1969,      !!
 life_expectancy_p1                  = 110,       !!
 life_expectancy_p2                  = 110        !!
+
+verbosity                           = 10         !! How much to print when running
+                                                 !!  -  0 : nothing
+                                                 !!  - 10 : progress
+                                                 !!  - 20 : variables
+                                                 !!  - 30 : more variables
 /
