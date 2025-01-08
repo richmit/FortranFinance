@@ -114,7 +114,9 @@ tool that essentially simulates the annual financial transactions for a retired 
   - Black–Scholes MC -- this is mostly an academic curiosity for me.
   - +Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.+ (Completed 2025-01-07)
   - Social Security survivor benefits -- not sure I need to do this...
-  - Support systems without STDOUT redirection.
+  - +Support systems without STDOUT redirection.+ (Completed 2025-01-08)
+  - +Print error messages to STDERR instead of STDOUT+ (Completed 2025-01-08)
+  - Add support for progress messages to STDOUT
   - +Support different SSI benefit levels.+ (Completed 2025-01-08)
   - Add SSI life tables
     - Probably computations on survival.
@@ -229,12 +231,13 @@ This will result in a executable (named "~retire~" on most UNIX-like platforms, 
 :CUSTOM_ID: dowrun
 :END:
 
-The ~retire~ command takes a single -- the configuration file that describes the parameters of the simulation -- see examples later in this document:
-[[#case_20_config][config_20.nml]] and [[#case_60_config][config_60.nml]].  When run it will produce a file called "~retire.out~".
+The ~retire~ command takes the name of the the configuration describeing the simulation parameters as an optional argument.  If it is missing, then the name
+is assumed to be "~retire.nml~".  This document contains a couple example configuration files: [[#case_20_config][config_20.nml]] and
+[[#case_60_config][config_60.nml]].
 
-This is a simple text file that you could load into Excel to analyze.  I use an [[https://www.mitchr.me/SS/tools/index.html#stats][R]] script for the analysis
-called "~retire.R~".  If you run this script, you will get lots of graphics (see the [[#examples][Examples]] section below.  In summary, you might do the
-following:
+When run, the ~retire~ command will place its results in a file called "~retire.out~".  This output file is a simple text file that you could load into Excel
+to analyze.  I use an [[https://www.mitchr.me/SS/tools/index.html#stats][R]] script for the analysis called "~retire.R~".  If you run this script, you will
+get lots of graphics (see the [[#examples][Examples]] section below).  In summary, you might do the following:
 
 #+begin_src sh
 ./retire.exe my_config.nml

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-08 Wed 12:53 -->
+<!-- 2025-01-08 Wed 13:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-08 12:53:29</i></td>
+<td class="org-left"><i>2025-01-08 13:11:54</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-08 12:53:36</i></td>
+<td class="org-left"><i>2025-01-08 13:12:07</i></td>
 </tr>
 </tbody>
 </table>
@@ -390,7 +390,9 @@ want to change the draw down to subroutine to keep your tax rate level over time
 <li>Black–Scholes MC &#x2013; this is mostly an academic curiosity for me.</li>
 <li><del>Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.</del> (Completed 2025-01-07)</li>
 <li>Social Security survivor benefits &#x2013; not sure I need to do this&#x2026;</li>
-<li>Support systems without STDOUT redirection.</li>
+<li><del>Support systems without STDOUT redirection.</del> (Completed 2025-01-08)</li>
+<li><del>Print error messages to STDERR instead of STDOUT</del> (Completed 2025-01-08)</li>
+<li>Add support for progress messages to STDOUT</li>
 <li><del>Support different SSI benefit levels.</del> (Completed 2025-01-08)</li>
 <li>Add SSI life tables
 <ul class="org-ul">
@@ -551,14 +553,15 @@ This will result in a executable (named "<code>retire</code>" on most UNIX-like 
 <h3 id="dowrun"><span class="section-number-3">2.4.</span> Running The Simulator</h3>
 <div class="outline-text-3" id="text-dowrun">
 <p>
-The <code>retire</code> command takes a single &#x2013; the configuration file that describes the parameters of the simulation &#x2013; see examples later in this document:
-<a href="#case_20_config">config_20.nml</a> and <a href="#case_60_config">config_60.nml</a>.  When run it will produce a file called "<code>retire.out</code>".
+The <code>retire</code> command takes the name of the the configuration describeing the simulation parameters as an optional argument.  If it is missing, then the name
+is assumed to be "<code>retire.nml</code>".  This document contains a couple example configuration files: <a href="#case_20_config">config_20.nml</a> and
+<a href="#case_60_config">config_60.nml</a>.
 </p>
 
 <p>
-This is a simple text file that you could load into Excel to analyze.  I use an <a href="https://www.mitchr.me/SS/tools/index.html#stats">R</a> script for the analysis
-called "<code>retire.R</code>".  If you run this script, you will get lots of graphics (see the <a href="#examples">Examples</a> section below.  In summary, you might do the
-following:
+When run, the <code>retire</code> command will place its results in a file called "<code>retire.out</code>".  This output file is a simple text file that you could load into Excel
+to analyze.  I use an <a href="https://www.mitchr.me/SS/tools/index.html#stats">R</a> script for the analysis called "<code>retire.R</code>".  If you run this script, you will
+get lots of graphics (see the <a href="#examples">Examples</a> section below).  In summary, you might do the following:
 </p>
 
 <div class="org-src-container">
@@ -600,7 +603,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="org9e5e586" class="figure">
+<div id="org72ae8af" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -610,7 +613,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org6aa80a1" class="figure">
+<div id="org9ebe7ec" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -621,7 +624,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="orgabb4c17" class="figure">
+<div id="org0b0f1e8" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -642,7 +645,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="org30d7362" class="figure">
+<div id="org339a83d" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -653,7 +656,7 @@ failed.  In essence the green line shows a "safe" balance at which we are unlike
 </p>
 
 
-<div id="orgc0c2c6f" class="figure">
+<div id="org013b0f0" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -663,7 +666,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="orge86ccde" class="figure">
+<div id="orgee298c1" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -673,7 +676,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org6afd4e3" class="figure">
+<div id="org40dd843" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -683,7 +686,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="orgcec229c" class="figure">
+<div id="orgb13de73" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -801,7 +804,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org449bfe9" class="figure">
+<div id="org8fa0efd" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -811,7 +814,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="orgb92a13c" class="figure">
+<div id="orgb64f9c5" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -821,7 +824,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org74f3656" class="figure">
+<div id="orgfbf9cbe" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -832,7 +835,7 @@ run out of money.
 </p>
 
 
-<div id="orgf2cfc80" class="figure">
+<div id="orga85c8af" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -851,7 +854,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="orgfa0a858" class="figure">
+<div id="orgad14f5e" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -861,7 +864,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org8156035" class="figure">
+<div id="org9c2e95e" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -871,7 +874,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org7f4e541" class="figure">
+<div id="orge9e7aac" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>

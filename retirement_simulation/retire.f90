@@ -112,9 +112,12 @@ program retire
   integer(kind=ik)  :: simulation_year_start               = seed_tax_year
 
   ! Global runtime variables used by the simulation
-  integer(kind=ik)  :: age_p1, age_p2, simulation_year_end, year, tmp_j, num_runs, mc_year_low, mc_year_high
-  real(kind=rk)     :: brokerage_balance, ira_balance_p2, ira_balance_p1, emergency_fund, roth_balance_p2, roth_balance_p1
-  real(kind=rk)     :: cash_reserves, cash_income, expected_annual_expenses
+  integer(kind=ik)   :: age_p1, age_p2, simulation_year_end, year, tmp_j, num_runs, mc_year_low, mc_year_high
+  real(kind=rk)      :: brokerage_balance, ira_balance_p2, ira_balance_p1, emergency_fund, roth_balance_p2, roth_balance_p1
+  real(kind=rk)      :: cash_reserves, cash_income, expected_annual_expenses
+  character(len=10)  :: out_file_name = 'retire.out'
+  integer            :: out_io_stat, out_io_unit
+  character(len=512) :: out_io_msg
 
   call read_config();
 
@@ -155,9 +158,21 @@ program retire
   end if
   !write (error_unit, *) "MCH: ", mc_year_low, mc_year_high
 
+  open(newunit=out_io_unit, file=out_file_name, form='formatted', action='write', iostat=out_io_stat, iomsg=out_io_msg)
+  if (out_io_stat /= 0) then
+     write (error_unit, '(a)') trim(out_io_msg)
+     error stop "Unable to open output file"
+  end if
+
   do tmp_j=1,num_runs
      call main_sim(tmp_j)
   end do
+
+  close(unit=out_io_unit, status='keep', iostat=out_io_stat, iomsg=out_io_msg)
+  if (out_io_stat /= 0) then
+     write (error_unit, '(a)') trim(out_io_msg)
+     error stop "I/O error closing output file"
+  end if
 
 contains
 
@@ -186,7 +201,7 @@ contains
      character(len=*), parameter  :: fmt_h = "(a7, 3(1x, a4), 1x, a12,   1x, a5,   4(1x, a10),   6(1x, a16),   3(1x, a6),   4(1x, a9),   2(1x, a8),   5(1x, a11),   1x, a14,   1x, a6,   5(1x, a14) )"
 
      if (sim == 1) then
-        write (output_unit, fmt_h) &
+        write (unit=out_io_unit, iostat=out_io_stat, iomsg=out_io_msg, fmt=fmt_h) &
              "Sim", "Year", "Age1", "Age2", &
              "SavingsC", "Inf", "CPaidI", "CPaidST", "CPaidSI", "CPaidSR", &
              "SavingsE", "SavingsB", "SavingsI1", "SavingsI2", "SavingsR1", "SavingsR2", "aprH", "arpM", "aprL", &
@@ -194,6 +209,10 @@ contains
              "Sav1", "Sav2", &
              "Expenses", "EPaidI", "EPaidST", "EPaidSI", "EPaidSR", &
              "Taxable", "Bkt", "Taxes", "TPaidI", "TPaidST", "TPaidSI", "TPaidSR"
+        if (out_io_stat > 0) then
+           write (error_unit, '(a)') trim(out_io_msg)
+           error stop "I/O Error output file"
+        end if
      end if
 
      ! -----------------------------------------------------------------------------------------------------------------------------
@@ -374,8 +393,8 @@ contains
         end if
 
         ! ------------------------------------------------------------------------------------------------------------------------
-        ! Print status to STDOUT
-        write (output_unit, fmt_n) &
+        ! Print status to output file
+        write (unit=out_io_unit, iostat=out_io_stat, iomsg=out_io_msg, fmt=fmt_n) &
              sim, year, age_p1, age_p2, &
              cash_reserves, cur_inflation_rate, cr_paied_cash, cr_paied_savings, cr_paied_ira, cr_paied_roth, &
              emergency_fund, brokerage_balance, ira_balance_p1, ira_balance_p2,roth_balance_p1, roth_balance_p2, &
@@ -385,6 +404,10 @@ contains
              expected_annual_expenses, annual_expenses_paied_cash, annual_expenses_paied_savings, &
              annual_expenses_paied_ira, annual_expenses_paied_roth, &
              taxable_income, tax_rate, tax_owed, tax_paied_cash, tax_paied_savings, tax_paied_ira, tax_paied_roth
+        if (out_io_stat > 0) then
+           write (error_unit, '(a)') trim(out_io_msg)
+           error stop "I/O Error output file"
+        end if
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Compute Taxes For Next Year
@@ -514,32 +537,32 @@ contains
      namelist /SIMPARM/ life_expectancy_p1, life_expectancy_p2
 
      ! Variables for config file
-     integer                       :: io_stat, io_unit, file_name_len
-     character(len=512)            :: io_msg
-     character(len=:), allocatable :: file_name
+     integer                       :: in_io_stat, in_io_unit, in_file_name_len
+     character(len=512)            :: in_io_msg
+     character(len=:), allocatable :: in_file_name
 
-     call get_command(length=file_name_len)
-     allocate(character(len=file_name_len) :: file_name)
-     call get_command_argument(1, file_name, file_name_len)
-     file_name = adjustl(trim(file_name))
+     call get_command(length=in_file_name_len)
+     allocate(character(len=in_file_name_len) :: in_file_name)
+     call get_command_argument(1, in_file_name, in_file_name_len)
+     in_file_name = adjustl(trim(in_file_name))
 
-     if (len(file_name) <= 0) then
-        file_name = "retire.config"
+     if (len(in_file_name) <= 0) then
+        in_file_name = "retire.nml"
      end if
 
-     open(newunit=io_unit, file=file_name, form='formatted', action='read', iostat=io_stat, iomsg=io_msg)
-     if (io_stat /= 0) then
-        print "(a)", trim(io_msg)
+     open(newunit=in_io_unit, file=in_file_name, form='formatted', action='read', iostat=in_io_stat, iomsg=in_io_msg)
+     if (in_io_stat /= 0) then
+        write (error_unit, '(a)') trim(in_io_msg)
         error stop "Unable to open config file"
      end if
-     read (nml=SIMPARM, unit=io_unit, iostat=io_stat, iomsg=io_msg)
-     if (io_stat > 0) then
-        print "(a)", trim(io_msg)
+     read (nml=SIMPARM, unit=in_io_unit, iostat=in_io_stat, iomsg=in_io_msg)
+     if (in_io_stat > 0) then
+        write (error_unit, '(a)') trim(in_io_msg)
         error stop "I/O Error reading configuration"
      end if
-     close(unit=io_unit, status='keep', iostat=io_stat, iomsg=io_msg)
-     if (io_stat /= 0) then
-        print "(a)", trim(io_msg)
+     close(unit=in_io_unit, status='keep', iostat=in_io_stat, iomsg=in_io_msg)
+     if (in_io_stat /= 0) then
+        write (error_unit, '(a)') trim(in_io_msg)
         error stop "I/O error closing file"
      end if
    end subroutine read_config

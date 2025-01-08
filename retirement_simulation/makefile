@@ -19,7 +19,7 @@ retire : retire.f90 mrffl_bitset$(OBJ_SUFFIX) mrffl_percentages$(OBJ_SUFFIX) mrf
 	$(FC) $(FFLAGS) $^ -o $@
 
 retire.out : retire
-	./retire$(EXE_SUFFIX) $(CONFIG_FILE) > retire.out
+	./retire$(EXE_SUFFIX) $(CONFIG_FILE)
 
 .PHONY: table
 table : retire.out
