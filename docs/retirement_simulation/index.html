@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-08 Wed 10:54 -->
+<!-- 2025-01-08 Wed 12:53 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-08 10:54:34</i></td>
+<td class="org-left"><i>2025-01-08 12:53:29</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-08 10:54:36</i></td>
+<td class="org-left"><i>2025-01-08 12:53:36</i></td>
 </tr>
 </tbody>
 </table>
@@ -413,11 +413,12 @@ tools in combination with this simulator.
 
 <p>
 One thing I realized is that there is no universal measure of quality or fitness for these kinds of tools.  At the end of the day it's all about your
-financial situation and goals that determine if a tool will help you or not. So, it is important that you do your research.
+situation and goals that determine if a tool will help you or not. So, it is important that you do your research.
 </p>
 
 <p>
-In this section I have documented some of the common issues I found with various tools.  My hope is that it may help you in doing your own research.
+In this section I have documented some of the common issues I found with various tools without naming any names.  My hope is that this list might help others
+in doing the same kind of research.
 </p>
 
 <ul class="org-ul">
@@ -425,28 +426,35 @@ In this section I have documented some of the common issues I found with various
 <ul class="org-ul">
 <li>Not using historical data for simulation parameters.
 <ul class="org-ul">
-<li>Seriously.  Several of the online JavaScript "free retirement" calculators were just doing uniform random numbers between -7 and 7 for market returns.
-That's pure trash.</li>
+<li>Seriously.  I came across a couple client side JavaScript retirement calculators that were just doing uniform random numbers between -7 and 7 for
+market returns.  That's pure trash.</li>
 </ul></li>
-<li>Uncorrelated GBM models for blended investments!
+<li>GBM models dubious parameter values.  
 <ul class="org-ul">
-<li>This is particularly bad when the blend includes securities of radically different types (bonds mixed with stocks, REITs mixed with dissimilar debit
-instruments, etc&#x2026;).</li>
+<li>It's impossible to tell the difference between the result of an incorrect analysis of historical data and a made up number.</li>
+<li>It is impossible to trust this kind of simulation unless they disclose the source for parameters.  My policy on this one is that if they won't share,
+then I can't trust them.  It's that simple.</li>
 </ul></li>
-<li>GBM models with undocumented or dubious source parameters &#x2013; especially variance figures.</li>
-<li>Ignoring the correlation between inflation and bond returns!</li>
+<li>Ignoring correlation
+<ul class="org-ul">
+<li>Uncorrelated GBM models for blended investments &#x2013; like bonds mixed with stocks.</li>
+<li>Ignoring the correlation between inflation and bond returns.</li>
+</ul></li>
 <li>Only doing MC on investment returns and not inflation.</li>
 <li>Poor visualization and analysis capabilities for the results of MC simulations.
 <ul class="org-ul">
-<li>This was really a sticking point.  Many tools really didn't provide much information at all &#x2013; just a "probability of success" in the worst cases.  As I
-side note, I have become convinced that some of these tools exist only to publish the "probably of failure" metric as a marketing ploy.  They hope to
-scare people into paying for a financial advisor.</li>
+<li>As I side note, I am convinced some of these tools exist only to publish the "probably of failure" metric as a marketing strategy.  They hope to scare
+people into paying for a financial advisor.</li>
 </ul></li>
 <li>Unwillingness to divulge the underlying models and assumptions.  
 <ul class="org-ul">
-<li>This is a deal breaker for me.  This stuff is generally not "secret sauce" or "proprietary intellectual property", but essential information required
-to understand the results.  How can we trust the "stock returns" MC if we don't even know what part of the market it's modeling?  Is it comprehending
-dividends and splits as part of the adjusted rate of return?  How is the REIT model incorporating dividends, and what is the reinvestment model?</li>
+<li>This is a deal breaker for me.  It's like the GBM parameter item above &#x2013; if they won't tell, then I won't trust them.</li>
+<li>Note I'm not talking about "secret sauce" or "proprietary intellectual property".  I'm talking about the essential information required to understand
+the results.  How can we trust the "stock returns" MC if we don't even know what part of the market it's modeling?  Is it comprehending dividends and
+splits as part of the adjusted rate of return?  How is the REIT model incorporating dividends, and what is the reinvestment model?</li>
+<li>One thing to know: If they don't have it documented, then ask them.  Many of the larger banks are more than willing to share this stuff.  Frequently
+they don't have it in formal documentation posted on the web page, but they do have it readily available for advisors so they can communicate the
+answers.</li>
 </ul></li>
 </ul></li>
 <li>Poor tax estimation 
@@ -459,7 +467,7 @@ make sure the tool is being intelligent and not just "blindly picking a number".
 </ul></li>
 <li>Not adjusting tax brackets for inflation.</li>
 <li>Inability to specify tax filing status and deduction methodology.</li>
-<li>Not considering early withdrawal penalties for retirement accounts.</li>
+<li>Not considering age related early withdrawal penalties for retirement accounts.</li>
 </ul></li>
 <li>Roth conversions 
 <ul class="org-ul">
@@ -473,12 +481,12 @@ make sure the tool is being intelligent and not just "blindly picking a number".
 <li>Not supporting, or incorrectly supporting, survivor benefits.</li>
 </ul></li>
 <li>Most tools don't allow you to use MC on life span</li>
+<li>Data security &amp; privacy
+<ul class="org-ul">
+<li>Make sure they have a published privacy policy.  If they don't, assume anything you give them will be sold.</li>
+<li>Do your best to verify data security.</li>
+</ul></li>
 </ul>
-
-<p>
-In my research, one stand out tool was <a href="https://projectionlab.com/">Projection Lab</a>.  It's very flexible, and reasonably easy to use given the complex
-nature of what they are trying to support.
-</p>
 </div>
 </div>
 </div>
@@ -592,7 +600,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="orgcb5c868" class="figure">
+<div id="org9e5e586" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -602,7 +610,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org30a2a66" class="figure">
+<div id="org6aa80a1" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -613,7 +621,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org1d6a5c8" class="figure">
+<div id="orgabb4c17" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -634,7 +642,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="org122f215" class="figure">
+<div id="org30d7362" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -645,7 +653,7 @@ failed.  In essence the green line shows a "safe" balance at which we are unlike
 </p>
 
 
-<div id="orgd298eb8" class="figure">
+<div id="orgc0c2c6f" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -655,7 +663,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="orgae689d5" class="figure">
+<div id="orge86ccde" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -665,7 +673,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org7ca94bf" class="figure">
+<div id="org6afd4e3" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -675,7 +683,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="org45c7341" class="figure">
+<div id="orgcec229c" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -793,7 +801,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org40de8e4" class="figure">
+<div id="org449bfe9" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -803,7 +811,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org1887c9b" class="figure">
+<div id="orgb92a13c" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -813,7 +821,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="orgb46cae6" class="figure">
+<div id="org74f3656" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -824,7 +832,7 @@ run out of money.
 </p>
 
 
-<div id="org25d2ccb" class="figure">
+<div id="orgf2cfc80" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -843,7 +851,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org965b55b" class="figure">
+<div id="orgfa0a858" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -853,7 +861,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org3dbfe77" class="figure">
+<div id="org8156035" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -863,7 +871,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org8c91406" class="figure">
+<div id="org7f4e541" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>

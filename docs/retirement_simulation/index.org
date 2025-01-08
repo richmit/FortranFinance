@@ -131,28 +131,34 @@ expensive.  Some super simple and some quite sophisticated.  Some utterly terrib
 tools in combination with this simulator.
 
 One thing I realized is that there is no universal measure of quality or fitness for these kinds of tools.  At the end of the day it's all about your
-financial situation and goals that determine if a tool will help you or not. So, it is important that you do your research.
+situation and goals that determine if a tool will help you or not. So, it is important that you do your research.
 
-In this section I have documented some of the common issues I found with various tools.  My hope is that it may help you in doing your own research.
+In this section I have documented some of the common issues I found with various tools without naming any names.  My hope is that this list might help others
+in doing the same kind of research.
 
  - Monte carlo deficiencies 
    - Not using historical data for simulation parameters.
-     - Seriously.  Several of the online JavaScript "free retirement" calculators were just doing uniform random numbers between -7 and 7 for market returns.
-       That's pure trash.
-   - Uncorrelated GBM models for blended investments!
-     - This is particularly bad when the blend includes securities of radically different types (bonds mixed with stocks, REITs mixed with dissimilar debit
-       instruments, etc...).
-   - GBM models with undocumented or dubious source parameters -- especially variance figures.
-   - Ignoring the correlation between inflation and bond returns!
+     - Seriously.  I came across a couple client side JavaScript retirement calculators that were just doing uniform random numbers between -7 and 7 for
+       market returns.  That's pure trash.
+   - GBM models dubious parameter values.  
+     - It's impossible to tell the difference between the result of an incorrect analysis of historical data and a made up number.
+     - It is impossible to trust this kind of simulation unless they disclose the source for parameters.  My policy on this one is that if they won't share,
+       then I can't trust them.  It's that simple.
+   - Ignoring correlation
+     - Uncorrelated GBM models for blended investments -- like bonds mixed with stocks.
+     - Ignoring the correlation between inflation and bond returns.
    - Only doing MC on investment returns and not inflation.
    - Poor visualization and analysis capabilities for the results of MC simulations.
-     - This was really a sticking point.  Many tools really didn't provide much information at all -- just a "probability of success" in the worst cases.  As I
-       side note, I have become convinced that some of these tools exist only to publish the "probably of failure" metric as a marketing ploy.  They hope to
-       scare people into paying for a financial advisor.
+     - As I side note, I am convinced some of these tools exist only to publish the "probably of failure" metric as a marketing strategy.  They hope to scare
+       people into paying for a financial advisor.  
    - Unwillingness to divulge the underlying models and assumptions.  
-     - This is a deal breaker for me.  This stuff is generally not "secret sauce" or "proprietary intellectual property", but essential information required
-       to understand the results.  How can we trust the "stock returns" MC if we don't even know what part of the market it's modeling?  Is it comprehending
-       dividends and splits as part of the adjusted rate of return?  How is the REIT model incorporating dividends, and what is the reinvestment model?
+     - This is a deal breaker for me.  It's like the GBM parameter item above -- if they won't tell, then I won't trust them.
+     - Note I'm not talking about "secret sauce" or "proprietary intellectual property".  I'm talking about the essential information required to understand
+       the results.  How can we trust the "stock returns" MC if we don't even know what part of the market it's modeling?  Is it comprehending dividends and
+       splits as part of the adjusted rate of return?  How is the REIT model incorporating dividends, and what is the reinvestment model?
+     - One thing to know: If they don't have it documented, then ask them.  Many of the larger banks are more than willing to share this stuff.  Frequently
+       they don't have it in formal documentation posted on the web page, but they do have it readily available for advisors so they can communicate the
+       answers.
  - Poor tax estimation 
    - Blindly assuming a fixed tax rate over time is very common.
      - Note that some of the large banks do this, but they tune the rate to you.  They use your net worth and expenses to fit a fixed tax rate under the
@@ -160,7 +166,7 @@ In this section I have documented some of the common issues I found with various
        make sure the tool is being intelligent and not just "blindly picking a number".
    - Not adjusting tax brackets for inflation.
    - Inability to specify tax filing status and deduction methodology.
-   - Not considering early withdrawal penalties for retirement accounts.
+   - Not considering age related early withdrawal penalties for retirement accounts.
  - Roth conversions 
    - Most tools simply don't have the ability to plan for them at all
    - Failing to comprehend the 5 year withdrawal penalties
@@ -169,9 +175,9 @@ In this section I have documented some of the common issues I found with various
    - Not comprehending when one partner dies, or only having one SSI monthly value for the couple.
    - Not supporting, or incorrectly supporting, survivor benefits.
  - Most tools don't allow you to use MC on life span
-
-In my research, one stand out tool was [[https://projectionlab.com/][Projection Lab]].  It's very flexible, and reasonably easy to use given the complex
-nature of what they are trying to support.
+ - Data security & privacy
+   - Make sure they have a published privacy policy.  If they don't, assume anything you give them will be sold.
+   - Do your best to verify data security.
 
 * Operation
 :PROPERTIES:
