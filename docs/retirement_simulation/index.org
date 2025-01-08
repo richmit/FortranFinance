@@ -118,10 +118,13 @@ tool that essentially simulates the annual financial transactions for a retired 
   - +Print error messages to STDERR instead of STDOUT+ (Completed 2025-01-08)
   - +Add support for progress messages to STDOUT+ (Completed 2025-01-08)
   - +Support different SSI benefit levels.+ (Completed 2025-01-08)
-  - Add SSI life tables
-    - Probably computations on survival.
-    - Combined probably computations with survival and account collapse with a probability time series graph.
-    - Do MC life span.
+  - Lifespan
+    - Add SSI Life tables
+    - Probably computations on survival
+    - Combined probably computations with survival and account collapse
+      - Include probability time series graph -- i.e. probability we run out of money on or after year
+      - Include combined probability combination to "probability success" annotations.
+    - Do MC lifespan
 
 ** Evaluating retirement planning software
 :PROPERTIES:
