@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -32,19 +32,18 @@
 !!  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 !!  OF THE POSSIBILITY OF SUCH DAMAGE.
 !!  @endparblock
-!! @filedetails   
-!! 
+!! @filedetails
+!!
 !!     Documentation: https://richmit.github.io/FortranFinance/retirement_simulation/index.html
 !!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
-
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program retire
   use, intrinsic :: iso_fortran_env,    only: output_unit, error_unit
   use            :: mrffl_config,       only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
   use            :: mrffl_percentages,  only: p_of=>percentage_of, add_p=>add_percentage, percentage_of_total
-  use            :: mrffl_us_taxes,     only: seed_tax_year, tax, std_tax_deduction_single, std_tax_deduction_joint, tax_bracket_breaks_single, tax_bracket_rates, tax_bracket_breaks_joint
+  use            :: mrffl_us_taxes,     only: seed_tax_year, tax, tax_bracket_rates, std_tax_deduction_single, tax_bracket_breaks_single, std_tax_deduction_joint, tax_bracket_breaks_joint
   use            :: mrffl_tvm,          only: tvm_geometric_annuity_sum_a
   use            :: mrffl_stats,        only: rand_int
   use            :: mrffl_us_markets,   only: snp_resample, dgs10_resample, snp_dat, dgs10_dat
@@ -53,64 +52,64 @@ program retire
   implicit none
 
   ! Configuration File Parameters
-  integer(kind=ik)  :: monte_carlo_years                   = 40         
-  integer(kind=ik)  :: monte_carlo_runs                    = 10000      
+  integer(kind=ik)  :: monte_carlo_years                   = 40
+  integer(kind=ik)  :: monte_carlo_runs                    = 10000
 
-  real(kind=rk)     :: initial_brokerage_balance           = 0.0  
-  real(kind=rk)     :: initial_ira_balance_p2              = 0.0  
-  real(kind=rk)     :: initial_ira_balance_p1              = 0.0  
-  real(kind=rk)     :: initial_roth_balance_p2             = 0.0
+  real(kind=rk)     :: initial_brokerage_balance           = 0.0
+  real(kind=rk)     :: initial_ira_balance_p1              = 0.0
+  real(kind=rk)     :: initial_ira_balance_p2              = 0.0
   real(kind=rk)     :: initial_roth_balance_p1             = 0.0
+  real(kind=rk)     :: initial_roth_balance_p2             = 0.0
 
   real(kind=rk)     :: high_investment_p                   = 100.0
   real(kind=rk)     :: mid_investment_p                    = 0.0
   real(kind=rk)     :: low_investment_p                    = 0.0
-                                                      
+
   real(kind=rk)     :: high_investment_apr                 = 5.0
-  real(kind=rk)     :: mid_investment_apr                  = 0.0
-  real(kind=rk)     :: low_investment_apr                  = 0.0
+  real(kind=rk)     :: mid_investment_apr                  = 4.0
+  real(kind=rk)     :: low_investment_apr                  = 3.0
   real(kind=rk)     :: cash_position_growth                = 2.5
 
-  real(kind=rk)     :: initial_cash_reserves               = 0.0   
-  real(kind=rk)     :: cash_reserves_growth                = 0.01       
+  real(kind=rk)     :: initial_cash_reserves               = 0.0
+  real(kind=rk)     :: cash_reserves_growth                = 0.01
 
-  real(kind=rk)     :: initial_emergency_fund              = 0.0   
-  real(kind=rk)     :: emergency_fund_growth               = 3.0        
+  real(kind=rk)     :: initial_emergency_fund              = 0.0
+  real(kind=rk)     :: emergency_fund_growth               = 3.0
 
-  real(kind=rk)     :: first_year_tax                      = 0.0    
+  real(kind=rk)     :: first_year_tax                      = 0.0
 
-  real(kind=rk)     :: worst_case_inflation_rate           = 5.0        
-  real(kind=rk)     :: fixed_inflation_rate                = 3.0        
+  real(kind=rk)     :: worst_case_inflation_rate           = 5.0
+  real(kind=rk)     :: fixed_inflation_rate                = 3.0
 
-  real(kind=rk)     :: initial_expected_annual_expenses    = 0.0    
+  real(kind=rk)     :: initial_expected_annual_expenses    = 0.0
 
-  integer(kind=ik)  :: social_security_start_age_p2        = 67         
-  integer(kind=ik)  :: social_security_start_age_p1        = 67         
-  real(kind=rk)     :: initial_social_security_monthly_p1  = 1000.0     
-  real(kind=rk)     :: initial_social_security_monthly_p2  = 1000.0     
+  integer(kind=ik)  :: social_security_start_age_p1        = 67
+  integer(kind=ik)  :: social_security_start_age_p2        = 67
+  real(kind=rk)     :: initial_social_security_monthly_p1  = 1000.0
+  real(kind=rk)     :: initial_social_security_monthly_p2  = 1000.0
   real(kind=rk)     :: social_security_growth              = -1.0
 
-  real(kind=rk)     :: initial_gross_work_salary_p2        = 0.0   
-  real(kind=rk)     :: initial_gross_work_salary_p1        = 0.0   
-  real(kind=rk)     :: work_salary_growth                  = 2.0        
+  real(kind=rk)     :: initial_gross_work_salary_p1        = 0.0
+  real(kind=rk)     :: initial_gross_work_salary_p2        = 0.0
+  real(kind=rk)     :: work_salary_growth                  = 2.0
 
-  real(kind=rk)     :: initial_annual_ira_contrib_base     = 23000.0    
-  real(kind=rk)     :: initial_annual_ira_contrib_catchup  = 7000.0     
-  real(kind=rk)     :: annual_ira_contrib_growth           = 0.0        
+  real(kind=rk)     :: initial_annual_ira_contrib_base     = 23000.0
+  real(kind=rk)     :: initial_annual_ira_contrib_catchup  = 7000.0
+  real(kind=rk)     :: annual_ira_contrib_growth           = 0.0
 
-  real(kind=rk)     :: initial_annual_roth_contrib_base    = 23000.0    
-  real(kind=rk)     :: initial_annual_roth_contrib_catchup = 7000.0     
+  real(kind=rk)     :: initial_annual_roth_contrib_base    = 23000.0
+  real(kind=rk)     :: initial_annual_roth_contrib_catchup = 7000.0
   real(kind=rk)     :: annual_roth_contrib_growth          = 0.0
 
-  real(kind=rk)     :: surplus_reinvest                    = 0.0        
+  real(kind=rk)     :: surplus_reinvest                    = 0.0
 
   integer(kind=ik)  :: retirement_year_p1                  = 2035
-  integer(kind=ik)  :: retirement_year_p2                  = 2035       
+  integer(kind=ik)  :: retirement_year_p2                  = 2035
   integer(kind=ik)  :: birthday_p1                         = 1980
   integer(kind=ik)  :: birthday_p2                         = 1980
   integer(kind=ik)  :: life_expectancy_p1                  = 110
-  integer(kind=ik)  :: life_expectancy_p2                  = 110        
-  integer(kind=ik)  :: simulation_year_start               = seed_tax_year       
+  integer(kind=ik)  :: life_expectancy_p2                  = 110
+  integer(kind=ik)  :: simulation_year_start               = seed_tax_year
 
   ! Global runtime variables used by the simulation
   integer(kind=ik)  :: age_p1, age_p2, simulation_year_end, year, tmp_j, num_runs, mc_year_low, mc_year_high
@@ -129,7 +128,6 @@ program retire
      num_runs = 1
   end if
 
-  ! Set mc_year_high & mc_year_low -- even if we don't do MC.
   mc_year_high = simulation_year_start + 10000
   if ((high_investment_apr < 0) .or. (mid_investment_apr < 0)) then
      mc_year_high = min(mc_year_high, ubound(snp_dat, 1))
@@ -140,7 +138,7 @@ program retire
   if (fixed_inflation_rate < 0) then
      mc_year_high = min(mc_year_high, ubound(inf_dat, 1))
   end if
-  
+
   mc_year_low  = mc_year_high - monte_carlo_years
   if ((high_investment_apr < 0) .or. (mid_investment_apr < 0)) then
      mc_year_low  = max(mc_year_low,  lbound(snp_dat, 1))
@@ -189,7 +187,7 @@ contains
 
      if (sim == 1) then
         write (output_unit, fmt_h) &
-             "Sim", "Year", "Age1", "Age2", & 
+             "Sim", "Year", "Age1", "Age2", &
              "SavingsC", "Inf", "CPaidI", "CPaidST", "CPaidSI", "CPaidSR", &
              "SavingsE", "SavingsB", "SavingsI1", "SavingsI2", "SavingsR1", "SavingsR2", "aprH", "arpM", "aprL", &
              "SS1", "SS2", "Wrk1", "Wrk2", &
@@ -201,21 +199,21 @@ contains
      ! -----------------------------------------------------------------------------------------------------------------------------
      ! Main simulation loop initialization & loop
      simulation_year_end           = max(birthday_p1+life_expectancy_p1, birthday_p2+life_expectancy_p2, simulation_year_start+10)-1
-     brokerage_balance             = initial_brokerage_balance    
+     brokerage_balance             = initial_brokerage_balance
      ira_balance_p2                = initial_ira_balance_p2
      ira_balance_p1                = initial_ira_balance_p1
      roth_balance_p2               = initial_roth_balance_p2
      roth_balance_p1               = initial_roth_balance_p1
-     expected_annual_expenses      = initial_expected_annual_expenses   
-     cur_std_tax_deduction_single  = std_tax_deduction_single   
-     cur_std_tax_deduction_joint   = std_tax_deduction_joint    
-     social_security_monthly_p1    = initial_social_security_monthly_p1     
-     social_security_monthly_p2    = initial_social_security_monthly_p2     
-     gross_work_salary_p2          = initial_gross_work_salary_p2       
-     gross_work_salary_p1          = initial_gross_work_salary_p1       
-     annual_ira_contrib_base       = initial_annual_ira_contrib_base   
+     expected_annual_expenses      = initial_expected_annual_expenses
+     cur_std_tax_deduction_single  = std_tax_deduction_single
+     cur_std_tax_deduction_joint   = std_tax_deduction_joint
+     social_security_monthly_p1    = initial_social_security_monthly_p1
+     social_security_monthly_p2    = initial_social_security_monthly_p2
+     gross_work_salary_p2          = initial_gross_work_salary_p2
+     gross_work_salary_p1          = initial_gross_work_salary_p1
+     annual_ira_contrib_base       = initial_annual_ira_contrib_base
      annual_ira_contrib_catchup    = initial_annual_ira_contrib_catchup
-     annual_roth_contrib_base      = initial_annual_roth_contrib_base   
+     annual_roth_contrib_base      = initial_annual_roth_contrib_base
      annual_roth_contrib_catchup   = initial_annual_roth_contrib_catchup
      tax_owed                      = first_year_tax
      emergency_fund                = initial_emergency_fund
@@ -353,7 +351,7 @@ contains
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Process investment income & contributions
-        brokerage_balance = brokerage_balance + sum(p_of(p_of(brokerage_balance, cur_investment_mix), cur_investment_apr)) ! Taxable 
+        brokerage_balance = brokerage_balance + sum(p_of(p_of(brokerage_balance, cur_investment_mix), cur_investment_apr)) ! Taxable
         roth_balance_p1   = roth_balance_p1   + sum(p_of(p_of(roth_balance_p1,   cur_investment_mix), cur_investment_apr)) ! Tax deferred
         roth_balance_p2   = roth_balance_p2   + sum(p_of(p_of(roth_balance_p2,   cur_investment_mix), cur_investment_apr)) ! Tax deferred
         ira_balance_p1    = ira_balance_p1    + sum(p_of(p_of(ira_balance_p1,    cur_investment_mix), cur_investment_apr)) ! Tax deferred
@@ -389,19 +387,19 @@ contains
              taxable_income, tax_rate, tax_owed, tax_paied_cash, tax_paied_savings, tax_paied_ira, tax_paied_roth
 
         ! ------------------------------------------------------------------------------------------------------------------------
-        ! Compute Taxes For Next Year        
+        ! Compute Taxes For Next Year
         if ((age_p1 < life_expectancy_p1) .and. (age_p2 < life_expectancy_p2)) then
            tax_owed = tax(taxable_income, cur_tax_bracket_breaks_joint, tax_bracket_rates)
         else
            tax_owed = tax(taxable_income, cur_tax_bracket_breaks_single, tax_bracket_rates)
         end if
         tax_rate = percentage_of_total(taxable_income, tax_owed)
-        
+
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Grow values for inflation, wage growth, ss growth, etc...
         expected_annual_expenses      = add_p(expected_annual_expenses,      cur_inflation_rate)             ! Inflation
         gross_work_salary_p2          = add_p(gross_work_salary_p2,          cur_work_salary_growth)         ! Raise at work
-        gross_work_salary_p1          = add_p(gross_work_salary_p1,          cur_work_salary_growth)         ! Raise at work 
+        gross_work_salary_p1          = add_p(gross_work_salary_p1,          cur_work_salary_growth)         ! Raise at work
         social_security_monthly_p1    = add_p(social_security_monthly_p1,    cur_social_security_growth)     ! Raise for SS
         social_security_monthly_p2    = add_p(social_security_monthly_p2,    cur_social_security_growth)     ! Raise for SS
         annual_ira_contrib_base       = add_p(annual_ira_contrib_base,       cur_annual_ira_contrib_growth)  ! Raise 401k contribution
@@ -492,10 +490,10 @@ contains
      end if
    end subroutine pay_stuff
 
-   !------------------------------------------------------------------------------------------------------------------------------   
+   !------------------------------------------------------------------------------------------------------------------------------
    subroutine read_config()
      implicit none
-     
+
      namelist /SIMPARM/ monte_carlo_years, monte_carlo_runs
      namelist /SIMPARM/ initial_annual_roth_contrib_base, initial_annual_roth_contrib_catchup,annual_roth_contrib_growth, cash_position_growth
      namelist /SIMPARM/ initial_brokerage_balance, initial_roth_balance_p1, initial_roth_balance_p2, initial_ira_balance_p1, initial_ira_balance_p2
@@ -514,7 +512,7 @@ contains
      namelist /SIMPARM/ retirement_year_p1, retirement_year_p2
      namelist /SIMPARM/ birthday_p1, birthday_p2
      namelist /SIMPARM/ life_expectancy_p1, life_expectancy_p2
- 
+
      ! Variables for config file
      integer                       :: io_stat, io_unit, file_name_len
      character(len=512)            :: io_msg

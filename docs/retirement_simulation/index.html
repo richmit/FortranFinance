@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-08 Wed 10:02 -->
+<!-- 2025-01-08 Wed 10:17 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-08 10:02:54</i></td>
+<td class="org-left"><i>2025-01-08 10:17:50</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-08 10:02:56</i></td>
+<td class="org-left"><i>2025-01-08 10:17:51</i></td>
 </tr>
 </tbody>
 </table>
@@ -300,9 +300,8 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <div class="outline-text-2" id="text-intro">
 <p>
 One can go quite far in answering retirement questions with nothing but TVM computations with fixed approximations for things like taxes, investment growth,
-and inflation.  Unfortunately I found myself asking questions these kinds of approximations simply couldn't address.  I spent quite a lot of time evaluating
-various retirement planning and wealth management tools, and found them all wanting in one way or another.  In the end I decided to just write a simple tool
-that essentially simulates the annual financial transactions for a retired couple.  
+and inflation.  As retirement became more of a reality, I found myself asking questions these kinds of approximations simply couldn't address.  This simple
+tool that essentially simulates the annual financial transactions for a retired couple allowing me to play out various strategies.
 </p>
 </div>
 
@@ -408,13 +407,13 @@ want to change the draw down to subroutine to keep your tax rate level over time
 <div class="outline-text-3" id="text-commonprob">
 <p>
 I did a ton of research before I wrote this simulator.  I looked at dozens of wealth management and retirement planning tools.  Some free and some very
-expensive.  Some embarrassingly bad, and some quite sophisticated.  Still, I couldn't find everything I was looking for.
+expensive.  Some super simple and some quite sophisticated.  Some utterly terrible and some pretty good.  In the end I have found myself using a couple online
+tools in combination with this simulator.
 </p>
 
 <p>
-That's not to say this simulator has all the things I was looking for.  In fact, it doesn't have everything, and that's why I use it in combination with other
-tools.  What I get from this simulator is additional insight into my particular scenario. At the end of the day it's all about your financial situation and
-goals that determine if a tool will help you or not. So, it is important that you do your research.
+One thing I realized is that there is no universal measure of quality or fitness for these kinds of tools.  At the end of the day it's all about your
+financial situation and goals that determine if a tool will help you or not. So, it is important that you do your research.
 </p>
 
 <p>
@@ -593,7 +592,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="org53c283c" class="figure">
+<div id="orgb5901a1" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -603,7 +602,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org55ca67d" class="figure">
+<div id="org748986c" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -614,7 +613,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="orgc6aa74f" class="figure">
+<div id="org83bee26" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -635,7 +634,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="org7f7dff1" class="figure">
+<div id="org3a0234d" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -646,7 +645,7 @@ failed.  In essence the green line shows a "safe" balance at which we are unlike
 </p>
 
 
-<div id="org38de099" class="figure">
+<div id="org1eaf356" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -656,7 +655,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="org2c73faf" class="figure">
+<div id="org9d0147a" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -666,7 +665,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="orgf174f01" class="figure">
+<div id="org19202de" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -676,7 +675,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="org1ad57bd" class="figure">
+<div id="org4a8fb13" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -793,7 +792,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org346dd6b" class="figure">
+<div id="orga2ceae7" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -803,7 +802,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org2a5067f" class="figure">
+<div id="org194b611" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -813,7 +812,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org5178937" class="figure">
+<div id="org142cdaa" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -824,7 +823,7 @@ run out of money.
 </p>
 
 
-<div id="org1402a9e" class="figure">
+<div id="org30d7151" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -843,7 +842,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org6a77ca3" class="figure">
+<div id="org116a347" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -853,7 +852,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="orgc7044c8" class="figure">
+<div id="org6fa2f6f" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -863,7 +862,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org32486e5" class="figure">
+<div id="org3bee11e" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>

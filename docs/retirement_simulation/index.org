@@ -47,9 +47,8 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
 :END:
 
 One can go quite far in answering retirement questions with nothing but TVM computations with fixed approximations for things like taxes, investment growth,
-and inflation.  Unfortunately I found myself asking questions these kinds of approximations simply couldn't address.  I spent quite a lot of time evaluating
-various retirement planning and wealth management tools, and found them all wanting in one way or another.  In the end I decided to just write a simple tool
-that essentially simulates the annual financial transactions for a retired couple.  
+and inflation.  As retirement became more of a reality, I found myself asking questions these kinds of approximations simply couldn't address.  This simple
+tool that essentially simulates the annual financial transactions for a retired couple allowing me to play out various strategies.
 
 ** The Model
 :PROPERTIES:
@@ -115,7 +114,7 @@ that essentially simulates the annual financial transactions for a retired coupl
   - Black–Scholes MC -- this is mostly an academic curiosity for me.
   - +Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.+ (Completed 2025-01-07)
   - Social Security survivor benefits -- not sure I need to do this...
-  - Support systems without STDOUT redirection: Make input file name argument required, and add optional output file name argument
+  - Support systems without STDOUT redirection.
   - +Support different SSI benefit levels.+ (Completed 2025-01-08)
   - Add SSI life tables
     - Probably computations on survival.
@@ -128,11 +127,11 @@ that essentially simulates the annual financial transactions for a retired coupl
 :END:
 
 I did a ton of research before I wrote this simulator.  I looked at dozens of wealth management and retirement planning tools.  Some free and some very
-expensive.  Some embarrassingly bad, and some quite sophisticated.  Still, I couldn't find everything I was looking for.
+expensive.  Some super simple and some quite sophisticated.  Some utterly terrible and some pretty good.  In the end I have found myself using a couple online
+tools in combination with this simulator.
 
-That's not to say this simulator has all the things I was looking for.  In fact, it doesn't have everything, and that's why I use it in combination with other
-tools.  What I get from this simulator is additional insight into my particular scenario. At the end of the day it's all about your financial situation and
-goals that determine if a tool will help you or not. So, it is important that you do your research.
+One thing I realized is that there is no universal measure of quality or fitness for these kinds of tools.  At the end of the day it's all about your
+financial situation and goals that determine if a tool will help you or not. So, it is important that you do your research.
 
 In this section I have documented some of the common issues I found with various tools.  My hope is that it may help you in doing your own research.
 

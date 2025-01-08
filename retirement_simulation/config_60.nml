@@ -23,7 +23,7 @@ initial_roth_balance_p1             = 0.0,       !! Sum of all roth-like tax def
 high_investment_p                   = 50.0,      !! percentage of investments at high growth
 mid_investment_p                    = 50.0,      !! percentage of investments at medium growth
 low_investment_p                    = 0.0,       !! percentage of investments at low growth
-                                     
+
 high_investment_apr                 = 7.0,       !! apr for investments at high growth
                                                  !! Used for retirement accounts and the brokerage!
                                                  !! If negative, then do monte carlo with snp_dat
@@ -40,13 +40,13 @@ initial_cash_reserves               = 100000.0,  !! Sum of all cash reserves
 cash_reserves_growth                = 0.01,      !! Growth for cash reserves account
 
 initial_emergency_fund              = 100000.0,  !! Near zero risk investments
-emergency_fund_growth               = 3.0,       !! Rate at which the safety account grows
+emergency_fund_growth               = 3.0,       !! Rate at which the emergency account grows
                                                  !! If negative, then set to low_investment_apr
 
 first_year_tax                      = 50000.0,   !! Taxes to pay the first year of the simulation
 
-worst_case_inflation_rate           = -5.0,      !! Used for investment cuffoff decisions
-                                                 !! If negative, don't use a cutoff
+worst_case_inflation_rate           = -5.0,      !! Used for investment cut-off decisions
+                                                 !! If negative, don't use a cuff-off
 fixed_inflation_rate                = 3.0,       !! Inflation impacts annual expenses
                                                  !! If negative, then do monte carlo
 
