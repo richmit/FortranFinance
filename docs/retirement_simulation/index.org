@@ -120,8 +120,8 @@ tool that essentially simulates the annual financial transactions for a retired 
   - +Support different SSI benefit levels.+ (Completed 2025-01-08)
   - Lifespan
     - Add SSI Life tables
-    - Probably computations on survival
-    - Combined probably computations with survival and account collapse
+    - probability computations on survival
+    - Combined probability computations with survival and account collapse
       - Include probability time series graph -- i.e. probability we run out of money on or after year
       - Include combined probability combination to "probability success" annotations.
     - Do MC lifespan
@@ -154,7 +154,7 @@ in doing the same kind of research.
      - Ignoring the correlation between inflation and bond returns.
    - Only doing MC on investment returns and not inflation.
    - Poor visualization and analysis capabilities for the results of MC simulations.
-     - As I side note, I am convinced some of these tools exist only to publish the "probably of failure" metric as a marketing strategy.  They hope to scare
+     - As I side note, I am convinced some of these tools exist only to publish the "probability of failure" metric as a marketing strategy.  They hope to scare
        people into paying for a financial advisor.  
    - Unwillingness to divulge the underlying models and assumptions.  
      - This is a deal breaker for me.  It's like the GBM parameter item above -- if they won't tell, then I won't trust them.
@@ -464,7 +464,7 @@ And the overall path picture is much more positive:
 
   [[file:pics/compColCases_60ml_mc_full.png][file:pics/compColCases_60ml_mc_800x.png]]
 
-Lastly, the distribution of final savings no longer shows dying broke as the highest probably outcome.
+Lastly, the distribution of final savings no longer shows dying broke as the highest probability outcome.
 
   [[file:pics/endSavings_60ml_mc_full.png][file:pics/endSavings_60ml_mc_800x.png]]
 
