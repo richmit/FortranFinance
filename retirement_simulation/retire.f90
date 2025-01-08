@@ -86,7 +86,8 @@ program retire
 
   integer(kind=ik)  :: social_security_start_age_p2        = 67         
   integer(kind=ik)  :: social_security_start_age_p1        = 67         
-  real(kind=rk)     :: initial_social_security_monthly     = 1000.0     
+  real(kind=rk)     :: initial_social_security_monthly_p1  = 1000.0     
+  real(kind=rk)     :: initial_social_security_monthly_p2  = 1000.0     
   real(kind=rk)     :: social_security_growth              = -1.0
 
   real(kind=rk)     :: initial_gross_work_salary_p2        = 0.0   
@@ -167,18 +168,16 @@ contains
     implicit none
     integer(kind=ik), intent(in) :: sim
 
-     real(kind=rk)     :: cur_std_tax_deduction_single, cur_std_tax_deduction_joint, social_security_monthly
-     real(kind=rk)     :: gross_work_salary_p2, gross_work_salary_p1, annual_ira_contrib_base, annual_ira_contrib_catchup
-     real(kind=rk)     :: annual_roth_contrib_base, annual_roth_contrib_catchup, cur_annual_roth_contrib_growth
-     real(kind=rk)     :: ira_savings_p1, ira_savings_p2, gross_work_income_p1, gross_work_income_p2
-     real(kind=rk)     :: work_income_p1, work_income_p2, ss_income_p1, ss_income_p2, roth_savings_p1, roth_savings_p2
-     real(kind=rk)     :: taxable_income, tax_rate, tax_owed, cur_inflation_rate
-     real(kind=rk)     :: cur_emergency_fund_growth
+     real(kind=rk)     :: cur_std_tax_deduction_single, cur_std_tax_deduction_joint, social_security_monthly_p1
+     real(kind=rk)     :: social_security_monthly_p2, gross_work_salary_p2, gross_work_salary_p1, annual_ira_contrib_base
+     real(kind=rk)     :: annual_ira_contrib_catchup, annual_roth_contrib_base, annual_roth_contrib_catchup
+     real(kind=rk)     :: cur_annual_roth_contrib_growth, ira_savings_p1, ira_savings_p2, gross_work_income_p1
+     real(kind=rk)     :: gross_work_income_p2, work_income_p1, work_income_p2, ss_income_p1, ss_income_p2, roth_savings_p1
+     real(kind=rk)     :: roth_savings_p2, taxable_income, tax_rate, tax_owed, cur_inflation_rate, cur_emergency_fund_growth
      real(kind=rk)     :: cur_work_salary_growth, cur_social_security_growth, cur_annual_ira_contrib_growth
-     real(kind=rk)     :: cur_investment_apr(3), cur_investment_mix(3)
-     real(kind=rk)     :: cr_paied_cash, cr_paied_savings, cr_paied_ira, cr_paied_roth
-     real(kind=rk)     :: annual_expenses_paied_cash, annual_expenses_paied_savings, annual_expenses_paied_roth, annual_expenses_paied_ira
-     real(kind=rk)     :: tax_paied_cash, tax_paied_savings, tax_paied_ira, tax_paied_roth
+     real(kind=rk)     :: cur_investment_apr(3), cur_investment_mix(3), cr_paied_cash, cr_paied_savings, cr_paied_ira
+     real(kind=rk)     :: cr_paied_roth, annual_expenses_paied_cash, annual_expenses_paied_savings, annual_expenses_paied_roth
+     real(kind=rk)     :: annual_expenses_paied_ira, tax_paied_cash, tax_paied_savings, tax_paied_ira, tax_paied_roth
      real(kind=rk)     :: start_cash_income
      real(kind=rk)     :: cur_tax_bracket_breaks_single(size(tax_bracket_breaks_single))
      real(kind=rk)     :: cur_tax_bracket_breaks_joint(size(tax_bracket_breaks_joint))
@@ -210,7 +209,8 @@ contains
      expected_annual_expenses      = initial_expected_annual_expenses   
      cur_std_tax_deduction_single  = std_tax_deduction_single   
      cur_std_tax_deduction_joint   = std_tax_deduction_joint    
-     social_security_monthly       = initial_social_security_monthly     
+     social_security_monthly_p1    = initial_social_security_monthly_p1     
+     social_security_monthly_p2    = initial_social_security_monthly_p2     
      gross_work_salary_p2          = initial_gross_work_salary_p2       
      gross_work_salary_p1          = initial_gross_work_salary_p1       
      annual_ira_contrib_base       = initial_annual_ira_contrib_base   
@@ -311,11 +311,11 @@ contains
         ! Income from social security
         ss_income_p1 = 0
         if ((age_p1 >= social_security_start_age_p1) .and. (age_p1 < life_expectancy_p1)) then
-           ss_income_p1 = social_security_monthly * 12
+           ss_income_p1 = social_security_monthly_p1 * 12
         end if
         ss_income_p2 = 0
         if ((age_p2 >= social_security_start_age_p2) .and. (age_p2 < life_expectancy_p2)) then
-           ss_income_p2 = social_security_monthly * 12
+           ss_income_p2 = social_security_monthly_p2 * 12
         end if
 
         ! ------------------------------------------------------------------------------------------------------------------------
@@ -402,7 +402,8 @@ contains
         expected_annual_expenses      = add_p(expected_annual_expenses,      cur_inflation_rate)             ! Inflation
         gross_work_salary_p2          = add_p(gross_work_salary_p2,          cur_work_salary_growth)         ! Raise at work
         gross_work_salary_p1          = add_p(gross_work_salary_p1,          cur_work_salary_growth)         ! Raise at work 
-        social_security_monthly       = add_p(social_security_monthly,       cur_social_security_growth)     ! Raise for SS
+        social_security_monthly_p1    = add_p(social_security_monthly_p1,    cur_social_security_growth)     ! Raise for SS
+        social_security_monthly_p2    = add_p(social_security_monthly_p2,    cur_social_security_growth)     ! Raise for SS
         annual_ira_contrib_base       = add_p(annual_ira_contrib_base,       cur_annual_ira_contrib_growth)  ! Raise 401k contribution
         annual_ira_contrib_catchup    = add_p(annual_ira_contrib_catchup,    cur_annual_ira_contrib_growth)  ! Raise 401k contribution
         annual_roth_contrib_base      = add_p(annual_roth_contrib_base,      cur_annual_roth_contrib_growth) ! Raise 401k contribution
@@ -505,7 +506,8 @@ contains
      namelist /SIMPARM/ first_year_tax
      namelist /SIMPARM/ worst_case_inflation_rate, fixed_inflation_rate
      namelist /SIMPARM/ initial_expected_annual_expenses
-     namelist /SIMPARM/ social_security_start_age_p1, social_security_start_age_p2, initial_social_security_monthly, social_security_growth
+     namelist /SIMPARM/ social_security_start_age_p1, social_security_start_age_p2
+     namelist /SIMPARM/ initial_social_security_monthly_p1, initial_social_security_monthly_p2, social_security_growth
      namelist /SIMPARM/ initial_gross_work_salary_p1, initial_gross_work_salary_p2, work_salary_growth
      namelist /SIMPARM/ initial_annual_ira_contrib_base, initial_annual_ira_contrib_catchup, annual_ira_contrib_growth
      namelist /SIMPARM/ surplus_reinvest

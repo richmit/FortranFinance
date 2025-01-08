@@ -78,7 +78,6 @@ that essentially simulates the annual financial transactions for a retired coupl
   - Each partner will eventually draw Social Security
     - They each have a year at which they will draw benefits.
     - Benefits are expected to grow -- this can be tied to inflation, or set an an alternate fixed rate.
-    - They each receive the same benefit level.
   - Taxes are estimated for each year including
     - Income taxes
     - Tax impact of IRA withdrawals
@@ -117,7 +116,7 @@ that essentially simulates the annual financial transactions for a retired coupl
   - +Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.+ (Completed 2025-01-07)
   - Social Security survivor benefits -- not sure I need to do this...
   - Support systems without STDOUT redirection: Make input file name argument required, and add optional output file name argument
-  - Support different SSI benefit levels.
+  - +Support different SSI benefit levels.+ (Completed 2025-01-08)
   - Add SSI life tables
     - Probably computations on survival.
     - Combined probably computations with survival and account collapse with a probability time series graph.

@@ -26,13 +26,13 @@ low_investment_p                    = 0.0,       !! percentage of investments at
                                      
 high_investment_apr                 = 7.0,       !! apr for investments at high growth
                                                  !! Used for retirement accounts and the brokerage!
-                                                 !! If negative, then do monte carlo with snp_resample
+                                                 !! If negative, then do monte carlo with snp_dat
 mid_investment_apr                  = 4.0,       !! apr for investments at medium growth
                                                  !! Used for retirement accounts and the brokerage!
                                                  !! If negative, then set to high_investment_apr/2
 low_investment_apr                  = 0.0,       !! apr for investments at low growth
                                                  !! Used for retirement accounts and the brokerage.
-                                                 !! If negative, then set to max(0, high_investment_apr/4)
+                                                 !! If negative, then do monte carlo with dgs10_dat
 cash_position_growth                = 2.5,       !! par for cash position in investment accounts
                                                  !! Used for retirement accounts and the brokerage.
 
@@ -54,7 +54,8 @@ initial_expected_annual_expenses    = 110000.0,  !! First year expenses.
 
 social_security_start_age_p1        = 63,        !! First year we get SS for p1
 social_security_start_age_p2        = 70,        !! First year we get SS for p2
-initial_social_security_monthly     = 1000.0,    !! Just a guess.  Probably low.
+initial_social_security_monthly_p1  = 1000.0,    !! Just a guess.  Probably low.
+initial_social_security_monthly_p2  = 1000.0,    !! Just a guess.  Probably low.
 social_security_growth              = 3.0,       !! Usually matches inflation
                                                  !! If negative, then set to inflation
 
