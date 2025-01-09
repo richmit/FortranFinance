@@ -171,9 +171,9 @@ if (nSims > 1) {
 
   gp <- ggplot(daDat %>% 
                transmute(Year, 
-                         Paid_Taxes=TPaidI+TPaidST+TPaidSI,
+                         Paid_Taxes=TPaidSR+TPaidI+TPaidST+TPaidSI,
                          Unpaid_Taxes=Taxes-Paid_Taxes,
-                         Paid_Living_Expenses=EPaidI+EPaidST+EPaidSI,
+                         Paid_Living_Expenses=EPaidSR+EPaidI+EPaidST+EPaidSI,
                          Unpaid_Living_Expenses=Expenses-Paid_Living_Expenses) %>% 
                tidyr::pivot_longer(cols=c(2:5), names_to='Expense_Type', values_to='Expense') %>%
                mutate(Expense_Type=factor(Expense_Type, c('Paid_Taxes', 
