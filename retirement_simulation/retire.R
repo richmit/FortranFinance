@@ -153,11 +153,13 @@ if (nSims > 1) {
   gp <- ggplot(daDat %>% 
                select(Year, 
                       S1_Brokerage_Accounts=SavingsB, 
-                      S2_Deferred_Tax_Accounts_p1=SavingsI1, 
-                      S3_Deferred_Tax_Accounts_p2=SavingsI2, 
-                      S4_Saftey_Savings=SavingsE, 
-                      S5_Cash=SavingsC) %>% 
-               tidyr::pivot_longer(cols=c(2:6), names_to='Savings_Type', values_to='Savings')) + 
+                      S2_ira_p1=SavingsI1, 
+                      S3_ira_p2=SavingsI2, 
+                      S4_roth_ira_p1=SavingsR1, 
+                      S5_roth_ira_p2=SavingsR2, 
+                      S6_Emergency_Fund=SavingsE, 
+                      S7_Cash=SavingsC) %>% 
+               tidyr::pivot_longer(cols=c(2:8), names_to='Savings_Type', values_to='Savings')) + 
     geom_bar(aes(x=Year, y=Savings, fill=Savings_Type), stat='identity') +
     scale_x_continuous(name='', breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
     labs(title='Savings Account Balances') +

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-08 Wed 14:47 -->
+<!-- 2025-01-09 Thu 00:43 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-08 14:47:51</i></td>
+<td class="org-left"><i>2025-01-09 00:43:58</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-08 14:47:52</i></td>
+<td class="org-left"><i>2025-01-09 00:43:59</i></td>
 </tr>
 </tbody>
 </table>
@@ -312,10 +312,11 @@ tool that essentially simulates the annual financial transactions for a retired 
 <li>Inflation can be a fixed rate or monte carlo.</li>
 <li>The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.  
 <ul class="org-ul">
-<li>Expenses are met with a well defined withdraw strategy drawing down from the following sources in order: income, brokerage, IRA, Roth, &amp; emergency.
-This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.  If you don't have that going on, you may
-want to change the draw down to subroutine to keep your tax rate level over time instead.</li>
-<li>The simulator will not draw funds from an IRA before the person is 60.</li>
+<li>Use the following sources in order for expenses: income, brokerage, IRA, Roth, &amp; emergency.</li>
+<li>Never use an IRA if the account holder is &lt;60</li>
+<li>Never use a Roth IRA if the account holder is &lt;60 or the account was converted less than 5 years ago</li>
+<li>This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.</li>
+<li>The "never use" rules could lead to unpaid expenses &#x2013; So be on the lookout for that, and adjust as required.</li>
 </ul></li>
 <li>They share a checking account in which they maintain a fixed balance growing with inflation.
 <ul class="org-ul">
@@ -354,8 +355,14 @@ want to change the draw down to subroutine to keep your tax rate level over time
 <li>Tax brackets are projected forward with inflation.</li>
 <li>They take the standard deduction.</li>
 <li>They file joint until one of them dies.</li>
+<li>Taxes are paid with the same strategy as expenses.</li>
 </ul></li>
 <li>They share an "emergency" fund invested in low risk investments.  Funds used as a last resort.</li>
+<li>Roth Conversions
+<ul class="org-ul">
+<li>We convert part ira accounts to a roth ira if that year's taxable income is below a set target.</li>
+<li>We convert p2 ira accounts first, and then p1 ira accounts.</li>
+</ul></li>
 </ul>
 </div>
 </div>
@@ -378,14 +385,7 @@ want to change the draw down to subroutine to keep your tax rate level over time
 <h3 id="future"><span class="section-number-3">1.3.</span> Future Plans</h3>
 <div class="outline-text-3" id="text-future">
 <ul class="org-ul">
-<li>IRA to Roth IRA conversions
-<ul class="org-ul">
-<li>Idea: Trigger conversions early in the retirement phase when we have lower taxes.</li>
-<li>Set a target tax rate, and convert enough each year to meet that target.</li>
-<li>Need to make sure we don't convert funds we need to withdrawal within 5 years. ;)</li>
-<li>Add tax impact of regular IRA to Roth IRA conversions to tax computation</li>
-<li>Comprehend 5 year withdrawal delay to newly formed Roth accounts.</li>
-</ul></li>
+<li><del>IRA to Roth IRA conversions</del> (Completed 2025-01-10)</li>
 <li><del>Add 10 year US treasury bond yield</del> (Completed 2025-01-06)</li>
 <li>Black–Scholes MC &#x2013; this is mostly an academic curiosity for me.</li>
 <li><del>Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.</del> (Completed 2025-01-07)</li>
@@ -394,15 +394,20 @@ want to change the draw down to subroutine to keep your tax rate level over time
 <li><del>Print error messages to STDERR instead of STDOUT</del> (Completed 2025-01-08)</li>
 <li><del>Add support for progress messages to STDOUT</del> (Completed 2025-01-08)</li>
 <li><del>Support different SSI benefit levels.</del> (Completed 2025-01-08)</li>
-<li>Lifespan
+<li>Life Table
 <ul class="org-ul">
-<li>Add SSI Life tables</li>
+<li>Add SSI Life tables module
+<ul class="org-ul">
+<li>Data access</li>
 <li>probability computations on survival</li>
-<li>Combined probability computations with survival and account collapse
-<ul class="org-ul">
-<li>Include probability time series graph &#x2013; i.e. probability we run out of money on or after year</li>
-<li>Include combined probability combination to "probability success" annotations.</li>
+<li>Max age of person given sex and a percentile</li>
+<li>max age of person given sex in table (same as above but 100% probability)</li>
 </ul></li>
+<li>Option to set simulation end at highest survivor date in life table for sex of person</li>
+<li>Add probability of survival given age to output table</li>
+<li>Add a "probability of success" value adjusted with survival probability</li>
+<li>Add graph showing probability of running out of cash by given date</li>
+<li>Add graph showing probability of running out of cash by given date adjusted with survival probability</li>
 <li>Do MC lifespan</li>
 </ul></li>
 </ul>
@@ -608,7 +613,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="orgdd9cd8f" class="figure">
+<div id="orgc65c45d" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -618,7 +623,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org18dfd55" class="figure">
+<div id="org2734e14" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -629,7 +634,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="orgc6bee7b" class="figure">
+<div id="org2f2d215" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -650,7 +655,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="org9bfe38e" class="figure">
+<div id="org6cf5d09" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -661,7 +666,7 @@ failed.  In essence the green line shows a "safe" balance at which we are unlike
 </p>
 
 
-<div id="org74367ca" class="figure">
+<div id="orgee23f35" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -671,7 +676,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="org6b420af" class="figure">
+<div id="org604873c" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -681,7 +686,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org7d64ba8" class="figure">
+<div id="org39f5d5f" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -691,7 +696,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="org00b8cdc" class="figure">
+<div id="org4673313" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -704,7 +709,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 <div class="org-src-container">
 <pre class="src src-f90">&amp;SIMPARM
 monte_carlo_years                   = 40,        <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Years of reference data to use</span>
-monte_carlo_runs                    = 10000,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Number of sims</span>
+monte_carlo_runs                    = 1000,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Number of sims</span>
 
 initial_brokerage_balance           = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all normally taxable accounts</span>
 initial_ira_balance_p1              = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p1</span>
@@ -739,7 +744,7 @@ first_year_tax                      = 1000.0,    <span style="color: #ffa500;">!
 
 worst_case_inflation_rate           = -5.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for investment cut-off decisions</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, don't use a cuff-off</span>
-fixed_inflation_rate                = 3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Inflation impacts annual expenses</span>
+fixed_inflation_rate                = -3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Inflation impacts annual expenses</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then do monte carlo</span>
 
 initial_expected_annual_expenses    = 100000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
@@ -766,6 +771,10 @@ initial_annual_roth_contrib_catchup = 0.0,       <span style="color: #ffa500;">!
 annual_roth_contrib_growth          = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Grow 401k contribution</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
 
+target_taxable_income               = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Target tax for roth conversion</span>
+minimum_roth_conversion             = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Minimum size of roth conversion</span>
+maximum_roth_conversion_year        = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">No conversions after this year</span>
+
 surplus_reinvest                    = 100.0,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Percentage of ExtraNS to reinvest</span>
 
 retirement_year_p1                  = 2065,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year p1 is fully retired</span>
@@ -773,7 +782,13 @@ retirement_year_p2                  = 2065,      <span style="color: #ffa500;">!
 birthday_p1                         = 2000,      <span style="color: #ffa500;">!!</span>
 birthday_p2                         = 2000,      <span style="color: #ffa500;">!!</span>
 life_expectancy_p1                  = 110,       <span style="color: #ffa500;">!!</span>
-life_expectancy_p2                  = 110        <span style="color: #ffa500;">!!</span>
+life_expectancy_p2                  = 110,       <span style="color: #ffa500;">!!</span>
+
+verbosity                           = 10         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">How much to print when running</span>
+                                                 <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">-  0 : nothing</span>
+                                                 <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">- 10 : progress</span>
+                                                 <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">- 20 : variables</span>
+                                                 <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">- 30 : more variables</span>
 /
 </pre>
 </div>
@@ -809,7 +824,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="orge788bd8" class="figure">
+<div id="org63dde0a" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -819,7 +834,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="orgf18feba" class="figure">
+<div id="org693e19d" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -829,7 +844,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org5e7d3d4" class="figure">
+<div id="org8840fbc" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -840,7 +855,7 @@ run out of money.
 </p>
 
 
-<div id="orga5ff378" class="figure">
+<div id="org27f9119" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -859,7 +874,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="orgdd3e94f" class="figure">
+<div id="org6299f3b" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -869,7 +884,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org8e75904" class="figure">
+<div id="orgee7fa56" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -879,7 +894,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org5eea16e" class="figure">
+<div id="org2939eac" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -958,6 +973,10 @@ initial_annual_roth_contrib_catchup = 0.0,       <span style="color: #ffa500;">!
 annual_roth_contrib_growth          = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Grow 401k contribution</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
 
+target_taxable_income               = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Target tax for roth conversion</span>
+minimum_roth_conversion             = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Minimum size of roth conversion</span>
+maximum_roth_conversion_year        = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">No conversions after this year</span>
+
 surplus_reinvest                    = 100.0,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Percentage of ExtraNS to reinvest</span>
 
 retirement_year_p1                  = 2037,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year p1 is fully retired</span>
@@ -966,6 +985,12 @@ birthday_p1                         = 1977,      <span style="color: #ffa500;">!
 birthday_p2                         = 1969,      <span style="color: #ffa500;">!!</span>
 life_expectancy_p1                  = 110,       <span style="color: #ffa500;">!!</span>
 life_expectancy_p2                  = 110        <span style="color: #ffa500;">!!</span>
+
+verbosity                           = 10         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">How much to print when running</span>
+                                                 <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">-  0 : nothing</span>
+                                                 <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">- 10 : progress</span>
+                                                 <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">- 20 : variables</span>
+                                                 <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">- 30 : more variables</span>
 /
 </pre>
 </div>

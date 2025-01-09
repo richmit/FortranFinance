@@ -57,10 +57,11 @@ tool that essentially simulates the annual financial transactions for a retired 
 
   - Inflation can be a fixed rate or monte carlo. 
   - The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.  
-    - Expenses are met with a well defined withdraw strategy drawing down from the following sources in order: income, brokerage, IRA, Roth, & emergency.
-      This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.  If you don't have that going on, you may
-      want to change the draw down to subroutine to keep your tax rate level over time instead.
-    - The simulator will not draw funds from an IRA before the person is 60.
+    - Use the following sources in order for expenses: income, brokerage, IRA, Roth, & emergency.
+    - Never use an IRA if the account holder is <60
+    - Never use a Roth IRA if the account holder is <60 or the account was converted less than 5 years ago
+    - This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.  
+    - The "never use" rules could lead to unpaid expenses -- So be on the lookout for that, and adjust as required.
   - They share a checking account in which they maintain a fixed balance growing with inflation.
     - If necessary, savings in other accounts are used to maintain that balance.
   - Retirement Savings
@@ -85,7 +86,11 @@ tool that essentially simulates the annual financial transactions for a retired 
     - Tax brackets are projected forward with inflation.
     - They take the standard deduction.
     - They file joint until one of them dies.
+    - Taxes are paid with the same strategy as expenses.
   - They share an "emergency" fund invested in low risk investments.  Funds used as a last resort.
+  - Roth Conversions
+    - We convert part ira accounts to a roth ira if that year's taxable income is below a set target.
+    - We convert p2 ira accounts first, and then p1 ira accounts.
 
 ** Some Observations
 :PROPERTIES:
@@ -104,12 +109,7 @@ tool that essentially simulates the annual financial transactions for a retired 
 :CUSTOM_ID: future
 :END:
 
-  - IRA to Roth IRA conversions
-    - Idea: Trigger conversions early in the retirement phase when we have lower taxes.
-    - Set a target tax rate, and convert enough each year to meet that target.  
-    - Need to make sure we don't convert funds we need to withdrawal within 5 years. ;)
-    - Add tax impact of regular IRA to Roth IRA conversions to tax computation
-    - Comprehend 5 year withdrawal delay to newly formed Roth accounts.
+  - +IRA to Roth IRA conversions+ (Completed 2025-01-10)
   - +Add 10 year US treasury bond yield+ (Completed 2025-01-06)
   - Black–Scholes MC -- this is mostly an academic curiosity for me.
   - +Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.+ (Completed 2025-01-07)
@@ -118,12 +118,17 @@ tool that essentially simulates the annual financial transactions for a retired 
   - +Print error messages to STDERR instead of STDOUT+ (Completed 2025-01-08)
   - +Add support for progress messages to STDOUT+ (Completed 2025-01-08)
   - +Support different SSI benefit levels.+ (Completed 2025-01-08)
-  - Lifespan
-    - Add SSI Life tables
-    - probability computations on survival
-    - Combined probability computations with survival and account collapse
-      - Include probability time series graph -- i.e. probability we run out of money on or after year
-      - Include combined probability combination to "probability success" annotations.
+  - Life Table
+    - Add SSI Life tables module
+      - Data access
+      - probability computations on survival
+      - Max age of person given sex and a percentile
+      - max age of person given sex in table (same as above but 100% probability)
+    - Option to set simulation end at highest survivor date in life table for sex of person
+    - Add probability of survival given age to output table
+    - Add a "probability of success" value adjusted with survival probability
+    - Add graph showing probability of running out of cash by given date
+    - Add graph showing probability of running out of cash by given date adjusted with survival probability
     - Do MC lifespan
 
 ** Evaluating retirement planning software
@@ -332,7 +337,7 @@ grep -A 1000 '^&SIMPARM' ~/world/my_prog/finance/FortranFinance/retirement_simul
 #+begin_src f90 :eval never :tangle no
 &SIMPARM
 monte_carlo_years                   = 40,        !! Years of reference data to use
-monte_carlo_runs                    = 10000,     !! Number of sims
+monte_carlo_runs                    = 1000,     !! Number of sims
 
 initial_brokerage_balance           = 0.0,       !! Sum of all normally taxable accounts
 initial_ira_balance_p1              = 0.0,       !! Sum of all tax deferred accounts for p1
@@ -367,7 +372,7 @@ first_year_tax                      = 1000.0,    !! Taxes to pay the first year 
 
 worst_case_inflation_rate           = -5.0,      !! Used for investment cut-off decisions
                                                  !! If negative, don't use a cuff-off
-fixed_inflation_rate                = 3.0,       !! Inflation impacts annual expenses
+fixed_inflation_rate                = -3.0,       !! Inflation impacts annual expenses
                                                  !! If negative, then do monte carlo
 
 initial_expected_annual_expenses    = 100000.0,  !! First year expenses.
@@ -394,6 +399,10 @@ initial_annual_roth_contrib_catchup = 0.0,       !! Starting catchup contributio
 annual_roth_contrib_growth          = 0.0,       !! Grow 401k contribution
                                                  !! If negative, then set to inflation
 
+target_taxable_income               = 0,         !! Target tax for roth conversion
+minimum_roth_conversion             = 0,         !! Minimum size of roth conversion
+maximum_roth_conversion_year        = 0,         !! No conversions after this year
+
 surplus_reinvest                    = 100.0,     !! Percentage of ExtraNS to reinvest
 
 retirement_year_p1                  = 2065,      !! First year p1 is fully retired
@@ -401,7 +410,13 @@ retirement_year_p2                  = 2065,      !! First year p2 is fully retir
 birthday_p1                         = 2000,      !!
 birthday_p2                         = 2000,      !!
 life_expectancy_p1                  = 110,       !!
-life_expectancy_p2                  = 110        !!
+life_expectancy_p2                  = 110,       !!
+
+verbosity                           = 10         !! How much to print when running
+                                                 !!  -  0 : nothing
+                                                 !!  - 10 : progress
+                                                 !!  - 20 : variables
+                                                 !!  - 30 : more variables
 /
 #+end_src
 
@@ -545,6 +560,10 @@ initial_annual_roth_contrib_catchup = 0.0,       !! Starting catchup contributio
 annual_roth_contrib_growth          = 0.0,       !! Grow 401k contribution
                                                  !! If negative, then set to inflation
 
+target_taxable_income               = 0,         !! Target tax for roth conversion
+minimum_roth_conversion             = 0,         !! Minimum size of roth conversion
+maximum_roth_conversion_year        = 0,         !! No conversions after this year
+
 surplus_reinvest                    = 100.0,     !! Percentage of ExtraNS to reinvest
 
 retirement_year_p1                  = 2037,      !! First year p1 is fully retired
@@ -553,6 +572,12 @@ birthday_p1                         = 1977,      !!
 birthday_p2                         = 1969,      !!
 life_expectancy_p1                  = 110,       !!
 life_expectancy_p2                  = 110        !!
+
+verbosity                           = 10         !! How much to print when running
+                                                 !!  -  0 : nothing
+                                                 !!  - 10 : progress
+                                                 !!  - 20 : variables
+                                                 !!  - 30 : more variables
 /
 #+end_src
 

@@ -101,6 +101,10 @@ program retire
   real(kind=rk)     :: initial_annual_roth_contrib_catchup = 7000.0
   real(kind=rk)     :: annual_roth_contrib_growth          = 0.0
 
+  real(kind=rk)     :: target_taxable_income               = 0
+  real(kind=rk)     :: minimum_roth_conversion             = 15000
+  integer(kind=ik)  :: maximum_roth_conversion_year        = 0
+
   real(kind=rk)     :: surplus_reinvest                    = 0.0
 
   integer(kind=ik)  :: retirement_year_p1                  = 2035
@@ -115,6 +119,7 @@ program retire
 
   ! Global runtime variables used by the simulation
   integer(kind=ik)   :: age_p1, age_p2, simulation_year_end, year, tmp_j, num_runs, mc_year_low, mc_year_high
+  integer(kind=ik)   :: last_roth_conversion_year_p1, last_roth_conversion_year_p2
   real(kind=rk)      :: brokerage_balance, ira_balance_p2, ira_balance_p1, emergency_fund, roth_balance_p2, roth_balance_p1
   real(kind=rk)      :: cash_reserves, cash_income, expected_annual_expenses
   character(len=10)  :: out_file_name = 'retire.out'
@@ -187,20 +192,24 @@ contains
      real(kind=rk)     :: cur_investment_apr(3), cur_investment_mix(3), cr_paied_cash, cr_paied_savings, cr_paied_ira
      real(kind=rk)     :: cr_paied_roth, annual_expenses_paied_cash, annual_expenses_paied_savings, annual_expenses_paied_roth
      real(kind=rk)     :: annual_expenses_paied_ira, tax_paied_cash, tax_paied_savings, tax_paied_ira, tax_paied_roth
-     real(kind=rk)     :: start_cash_income
+     real(kind=rk)     :: start_cash_income, roth_convert_p2, roth_convert_p1
      real(kind=rk)     :: cur_tax_bracket_breaks_single(size(tax_bracket_breaks_single))
      real(kind=rk)     :: cur_tax_bracket_breaks_joint(size(tax_bracket_breaks_joint))
      integer(kind=ik)  :: mc_year
 
-     !                                         s   y a1 a2    cr         inf       CpI/ST/SI/SR  ef B I12 R12  apr          ss1/2 wrk1/2 sav1 sav2 exp epI/T/I/R  taxbl      bkt       tax tpI/T/SI/SR
-     character(len=*), parameter  :: fmt_n = "(i7, 3(1x, i4), 1x, f12.2, 1x, f5.1, 4(1x, f10.2), 6(1x, f16.2), 3(1x, f6.1), 4(1x, f9.2), 2(1x, f8.2), 5(1x, f11.2), 1x, f14.2, 1x, f6.2, 5(1x, f14.2))"
-     character(len=*), parameter  :: fmt_h = "(a7, 3(1x, a4), 1x, a12,   1x, a5,   4(1x, a10),   6(1x, a16),   3(1x, a6),   4(1x, a9),   2(1x, a8),   5(1x, a11),   1x, a14,   1x, a6,   5(1x, a14) )"
+     !                                         s   y a1 a2    cash       inf       CpI/ST/SI/SR  ef B I12 R12  apr          roth con1/2  ss1/2 wrk1/2 sav1 sav2 exp epI/T/I/R  taxbl      bkt       tax tpI/T/SI/SR
+     character(len=*), parameter  :: fmt_n = "(i7, 3(1x, i4), 1x, f12.2, 1x, f5.1, 4(1x, f10.2), 6(1x, f16.2), 3(1x, f6.1), 2(1x, f9.2), 4(1x, f9.2), 2(1x, f8.2), 5(1x, f11.2), 1x, f14.2, 1x, f6.2, 5(1x, f14.2))"
+     character(len=*), parameter  :: fmt_h = "(a7, 3(1x, a4), 1x, a12,   1x, a5,   4(1x, a10),   6(1x, a16),   3(1x, a6),   2(1x, a9),   4(1x, a9),   2(1x, a8),   5(1x, a11),   1x, a14,   1x, a6,   5(1x, a14) )"
+
+     !   -- before SS1, 
+
 
      if (sim == 1) then
         write (unit=out_io_unit, iostat=out_io_stat, iomsg=out_io_msg, fmt=fmt_h) &
              "Sim", "Year", "Age1", "Age2", &
              "SavingsC", "Inf", "CPaidI", "CPaidST", "CPaidSI", "CPaidSR", &
              "SavingsE", "SavingsB", "SavingsI1", "SavingsI2", "SavingsR1", "SavingsR2", "aprH", "arpM", "aprL", &
+             "ConR1", "ConR2", &
              "SS1", "SS2", "Wrk1", "Wrk2", &
              "Sav1", "Sav2", &
              "Expenses", "EPaidI", "EPaidST", "EPaidSI", "EPaidSR", &
@@ -237,6 +246,8 @@ contains
      cur_tax_bracket_breaks_joint  = tax_bracket_breaks_joint
      taxable_income                = -1.0
      tax_rate                      = -1.0
+     last_roth_conversion_year_p1  = simulation_year_start - 5
+     last_roth_conversion_year_p2  = simulation_year_start - 5
      cur_investment_mix            = [ high_investment_p, mid_investment_p, low_investment_p ]
 
      do year=simulation_year_start, simulation_year_end
@@ -340,7 +351,7 @@ contains
         ! Initialize taxable income.  It will be updated later for retirement account withdrawals
         taxable_income = cash_income                                                                                 ! Taxable Non-savings income
         taxable_income = taxable_income + sum(p_of(p_of(brokerage_balance, cur_investment_mix), cur_investment_apr)) ! Taxable investment income
-        taxable_income = taxable_income + p_of(emergency_fund,    emergency_fund_growth)                             ! Taxable investment income
+        taxable_income = taxable_income + p_of(emergency_fund, emergency_fund_growth)                                ! Taxable investment income
         taxable_income = taxable_income + p_of(cash_reserves, cash_reserves_growth)                                  ! Taxable investment income
 
         ! ------------------------------------------------------------------------------------------------------------------------
@@ -363,6 +374,31 @@ contains
         taxable_income = taxable_income + tax_paied_ira
         taxable_income = taxable_income + annual_expenses_paied_ira
         taxable_income = taxable_income + cr_paied_ira
+
+        ! ------------------------------------------------------------------------------------------------------------------------
+        ! Roth Conversion
+        roth_convert_p2 = 0
+        roth_convert_p1 = 0
+        if (year < maximum_roth_conversion_year) then
+           if (target_taxable_income - taxable_income > minimum_roth_conversion ) then
+              if (ira_balance_p2 > 0) then
+                 roth_convert_p2 = min(ira_balance_p2, target_taxable_income-taxable_income)
+                 roth_balance_p2 = roth_balance_p2 + roth_convert_p2
+                 ira_balance_p2  = ira_balance_p2  - roth_convert_p2
+                 taxable_income  = taxable_income  + roth_convert_p2
+                 last_roth_conversion_year_p2 = year
+              end if
+           end if
+           if (target_taxable_income - taxable_income > minimum_roth_conversion ) then
+              if (ira_balance_p1 > 0) then
+                 roth_convert_p1 = min(ira_balance_p1, target_taxable_income-taxable_income)
+                 roth_balance_p1 = roth_balance_p1 + roth_convert_p1
+                 ira_balance_p1  = ira_balance_p1  - roth_convert_p1
+                 taxable_income  = taxable_income  + roth_convert_p1
+                 last_roth_conversion_year_p1 = year
+              end if
+           end if
+        end if
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Process investment income & contributions
@@ -395,6 +431,7 @@ contains
              cash_reserves, cur_inflation_rate, cr_paied_cash, cr_paied_savings, cr_paied_ira, cr_paied_roth, &
              emergency_fund, brokerage_balance, ira_balance_p1, ira_balance_p2,roth_balance_p1, roth_balance_p2, &
              cur_investment_apr(1), cur_investment_apr(2), cur_investment_apr(3), &
+             roth_convert_p1, roth_convert_p2, &
              ss_income_p1, ss_income_p2, gross_work_income_p1, gross_work_income_p2, &
              ira_savings_p1, ira_savings_p2, &
              expected_annual_expenses, annual_expenses_paied_cash, annual_expenses_paied_savings, &
@@ -417,6 +454,7 @@ contains
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Grow values for inflation, wage growth, ss growth, etc...
         expected_annual_expenses      = add_p(expected_annual_expenses,      cur_inflation_rate)             ! Inflation
+        target_taxable_income         = add_p(target_taxable_income,         cur_inflation_rate)             ! Inflation
         gross_work_salary_p2          = add_p(gross_work_salary_p2,          cur_work_salary_growth)         ! Raise at work
         gross_work_salary_p1          = add_p(gross_work_salary_p1,          cur_work_salary_growth)         ! Raise at work
         social_security_monthly_p1    = add_p(social_security_monthly_p1,    cur_social_security_growth)     ! Raise for SS
@@ -483,13 +521,13 @@ contains
         paid_from_ira = paid_from_ira + ded
         ira_balance_p2 = ira_balance_p2 - ded
      end if
-     if ((paid < bill) .and. (roth_balance_p1 > 0) .and. (60 <= age_p1)) then       ! Use roth_balance_p1
+     if ((paid < bill) .and. (roth_balance_p1 > 0) .and. (60 <= age_p1) .and. (year > last_roth_conversion_year_p1+5)) then       ! Use roth_balance_p1
         ded = min(bill - paid, roth_balance_p1)
         paid = paid + ded
         paid_from_roth = paid_from_roth + ded
         roth_balance_p1 = roth_balance_p1 - ded
      end if
-     if ((paid < bill) .and. (roth_balance_p2 > 0) .and. (60 <= age_p2)) then       ! Use roth_balance_p2
+     if ((paid < bill) .and. (roth_balance_p2 > 0) .and. (60 <= age_p2).and. (year > last_roth_conversion_year_p2+5)) then       ! Use roth_balance_p2
         ded = min(bill - paid, roth_balance_p2)
         paid = paid + ded
         paid_from_roth = paid_from_roth + ded
@@ -527,6 +565,7 @@ contains
      namelist /SIMPARM/ initial_social_security_monthly_p1, initial_social_security_monthly_p2, social_security_growth
      namelist /SIMPARM/ initial_gross_work_salary_p1, initial_gross_work_salary_p2, work_salary_growth
      namelist /SIMPARM/ initial_annual_ira_contrib_base, initial_annual_ira_contrib_catchup, annual_ira_contrib_growth
+     namelist /SIMPARM/ target_taxable_income, minimum_roth_conversion, maximum_roth_conversion_year
      namelist /SIMPARM/ surplus_reinvest
      namelist /SIMPARM/ retirement_year_p1, retirement_year_p2
      namelist /SIMPARM/ birthday_p1, birthday_p2

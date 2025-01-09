@@ -74,6 +74,10 @@ initial_annual_roth_contrib_catchup = 0.0,       !! Starting catchup contributio
 annual_roth_contrib_growth          = 0.0,       !! Grow 401k contribution
                                                  !! If negative, then set to inflation
 
+target_taxable_income               = 0,         !! Target tax for roth conversion
+minimum_roth_conversion             = 0,         !! Minimum size of roth conversion
+maximum_roth_conversion_year        = 0,         !! No conversions after this year
+
 surplus_reinvest                    = 100.0,     !! Percentage of ExtraNS to reinvest
 
 retirement_year_p1                  = 2065,      !! First year p1 is fully retired
