@@ -35,9 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-!> Life Table
-!!
-!! This module provides life table computations, and some US life table data.
+!> Life table computations, and some US life table data.
 !!
 !! @par Life Table Data
 !! The following tables are provided as public arrays exported from this module:
@@ -57,10 +55,10 @@
 !! @f[ q_x = 1 - \frac{l_{x+1}}{l_x} @f]
 !!
 !! @warning 
-!! It is common for the value of @f$ q_x @f$ to be adjusted adjusted.  It is common for life tables with adjusted @f$ q_x @f$
-!! values to still report the actual values for @f$ l_x @f$ -- thus making the two columns inconsistent with each other.  The
-!! 2021 Social Security life table is an example.  This module treats this single life table as two separate, and independent
-!! entities -- this allows us to use whichever column is most appropriate for our application.
+!! It is common for the value of @f$ q_x @f$ to be adjusted.  It is also common for life tables with adjusted @f$ q_x @f$ values
+!! to still report the actual values for @f$ l_x @f$ -- thus making the two columns inconsistent with each other with respect to
+!! the above formula.  The 2021 Social Security life table is an example.  This module treats this single life table as two
+!! separate, and independent entities -- this allows us to use whichever column is most appropriate for our application.
 !!
 !! @par `probability_of_survival_1`
 !! @f$ p_x @f$ is the probability that someone aged exactly @f$ x @f$  will survive to age @f$ (x+1) @f$.

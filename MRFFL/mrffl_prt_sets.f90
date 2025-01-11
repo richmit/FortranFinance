@@ -4,7 +4,7 @@
 !! @file      mrffl_prt_sets.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
-!! @brief     @EOL
+!! @brief     Constants to select what *_print subroutines will print.@EOL
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
@@ -35,6 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
+!> Constants to select what *_print subroutines will print.
 module mrffl_prt_sets
   use mrffl_config, only: ik=>mrfflik
   implicit none

@@ -4,7 +4,7 @@
 !! @file      mrffl_var_sets.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
-!! @brief     @EOL
+!! @brief     Constants to to identify TVM variables.@EOL
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
@@ -35,6 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
+!> Constants to to identify TVM variables.
 module mrffl_var_sets
   use mrffl_config, only: ik=>mrfflik
   implicit none  
