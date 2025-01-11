@@ -262,11 +262,12 @@ module mrffl_life_table
          1390]
 
   public :: life_table_print
-  ! The functions directly use the life_table or cohort_size arguments to produce values.
+  ! 1st tier functions: Directly use the life_table or cohort_size arguments to produce values.
   public :: survivors, probability_of_death
-  ! These functions all call survivors and/or probability_of_death to derive the return value.  They do not access the life_table
-  ! or cohort_size arguments directly.
-  public :: died, life_expectancy, mortality_rate, person_years, probability_of_survival_1, probability_of_survival_n, total_person_years, age_all_dead
+  ! 2nd tier functions: Directly call 1st/2nd tier functions, and do not directly access life_table or cohort_size arguments.
+  public :: died, life_expectancy, mortality_rate, person_years, probability_of_survival_n, total_person_years, age_all_dead
+  ! 3nd tier functions: Directly call 2st tier functions, and do not directly access life_table or cohort_size arguments.
+  public :: life_expectancy_at_birth, probability_of_survival_1
 
 contains
 
@@ -359,6 +360,19 @@ contains
   end function life_expectancy
 
   !--------------------------------------------------------------------------------------------------------------------------------
+  !> Return @f$ e_0 @f$.  See the module documentation for a guide to symbols.
+  !!
+  !! @param life_table  Data for life table.  See module documentation for description.
+  !! @param cohort_size Number of people in the cohort.  See module documentation for description.
+  !!
+  real(kind=rk) pure function life_expectancy_at_birth(life_table, cohort_size)
+    implicit none
+    integer(kind=ik), intent(in) :: cohort_size
+    real(kind=rk), intent(in)    :: life_table(:)
+    life_expectancy_at_birth = life_expectancy(0, life_table, cohort_size)
+  end function life_expectancy_at_birth
+
+  !--------------------------------------------------------------------------------------------------------------------------------
   !> Return @f$ _tp_x @f$ for the given age.  See the module documentation for a guide to symbols.
   !!
   !! @param age Age of the person.
@@ -391,7 +405,6 @@ contains
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
     probability_of_survival_1 = probability_of_survival_n(age, 1, life_table, cohort_size)
-    !Should also be equal to: 1- probability_of_death(age, life_table, cohort_size)
   end function probability_of_survival_1
 
   !--------------------------------------------------------------------------------------------------------------------------------
