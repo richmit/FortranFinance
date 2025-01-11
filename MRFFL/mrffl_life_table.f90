@@ -85,8 +85,14 @@
 !! @f[ _tp_x = \frac{l_{x+t}}{l_x} @f]
 !!
 !! @par `person_years`
-!! @f$ L_x @f$ the total number of person-years lived by the cohort from age @f$ x @f$ to @f$ x+1@f$.
+!! @f$ L_x @f$ the total number of person-years lived by the cohort from age @f$ x @f$ to @f$ x+1 @f$.
 !! @f[ L_x = l_{x+1} + \frac{d_x}{2} @f]
+!!
+!! @warning 
+!! I like the simple approach of assuming people die uniformly on the time interval.  That is to say the average number of years
+!! lived by people who died on the interval was 0.5 years.  There are several other methodologies in common use today that do not
+!! make this assumption.  The most common approaches are to use some kind of smoothing criteria.  For a popular example, see
+!! "Keyfitz N. A life table that agrees with the data. Journal of the American Statistical Association. 1966 Jun 1".
 !!
 !! @par `total_person_years`
 !! @f$ T_x @f$ the total number of person-years lived by the cohort from age @f$ x @f$ until all have died.
