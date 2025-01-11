@@ -11,3 +11,7 @@ include $(MRFFL_PATH)/tools_gfortran.mk
 include $(MRFFL_PATH)/include.mk
 
 ################################################################################################################################################################
+
+clean : clean_multi_mrffl
+	rm -f *~
+	rm -rf autodocs
