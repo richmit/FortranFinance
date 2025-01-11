@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-09 Thu 00:43 -->
+<!-- 2025-01-11 Sat 13:30 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-09 00:43:58</i></td>
+<td class="org-left"><i>2025-01-11 13:29:55</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-09 00:43:59</i></td>
+<td class="org-left"><i>2025-01-11 13:30:04</i></td>
 </tr>
 </tbody>
 </table>
@@ -398,10 +398,14 @@ tool that essentially simulates the annual financial transactions for a retired 
 <ul class="org-ul">
 <li>Add SSI Life tables module
 <ul class="org-ul">
-<li>Data access</li>
-<li>probability computations on survival</li>
-<li>Max age of person given sex and a percentile</li>
-<li>max age of person given sex in table (same as above but 100% probability)</li>
+<li><del>Data</del> (Completed 2025-01-11)
+<ul class="org-ul">
+<li><del>SSI male &amp; female px * lx data</del> (Completed 2025-01-11)</li>
+<li><del>CDC all, male, female, white people, white males, white females</del> (Completed 2025-01-11)</li>
+</ul></li>
+<li><del>Life table computations: Given age and qx or lx, compute: qx (when given lx), lx (when given qx), dx, Lx, Tx, ex, mx, &amp; px</del> (Completed 2025-01-11)</li>
+<li>Compute the maximum age a person might reach (the year at which everyone is dead in the life table)</li>
+<li><del>Compute probably a person at a given age a given number of years</del> (Completed 2025-01-11)</li>
 </ul></li>
 <li>Option to set simulation end at highest survivor date in life table for sex of person</li>
 <li>Add probability of survival given age to output table</li>
@@ -613,7 +617,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="orgc65c45d" class="figure">
+<div id="org6522941" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -623,7 +627,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org2734e14" class="figure">
+<div id="orga7a43e7" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -634,7 +638,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org2f2d215" class="figure">
+<div id="org9242dc2" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -655,7 +659,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="org6cf5d09" class="figure">
+<div id="org4777c28" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -666,7 +670,7 @@ failed.  In essence the green line shows a "safe" balance at which we are unlike
 </p>
 
 
-<div id="orgee23f35" class="figure">
+<div id="org42e1c75" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -676,7 +680,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="org604873c" class="figure">
+<div id="org16f0297" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -686,7 +690,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org39f5d5f" class="figure">
+<div id="orgac751f4" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -696,7 +700,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="org4673313" class="figure">
+<div id="orgfd4a914" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -824,7 +828,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org63dde0a" class="figure">
+<div id="orgab276f1" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -834,7 +838,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org693e19d" class="figure">
+<div id="orgb5f657b" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -844,7 +848,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org8840fbc" class="figure">
+<div id="org54df455" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -855,7 +859,7 @@ run out of money.
 </p>
 
 
-<div id="org27f9119" class="figure">
+<div id="org98ae20b" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -874,7 +878,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org6299f3b" class="figure">
+<div id="org8fe896d" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -884,7 +888,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="orgee7fa56" class="figure">
+<div id="orgc6cfbdb" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -894,7 +898,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org2939eac" class="figure">
+<div id="orge6c066e" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>

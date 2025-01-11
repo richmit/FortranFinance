@@ -120,10 +120,12 @@ tool that essentially simulates the annual financial transactions for a retired 
   - +Support different SSI benefit levels.+ (Completed 2025-01-08)
   - Life Table
     - Add SSI Life tables module
-      - Data access
-      - probability computations on survival
-      - Max age of person given sex and a percentile
-      - max age of person given sex in table (same as above but 100% probability)
+      - +Data+ (Completed 2025-01-11)
+        - +SSI male & female px * lx data+ (Completed 2025-01-11)
+        - +CDC all, male, female, white people, white males, white females+ (Completed 2025-01-11)
+      - +Life table computations: Given age and qx or lx, compute: qx (when given lx), lx (when given qx), dx, Lx, Tx, ex, mx, & px+ (Completed 2025-01-11)
+      - Compute the maximum age a person might reach (the year at which everyone is dead in the life table)
+      - +Compute probably a person at a given age a given number of years+ (Completed 2025-01-11)
     - Option to set simulation end at highest survivor date in life table for sex of person
     - Add probability of survival given age to output table
     - Add a "probability of success" value adjusted with survival probability
