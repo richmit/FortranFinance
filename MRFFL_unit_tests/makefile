@@ -47,7 +47,7 @@ include $(MRFFL_PATH)/include.mk
 
 NDIF := ~/world/my_prog/utils/float_diff.rb
 
-EXE_TARGETS := test_percentages test_tvm_lump_sum_solve test_inflation test_tvm_delayed_geometric_annuity_solve test_tvm_delayed_lump_sum_solve test_tvm_cashflows test_tvm_delayed_arithmetic_annuity_solve test_taxes test_tvm12 test_tvm_delayed_level_annuity_solve 
+EXE_TARGETS := test_percentages test_tvm_lump_sum_solve test_inflation test_tvm_delayed_geometric_annuity_solve test_tvm_delayed_lump_sum_solve test_tvm_cashflows test_tvm_delayed_arithmetic_annuity_solve test_taxes test_tvm12 test_tvm_delayed_level_annuity_solve test_life_table test_life_table_print
 
 # Set RUNEM to something to run the binaries after being built.  I normally set it on the command line like this: 
 #     make RUNEM=T test_percentages
@@ -63,6 +63,32 @@ TESTEM :=
 #     make GOLDEM=T test_percentages
 # The value need not be "T" -- any non-whitespace should work.
 GOLDEM := 
+
+test_life_table_print : test_life_table_print.f90 $(MRFFL_OBJ_FILES)
+	$(FC) $(FFLAGS) $^ -o $@
+ifdef RUNEM
+	./$@$(EXE_SUFFIX)
+endif
+ifdef GOLDEM
+	./$@$(EXE_SUFFIX) > $@.good
+endif
+ifdef TESTEM
+	./$@$(EXE_SUFFIX) > $@.test
+	$(NDIF) -Dba -e 1e-5 $@.good $@.test
+endif
+
+test_life_table : test_life_table.f90 $(MRFFL_OBJ_FILES)
+	$(FC) $(FFLAGS) $^ -o $@
+ifdef RUNEM
+	./$@$(EXE_SUFFIX)
+endif
+ifdef GOLDEM
+	./$@$(EXE_SUFFIX) > $@.good
+endif
+ifdef TESTEM
+	./$@$(EXE_SUFFIX) > $@.test
+	$(NDIF) -Dba -e 1e-5 $@.good $@.test
+endif
 
 test_inflation : test_inflation.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@

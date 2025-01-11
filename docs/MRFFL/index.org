@@ -61,12 +61,13 @@ the same variables to populate a cashflow that can be further analyzed or printe
   - Financial applications ::
     - ~mrffl_config~       :: Contains parameters used to configure the rest of the modules.
     - ~mrffl_cashflows~    :: TVM problems involving cash flows.
+    - ~mrffl_life_table~   :: Life table computations and some US life table data.
     - ~mrffl_percentages~  :: Working with percentages
+    - ~mrffl_tvm12~        :: Classic financial calculator style TVM solver and amortization.
+    - ~mrffl_tvm~          :: TVM solvers for: deferred lump sums and  generalized level/geometric/arithmatic annuities.
     - ~mrffl_us_inflation~ :: Historical US inflation data.  Adjust values across years.  Random inflation generation via resampling.
     - ~mrffl_us_markets~   :: Historical stock market annual return data.  Includes random return generation via resampling.
     - ~mrffl_us_taxes~     :: Basic US tax information and computation for filing joint or single.
-    - ~mrffl_tvm~          :: TVM solvers for: deferred lump sums and  generalized level/geometric/arithmatic annuities.
-    - ~mrffl_tvm12~        :: Classic financial calculator style TVM solver and amortization.
     - ~mrffl_prt_sets~     :: Constants to specify things to print (used by ~*_print~ routines)
     - ~mrffl_var_sets~     :: Constants to specify variables (used by TVM solvers to specify unknown variables)
   - Support Modules        ::

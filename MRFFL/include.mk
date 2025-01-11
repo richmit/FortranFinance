@@ -50,7 +50,7 @@ else
 endif
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-MRFFL_MODS := mrffl_config mrffl_stats mrffl_bitset mrffl_prt_sets mrffl_var_sets mrffl_percentages mrffl_us_inflation mrffl_solver mrffl_solver_ne mrffl_tvm mrffl_us_taxes mrffl_cashflows mrffl_tvm12 mrffl_us_markets 
+MRFFL_MODS := mrffl_config mrffl_stats mrffl_bitset mrffl_prt_sets mrffl_var_sets mrffl_percentages mrffl_us_inflation mrffl_solver mrffl_solver_ne mrffl_tvm mrffl_us_taxes mrffl_cashflows mrffl_tvm12 mrffl_us_markets mrffl_life_table
 
 MRFFL_MOD_FILES := $(addsuffix .mod,$(MRFFL_MODS))
 MRFFL_OBJ_FILES := $(addsuffix $(OBJ_SUFFIX),$(MRFFL_MODS))
@@ -87,6 +87,9 @@ mrffl_percentages$(OBJ_SUFFIX) mrffl_percentages.mod &: $(MRFFL_PATH)/mrffl_perc
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
 mrffl_us_markets$(OBJ_SUFFIX) mrffl_us_markets.mod &: $(MRFFL_PATH)/mrffl_us_markets.f90 mrffl_stats.mod mrffl_config.mod
+	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
+
+mrffl_life_table$(OBJ_SUFFIX) mrffl_life_table.mod &: $(MRFFL_PATH)/mrffl_life_table.f90 mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
 mrffl_us_inflation$(OBJ_SUFFIX) mrffl_us_inflation.mod &: $(MRFFL_PATH)/mrffl_us_inflation.f90 mrffl_percentages.mod mrffl_stats.mod mrffl_config.mod
