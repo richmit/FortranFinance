@@ -266,7 +266,7 @@ module mrffl_life_table
   public :: survivors, probability_of_death
   ! These functions all call survivors and/or probability_of_death to derive the return value.  They do not access the life_table
   ! or cohort_size arguments directly.
-  public :: died, life_expectancy, mortality_rate, person_years, probability_of_survival_1, probability_of_survival_n, total_person_years
+  public :: died, life_expectancy, mortality_rate, person_years, probability_of_survival_1, probability_of_survival_n, total_person_years, age_all_dead
 
 contains
 
@@ -277,7 +277,7 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  real(kind=rk)  function survivors(age, life_table, cohort_size)
+  real(kind=rk) pure function survivors(age, life_table, cohort_size)
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
@@ -311,7 +311,7 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  real(kind=rk) function probability_of_death(age, life_table, cohort_size)
+  real(kind=rk) pure function probability_of_death(age, life_table, cohort_size)
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
@@ -345,7 +345,7 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  real(kind=rk) function life_expectancy(age, life_table, cohort_size)
+  real(kind=rk) pure function life_expectancy(age, life_table, cohort_size)
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
@@ -366,7 +366,7 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  real(kind=rk) function probability_of_survival_n(age, n, life_table, cohort_size)
+  real(kind=rk) pure function probability_of_survival_n(age, n, life_table, cohort_size)
     implicit none
     integer(kind=ik), intent(in) :: age, n, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
@@ -386,7 +386,7 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  real(kind=rk) function probability_of_survival_1(age, life_table, cohort_size)
+  real(kind=rk) pure function probability_of_survival_1(age, life_table, cohort_size)
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
@@ -401,7 +401,7 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  real(kind=rk) function died(age, life_table, cohort_size)
+  real(kind=rk) pure function died(age, life_table, cohort_size)
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
@@ -415,7 +415,7 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  real(kind=rk) function person_years(age, life_table, cohort_size)
+  real(kind=rk) pure function person_years(age, life_table, cohort_size)
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
@@ -429,7 +429,7 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  real(kind=rk) function total_person_years(age, life_table, cohort_size)
+  real(kind=rk) pure function total_person_years(age, life_table, cohort_size)
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
@@ -447,7 +447,7 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  real(kind=rk) function mortality_rate(age, life_table, cohort_size)
+  real(kind=rk) pure function mortality_rate(age, life_table, cohort_size)
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk), intent(in)    :: life_table(:)
@@ -459,6 +459,28 @@ contains
        mortality_rate = died(age, life_table, cohort_size) / tmp1
     end if
   end function mortality_rate
+
+  !--------------------------------------------------------------------------------------------------------------------------------
+  !> Return lowest age for which @f$ l_x=0 @f$.  See the module documentation for a guide to symbols.
+  !!
+  !! This function is super slow.  
+  !!
+  !! @param life_table  Data for life table.  See module documentation for description.
+  !! @param cohort_size Number of people in the cohort.  See module documentation for description.
+  !!
+  real(kind=rk) pure function age_all_dead(life_table, cohort_size)
+    implicit none
+    integer(kind=ik), intent(in) :: cohort_size
+    real(kind=rk), intent(in)    :: life_table(:)
+    integer(kind=ik)             :: i
+    age_all_dead = 0
+    do i=0,size(life_table)+1
+       if (abs(survivors(i, life_table, cohort_size)) <= zero_epsilon) then
+          age_all_dead = i
+          return
+       end if
+    end do
+  end function age_all_dead
   
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Print life table.

@@ -275,4 +275,10 @@ program test_life_table
 
   print '(a)', repeat("=", 115)
 
+  print '(a55,f30.10,f30.10)', "age_all_dead(-10,  usss_f_qx_dat, 100000): ", age_all_dead(usss_f_qx_dat, 100000), age_all_dead(usss_f_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "age_all_dead(-10,  usss_m_qx_dat, 100000): ", age_all_dead(usss_m_qx_dat, 100000), age_all_dead(usss_m_lx_dat, 0)
+
+  print '(a)', repeat("=", 115)
+
+
 end program test_life_table
