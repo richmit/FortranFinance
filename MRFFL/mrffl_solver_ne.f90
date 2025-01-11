@@ -54,6 +54,8 @@ contains
   !! @param x0_init    Left side of search interval
   !! @param x1_init    Right side of search interval
   !! @param f          Function to solve for zero
+  !! @param r_dat      Real data passed to f
+  !! @param i_dat      Integer data passed to f
   !! @param x_epsilon  Used to test if current search interval is too small
   !! @param y_epsilon  Used to test if f is near zero
   !! @param max_itr    Maximum number of iterations before giving up
@@ -144,6 +146,8 @@ contains
   !! @param x0_init    A *VECTOR* of left sides for search intervals
   !! @param x1_init    A *VECTOR* of right sides for search intervals
   !! @param f          Function to solve for zero
+  !! @param r_dat      Real data passed to f
+  !! @param i_dat      Integer data passed to f
   !! @param x_epsilon  Used to test if current search interval is too small
   !! @param y_epsilon  Used to test if f is near zero
   !! @param max_itr    Maximum number of iterations before giving up
