@@ -20,34 +20,57 @@ daDat<-
          total_savings=SavingsC+SavingsE+SavingsB+SavingsI1+SavingsI2+SavingsR1+SavingsR2,
          total_savings1p=total_savings+1)
 
-ya12map <- daDat %>% filter(Sim==1) %>% transmute(lab=paste(Year, Age1, Age2, sep='\n'), Year, Age1, Age2)
+ya12map <- unique(daDat %>% select(Year, Age1, Age2)) %>% transmute(lab=paste(Year, Age1, Age2, sep='\n'), Year, Age1, Age2)
 
 y2lab <- function(y) ya12map$lab[ya12map$Year==y]
 
 nSims <- length(unique(daDat$Sim))
 
-  maxYear <- max(daDat$Year)
-  minYear <- min(daDat$Year)
+maxYear <- max(daDat$Year)
+minYear <- min(daDat$Year)
 
-  timeBrks <- c(minYear, seq(minYear+4, maxYear, 3))
-  timeLabs <- sapply(timeBrks, y2lab)
-  timeLabs[1] <- 'Year\nAge1\nAge2'
+timeBrks <- c(minYear, seq(minYear+4, maxYear, 3))
+timeLabs <- sapply(timeBrks, y2lab)
+timeLabs[1] <- 'Year\nAge1\nAge2'
 
 if (nSims > 1) {
 
   bySimSum <- 
     daDat %>% 
     group_by(Sim) %>% 
-    summarize(min_savings     = min(total_savings), 
+    summarize(min_savings      = min(total_savings), 
               min_savings_year = Year[which.min(total_savings)], 
-              max_savings     = max(total_savings),
+              max_savings      = max(total_savings),
               max_savings_year = Year[which.max(total_savings)],
-              end_savings     = last(total_savings))
+              end_savings      = last(total_savings),
+              died_p1          = max(Year[S1!='D'])+1,
+              died_p2          = max(Year[S2!='D'])+1,
+              end_year         = max(Year))
+
+  if (length(unique(bySimSum$end_year)) > 1) {
+    gp <- ggplot(bySimSum %>% 
+                 transmute(p1=died_p1, p2=died_p2) %>%
+                 tidyr::pivot_longer(cols=c(1:2), names_to='Person', values_to='Year')) +
+      geom_histogram(aes(x=Year, y=..density..), fill='pink', col='red', breaks=c(seq(minYear-0.5, maxYear+1, 3))) +
+      facet_wrap(~Person, nrow=2) +
+      labs(title='Death') +
+      scale_x_continuous(breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
+      theme(panel.grid.minor.x = element_blank()) + 
+      labs(title=paste('Year Of Death Distribution Based On ', 
+                       nSims, 
+                       ' Simulation Runs',
+                       sep='')) +
+      xlab('') +
+      ylab('Probability')
+    fname <- 'deathDist.png'
+    ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
+    if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
+  }
 
   gp <-ggplot(bySimSum) + 
     geom_histogram(aes(x=end_savings+1, y=..density..), bins=50, fill='pink', col='red') +
     scale_x_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), trans='log10') + 
-    labs(title=paste('Savings Balance At Year ', maxYear, ' Observed From ', nSims, ' Simulation Runs', sep='')) +
+    labs(title=paste('Savings Balance At Death Observed From ', nSims, ' Simulation Runs', sep='')) +
     xlab('Total Savings') +
     ylab('Probability')
   fname <- 'endSavings.png'
@@ -94,6 +117,8 @@ if (nSims > 1) {
                 aes(x=Year, y=total_savings1p, group=Sim), linewidth=2, alpha=0.01, show.legend=FALSE) + 
       geom_line(data=daDat %>% filter(Sim %in% bySimSum$Sim[bySimSum$min_savings<=0]), 
                 aes(x=Year, y=total_savings1p, group=Sim), show.legend=FALSE, alpha=0.1, linewidth=0.5, col='red') + 
+      geom_point(data=daDat %>% filter(Sim<=n & S1=='D' & S2=='D') %>% group_by(Sim) %>% summarize(Year=first(Year), total_savings1p=first(total_savings1p)),
+                 aes(x=Year, y=total_savings1p), show.legend=FALSE, alpha=0.1, col='blue') + 
       geom_line(data=daDat %>% 
                   filter(Sim %in% bySimSum$Sim[bySimSum$min_savings<=0]) %>% 
                   group_by(Year) %>% 

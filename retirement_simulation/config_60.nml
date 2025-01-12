@@ -86,8 +86,14 @@ retirement_year_p1                  = 2037,      !! First year p1 is fully retir
 retirement_year_p2                  = 2029,      !! First year p2 is fully retired
 birthday_p1                         = 1977,      !!
 birthday_p2                         = 1969,      !!
-life_expectancy_p1                  = 110,       !!
-life_expectancy_p2                  = 110        !!
+sex_p1                              = 'M',       !! Sex of p1 -- selects SSI life table
+sex_p2                              = 'F',       !! Sex of p2 -- selects SSI life table
+life_expectancy_p1                  = 110,       !! Age p1 expects to die
+                                                 !! If zero then compute based on age & sex
+                                                 !! If negative then use monte carlo
+life_expectancy_p2                  = 110,       !! Age p2 expects to die
+                                                 !! If zero then compute based on age & sex
+                                                 !! If negative then use monte carlo
 
 verbosity                           = 10         !! How much to print when running
                                                  !!  -  0 : nothing

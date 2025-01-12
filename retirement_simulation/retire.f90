@@ -48,7 +48,7 @@ program retire
   use            :: mrffl_stats,        only: rand_int
   use            :: mrffl_us_markets,   only: snp_resample, dgs10_resample, snp_dat, dgs10_dat
   use            :: mrffl_us_inflation, only: inf_resample, inf_dat
-
+  use            :: mrffl_life_table,   only: life_expectancy, usss_f_lx_dat, usss_m_lx_dat, rand_age
   implicit none
 
   ! Configuration File Parameters
@@ -115,9 +115,12 @@ program retire
   integer(kind=ik)  :: birthday_p2                         = 1980
   integer(kind=ik)  :: life_expectancy_p1                  = 110
   integer(kind=ik)  :: life_expectancy_p2                  = 110
+  character(len=1)  :: sex_p1                              = 'F'
+  character(len=1)  :: sex_p2                              = 'F'
+
   integer(kind=ik)  :: simulation_year_start               = seed_tax_year
 
-  integer(kind=ik)  :: verbosity                           = 10 
+  integer(kind=ik)  :: verbosity                           = 10
 
   ! Global runtime variables used by the simulation
   integer(kind=ik)   :: age_p1, age_p2, simulation_year_end, year, tmp_j, num_runs, mc_year_low, mc_year_high
@@ -133,15 +136,51 @@ program retire
   if (verbosity >= 10)write (output_unit, '(a40)') "Reading Config"
   call read_config();
 
+  if ((sex_p1 /= 'F') .and. (sex_p1 /= 'M')) then
+     error stop "Sex for p1 must be 'M' or 'F'."
+  end if
+  if ((sex_p2 /= 'F') .and. (sex_p2 /= 'M')) then
+     error stop "Sex for p2 must be 'M' or 'F'."
+  end if
+  if (verbosity >= 30) write (output_unit, '(a40,i20)') "simulation_year_start:", simulation_year_start
+  if (life_expectancy_p1 == 0) then
+     if (sex_p1 == 'F') then
+        life_expectancy_p1 = ceiling(life_expectancy(simulation_year_start-birthday_p1, usss_f_lx_dat, 0)) + simulation_year_start - birthday_p1
+     else
+        life_expectancy_p1 = ceiling(life_expectancy(simulation_year_start-birthday_p1, usss_m_lx_dat, 0)) + simulation_year_start - birthday_p1
+     end if
+  end if
+  if (verbosity >= 30) write (output_unit, '(a40,i20)') "birthday_p1:", birthday_p1
+  if (verbosity >= 30) write (output_unit, '(a40,a20)') "sex_p1:", sex_p1
+  if (verbosity >= 30) write (output_unit, '(a40,i20)') "life_expectancy_p1:", life_expectancy_p1
+  if (life_expectancy_p2 == 0) then
+     if (sex_p2 == 'F') then
+        life_expectancy_p2 = ceiling(life_expectancy(simulation_year_start-birthday_p2, usss_f_lx_dat, 0)) + simulation_year_start - birthday_p2
+     else
+        life_expectancy_p2 = ceiling(life_expectancy(simulation_year_start-birthday_p2, usss_m_lx_dat, 0)) + simulation_year_start - birthday_p2
+     end if
+  end if
+  if (verbosity >= 30) write (output_unit, '(a40,i20)') "birthday_p2:", birthday_p2
+  if (verbosity >= 30) write (output_unit, '(a40,a20)') "sex_p2:", sex_p2
+  if (verbosity >= 30) write (output_unit, '(a40,i20)') "life_expectancy_p2:", life_expectancy_p2
+
+
   if (high_investment_p + mid_investment_p + low_investment_p - 100 > zero_epsilon) then
      error stop "Investment mix must sum to 100%"
   end if
 
-  if ((high_investment_apr < 0) .or. (mid_investment_apr < 0) .or. (low_investment_apr < 0) .or. (fixed_inflation_rate < 0)) then
+  if ((high_investment_apr < 0) .or. (mid_investment_apr < 0) .or. (low_investment_apr < 0) .or. (fixed_inflation_rate < 0) .or. (life_expectancy_p1 < 0) .or. (life_expectancy_p2 < 0)) then
      num_runs = monte_carlo_runs
   else
      num_runs = 1
   end if
+
+  if (verbosity >= 30) write (output_unit, '(a40,l20)') "MC life_expectancy_p1:",   (life_expectancy_p1   < 0)
+  if (verbosity >= 30) write (output_unit, '(a40,l20)') "MC life_expectancy_p2:",   (life_expectancy_p2   < 0)
+  if (verbosity >= 30) write (output_unit, '(a40,l20)') "MC high_investment_apr:",  (high_investment_apr  < 0)
+  if (verbosity >= 30) write (output_unit, '(a40,l20)') "MC mid_investment_apr:",   (mid_investment_apr   < 0)
+  if (verbosity >= 30) write (output_unit, '(a40,l20)') "MC low_investment_apr:",   (low_investment_apr   < 0)
+  if (verbosity >= 30) write (output_unit, '(a40,l20)') "MC fixed_inflation_rate:", (fixed_inflation_rate < 0)
   if (verbosity >= 30) write (output_unit, '(a40,i20)') "num_runs:", num_runs
 
   mc_year_high = simulation_year_start + 10000
@@ -199,18 +238,16 @@ contains
      real(kind=rk)     :: start_cash_income, roth_convert_p2, roth_convert_p1
      real(kind=rk)     :: cur_tax_bracket_breaks_single(size(tax_bracket_breaks_single))
      real(kind=rk)     :: cur_tax_bracket_breaks_joint(size(tax_bracket_breaks_joint))
-     integer(kind=ik)  :: mc_year
+     integer(kind=ik)  :: mc_year, death_p1, death_p2
+     character(len=1)  :: status_p1, status_p2
 
-     !                                         s   y a1 a2    cash       inf       CpI/ST/SI/SR  ef B I12 R12  apr          roth con1/2  ss1/2 wrk1/2 sav1 sav2 exp epI/T/I/R  taxbl      bkt       tax tpI/T/SI/SR
-     character(len=*), parameter  :: fmt_n = "(i7, 3(1x, i4), 1x, f12.2, 1x, f5.1, 4(1x, f10.2), 6(1x, f16.2), 3(1x, f6.1), 2(1x, f9.2), 4(1x, f9.2), 2(1x, f8.2), 5(1x, f11.2), 1x, f14.2, 1x, f6.2, 5(1x, f14.2))"
-     character(len=*), parameter  :: fmt_h = "(a7, 3(1x, a4), 1x, a12,   1x, a5,   4(1x, a10),   6(1x, a16),   3(1x, a6),   2(1x, a9),   4(1x, a9),   2(1x, a8),   5(1x, a11),   1x, a14,   1x, a6,   5(1x, a14) )"
-
-     !   -- before SS1, 
-
+     !                                         s   y a1 a2    S1/S2      cash       inf       CpI/ST/SI/SR  ef B I12 R12  apr          roth con1/2  ss1/2 wrk1/2 sav1 sav2 exp epI/T/I/R  taxbl      bkt       tax tpI/T/SI/SR
+     character(len=*), parameter  :: fmt_n = "(i7, 3(1x, i4), 2(1x, a2), 1x, f12.2, 1x, f5.1, 4(1x, f10.2), 6(1x, f16.2), 3(1x, f6.1), 2(1x, f9.2), 4(1x, f9.2), 2(1x, f8.2), 5(1x, f11.2), 1x, f14.2, 1x, f6.2, 5(1x, f14.2))"
+     character(len=*), parameter  :: fmt_h = "(a7, 3(1x, a4), 2(1x, a2), 1x, a12,   1x, a5,   4(1x, a10),   6(1x, a16),   3(1x, a6),   2(1x, a9),   4(1x, a9),   2(1x, a8),   5(1x, a11),   1x, a14,   1x, a6,   5(1x, a14) )"
 
      if (sim == 1) then
         write (unit=out_io_unit, iostat=out_io_stat, iomsg=out_io_msg, fmt=fmt_h) &
-             "Sim", "Year", "Age1", "Age2", &
+             "Sim", "Year", "Age1", "Age2", "S1", "S2", &
              "SavingsC", "Inf", "CPaidI", "CPaidST", "CPaidSI", "CPaidSR", &
              "SavingsE", "SavingsB", "SavingsI1", "SavingsI2", "SavingsR1", "SavingsR2", "aprH", "arpM", "aprL", &
              "ConR1", "ConR2", &
@@ -226,7 +263,6 @@ contains
 
      ! -----------------------------------------------------------------------------------------------------------------------------
      ! Main simulation loop initialization & loop
-     simulation_year_end           = max(birthday_p1+life_expectancy_p1, birthday_p2+life_expectancy_p2, simulation_year_start+10)-1
      brokerage_balance             = initial_brokerage_balance
      ira_balance_p2                = initial_ira_balance_p2
      ira_balance_p1                = initial_ira_balance_p1
@@ -256,6 +292,9 @@ contains
      last_roth_conversion_year_p1  = simulation_year_start - 5
      last_roth_conversion_year_p2  = simulation_year_start - 5
      cur_investment_mix            = [ high_investment_p, mid_investment_p, low_investment_p ]
+     death_p1                      = alt_if_neg_i(life_expectancy_p1, rand_age(simulation_year_start-birthday_p1, usss_m_lx_dat, 0))
+     death_p2                      = alt_if_neg_i(life_expectancy_p2, rand_age(simulation_year_start-birthday_p2, usss_m_lx_dat, 0))
+     simulation_year_end           = max(birthday_p1+death_p1, birthday_p2+death_p2)
 
      do year=simulation_year_start, simulation_year_end
 
@@ -265,16 +304,37 @@ contains
         age_p2 = year - birthday_p2
 
         ! ------------------------------------------------------------------------------------------------------------------------
+        ! Figure out status
+        if (age_p1 < death_p1) then
+           if (year < retirement_year_p1) then
+              status_p1 = 'W'
+           else
+              status_p1 = 'R'
+           end if
+        else
+           status_p1 = 'D'
+        end if
+        if (age_p2 < death_p2) then
+           if (year < retirement_year_p2) then
+              status_p2 = 'W'
+           else
+              status_p2 = 'R'
+           end if
+        else
+           status_p2 = 'D'
+        end if
+
+        ! ------------------------------------------------------------------------------------------------------------------------
         ! We always do MC even when num_runs==1..
         mc_year = rand_int(mc_year_high, mc_year_low)
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Total expenses
         total_expected_expenses  = expected_expenses_shr
-        if (age_p1 < life_expectancy_p1) then
+        if (age_p1 < death_p1) then
            total_expected_expenses = total_expected_expenses + expected_expenses_p1
         end if
-        if (age_p2 < life_expectancy_p2) then
+        if (age_p2 < death_p2) then
            total_expected_expenses = total_expected_expenses + expected_expenses_p2
         end if
         ! ------------------------------------------------------------------------------------------------------------------------
@@ -350,11 +410,11 @@ contains
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Income from social security
         ss_income_p1 = 0
-        if ((age_p1 >= social_security_start_age_p1) .and. (age_p1 < life_expectancy_p1)) then
+        if ((age_p1 >= social_security_start_age_p1) .and. (age_p1 < death_p1)) then
            ss_income_p1 = social_security_monthly_p1 * 12
         end if
         ss_income_p2 = 0
-        if ((age_p2 >= social_security_start_age_p2) .and. (age_p2 < life_expectancy_p2)) then
+        if ((age_p2 >= social_security_start_age_p2) .and. (age_p2 < death_p2)) then
            ss_income_p2 = social_security_monthly_p2 * 12
         end if
 
@@ -431,7 +491,7 @@ contains
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Figure out taxable income for *this year* to be paid *next year*
-        if ((age_p1 < life_expectancy_p1) .and. (age_p2 < life_expectancy_p2)) then
+        if ((age_p1 < death_p1) .and. (age_p2 < death_p2)) then
            taxable_income = taxable_income - cur_std_tax_deduction_joint
         else
            taxable_income = taxable_income - cur_std_tax_deduction_single
@@ -443,7 +503,7 @@ contains
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Print status to output file
         write (unit=out_io_unit, iostat=out_io_stat, iomsg=out_io_msg, fmt=fmt_n) &
-             sim, year, age_p1, age_p2, &
+             sim, year, age_p1, age_p2, status_p1, status_p2, &               
              cash_reserves, cur_inflation_rate, cr_paied_cash, cr_paied_savings, cr_paied_ira, cr_paied_roth, &
              emergency_fund, brokerage_balance, ira_balance_p1, ira_balance_p2,roth_balance_p1, roth_balance_p2, &
              cur_investment_apr(1), cur_investment_apr(2), cur_investment_apr(3), &
@@ -460,7 +520,7 @@ contains
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Compute Taxes For Next Year
-        if ((age_p1 < life_expectancy_p1) .and. (age_p2 < life_expectancy_p2)) then
+        if ((age_p1 < death_p1) .and. (age_p2 < death_p2)) then
            tax_owed = tax(taxable_income, cur_tax_bracket_breaks_joint, tax_bracket_rates)
         else
            tax_owed = tax(taxable_income, cur_tax_bracket_breaks_single, tax_bracket_rates)
@@ -499,6 +559,17 @@ contains
         alt_if_neg = val1
      end if
    end function alt_if_neg
+
+   !------------------------------------------------------------------------------------------------------------------------------
+   integer(kind=ik) function alt_if_neg_i(val1, val2)
+     integer(kind=ik), intent(in) :: val1
+     integer(kind=ik), intent(in) :: val2
+     if (val1 < 0) then
+        alt_if_neg_i = val2
+     else
+        alt_if_neg_i = val1
+     end if
+   end function alt_if_neg_i
 
    !------------------------------------------------------------------------------------------------------------------------------
    subroutine pay_stuff(bill, paid_from_cash, paid_from_savings, paid_from_ira, paid_from_roth, cash_reserves_eligible)
@@ -586,8 +657,7 @@ contains
      namelist /SIMPARM/ target_taxable_income, minimum_roth_conversion, maximum_roth_conversion_year
      namelist /SIMPARM/ surplus_reinvest
      namelist /SIMPARM/ retirement_year_p1, retirement_year_p2
-     namelist /SIMPARM/ birthday_p1, birthday_p2
-     namelist /SIMPARM/ life_expectancy_p1, life_expectancy_p2
+     namelist /SIMPARM/ birthday_p1, birthday_p2, life_expectancy_p1, life_expectancy_p2, sex_p1, sex_p2
      namelist /SIMPARM/ verbosity
 
      ! Variables for config file

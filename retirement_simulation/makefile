@@ -15,7 +15,7 @@ include $(MRFFL_PATH)/include.mk
 
 CONFIG_FILE = config_20.nml
 
-retire : retire.f90 mrffl_bitset$(OBJ_SUFFIX) mrffl_percentages$(OBJ_SUFFIX) mrffl_bitset$(OBJ_SUFFIX) mrffl_var_sets$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX) mrffl_us_taxes$(OBJ_SUFFIX) mrffl_solver$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX) mrffl_stats$(OBJ_SUFFIX) mrffl_us_markets$(OBJ_SUFFIX) mrffl_us_inflation$(OBJ_SUFFIX) 
+retire : retire.f90 mrffl_bitset$(OBJ_SUFFIX) mrffl_percentages$(OBJ_SUFFIX) mrffl_bitset$(OBJ_SUFFIX) mrffl_var_sets$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX) mrffl_us_taxes$(OBJ_SUFFIX) mrffl_solver$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX) mrffl_stats$(OBJ_SUFFIX) mrffl_us_markets$(OBJ_SUFFIX) mrffl_us_inflation$(OBJ_SUFFIX) mrffl_prt_sets$(OBJ_SUFFIX) mrffl_life_table$(OBJ_SUFFIX) 
 	$(FC) $(FFLAGS) $^ -o $@
 
 retire.out : retire

@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-12 Sun 00:14 -->
+<!-- 2025-01-12 Sun 17:10 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-12 00:14:09</i></td>
+<td class="org-left"><i>2025-01-12 17:10:40</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-12 00:14:13</i></td>
+<td class="org-left"><i>2025-01-12 17:10:41</i></td>
 </tr>
 </tbody>
 </table>
@@ -365,6 +365,15 @@ total.</li>
 <li>We convert part ira accounts to a roth ira if that year's taxable income is below a set target.</li>
 <li>We convert p2 ira accounts first, and then p1 ira accounts.</li>
 </ul></li>
+<li>Life expenctancy
+<ul class="org-ul">
+<li>Life expenctancy:
+<ul class="org-ul">
+<li>Can be automatically guessed from birth year &amp; sex &#x2013; Uses US SS actuarial tables</li>
+<li>Can be monte carlo &#x2013; using US SS actuarial tables taking into account current age &amp; sex</li>
+<li>Can be set to a fixed value.  In this case, sex need not be provided in the config.</li>
+</ul></li>
+</ul></li>
 </ul>
 </div>
 </div>
@@ -396,10 +405,11 @@ total.</li>
 <li><del>Print error messages to STDERR instead of STDOUT</del> (Completed 2025-01-08)</li>
 <li><del>Add support for progress messages to STDOUT</del> (Completed 2025-01-08)</li>
 <li><del>Support different SSI benefit levels.</del> (Completed 2025-01-08)</li>
-<li>Life Table
+<li>Life Expectancy
 <ul class="org-ul">
-<li><del>Add SSI Life tables module</del> (Completed 2025-01-11)
+<li><del>Life Table</del> (Completed 2025-01-12)
 <ul class="org-ul">
+<li><del>Add SSI Life tables module</del> (Completed 2025-01-11)</li>
 <li><del>Data</del> (Completed 2025-01-11)
 <ul class="org-ul">
 <li><del>SSI male &amp; female px * lx data</del> (Completed 2025-01-11)</li>
@@ -408,13 +418,18 @@ total.</li>
 <li><del>Life table computations: Given age and qx or lx, compute: qx (when given lx), lx (when given qx), dx, Lx, Tx, ex, mx, &amp; px</del> (Completed 2025-01-11)</li>
 <li><del>Compute the maximum age a person might reach (the year at which everyone is dead in the life table)</del> (Completed 2025-01-11)</li>
 <li><del>Compute probably a person at a given age a given number of years</del> (Completed 2025-01-11)</li>
+<li><del>Add random generator that uses life table as the distribution.  Take age into consideration.</del> (Completed 2025-01-12)</li>
 </ul></li>
-<li>Option to set simulation end at highest survivor date in life table for sex of person</li>
+<li>simulation changes
+<ul class="org-ul">
+<li><del>Option to set simulation end at highest survivor date in life table for sex of person</del> (Completed 2025-01-12)</li>
 <li>Add probability of survival given age to output table</li>
 <li>Add a "probability of success" value adjusted with survival probability</li>
 <li>Add graph showing probability of running out of cash by given date</li>
 <li>Add graph showing probability of running out of cash by given date adjusted with survival probability</li>
-<li>Do MC lifespan</li>
+<li><del>Add dots to the trajectory graph showing when both people died</del> (Completed 2025-01-12)</li>
+<li><del>Do MC lifespan</del> (Completed 2025-01-12)</li>
+</ul></li>
 </ul></li>
 </ul>
 </div>
@@ -619,7 +634,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="org292f940" class="figure">
+<div id="orgbf82d7f" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -629,7 +644,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org5c407bd" class="figure">
+<div id="org6d60bf4" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -640,7 +655,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org49573a1" class="figure">
+<div id="org22b0334" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -661,7 +676,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="org497f745" class="figure">
+<div id="orgf477788" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -672,7 +687,7 @@ failed.  In essence the green line shows a "safe" balance at which we are unlike
 </p>
 
 
-<div id="org30d5f07" class="figure">
+<div id="org13b12ad" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -682,7 +697,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="org3f5e158" class="figure">
+<div id="org4e4ea35" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -692,7 +707,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="orgde2a46c" class="figure">
+<div id="org1027099" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -702,7 +717,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="org51fa7ac" class="figure">
+<div id="org040cfb0" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -830,7 +845,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org4440a73" class="figure">
+<div id="orgbc9fa73" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -840,7 +855,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="orga3adeeb" class="figure">
+<div id="orge5a7493" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -850,7 +865,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="orge19c20a" class="figure">
+<div id="orgc14c67b" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -861,7 +876,7 @@ run out of money.
 </p>
 
 
-<div id="org10e99ec" class="figure">
+<div id="org1d765c7" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -880,7 +895,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org7e5e48f" class="figure">
+<div id="org6fcd76d" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -890,7 +905,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org3b6fe12" class="figure">
+<div id="org3e97787" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -900,7 +915,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org0d280b3" class="figure">
+<div id="orgaf9d10d" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>

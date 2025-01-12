@@ -89,7 +89,7 @@ mrffl_percentages$(OBJ_SUFFIX) mrffl_percentages.mod &: $(MRFFL_PATH)/mrffl_perc
 mrffl_us_markets$(OBJ_SUFFIX) mrffl_us_markets.mod &: $(MRFFL_PATH)/mrffl_us_markets.f90 mrffl_stats.mod mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_life_table$(OBJ_SUFFIX) mrffl_life_table.mod &: $(MRFFL_PATH)/mrffl_life_table.f90 mrffl_config.mod
+mrffl_life_table$(OBJ_SUFFIX) mrffl_life_table.mod &: $(MRFFL_PATH)/mrffl_life_table.f90 mrffl_bitset.mod mrffl_stats.mod mrffl_prt_sets.mod mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
 mrffl_us_inflation$(OBJ_SUFFIX) mrffl_us_inflation.mod &: $(MRFFL_PATH)/mrffl_us_inflation.f90 mrffl_percentages.mod mrffl_stats.mod mrffl_config.mod

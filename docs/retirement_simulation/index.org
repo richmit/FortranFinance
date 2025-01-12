@@ -93,6 +93,11 @@ tool that essentially simulates the annual financial transactions for a retired 
   - Roth Conversions
     - We convert part ira accounts to a roth ira if that year's taxable income is below a set target.
     - We convert p2 ira accounts first, and then p1 ira accounts.
+  - Life expenctancy
+    - Life expenctancy:
+      - Can be automatically guessed from birth year & sex -- Uses US SS actuarial tables
+      - Can be monte carlo -- using US SS actuarial tables taking into account current age & sex
+      - Can be set to a fixed value.  In this case, sex need not be provided in the config.
 
 ** Some Observations
 :PROPERTIES:
@@ -120,20 +125,24 @@ tool that essentially simulates the annual financial transactions for a retired 
   - +Print error messages to STDERR instead of STDOUT+ (Completed 2025-01-08)
   - +Add support for progress messages to STDOUT+ (Completed 2025-01-08)
   - +Support different SSI benefit levels.+ (Completed 2025-01-08)
-  - Life Table
-    - +Add SSI Life tables module+ (Completed 2025-01-11)
+  - Life Expectancy
+    - +Life Table+ (Completed 2025-01-12)
+      - +Add SSI Life tables module+ (Completed 2025-01-11)
       - +Data+ (Completed 2025-01-11)
         - +SSI male & female px * lx data+ (Completed 2025-01-11)
         - +CDC all, male, female, white people, white males, white females+ (Completed 2025-01-11)
       - +Life table computations: Given age and qx or lx, compute: qx (when given lx), lx (when given qx), dx, Lx, Tx, ex, mx, & px+ (Completed 2025-01-11)
       - +Compute the maximum age a person might reach (the year at which everyone is dead in the life table)+ (Completed 2025-01-11)
       - +Compute probably a person at a given age a given number of years+ (Completed 2025-01-11)
-    - Option to set simulation end at highest survivor date in life table for sex of person
-    - Add probability of survival given age to output table
-    - Add a "probability of success" value adjusted with survival probability
-    - Add graph showing probability of running out of cash by given date
-    - Add graph showing probability of running out of cash by given date adjusted with survival probability
-    - Do MC lifespan
+      - +Add random generator that uses life table as the distribution.  Take age into consideration.+ (Completed 2025-01-12)
+    - simulation changes
+      - +Option to set simulation end at highest survivor date in life table for sex of person+ (Completed 2025-01-12)
+      - Add probability of survival given age to output table
+      - Add a "probability of success" value adjusted with survival probability
+      - Add graph showing probability of running out of cash by given date
+      - Add graph showing probability of running out of cash by given date adjusted with survival probability
+      - +Add dots to the trajectory graph showing when both people died+ (Completed 2025-01-12)
+      - +Do MC lifespan+ (Completed 2025-01-12)
 
 ** Evaluating retirement planning software
 :PROPERTIES:

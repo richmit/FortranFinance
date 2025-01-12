@@ -123,6 +123,7 @@ module mrffl_life_table
   use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
   use mrffl_prt_sets, only: prt_title, prt_table, prt_space
   use mrffl_bitset,   only: bitset_subsetp
+  use mrffl_stats,    only: rand_int
   implicit none
 
   private
@@ -264,7 +265,7 @@ module mrffl_life_table
   public :: life_table_print
   public :: survivors, probability_of_death
   public :: died, person_years, probability_of_survival_n, age_all_dead  
-  public :: life_expectancy
+  public :: life_expectancy, rand_age
   public :: life_expectancy_at_birth, probability_of_survival_1, total_person_years, mortality_rate
 
 contains
@@ -495,6 +496,30 @@ contains
        end if
     end do
   end function age_all_dead
+
+  !--------------------------------------------------------------------------------------------------------------------------------
+  !> Return random age for death given current age and life_table.
+  !!
+  !! This function is super slow.  
+  !!
+  !! @param age Age of the person.
+  !! @param life_table  Data for life table.  See module documentation for description.
+  !! @param cohort_size Number of people in the cohort.  See module documentation for description.
+  !!
+  integer(kind=ik) function rand_age(age, life_table, cohort_size)
+    implicit none
+    integer(kind=ik), intent(in) :: age, cohort_size
+    real(kind=rk),    intent(in) :: life_table(:)
+    integer(kind=ik)             :: i, r
+    r = rand_int(floor(survivors(age, life_table, cohort_size)))
+    do i=age,size(life_table)-1
+       if (floor(survivors(i, life_table, cohort_size)) <= r) then
+          rand_age = i
+          return
+       end if
+    end do
+    rand_age = size(life_table)-1
+  end function rand_age
   
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Print life table.
