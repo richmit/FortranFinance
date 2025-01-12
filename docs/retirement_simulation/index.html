@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-11 Sat 13:42 -->
+<!-- 2025-01-12 Sun 00:14 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-11 13:42:12</i></td>
+<td class="org-left"><i>2025-01-12 00:14:09</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-11 13:42:14</i></td>
+<td class="org-left"><i>2025-01-12 00:14:13</i></td>
 </tr>
 </tbody>
 </table>
@@ -317,6 +317,8 @@ tool that essentially simulates the annual financial transactions for a retired 
 <li>Never use a Roth IRA if the account holder is &lt;60 or the account was converted less than 5 years ago</li>
 <li>This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.</li>
 <li>The "never use" rules could lead to unpaid expenses &#x2013; So be on the lookout for that, and adjust as required.</li>
+<li>The total expenses are broken into shared expenses and expenses related to each person.  When a person dies the associated expenses are removed from the
+total.</li>
 </ul></li>
 <li>They share a checking account in which they maintain a fixed balance growing with inflation.
 <ul class="org-ul">
@@ -617,7 +619,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="orgfedf636" class="figure">
+<div id="org292f940" class="figure">
 <p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -627,7 +629,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org2bb42e3" class="figure">
+<div id="org5c407bd" class="figure">
 <p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -638,7 +640,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org5e47315" class="figure">
+<div id="org49573a1" class="figure">
 <p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -659,7 +661,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="org7b86013" class="figure">
+<div id="org497f745" class="figure">
 <p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -670,7 +672,7 @@ failed.  In essence the green line shows a "safe" balance at which we are unlike
 </p>
 
 
-<div id="org4571242" class="figure">
+<div id="org30d5f07" class="figure">
 <p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -680,7 +682,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="org758d1e1" class="figure">
+<div id="org3f5e158" class="figure">
 <p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -690,7 +692,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org9552927" class="figure">
+<div id="orgde2a46c" class="figure">
 <p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -700,7 +702,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="orgeee9d0f" class="figure">
+<div id="org51fa7ac" class="figure">
 <p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -828,7 +830,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="orgb7090e5" class="figure">
+<div id="org4440a73" class="figure">
 <p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
 </p>
 </div>
@@ -838,7 +840,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org57381bc" class="figure">
+<div id="orga3adeeb" class="figure">
 <p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -848,7 +850,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="orga70848a" class="figure">
+<div id="orge19c20a" class="figure">
 <p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -859,7 +861,7 @@ run out of money.
 </p>
 
 
-<div id="orgd23eb58" class="figure">
+<div id="org10e99ec" class="figure">
 <p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
 </p>
 </div>
@@ -878,7 +880,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org321c904" class="figure">
+<div id="org7e5e48f" class="figure">
 <p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -888,7 +890,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org03b7cd0" class="figure">
+<div id="org3b6fe12" class="figure">
 <p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -898,7 +900,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org9320e56" class="figure">
+<div id="org0d280b3" class="figure">
 <p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
 </p>
 </div>

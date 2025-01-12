@@ -62,6 +62,8 @@ tool that essentially simulates the annual financial transactions for a retired 
     - Never use a Roth IRA if the account holder is <60 or the account was converted less than 5 years ago
     - This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.  
     - The "never use" rules could lead to unpaid expenses -- So be on the lookout for that, and adjust as required.
+    - The total expenses are broken into shared expenses and expenses related to each person.  When a person dies the associated expenses are removed from the
+      total.
   - They share a checking account in which they maintain a fixed balance growing with inflation.
     - If necessary, savings in other accounts are used to maintain that balance.
   - Retirement Savings

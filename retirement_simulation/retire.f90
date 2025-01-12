@@ -81,7 +81,9 @@ program retire
   real(kind=rk)     :: worst_case_inflation_rate           = 5.0
   real(kind=rk)     :: fixed_inflation_rate                = 3.0
 
-  real(kind=rk)     :: initial_expected_annual_expenses    = 0.0
+  real(kind=rk)     :: initial_expected_expenses_shr       = 0.0
+  real(kind=rk)     :: initial_expected_expenses_p1        = 0.0
+  real(kind=rk)     :: initial_expected_expenses_p2        = 0.0
 
   integer(kind=ik)  :: social_security_start_age_p1        = 67
   integer(kind=ik)  :: social_security_start_age_p2        = 67
@@ -121,7 +123,9 @@ program retire
   integer(kind=ik)   :: age_p1, age_p2, simulation_year_end, year, tmp_j, num_runs, mc_year_low, mc_year_high
   integer(kind=ik)   :: last_roth_conversion_year_p1, last_roth_conversion_year_p2
   real(kind=rk)      :: brokerage_balance, ira_balance_p2, ira_balance_p1, emergency_fund, roth_balance_p2, roth_balance_p1
-  real(kind=rk)      :: cash_reserves, cash_income, expected_annual_expenses
+  real(kind=rk)      :: cash_reserves, cash_income
+  real(kind=rk)      :: expected_expenses_shr, expected_expenses_p1, expected_expenses_p2, total_expected_expenses
+
   character(len=10)  :: out_file_name = 'retire.out'
   integer            :: out_io_stat, out_io_unit
   character(len=512) :: out_io_msg
@@ -228,7 +232,9 @@ contains
      ira_balance_p1                = initial_ira_balance_p1
      roth_balance_p2               = initial_roth_balance_p2
      roth_balance_p1               = initial_roth_balance_p1
-     expected_annual_expenses      = initial_expected_annual_expenses
+     expected_expenses_shr         = initial_expected_expenses_shr
+     expected_expenses_p1          = initial_expected_expenses_p1
+     expected_expenses_p2          = initial_expected_expenses_p2
      cur_std_tax_deduction_single  = std_tax_deduction_single
      cur_std_tax_deduction_joint   = std_tax_deduction_joint
      social_security_monthly_p1    = initial_social_security_monthly_p1
@@ -246,6 +252,7 @@ contains
      cur_tax_bracket_breaks_joint  = tax_bracket_breaks_joint
      taxable_income                = -1.0
      tax_rate                      = -1.0
+     total_expected_expenses       = -1.0
      last_roth_conversion_year_p1  = simulation_year_start - 5
      last_roth_conversion_year_p2  = simulation_year_start - 5
      cur_investment_mix            = [ high_investment_p, mid_investment_p, low_investment_p ]
@@ -253,14 +260,28 @@ contains
      do year=simulation_year_start, simulation_year_end
 
         ! ------------------------------------------------------------------------------------------------------------------------
+        ! Figure out ages
+        age_p1 = year - birthday_p1
+        age_p2 = year - birthday_p2
+
+        ! ------------------------------------------------------------------------------------------------------------------------
         ! We always do MC even when num_runs==1..
         mc_year = rand_int(mc_year_high, mc_year_low)
 
         ! ------------------------------------------------------------------------------------------------------------------------
+        ! Total expenses
+        total_expected_expenses  = expected_expenses_shr
+        if (age_p1 < life_expectancy_p1) then
+           total_expected_expenses = total_expected_expenses + expected_expenses_p1
+        end if
+        if (age_p2 < life_expectancy_p2) then
+           total_expected_expenses = total_expected_expenses + expected_expenses_p2
+        end if
+        ! ------------------------------------------------------------------------------------------------------------------------
         ! Fix a value for investments (invest or use cash)
         if ((worst_case_inflation_rate < 0) .or. &
              (cash_reserves + emergency_fund + brokerage_balance + ira_balance_p1 + ira_balance_p2 + roth_balance_p1 + roth_balance_p2 < &
-             tvm_geometric_annuity_sum_a(1+simulation_year_end-year, worst_case_inflation_rate, expected_annual_expenses))) then
+             tvm_geometric_annuity_sum_a(1+simulation_year_end-year, worst_case_inflation_rate, total_expected_expenses))) then
            cur_investment_apr(1)  = alt_if_neg(high_investment_apr, snp_dat(mc_year))
            cur_investment_apr(2)  = alt_if_neg(mid_investment_apr,  cur_investment_apr(1)/2)
            cur_investment_apr(3)  = alt_if_neg(low_investment_apr,  dgs10_dat(mc_year))
@@ -275,11 +296,6 @@ contains
         cur_social_security_growth       = alt_if_neg(social_security_growth,     max(0.0_rk, cur_inflation_rate))
         cur_annual_ira_contrib_growth    = alt_if_neg(annual_ira_contrib_growth,  max(0.0_rk, cur_inflation_rate))
         cur_annual_roth_contrib_growth   = alt_if_neg(annual_roth_contrib_growth, max(0.0_rk, cur_inflation_rate))
-
-        ! ------------------------------------------------------------------------------------------------------------------------
-        ! Figure out ages
-        age_p1 = year - birthday_p1
-        age_p2 = year - birthday_p2
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Income from work
@@ -356,8 +372,8 @@ contains
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Pay annual expenses
-        call pay_stuff(expected_annual_expenses, annual_expenses_paied_cash, annual_expenses_paied_savings, &
-                       annual_expenses_paied_ira, annual_expenses_paied_roth, .true.)
+        call pay_stuff(total_expected_expenses, annual_expenses_paied_cash, annual_expenses_paied_savings, &
+             annual_expenses_paied_ira, annual_expenses_paied_roth, .true.)
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Pay Tax For Last Year
@@ -434,7 +450,7 @@ contains
              roth_convert_p1, roth_convert_p2, &
              ss_income_p1, ss_income_p2, gross_work_income_p1, gross_work_income_p2, &
              ira_savings_p1, ira_savings_p2, &
-             expected_annual_expenses, annual_expenses_paied_cash, annual_expenses_paied_savings, &
+             total_expected_expenses, annual_expenses_paied_cash, annual_expenses_paied_savings, &
              annual_expenses_paied_ira, annual_expenses_paied_roth, &
              taxable_income, tax_rate, tax_owed, tax_paied_cash, tax_paied_savings, tax_paied_ira, tax_paied_roth
         if (out_io_stat > 0) then
@@ -453,7 +469,9 @@ contains
 
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Grow values for inflation, wage growth, ss growth, etc...
-        expected_annual_expenses      = add_p(expected_annual_expenses,      cur_inflation_rate)             ! Inflation
+        expected_expenses_shr         = add_p(expected_expenses_shr,         cur_inflation_rate)             ! Inflation
+        expected_expenses_p1          = add_p(expected_expenses_p1,          cur_inflation_rate)             ! Inflation
+        expected_expenses_p2          = add_p(expected_expenses_p2,          cur_inflation_rate)             ! Inflation
         target_taxable_income         = add_p(target_taxable_income,         cur_inflation_rate)             ! Inflation
         gross_work_salary_p2          = add_p(gross_work_salary_p2,          cur_work_salary_growth)         ! Raise at work
         gross_work_salary_p1          = add_p(gross_work_salary_p1,          cur_work_salary_growth)         ! Raise at work
@@ -560,7 +578,7 @@ contains
      namelist /SIMPARM/ initial_emergency_fund, emergency_fund_growth
      namelist /SIMPARM/ first_year_tax
      namelist /SIMPARM/ worst_case_inflation_rate, fixed_inflation_rate
-     namelist /SIMPARM/ initial_expected_annual_expenses
+     namelist /SIMPARM/ initial_expected_expenses_shr, initial_expected_expenses_p1, initial_expected_expenses_p2
      namelist /SIMPARM/ social_security_start_age_p1, social_security_start_age_p2
      namelist /SIMPARM/ initial_social_security_monthly_p1, initial_social_security_monthly_p2, social_security_growth
      namelist /SIMPARM/ initial_gross_work_salary_p1, initial_gross_work_salary_p2, work_salary_growth

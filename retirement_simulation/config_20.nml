@@ -47,10 +47,12 @@ first_year_tax                      = 1000.0,    !! Taxes to pay the first year 
 
 worst_case_inflation_rate           = -5.0,      !! Used for investment cut-off decisions
                                                  !! If negative, don't use a cuff-off
-fixed_inflation_rate                = -3.0,       !! Inflation impacts annual expenses
+fixed_inflation_rate                = 3.0,       !! Inflation impacts annual expenses
                                                  !! If negative, then do monte carlo
 
-initial_expected_annual_expenses    = 100000.0,  !! First year expenses.
+initial_expected_expenses_shr       = 100000.0,  !! Shared first year expenses.
+initial_expected_expenses_p1        = 0,         !! First year expenses for p1.
+initial_expected_expenses_p2        = 0,         !! First year expenses for p2.
 
 social_security_start_age_p1        = 65,        !! First year we get SS for p1
 social_security_start_age_p2        = 65,        !! First year we get SS for p2
