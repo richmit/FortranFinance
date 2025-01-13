@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-13 Mon 14:26 -->
+<!-- 2025-01-13 Mon 15:37 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-13 14:26:23</i></td>
+<td class="org-left"><i>2025-01-13 15:37:38</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-13 14:26:24</i></td>
+<td class="org-left"><i>2025-01-13 15:37:39</i></td>
 </tr>
 </tbody>
 </table>
@@ -258,7 +258,7 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <li><a href="#graphsR">1.2. Model Analysis</a>
 <ul>
 <li><a href="#graphsR-fixed">1.2.1. When retire.out contains a single simulation (no monte carlo), then three visualizations will be produced:</a></li>
-<li><a href="#graphsR-mc">1.2.2. When retire.out contains a multiple simulations (monte carlo), then eight visualizations are produced:</a></li>
+<li><a href="#graphsR-mc">1.2.2. When retire.out contains multiple simulations (monte carlo), then eight visualizations are produced:</a></li>
 </ul>
 </li>
 <li><a href="#obs">1.3. Some Observations</a></li>
@@ -305,9 +305,9 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <h2 id="intro"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-intro">
 <p>
-One can go quite far in answering retirement questions with nothing but TVM computations with fixed approximations for things like taxes, investment growth,
-and inflation.  As retirement became more of a reality, I found myself asking questions these kinds of approximations simply couldn't address.  This simple
-tool that essentially simulates the annual financial transactions for a retired couple allowing me to play out various strategies.
+One can go quite far in answering retirement questions using nothing more than TVM computations with fixed approximations for things like taxes, investment
+growth, and inflation.  As retirement became more of a reality, I found myself asking questions these kinds of approximations simply couldn't address.  So I
+wrote this little tool &#x2013; it essentially simulates the annual financial transactions for a retired couple.
 </p>
 </div>
 
@@ -318,17 +318,19 @@ tool that essentially simulates the annual financial transactions for a retired 
 <li>Inflation can be a fixed rate or monte carlo.</li>
 <li>The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.  
 <ul class="org-ul">
-<li>Use the following sources in order for expenses: income, brokerage, IRA, Roth, &amp; emergency.</li>
-<li>Never use an IRA if the account holder is &lt;60</li>
-<li>Never use a Roth IRA if the account holder is &lt;60 or the account was converted less than 5 years ago</li>
-<li>This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.</li>
+<li>Expenses are broken into shared expenses and expenses related to each person.  Person specific expenses disappear when the associated person dies.</li>
+<li>Use the following sources in order for expenses: income, brokerage, IRA, Roth, &amp; emergency fund.</li>
+<li>This draw down strategy leads to a dip in tax rate in the early years I can use to make Roth conversions.</li>
+<li>IRAs &amp; Roth IRAs
+<ul class="org-ul">
+<li>Never use an IRA (regular or Roth) if the account holder is &lt;60.</li>
+<li>Never use a Roth IRA if the account was converted less than 5 years ago.</li>
 <li>The "never use" rules could lead to unpaid expenses &#x2013; So be on the lookout for that, and adjust as required.</li>
-<li>The total expenses are broken into shared expenses and expenses related to each person.  When a person dies the associated expenses are removed from the
-total.</li>
+</ul></li>
 </ul></li>
 <li>They share a checking account in which they maintain a fixed balance growing with inflation.
 <ul class="org-ul">
-<li>If necessary, savings in other accounts are used to maintain that balance.</li>
+<li>If necessary, savings in other accounts are used to maintain that balance using the same draw down strategy as expenses.</li>
 </ul></li>
 <li>Retirement Savings
 <ul class="org-ul">
@@ -350,7 +352,7 @@ total.</li>
 <li>Each partner will eventually draw Social Security
 <ul class="org-ul">
 <li>They each have a year at which they will draw benefits.</li>
-<li>Benefits are expected to grow &#x2013; this can be tied to inflation, or set an an alternate fixed rate.</li>
+<li>Benefits are expected to grow &#x2013; this can be tied to inflation, or set to an alternate fixed rate.</li>
 </ul></li>
 <li>Taxes are estimated for each year including
 <ul class="org-ul">
@@ -361,24 +363,25 @@ total.</li>
 <li>These are taxed in the year they are made at the short range rate</li>
 </ul></li>
 <li>Tax brackets are projected forward with inflation.</li>
-<li>They take the standard deduction.</li>
+<li>They take the standard deduction.  This is also projected forward with inflation.</li>
 <li>They file joint until one of them dies.</li>
 <li>Taxes are paid with the same strategy as expenses.</li>
 </ul></li>
-<li>They share an "emergency" fund invested in low risk investments.  Funds used as a last resort.</li>
+<li>They share an "emergency" fund invested in low risk investments.  
+<ul class="org-ul">
+<li>Funds used as a last resort.</li>
+<li>Return rate can be fixed or monte carlo</li>
+</ul></li>
 <li>Roth Conversions
 <ul class="org-ul">
-<li>We convert part ira accounts to a roth ira if that year's taxable income is below a set target.</li>
-<li>We convert p2 ira accounts first, and then p1 ira accounts.</li>
+<li>We convert part of IRA accounts to a Roth IRAs if that year's taxable income is below a set target.</li>
+<li>We convert p2 IRA accounts first, and then p1 IRA accounts.</li>
 </ul></li>
-<li>Life expenctancy
-<ul class="org-ul">
-<li>Life expenctancy:
+<li>Life expectancy
 <ul class="org-ul">
 <li>Can be automatically guessed from birth year &amp; sex &#x2013; Uses US SS actuarial tables</li>
 <li>Can be monte carlo &#x2013; using US SS actuarial tables taking into account current age &amp; sex</li>
 <li>Can be set to a fixed value.  In this case, sex need not be provided in the config.</li>
-</ul></li>
 </ul></li>
 </ul>
 </div>
@@ -388,7 +391,9 @@ total.</li>
 <h3 id="graphsR"><span class="section-number-3">1.2.</span> Model Analysis</h3>
 <div class="outline-text-3" id="text-graphsR">
 <p>
-You can analyze the data however you wish, but I have included an R script if that's your thing.  It will consume the output of the simulation, and produce a
+As mentioned above, the primary tool is a simulator.  The simulator dumps out the results of the simulation by year &#x2013; account balances, taxes, expenses,
+account conversions, etc&#x2026;  You can analyze the data however you wish. I know many people will simply load it into Excel, but I have included an
+<a href="https://www.mitchr.me/SS/tools/index.html#stats">R</a> script if that's your thing.  This script will consume the output of the simulation, and produce a
 number of image files.  I'll describe them here, but I think it's easier to just take a look at some <a href="#examples">examples</a>.
 </p>
 </div>
@@ -405,7 +410,7 @@ number of image files.  I'll describe them here, but I think it's easier to just
 </div>
 
 <div id="outline-container-graphsR-mc" class="outline-4">
-<h4 id="graphsR-mc"><span class="section-number-4">1.2.2.</span> When retire.out contains a multiple simulations (monte carlo), then eight visualizations are produced:</h4>
+<h4 id="graphsR-mc"><span class="section-number-4">1.2.2.</span> When retire.out contains multiple simulations (monte carlo), then eight visualizations are produced:</h4>
 <div class="outline-text-4" id="text-graphsR-mc">
 <ul class="org-ul">
 <li><code>death_distribution.png</code>                  Histogram for each person showing when they died in the simulations</li>
@@ -438,16 +443,26 @@ number of image files.  I'll describe them here, but I think it's easier to just
 <h3 id="future"><span class="section-number-3">1.4.</span> Future Plans</h3>
 <div class="outline-text-3" id="text-future">
 <ul class="org-ul">
+<li>Add a way to remix investments later in retirement</li>
+<li>Add a way to change savings draw down later 
+<ul class="org-ul">
+<li>Main use case: Switch from IRA first to IRA/Roth mix to level out tax burden.</li>
+</ul></li>
+<li>Black–Scholes MC &#x2013; this is mostly an academic curiosity for me.</li>
+<li>Social Security survivor benefits &#x2013; not sure I really need this one.</li>
+<li>Back testing in addition to monte carlo &#x2013; super low priority.</li>
+<li>Add support for annuity that begins upon retirement.
+<ul class="org-ul">
+<li>Use case: RBA support with a perpetual annuity option</li>
+</ul></li>
 <li><del>IRA to Roth IRA conversions</del> (Completed 2025-01-10)</li>
 <li><del>Add 10 year US treasury bond yield</del> (Completed 2025-01-06)</li>
-<li>Black–Scholes MC &#x2013; this is mostly an academic curiosity for me.</li>
 <li><del>Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.</del> (Completed 2025-01-07)</li>
-<li>Social Security survivor benefits &#x2013; not sure I need to do this&#x2026;</li>
 <li><del>Support systems without STDOUT redirection.</del> (Completed 2025-01-08)</li>
 <li><del>Print error messages to STDERR instead of STDOUT</del> (Completed 2025-01-08)</li>
 <li><del>Add support for progress messages to STDOUT</del> (Completed 2025-01-08)</li>
 <li><del>Support different SSI benefit levels.</del> (Completed 2025-01-08)</li>
-<li>Life Expectancy
+<li><del>Life Expectancy</del> (Completed 2025-01-12)
 <ul class="org-ul">
 <li><del>Life Table</del> (Completed 2025-01-12)
 <ul class="org-ul">
@@ -462,7 +477,7 @@ number of image files.  I'll describe them here, but I think it's easier to just
 <li><del>Compute probably a person at a given age a given number of years</del> (Completed 2025-01-11)</li>
 <li><del>Add random generator that uses life table as the distribution.  Take age into consideration.</del> (Completed 2025-01-12)</li>
 </ul></li>
-<li>simulation changes
+<li><del>simulation changes</del> (Completed 2025-01-12)
 <ul class="org-ul">
 <li><del>Option to set simulation end at highest survivor date in life table for sex of person</del> (Completed 2025-01-12)</li>
 <li><del>Add graph showing probability of running out of cash by given date</del> (Completed 2025-01-12)</li>
@@ -623,7 +638,7 @@ This will result in a executable (named "<code>retire</code>" on most UNIX-like 
 <h3 id="dowrun"><span class="section-number-3">2.4.</span> Running The Simulator</h3>
 <div class="outline-text-3" id="text-dowrun">
 <p>
-The <code>retire</code> command takes the name of the the configuration describeing the simulation parameters as an optional argument.  If it is missing, then the name
+The <code>retire</code> command takes the name of the the configuration describing the simulation parameters as an optional argument.  If it is missing, then the name
 is assumed to be "<code>retire.nml</code>".  This document contains a couple example configuration files: <a href="#case_20_config">config_20.nml</a> and
 <a href="#case_60_config">config_60.nml</a>.
 </p>
@@ -673,7 +688,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="orge5d5511" class="figure">
+<div id="org3d705e1" class="figure">
 <p><a href="pics/savings_by_type_20_fix_full.png"><img src="pics/savings_by_type_20_fix_800x.png" alt="savings_by_type_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -683,7 +698,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="orge36e2d2" class="figure">
+<div id="orgb2c39be" class="figure">
 <p><a href="pics/paid_and_unpaid_20_fix_full.png"><img src="pics/paid_and_unpaid_20_fix_800x.png" alt="paid_and_unpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -694,7 +709,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org3ab2910" class="figure">
+<div id="orgd3056db" class="figure">
 <p><a href="pics/paid_by_source_20_fix_full.png"><img src="pics/paid_by_source_20_fix_800x.png" alt="paid_by_source_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -715,7 +730,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="orgf34aa78" class="figure">
+<div id="org526dcad" class="figure">
 <p><a href="pics/savings_by_year_probability_bands_20_mc_full.png"><img src="pics/savings_by_year_probability_bands_20_mc_800x.png" alt="savings_by_year_probability_bands_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -727,7 +742,7 @@ both people have died.
 </p>
 
 
-<div id="org102c396" class="figure">
+<div id="orge917573" class="figure">
 <p><a href="pics/composite_trajectories_20_mc_full.png"><img src="pics/composite_trajectories_20_mc_800x.png" alt="composite_trajectories_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -737,7 +752,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="org42cef51" class="figure">
+<div id="orga11d0e8" class="figure">
 <p><a href="pics/savings_by_year_boxplot_20_mc_full.png"><img src="pics/savings_by_year_boxplot_20_mc_800x.png" alt="savings_by_year_boxplot_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -747,7 +762,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org3294092" class="figure">
+<div id="org880fc99" class="figure">
 <p><a href="pics/probability_of_failure_by_year_20_mc_full.png"><img src="pics/probability_of_failure_by_year_20_mc_800x.png" alt="probability_of_failure_by_year_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -757,7 +772,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="orgad41120" class="figure">
+<div id="org908b71e" class="figure">
 <p><a href="pics/final_savings_by_type_20_mc_full.png"><img src="pics/final_savings_by_type_20_mc_800x.png" alt="final_savings_by_type_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -893,7 +908,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org5a535e2" class="figure">
+<div id="org879bd81" class="figure">
 <p><a href="pics/savings_by_type_60o_fix_full.png"><img src="pics/savings_by_type_60o_fix_800x.png" alt="savings_by_type_60o_fix_800x.png" /></a>
 </p>
 </div>
@@ -903,7 +918,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org8bc13d9" class="figure">
+<div id="orgd95b97b" class="figure">
 <p><a href="pics/savings_by_year_probability_bands_60o_mc_full.png"><img src="pics/savings_by_year_probability_bands_60o_mc_800x.png" alt="savings_by_year_probability_bands_60o_mc_800x.png" /></a>
 </p>
 </div>
@@ -913,7 +928,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org82e6207" class="figure">
+<div id="org94b890c" class="figure">
 <p><a href="pics/composite_trajectories_60o_mc_full.png"><img src="pics/composite_trajectories_60o_mc_800x.png" alt="composite_trajectories_60o_mc_800x.png" /></a>
 </p>
 </div>
@@ -924,7 +939,7 @@ outcome from this plan.
 </p>
 
 
-<div id="orgd9312d8" class="figure">
+<div id="orgae8663a" class="figure">
 <p><a href="pics/final_savings_by_type_60o_mc_full.png"><img src="pics/final_savings_by_type_60o_mc_800x.png" alt="final_savings_by_type_60o_mc_800x.png" /></a>
 </p>
 </div>
@@ -943,7 +958,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org2462d9d" class="figure">
+<div id="org4f49f2a" class="figure">
 <p><a href="pics/savings_by_year_probability_bands_60ml_mc_full.png"><img src="pics/savings_by_year_probability_bands_60ml_mc_800x.png" alt="savings_by_year_probability_bands_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -953,7 +968,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org717c5f2" class="figure">
+<div id="org419d075" class="figure">
 <p><a href="pics/composite_trajectories_60ml_mc_full.png"><img src="pics/composite_trajectories_60ml_mc_800x.png" alt="composite_trajectories_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -963,7 +978,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org8432738" class="figure">
+<div id="orgf02a5ae" class="figure">
 <p><a href="pics/final_savings_by_type_60ml_mc_full.png"><img src="pics/final_savings_by_type_60ml_mc_800x.png" alt="final_savings_by_type_60ml_mc_800x.png" /></a>
 </p>
 </div>

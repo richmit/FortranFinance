@@ -46,9 +46,9 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
 :CUSTOM_ID: intro
 :END:
 
-One can go quite far in answering retirement questions with nothing but TVM computations with fixed approximations for things like taxes, investment growth,
-and inflation.  As retirement became more of a reality, I found myself asking questions these kinds of approximations simply couldn't address.  This simple
-tool that essentially simulates the annual financial transactions for a retired couple allowing me to play out various strategies.
+One can go quite far in answering retirement questions using nothing more than TVM computations with fixed approximations for things like taxes, investment
+growth, and inflation.  As retirement became more of a reality, I found myself asking questions these kinds of approximations simply couldn't address.  So I
+wrote this little tool -- it essentially simulates the annual financial transactions for a retired couple.
 
 ** The Model
 :PROPERTIES:
@@ -57,15 +57,15 @@ tool that essentially simulates the annual financial transactions for a retired 
 
   - Inflation can be a fixed rate or monte carlo. 
   - The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.  
-    - Use the following sources in order for expenses: income, brokerage, IRA, Roth, & emergency.
-    - Never use an IRA if the account holder is <60
-    - Never use a Roth IRA if the account holder is <60 or the account was converted less than 5 years ago
-    - This draw down strategy leads to a dip in tax rate in the early years I can use to make roth conversions.  
-    - The "never use" rules could lead to unpaid expenses -- So be on the lookout for that, and adjust as required.
-    - The total expenses are broken into shared expenses and expenses related to each person.  When a person dies the associated expenses are removed from the
-      total.
+    - Expenses are broken into shared expenses and expenses related to each person.  Person specific expenses disappear when the associated person dies.
+    - Use the following sources in order for expenses: income, brokerage, IRA, Roth, & emergency fund.
+    - This draw down strategy leads to a dip in tax rate in the early years I can use to make Roth conversions.  
+    - IRAs & Roth IRAs
+      - Never use an IRA (regular or Roth) if the account holder is <60.
+      - Never use a Roth IRA if the account was converted less than 5 years ago.
+      - The "never use" rules could lead to unpaid expenses -- So be on the lookout for that, and adjust as required.
   - They share a checking account in which they maintain a fixed balance growing with inflation.
-    - If necessary, savings in other accounts are used to maintain that balance.
+    - If necessary, savings in other accounts are used to maintain that balance using the same draw down strategy as expenses.
   - Retirement Savings
     - Each partner has an IRA and a Roth IRA
     - They share a brokerage account
@@ -79,32 +79,35 @@ tool that essentially simulates the annual financial transactions for a retired 
     - Some percentage of unused income (income not used for expenses) can be saved in the brokerage account.
   - Each partner will eventually draw Social Security
     - They each have a year at which they will draw benefits.
-    - Benefits are expected to grow -- this can be tied to inflation, or set an an alternate fixed rate.
+    - Benefits are expected to grow -- this can be tied to inflation, or set to an alternate fixed rate.
   - Taxes are estimated for each year including
     - Income taxes
     - Tax impact of IRA withdrawals
     - Capital gains in the brokerage & emergency fund
       - These are taxed in the year they are made at the short range rate
     - Tax brackets are projected forward with inflation.
-    - They take the standard deduction.
+    - They take the standard deduction.  This is also projected forward with inflation.
     - They file joint until one of them dies.
     - Taxes are paid with the same strategy as expenses.
-  - They share an "emergency" fund invested in low risk investments.  Funds used as a last resort.
+  - They share an "emergency" fund invested in low risk investments.  
+    - Funds used as a last resort.
+    - Return rate can be fixed or monte carlo
   - Roth Conversions
-    - We convert part ira accounts to a roth ira if that year's taxable income is below a set target.
-    - We convert p2 ira accounts first, and then p1 ira accounts.
-  - Life expenctancy
-    - Life expenctancy:
-      - Can be automatically guessed from birth year & sex -- Uses US SS actuarial tables
-      - Can be monte carlo -- using US SS actuarial tables taking into account current age & sex
-      - Can be set to a fixed value.  In this case, sex need not be provided in the config.
+    - We convert part of IRA accounts to a Roth IRAs if that year's taxable income is below a set target.
+    - We convert p2 IRA accounts first, and then p1 IRA accounts.
+  - Life expectancy
+    - Can be automatically guessed from birth year & sex -- Uses US SS actuarial tables
+    - Can be monte carlo -- using US SS actuarial tables taking into account current age & sex
+    - Can be set to a fixed value.  In this case, sex need not be provided in the config.
 
 ** Model Analysis
 :PROPERTIES:
 :CUSTOM_ID: graphsR
 :END:
 
-You can analyze the data however you wish, but I have included an R script if that's your thing.  It will consume the output of the simulation, and produce a
+As mentioned above, the primary tool is a simulator.  The simulator dumps out the results of the simulation by year -- account balances, taxes, expenses,
+account conversions, etc...  You can analyze the data however you wish. I know many people will simply load it into Excel, but I have included an
+[[https://www.mitchr.me/SS/tools/index.html#stats][R]] script if that's your thing.  This script will consume the output of the simulation, and produce a
 number of image files.  I'll describe them here, but I think it's easier to just take a look at some [[#examples][examples]].
 
 *** When retire.out contains a single simulation (no monte carlo), then three visualizations will be produced:
@@ -116,7 +119,7 @@ number of image files.  I'll describe them here, but I think it's easier to just
    - ~paid_and_unpaid.png~  Amount of living expenses & taxes that were successfully paid
    - ~paid_by_source.png~   How obligations were paid by payment source
 
-*** When retire.out contains a multiple simulations (monte carlo), then eight visualizations are produced:
+*** When retire.out contains multiple simulations (monte carlo), then eight visualizations are produced:
 :PROPERTIES:
 :CUSTOM_ID: graphsR-mc
 :END:
@@ -146,16 +149,22 @@ number of image files.  I'll describe them here, but I think it's easier to just
 :CUSTOM_ID: future
 :END:
 
+  - Add a way to remix investments later in retirement
+  - Add a way to change savings draw down later 
+    - Main use case: Switch from IRA first to IRA/Roth mix to level out tax burden.
+  - Black–Scholes MC -- this is mostly an academic curiosity for me.
+  - Social Security survivor benefits -- not sure I really need this one.
+  - Back testing in addition to monte carlo -- super low priority.
+  - Add support for annuity that begins upon retirement.
+    - Use case: RBA support with a perpetual annuity option
   - +IRA to Roth IRA conversions+ (Completed 2025-01-10)
   - +Add 10 year US treasury bond yield+ (Completed 2025-01-06)
-  - Black–Scholes MC -- this is mostly an academic curiosity for me.
   - +Switch to correlated monte carlo.  Yes.  It's currently uncorrelated.  That's bad.  More of a bug really.+ (Completed 2025-01-07)
-  - Social Security survivor benefits -- not sure I need to do this...
   - +Support systems without STDOUT redirection.+ (Completed 2025-01-08)
   - +Print error messages to STDERR instead of STDOUT+ (Completed 2025-01-08)
   - +Add support for progress messages to STDOUT+ (Completed 2025-01-08)
   - +Support different SSI benefit levels.+ (Completed 2025-01-08)
-  - Life Expectancy
+  - +Life Expectancy+ (Completed 2025-01-12)
     - +Life Table+ (Completed 2025-01-12)
       - +Add SSI Life tables module+ (Completed 2025-01-11)
       - +Data+ (Completed 2025-01-11)
@@ -165,7 +174,7 @@ number of image files.  I'll describe them here, but I think it's easier to just
       - +Compute the maximum age a person might reach (the year at which everyone is dead in the life table)+ (Completed 2025-01-11)
       - +Compute probably a person at a given age a given number of years+ (Completed 2025-01-11)
       - +Add random generator that uses life table as the distribution.  Take age into consideration.+ (Completed 2025-01-12)
-    - simulation changes
+    - +simulation changes+ (Completed 2025-01-12)
       - +Option to set simulation end at highest survivor date in life table for sex of person+ (Completed 2025-01-12)
       - +Add graph showing probability of running out of cash by given date+ (Completed 2025-01-12)
       - +Add dots to the trajectory graph showing when both people died+ (Completed 2025-01-12)
@@ -279,7 +288,7 @@ This will result in a executable (named "~retire~" on most UNIX-like platforms, 
 :CUSTOM_ID: dowrun
 :END:
 
-The ~retire~ command takes the name of the the configuration describeing the simulation parameters as an optional argument.  If it is missing, then the name
+The ~retire~ command takes the name of the the configuration describing the simulation parameters as an optional argument.  If it is missing, then the name
 is assumed to be "~retire.nml~".  This document contains a couple example configuration files: [[#case_20_config][config_20.nml]] and
 [[#case_60_config][config_60.nml]].
 
