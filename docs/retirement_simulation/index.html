@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-12 Sun 19:02 -->
+<!-- 2025-01-13 Mon 14:26 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-12 19:02:51</i></td>
+<td class="org-left"><i>2025-01-13 14:26:23</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-12 19:02:52</i></td>
+<td class="org-left"><i>2025-01-13 14:26:24</i></td>
 </tr>
 </tbody>
 </table>
@@ -255,9 +255,15 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <li><a href="#intro">1. Introduction</a>
 <ul>
 <li><a href="#model">1.1. The Model</a></li>
-<li><a href="#obs">1.2. Some Observations</a></li>
-<li><a href="#future">1.3. Future Plans</a></li>
-<li><a href="#commonprob">1.4. Evaluating retirement planning software</a></li>
+<li><a href="#graphsR">1.2. Model Analysis</a>
+<ul>
+<li><a href="#graphsR-fixed">1.2.1. When retire.out contains a single simulation (no monte carlo), then three visualizations will be produced:</a></li>
+<li><a href="#graphsR-mc">1.2.2. When retire.out contains a multiple simulations (monte carlo), then eight visualizations are produced:</a></li>
+</ul>
+</li>
+<li><a href="#obs">1.3. Some Observations</a></li>
+<li><a href="#future">1.4. Future Plans</a></li>
+<li><a href="#commonprob">1.5. Evaluating retirement planning software</a></li>
 </ul>
 </li>
 <li><a href="#ops">2. Operation</a>
@@ -280,7 +286,7 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <li><a href="#case_60_intro">3.2. Approaching Retirement</a>
 <ul>
 <li><a href="#case_60_danger">3.2.1. A Risky Plan</a></li>
-<li><a href="#case_60_ml">3.2.2. An Alternate Plan</a></li>
+<li><a href="#case_60o_ml">3.2.2. An Alternate Plan</a></li>
 <li><a href="#case_60_config">3.2.3. Config Files</a></li>
 </ul>
 </li>
@@ -378,8 +384,44 @@ total.</li>
 </div>
 </div>
 
+<div id="outline-container-graphsR" class="outline-3">
+<h3 id="graphsR"><span class="section-number-3">1.2.</span> Model Analysis</h3>
+<div class="outline-text-3" id="text-graphsR">
+<p>
+You can analyze the data however you wish, but I have included an R script if that's your thing.  It will consume the output of the simulation, and produce a
+number of image files.  I'll describe them here, but I think it's easier to just take a look at some <a href="#examples">examples</a>.
+</p>
+</div>
+
+<div id="outline-container-graphsR-fixed" class="outline-4">
+<h4 id="graphsR-fixed"><span class="section-number-4">1.2.1.</span> When retire.out contains a single simulation (no monte carlo), then three visualizations will be produced:</h4>
+<div class="outline-text-4" id="text-graphsR-fixed">
+<ul class="org-ul">
+<li><code>savings_by_type.png</code>  Total savings over time broken out by savings type</li>
+<li><code>paid_and_unpaid.png</code>  Amount of living expenses &amp; taxes that were successfully paid</li>
+<li><code>paid_by_source.png</code>   How obligations were paid by payment source</li>
+</ul>
+</div>
+</div>
+
+<div id="outline-container-graphsR-mc" class="outline-4">
+<h4 id="graphsR-mc"><span class="section-number-4">1.2.2.</span> When retire.out contains a multiple simulations (monte carlo), then eight visualizations are produced:</h4>
+<div class="outline-text-4" id="text-graphsR-mc">
+<ul class="org-ul">
+<li><code>death_distribution.png</code>                  Histogram for each person showing when they died in the simulations</li>
+<li><code>final_savings_by_type.png</code>               Histogram for final savings balance at death</li>
+<li><code>probability_of_failure_by_year.png</code>      Histogram showing number of failure trajectories over time</li>
+<li><code>savings_by_year_boxplot.png</code>             Box plot showing total savings balance over time along with number of failures</li>
+<li><code>savings_by_year_probability_bands.png</code>   Shows bands containing the given percentage of total savings balance trajectories</li>
+<li><code>probability_of_success_by_year.png</code>      Line plot showing the probability of failure over time</li>
+<li><code>composite_trajectories.png</code>              Composite of total balance trajectories</li>
+</ul>
+</div>
+</div>
+</div>
+
 <div id="outline-container-obs" class="outline-3">
-<h3 id="obs"><span class="section-number-3">1.2.</span> Some Observations</h3>
+<h3 id="obs"><span class="section-number-3">1.3.</span> Some Observations</h3>
 <div class="outline-text-3" id="text-obs">
 <ul class="org-ul">
 <li>Careful tax panning may be a larger factor in a successful retirement than portfolio mix!</li>
@@ -393,7 +435,7 @@ total.</li>
 </div>
 
 <div id="outline-container-future" class="outline-3">
-<h3 id="future"><span class="section-number-3">1.3.</span> Future Plans</h3>
+<h3 id="future"><span class="section-number-3">1.4.</span> Future Plans</h3>
 <div class="outline-text-3" id="text-future">
 <ul class="org-ul">
 <li><del>IRA to Roth IRA conversions</del> (Completed 2025-01-10)</li>
@@ -433,7 +475,7 @@ total.</li>
 </div>
 
 <div id="outline-container-commonprob" class="outline-3">
-<h3 id="commonprob"><span class="section-number-3">1.4.</span> Evaluating retirement planning software</h3>
+<h3 id="commonprob"><span class="section-number-3">1.5.</span> Evaluating retirement planning software</h3>
 <div class="outline-text-3" id="text-commonprob">
 <p>
 I did a ton of research before I wrote this simulator.  I looked at dozens of wealth management and retirement planning tools.  Some free and some very
@@ -631,8 +673,8 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="orgdcb1366" class="figure">
-<p><a href="pics/savings_20_fix_full.png"><img src="pics/savings_20_fix_800x.png" alt="savings_20_fix_800x.png" /></a>
+<div id="orge5d5511" class="figure">
+<p><a href="pics/savings_by_type_20_fix_full.png"><img src="pics/savings_by_type_20_fix_800x.png" alt="savings_by_type_20_fix_800x.png" /></a>
 </p>
 </div>
 
@@ -641,8 +683,8 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org2633177" class="figure">
-<p><a href="pics/paidunpaid_20_fix_full.png"><img src="pics/paidunpaid_20_fix_800x.png" alt="paidunpaid_20_fix_800x.png" /></a>
+<div id="orge36e2d2" class="figure">
+<p><a href="pics/paid_and_unpaid_20_fix_full.png"><img src="pics/paid_and_unpaid_20_fix_800x.png" alt="paid_and_unpaid_20_fix_800x.png" /></a>
 </p>
 </div>
 
@@ -652,8 +694,8 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org13ad0ee" class="figure">
-<p><a href="pics/paidsource_20_fix_full.png"><img src="pics/paidsource_20_fix_800x.png" alt="paidsource_20_fix_800x.png" /></a>
+<div id="org3ab2910" class="figure">
+<p><a href="pics/paid_by_source_20_fix_full.png"><img src="pics/paid_by_source_20_fix_800x.png" alt="paid_by_source_20_fix_800x.png" /></a>
 </p>
 </div>
 </div>
@@ -673,19 +715,20 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="orgd470768" class="figure">
-<p><a href="pics/savings_crg_20_mc_full.png"><img src="pics/savings_crg_20_mc_800x.png" alt="savings_crg_20_mc_800x.png" /></a>
+<div id="orgf34aa78" class="figure">
+<p><a href="pics/savings_by_year_probability_bands_20_mc_full.png"><img src="pics/savings_by_year_probability_bands_20_mc_800x.png" alt="savings_by_year_probability_bands_20_mc_800x.png" /></a>
 </p>
 </div>
 
 <p>
 This graph shows 2000 savings trajectories, all the failure trajectories (when we went broke), and an envelope for the highest balance for trajectories that
-failed.  In essence the green line shows a "safe" balance at which we are unlikely to see failure.
+failed.  In essence the green line shows a "safe" balance at which we are unlikely to see failure.  The little blue dots show the ends of trajectories where
+both people have died.
 </p>
 
 
-<div id="org3781245" class="figure">
-<p><a href="pics/compColCases_20_mc_full.png"><img src="pics/compColCases_20_mc_800x.png" alt="compColCases_20_mc_800x.png" /></a>
+<div id="org102c396" class="figure">
+<p><a href="pics/composite_trajectories_20_mc_full.png"><img src="pics/composite_trajectories_20_mc_800x.png" alt="composite_trajectories_20_mc_800x.png" /></a>
 </p>
 </div>
 
@@ -694,8 +737,8 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="orgc5d61f5" class="figure">
-<p><a href="pics/simCompBox_20_mc_full.png"><img src="pics/simCompBox_20_mc_800x.png" alt="simCompBox_20_mc_800x.png" /></a>
+<div id="org42cef51" class="figure">
+<p><a href="pics/savings_by_year_boxplot_20_mc_full.png"><img src="pics/savings_by_year_boxplot_20_mc_800x.png" alt="savings_by_year_boxplot_20_mc_800x.png" /></a>
 </p>
 </div>
 
@@ -704,8 +747,8 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org3c3f281" class="figure">
-<p><a href="pics/brokeAge_20_mc_full.png"><img src="pics/brokeAge_20_mc_800x.png" alt="brokeAge_20_mc_800x.png" /></a>
+<div id="org3294092" class="figure">
+<p><a href="pics/probability_of_failure_by_year_20_mc_full.png"><img src="pics/probability_of_failure_by_year_20_mc_800x.png" alt="probability_of_failure_by_year_20_mc_800x.png" /></a>
 </p>
 </div>
 
@@ -714,8 +757,8 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="org3b9f847" class="figure">
-<p><a href="pics/endSavings_20_mc_full.png"><img src="pics/endSavings_20_mc_800x.png" alt="endSavings_20_mc_800x.png" /></a>
+<div id="orgad41120" class="figure">
+<p><a href="pics/final_savings_by_type_20_mc_full.png"><img src="pics/final_savings_by_type_20_mc_800x.png" alt="final_savings_by_type_20_mc_800x.png" /></a>
 </p>
 </div>
 </div>
@@ -727,7 +770,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 <div class="org-src-container">
 <pre class="src src-f90">&amp;SIMPARM
 monte_carlo_years                   = 40,        <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Years of reference data to use</span>
-monte_carlo_runs                    = 1000,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Number of sims</span>
+monte_carlo_runs                    = 10000,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Number of sims</span>
 
 initial_brokerage_balance           = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all normally taxable accounts</span>
 initial_ira_balance_p1              = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p1</span>
@@ -762,16 +805,18 @@ first_year_tax                      = 1000.0,    <span style="color: #ffa500;">!
 
 worst_case_inflation_rate           = -5.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for investment cut-off decisions</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, don't use a cuff-off</span>
-fixed_inflation_rate                = -3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Inflation impacts annual expenses</span>
+fixed_inflation_rate                = 3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Inflation impacts annual expenses</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then do monte carlo</span>
 
-initial_expected_annual_expenses    = 100000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
+initial_expected_expenses_shr       = 100000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Shared first year expenses.</span>
+initial_expected_expenses_p1        = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses for p1.</span>
+initial_expected_expenses_p2        = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses for p2.</span>
 
 social_security_start_age_p1        = 65,        <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year we get SS for p1</span>
 social_security_start_age_p2        = 65,        <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year we get SS for p2</span>
 initial_social_security_monthly_p1  = 1000.0,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Just a guess.  Probably low.</span>
 initial_social_security_monthly_p2  = 1000.0,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Just a guess.  Probably low.</span>
-social_security_growth              = 3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Usually matches inflation</span>
+social_security_growth              = -1.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Usually matches inflation</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
 
 initial_gross_work_salary_p1        = 100000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Taxable part of p1's salary</span>
@@ -799,8 +844,14 @@ retirement_year_p1                  = 2065,      <span style="color: #ffa500;">!
 retirement_year_p2                  = 2065,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year p2 is fully retired</span>
 birthday_p1                         = 2000,      <span style="color: #ffa500;">!!</span>
 birthday_p2                         = 2000,      <span style="color: #ffa500;">!!</span>
-life_expectancy_p1                  = 110,       <span style="color: #ffa500;">!!</span>
-life_expectancy_p2                  = 110,       <span style="color: #ffa500;">!!</span>
+sex_p1                              = <span style="color: #fa8072;">'M'</span>,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sex of p1 -- selects SSI life table</span>
+sex_p2                              = <span style="color: #fa8072;">'F'</span>,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sex of p2 -- selects SSI life table</span>
+life_expectancy_p1                  = 110,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Age p1 expects to die</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If zero then compute based on age &amp; sex</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative then use monte carlo</span>
+life_expectancy_p2                  = 110,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Age p2 expects to die</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If zero then compute based on age &amp; sex</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative then use monte carlo</span>
 
 verbosity                           = 10         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">How much to print when running</span>
                                                  <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">-  0 : nothing</span>
@@ -842,8 +893,8 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="orgd5810b0" class="figure">
-<p><a href="pics/savings_60_fix_full.png"><img src="pics/savings_60_fix_800x.png" alt="savings_60_fix_800x.png" /></a>
+<div id="org5a535e2" class="figure">
+<p><a href="pics/savings_by_type_60o_fix_full.png"><img src="pics/savings_by_type_60o_fix_800x.png" alt="savings_by_type_60o_fix_800x.png" /></a>
 </p>
 </div>
 
@@ -852,8 +903,8 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org9502184" class="figure">
-<p><a href="pics/savings_crg_60_mc_full.png"><img src="pics/savings_crg_60_mc_800x.png" alt="savings_crg_60_mc_800x.png" /></a>
+<div id="org8bc13d9" class="figure">
+<p><a href="pics/savings_by_year_probability_bands_60o_mc_full.png"><img src="pics/savings_by_year_probability_bands_60o_mc_800x.png" alt="savings_by_year_probability_bands_60o_mc_800x.png" /></a>
 </p>
 </div>
 
@@ -862,27 +913,27 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="orge61b70a" class="figure">
-<p><a href="pics/compColCases_60_mc_full.png"><img src="pics/compColCases_60_mc_800x.png" alt="compColCases_60_mc_800x.png" /></a>
+<div id="org82e6207" class="figure">
+<p><a href="pics/composite_trajectories_60o_mc_full.png"><img src="pics/composite_trajectories_60o_mc_800x.png" alt="composite_trajectories_60o_mc_800x.png" /></a>
 </p>
 </div>
 
 <p>
-Another way to look at this is the distribution of final savings.  That huge bar on the left tells us that the single most probable outcome of this plan is to
-run out of money.
+Another way to look at this is the distribution of final savings.  That huge bar on the left tells us that running out of money is the single most probable
+outcome from this plan.
 </p>
 
 
-<div id="org571d4a2" class="figure">
-<p><a href="pics/endSavings_60_mc_full.png"><img src="pics/endSavings_60_mc_800x.png" alt="endSavings_60_mc_800x.png" /></a>
+<div id="orgd9312d8" class="figure">
+<p><a href="pics/final_savings_by_type_60o_mc_full.png"><img src="pics/final_savings_by_type_60o_mc_800x.png" alt="final_savings_by_type_60o_mc_800x.png" /></a>
 </p>
 </div>
 </div>
 </div>
 
-<div id="outline-container-case_60_ml" class="outline-4">
-<h4 id="case_60_ml"><span class="section-number-4">3.2.2.</span> An Alternate Plan</h4>
-<div class="outline-text-4" id="text-case_60_ml">
+<div id="outline-container-case_60o_ml" class="outline-4">
+<h4 id="case_60o_ml"><span class="section-number-4">3.2.2.</span> An Alternate Plan</h4>
+<div class="outline-text-4" id="text-case_60o_ml">
 <p>
 They can dramatically improve the chances of success by saving more (bumping up total savings by 250k), and spending less (drop annual expenses by 1k).  
 </p>
@@ -892,8 +943,8 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org2909846" class="figure">
-<p><a href="pics/savings_crg_60ml_mc_full.png"><img src="pics/savings_crg_60ml_mc_800x.png" alt="savings_crg_60ml_mc_800x.png" /></a>
+<div id="org2462d9d" class="figure">
+<p><a href="pics/savings_by_year_probability_bands_60ml_mc_full.png"><img src="pics/savings_by_year_probability_bands_60ml_mc_800x.png" alt="savings_by_year_probability_bands_60ml_mc_800x.png" /></a>
 </p>
 </div>
 
@@ -902,8 +953,8 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org98d806d" class="figure">
-<p><a href="pics/compColCases_60ml_mc_full.png"><img src="pics/compColCases_60ml_mc_800x.png" alt="compColCases_60ml_mc_800x.png" /></a>
+<div id="org717c5f2" class="figure">
+<p><a href="pics/composite_trajectories_60ml_mc_full.png"><img src="pics/composite_trajectories_60ml_mc_800x.png" alt="composite_trajectories_60ml_mc_800x.png" /></a>
 </p>
 </div>
 
@@ -912,8 +963,8 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org741481a" class="figure">
-<p><a href="pics/endSavings_60ml_mc_full.png"><img src="pics/endSavings_60ml_mc_800x.png" alt="endSavings_60ml_mc_800x.png" /></a>
+<div id="org8432738" class="figure">
+<p><a href="pics/final_savings_by_type_60ml_mc_full.png"><img src="pics/final_savings_by_type_60ml_mc_800x.png" alt="final_savings_by_type_60ml_mc_800x.png" /></a>
 </p>
 </div>
 </div>
@@ -932,22 +983,22 @@ monte_carlo_years                   = 40,        <span style="color: #ffa500;">!
 monte_carlo_runs                    = 10000,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Number of sims</span>
 
 initial_brokerage_balance           = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all normally taxable accounts</span>
-initial_ira_balance_p1              = 1000000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p1</span>
-initial_ira_balance_p2              = 1000000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p2</span>
+initial_ira_balance_p1              = 500000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p1</span>
+initial_ira_balance_p2              = 500000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p2</span>
 initial_roth_balance_p2             = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all roth-like tax deferred accounts for p2</span>
 initial_roth_balance_p1             = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all roth-like tax deferred accounts for p1</span>
 
-high_investment_p                   = 50.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at high growth</span>
-mid_investment_p                    = 50.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at medium growth</span>
-low_investment_p                    = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at low growth</span>
+high_investment_p                   = 80.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at high growth</span>
+mid_investment_p                    = 00.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at medium growth</span>
+low_investment_p                    = 20.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at low growth</span>
 
 high_investment_apr                 = 7.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at high growth</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage!</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then do monte carlo with snp_dat</span>
-mid_investment_apr                  = 5.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at medium growth</span>
+mid_investment_apr                  = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at medium growth</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage!</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to high_investment_apr/2</span>
-low_investment_apr                  = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at low growth</span>
+low_investment_apr                  = 5.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">apr for investments at low growth</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Used for retirement accounts and the brokerage.</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then do monte carlo with dgs10_dat</span>
 cash_position_growth                = 2.5,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">par for cash position in investment accounts</span>
@@ -957,7 +1008,7 @@ initial_cash_reserves               = 100000.0,  <span style="color: #ffa500;">!
 cash_reserves_growth                = 0.01,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Growth for cash reserves account</span>
 
 initial_emergency_fund              = 100000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Near zero risk investments</span>
-emergency_fund_growth               = 3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Rate at which the emergency account grows</span>
+emergency_fund_growth               = 2.9,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Rate at which the emergency account grows</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to low_investment_apr</span>
 
 first_year_tax                      = 50000.0,   <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Taxes to pay the first year of the simulation</span>
@@ -967,13 +1018,15 @@ worst_case_inflation_rate           = -5.0,      <span style="color: #ffa500;">!
 fixed_inflation_rate                = 3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Inflation impacts annual expenses</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then do monte carlo</span>
 
-initial_expected_annual_expenses    = 110000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
+initial_expected_expenses_shr       = 110000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
+initial_expected_expenses_p1        = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses for p1.</span>
+initial_expected_expenses_p2        = 0,         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses for p2.</span>
 
 social_security_start_age_p1        = 63,        <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year we get SS for p1</span>
 social_security_start_age_p2        = 70,        <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year we get SS for p2</span>
 initial_social_security_monthly_p1  = 1000.0,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Just a guess.  Probably low.</span>
 initial_social_security_monthly_p2  = 1000.0,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Just a guess.  Probably low.</span>
-social_security_growth              = 3.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Usually matches inflation</span>
+social_security_growth              = -1.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Usually matches inflation</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
 
 initial_gross_work_salary_p1        = 170000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Taxable part of p1's salary</span>
@@ -983,7 +1036,7 @@ work_salary_growth                  = 2.0,       <span style="color: #ffa500;">!
 
 initial_annual_ira_contrib_base     = 23000.0,   <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting base contribution</span>
 initial_annual_ira_contrib_catchup  = 7000.0,    <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting catchup contribution</span>
-annual_ira_contrib_growth           = -3.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Grow 401k contribution (inflation?)</span>
+annual_ira_contrib_growth           = -1.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Grow 401k contribution (inflation?)</span>
                                                  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative, then set to inflation</span>
 
 initial_annual_roth_contrib_base    = 0.0,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Starting base contribution</span>
@@ -1001,8 +1054,14 @@ retirement_year_p1                  = 2037,      <span style="color: #ffa500;">!
 retirement_year_p2                  = 2029,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year p2 is fully retired</span>
 birthday_p1                         = 1977,      <span style="color: #ffa500;">!!</span>
 birthday_p2                         = 1969,      <span style="color: #ffa500;">!!</span>
-life_expectancy_p1                  = 110,       <span style="color: #ffa500;">!!</span>
-life_expectancy_p2                  = 110        <span style="color: #ffa500;">!!</span>
+sex_p1                              = <span style="color: #fa8072;">'M'</span>,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sex of p1 -- selects SSI life table</span>
+sex_p2                              = <span style="color: #fa8072;">'F'</span>,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sex of p2 -- selects SSI life table</span>
+life_expectancy_p1                  = 110,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Age p1 expects to die</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If zero then compute based on age &amp; sex</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative then use monte carlo</span>
+life_expectancy_p2                  = 110,       <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Age p2 expects to die</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If zero then compute based on age &amp; sex</span>
+                                                 <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">If negative then use monte carlo</span>
 
 verbosity                           = 10         <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">How much to print when running</span>
                                                  <span style="color: #ffa500;">!!  </span><span style="color: #ff7f24;">-  0 : nothing</span>
@@ -1018,11 +1077,11 @@ The updated plan changes these lines
 </p>
 
 <div class="org-src-container">
-<pre class="src src-f90">initial_ira_balance_p1              = 625000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p1</span>
-initial_ira_balance_p2              = 625000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p2</span>
-high_investment_p                   = 80.0,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at high growth</span>
-mid_investment_p                    = 20.0,     <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at medium growth</span>
-initial_expected_annual_expenses    = 100000.0, <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
+<pre class="src src-f90">initial_ira_balance_p1              = 625000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p1</span>
+initial_ira_balance_p2              = 625000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">Sum of all tax deferred accounts for p2</span>
+high_investment_p                   = 50.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at high growth</span>
+low_investment_p                    = 20.0,      <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">percentage of investments at low growth</span>
+initial_expected_expenses_shr       = 100000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
 </pre>
 </div>
 </div>

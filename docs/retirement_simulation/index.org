@@ -99,6 +99,36 @@ tool that essentially simulates the annual financial transactions for a retired 
       - Can be monte carlo -- using US SS actuarial tables taking into account current age & sex
       - Can be set to a fixed value.  In this case, sex need not be provided in the config.
 
+** Model Analysis
+:PROPERTIES:
+:CUSTOM_ID: graphsR
+:END:
+
+You can analyze the data however you wish, but I have included an R script if that's your thing.  It will consume the output of the simulation, and produce a
+number of image files.  I'll describe them here, but I think it's easier to just take a look at some [[#examples][examples]].
+
+*** When retire.out contains a single simulation (no monte carlo), then three visualizations will be produced:
+:PROPERTIES:
+:CUSTOM_ID: graphsR-fixed
+:END:
+
+   - ~savings_by_type.png~  Total savings over time broken out by savings type
+   - ~paid_and_unpaid.png~  Amount of living expenses & taxes that were successfully paid
+   - ~paid_by_source.png~   How obligations were paid by payment source
+
+*** When retire.out contains a multiple simulations (monte carlo), then eight visualizations are produced:
+:PROPERTIES:
+:CUSTOM_ID: graphsR-mc
+:END:
+
+   - ~death_distribution.png~                  Histogram for each person showing when they died in the simulations
+   - ~final_savings_by_type.png~               Histogram for final savings balance at death
+   - ~probability_of_failure_by_year.png~      Histogram showing number of failure trajectories over time
+   - ~savings_by_year_boxplot.png~             Box plot showing total savings balance over time along with number of failures
+   - ~savings_by_year_probability_bands.png~   Shows bands containing the given percentage of total savings balance trajectories
+   - ~probability_of_success_by_year.png~      Line plot showing the probability of failure over time
+   - ~composite_trajectories.png~              Composite of total balance trajectories
+
 ** Some Observations
 :PROPERTIES:
 :CUSTOM_ID: obs
@@ -293,16 +323,16 @@ generate.
 
 This first graph simply shows total savings balance by account type.
 
-  [[file:pics/savings_20_fix_full.png][file:pics/savings_20_fix_800x.png]]
+  [[file:pics/savings_by_type_20_fix_full.png][file:pics/savings_by_type_20_fix_800x.png]]
 
 This graph shows us paid vs unpaid expenses.  Expenses are broken into two categories (taxes & living expenses).
 
-  [[file:pics/paidunpaid_20_fix_full.png][file:pics/paidunpaid_20_fix_800x.png]]
+  [[file:pics/paid_and_unpaid_20_fix_full.png][file:pics/paid_and_unpaid_20_fix_800x.png]]
 
 This graph also deals with expenses, but shows how the expenses are paid.  Note the pink bit starting 2050 showing the couple using savings for expenses well
 before retirement.  This is what happens when salary doesn't keep up with inflation!
 
-  [[file:pics/paidsource_20_fix_full.png][file:pics/paidsource_20_fix_800x.png]]
+  [[file:pics/paid_by_source_20_fix_full.png][file:pics/paid_by_source_20_fix_800x.png]]
 
 *** MC
 :PROPERTIES:
@@ -315,24 +345,25 @@ This first graph shows the probability the savings balance trajectory will be wi
 simulation runs.  The yellow band, which includes the green band, contains 80% of all simulation runs.  You can change the number and bounds for the bands in
 the ~retire.R~ script.
 
-  [[file:pics/savings_crg_20_mc_full.png][file:pics/savings_crg_20_mc_800x.png]]
+  [[file:pics/savings_by_year_probability_bands_20_mc_full.png][file:pics/savings_by_year_probability_bands_20_mc_800x.png]]
 
 This graph shows 2000 savings trajectories, all the failure trajectories (when we went broke), and an envelope for the highest balance for trajectories that
-failed.  In essence the green line shows a "safe" balance at which we are unlikely to see failure.
+failed.  In essence the green line shows a "safe" balance at which we are unlikely to see failure.  The little blue dots show the ends of trajectories where
+both people have died.
 
-  [[file:pics/compColCases_20_mc_full.png][file:pics/compColCases_20_mc_800x.png]]
+  [[file:pics/composite_trajectories_20_mc_full.png][file:pics/composite_trajectories_20_mc_800x.png]]
 
 This graph is similar to the probability band graph, but is a more traditional presentation for people accustomed to box plots.
 
-  [[file:pics/simCompBox_20_mc_full.png][file:pics/simCompBox_20_mc_800x.png]]
+  [[file:pics/savings_by_year_boxplot_20_mc_full.png][file:pics/savings_by_year_boxplot_20_mc_800x.png]]
 
 This graph shows us the ages at which simulations went broke, and how frequently it occurred for each age group.  Each bar spans three years.
 
-  [[file:pics/brokeAge_20_mc_full.png][file:pics/brokeAge_20_mc_800x.png]]
+  [[file:pics/probability_of_failure_by_year_20_mc_full.png][file:pics/probability_of_failure_by_year_20_mc_800x.png]]
 
 Lastly we have a graph that shows us the probability distribution of final savings balance at the end of the simulation.
 
-  [[file:pics/endSavings_20_mc_full.png][file:pics/endSavings_20_mc_800x.png]]
+  [[file:pics/final_savings_by_type_20_mc_full.png][file:pics/final_savings_by_type_20_mc_800x.png]]
 
 *** Config File
 :PROPERTIES:
@@ -347,7 +378,7 @@ grep -A 1000 '^&SIMPARM' ~/world/my_prog/finance/FortranFinance/retirement_simul
 #+begin_src f90 :eval never :tangle no
 &SIMPARM
 monte_carlo_years                   = 40,        !! Years of reference data to use
-monte_carlo_runs                    = 1000,     !! Number of sims
+monte_carlo_runs                    = 10000,     !! Number of sims
 
 initial_brokerage_balance           = 0.0,       !! Sum of all normally taxable accounts
 initial_ira_balance_p1              = 0.0,       !! Sum of all tax deferred accounts for p1
@@ -382,16 +413,18 @@ first_year_tax                      = 1000.0,    !! Taxes to pay the first year 
 
 worst_case_inflation_rate           = -5.0,      !! Used for investment cut-off decisions
                                                  !! If negative, don't use a cuff-off
-fixed_inflation_rate                = -3.0,       !! Inflation impacts annual expenses
+fixed_inflation_rate                = 3.0,       !! Inflation impacts annual expenses
                                                  !! If negative, then do monte carlo
 
-initial_expected_annual_expenses    = 100000.0,  !! First year expenses.
+initial_expected_expenses_shr       = 100000.0,  !! Shared first year expenses.
+initial_expected_expenses_p1        = 0,         !! First year expenses for p1.
+initial_expected_expenses_p2        = 0,         !! First year expenses for p2.
 
 social_security_start_age_p1        = 65,        !! First year we get SS for p1
 social_security_start_age_p2        = 65,        !! First year we get SS for p2
 initial_social_security_monthly_p1  = 1000.0,    !! Just a guess.  Probably low.
 initial_social_security_monthly_p2  = 1000.0,    !! Just a guess.  Probably low.
-social_security_growth              = 3.0,       !! Usually matches inflation
+social_security_growth              = -1.0,      !! Usually matches inflation
                                                  !! If negative, then set to inflation
 
 initial_gross_work_salary_p1        = 100000.0,  !! Taxable part of p1's salary
@@ -419,8 +452,14 @@ retirement_year_p1                  = 2065,      !! First year p1 is fully retir
 retirement_year_p2                  = 2065,      !! First year p2 is fully retired
 birthday_p1                         = 2000,      !!
 birthday_p2                         = 2000,      !!
-life_expectancy_p1                  = 110,       !!
-life_expectancy_p2                  = 110,       !!
+sex_p1                              = 'M',       !! Sex of p1 -- selects SSI life table
+sex_p2                              = 'F',       !! Sex of p2 -- selects SSI life table
+life_expectancy_p1                  = 110,       !! Age p1 expects to die
+                                                 !! If zero then compute based on age & sex
+                                                 !! If negative then use monte carlo
+life_expectancy_p2                  = 110,       !! Age p2 expects to die
+                                                 !! If zero then compute based on age & sex
+                                                 !! If negative then use monte carlo
 
 verbosity                           = 10         !! How much to print when running
                                                  !!  -  0 : nothing
@@ -459,39 +498,39 @@ too risky.  This is especially true with only 1M in total savings.
 
 Things look just fine if we consider a simulation using ideal, fixed growth and inflation.  Here is what the overall savings balance looks:
 
-  [[file:pics/savings_60_fix_full.png][file:pics/savings_60_fix_800x.png]]
+  [[file:pics/savings_by_type_60o_fix_full.png][file:pics/savings_by_type_60o_fix_800x.png]]
 
 If we take a look at the savings probability bands, we see a very different picture:
 
-  [[file:pics/savings_crg_60_mc_full.png][file:pics/savings_crg_60_mc_800x.png]]
+  [[file:pics/savings_by_year_probability_bands_60o_mc_full.png][file:pics/savings_by_year_probability_bands_60o_mc_800x.png]]
 
 And if we look at a few paths and the account collapse cases, things look pretty scary:
 
-  [[file:pics/compColCases_60_mc_full.png][file:pics/compColCases_60_mc_800x.png]]
+  [[file:pics/composite_trajectories_60o_mc_full.png][file:pics/composite_trajectories_60o_mc_800x.png]]
 
-Another way to look at this is the distribution of final savings.  That huge bar on the left tells us that the single most probable outcome of this plan is to
-run out of money.
+Another way to look at this is the distribution of final savings.  That huge bar on the left tells us that running out of money is the single most probable
+outcome from this plan.
 
-  [[file:pics/endSavings_60_mc_full.png][file:pics/endSavings_60_mc_800x.png]]
+  [[file:pics/final_savings_by_type_60o_mc_full.png][file:pics/final_savings_by_type_60o_mc_800x.png]]
 
 *** An Alternate Plan
 :PROPERTIES:
-:CUSTOM_ID: case_60_ml
+:CUSTOM_ID: case_60o_ml
 :END:
 
 They can dramatically improve the chances of success by saving more (bumping up total savings by 250k), and spending less (drop annual expenses by 1k).  
 
 The new savings probability bands are much more positive:
 
-  [[file:pics/savings_crg_60ml_mc_full.png][file:pics/savings_crg_60ml_mc_800x.png]]
+  [[file:pics/savings_by_year_probability_bands_60ml_mc_full.png][file:pics/savings_by_year_probability_bands_60ml_mc_800x.png]]
 
 And the overall path picture is much more positive:
 
-  [[file:pics/compColCases_60ml_mc_full.png][file:pics/compColCases_60ml_mc_800x.png]]
+  [[file:pics/composite_trajectories_60ml_mc_full.png][file:pics/composite_trajectories_60ml_mc_800x.png]]
 
 Lastly, the distribution of final savings no longer shows dying broke as the highest probability outcome.
 
-  [[file:pics/endSavings_60ml_mc_full.png][file:pics/endSavings_60ml_mc_800x.png]]
+  [[file:pics/final_savings_by_type_60ml_mc_full.png][file:pics/final_savings_by_type_60ml_mc_800x.png]]
 
 *** Config Files
 :PROPERTIES:
@@ -511,22 +550,22 @@ monte_carlo_years                   = 40,        !! Years of reference data to u
 monte_carlo_runs                    = 10000,     !! Number of sims
 
 initial_brokerage_balance           = 0.0,       !! Sum of all normally taxable accounts
-initial_ira_balance_p1              = 1000000.0, !! Sum of all tax deferred accounts for p1
-initial_ira_balance_p2              = 1000000.0, !! Sum of all tax deferred accounts for p2
+initial_ira_balance_p1              = 500000.0,  !! Sum of all tax deferred accounts for p1
+initial_ira_balance_p2              = 500000.0,  !! Sum of all tax deferred accounts for p2
 initial_roth_balance_p2             = 0.0,       !! Sum of all roth-like tax deferred accounts for p2
 initial_roth_balance_p1             = 0.0,       !! Sum of all roth-like tax deferred accounts for p1
 
-high_investment_p                   = 50.0,      !! percentage of investments at high growth
-mid_investment_p                    = 50.0,      !! percentage of investments at medium growth
-low_investment_p                    = 0.0,       !! percentage of investments at low growth
+high_investment_p                   = 80.0,      !! percentage of investments at high growth
+mid_investment_p                    = 00.0,      !! percentage of investments at medium growth
+low_investment_p                    = 20.0,      !! percentage of investments at low growth
 
 high_investment_apr                 = 7.0,       !! apr for investments at high growth
                                                  !! Used for retirement accounts and the brokerage!
                                                  !! If negative, then do monte carlo with snp_dat
-mid_investment_apr                  = 5.0,       !! apr for investments at medium growth
+mid_investment_apr                  = 0.0,       !! apr for investments at medium growth
                                                  !! Used for retirement accounts and the brokerage!
                                                  !! If negative, then set to high_investment_apr/2
-low_investment_apr                  = 0.0,       !! apr for investments at low growth
+low_investment_apr                  = 5.0,       !! apr for investments at low growth
                                                  !! Used for retirement accounts and the brokerage.
                                                  !! If negative, then do monte carlo with dgs10_dat
 cash_position_growth                = 2.5,       !! par for cash position in investment accounts
@@ -536,7 +575,7 @@ initial_cash_reserves               = 100000.0,  !! Sum of all cash reserves
 cash_reserves_growth                = 0.01,      !! Growth for cash reserves account
 
 initial_emergency_fund              = 100000.0,  !! Near zero risk investments
-emergency_fund_growth               = 3.0,       !! Rate at which the emergency account grows
+emergency_fund_growth               = 2.9,       !! Rate at which the emergency account grows
                                                  !! If negative, then set to low_investment_apr
 
 first_year_tax                      = 50000.0,   !! Taxes to pay the first year of the simulation
@@ -546,13 +585,15 @@ worst_case_inflation_rate           = -5.0,      !! Used for investment cut-off 
 fixed_inflation_rate                = 3.0,       !! Inflation impacts annual expenses
                                                  !! If negative, then do monte carlo
 
-initial_expected_annual_expenses    = 110000.0,  !! First year expenses.
+initial_expected_expenses_shr       = 110000.0,  !! First year expenses.
+initial_expected_expenses_p1        = 0,         !! First year expenses for p1.
+initial_expected_expenses_p2        = 0,         !! First year expenses for p2.
 
 social_security_start_age_p1        = 63,        !! First year we get SS for p1
 social_security_start_age_p2        = 70,        !! First year we get SS for p2
 initial_social_security_monthly_p1  = 1000.0,    !! Just a guess.  Probably low.
 initial_social_security_monthly_p2  = 1000.0,    !! Just a guess.  Probably low.
-social_security_growth              = 3.0,       !! Usually matches inflation
+social_security_growth              = -1.0,      !! Usually matches inflation
                                                  !! If negative, then set to inflation
 
 initial_gross_work_salary_p1        = 170000.0,  !! Taxable part of p1's salary
@@ -562,7 +603,7 @@ work_salary_growth                  = 2.0,       !! Hard to estimate
 
 initial_annual_ira_contrib_base     = 23000.0,   !! Starting base contribution
 initial_annual_ira_contrib_catchup  = 7000.0,    !! Starting catchup contribution
-annual_ira_contrib_growth           = -3.0,      !! Grow 401k contribution (inflation?)
+annual_ira_contrib_growth           = -1.0,      !! Grow 401k contribution (inflation?)
                                                  !! If negative, then set to inflation
 
 initial_annual_roth_contrib_base    = 0.0,       !! Starting base contribution
@@ -580,8 +621,14 @@ retirement_year_p1                  = 2037,      !! First year p1 is fully retir
 retirement_year_p2                  = 2029,      !! First year p2 is fully retired
 birthday_p1                         = 1977,      !!
 birthday_p2                         = 1969,      !!
-life_expectancy_p1                  = 110,       !!
-life_expectancy_p2                  = 110        !!
+sex_p1                              = 'M',       !! Sex of p1 -- selects SSI life table
+sex_p2                              = 'F',       !! Sex of p2 -- selects SSI life table
+life_expectancy_p1                  = 110,       !! Age p1 expects to die
+                                                 !! If zero then compute based on age & sex
+                                                 !! If negative then use monte carlo
+life_expectancy_p2                  = 110,       !! Age p2 expects to die
+                                                 !! If zero then compute based on age & sex
+                                                 !! If negative then use monte carlo
 
 verbosity                           = 10         !! How much to print when running
                                                  !!  -  0 : nothing
@@ -594,11 +641,11 @@ verbosity                           = 10         !! How much to print when runni
 The updated plan changes these lines
 
 #+begin_src f90
-initial_ira_balance_p1              = 625000.0, !! Sum of all tax deferred accounts for p1
-initial_ira_balance_p2              = 625000.0, !! Sum of all tax deferred accounts for p2
-high_investment_p                   = 80.0,     !! percentage of investments at high growth
-mid_investment_p                    = 20.0,     !! percentage of investments at medium growth
-initial_expected_annual_expenses    = 100000.0, !! First year expenses.
+initial_ira_balance_p1              = 625000.0,  !! Sum of all tax deferred accounts for p1
+initial_ira_balance_p2              = 625000.0,  !! Sum of all tax deferred accounts for p2
+high_investment_p                   = 50.0,      !! percentage of investments at high growth
+low_investment_p                    = 20.0,      !! percentage of investments at low growth
+initial_expected_expenses_shr       = 100000.0,  !! First year expenses.
 #+end_src
 
 * Platform Notes & Testing

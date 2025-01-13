@@ -7,7 +7,7 @@
 !! @brief     Retirement Simulator.@EOL
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
-!! @see       https://github.com/richmit/FortranFinance
+!! @see       https://github.com/richmit/FortranFinance 
 !! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
@@ -292,8 +292,25 @@ contains
      last_roth_conversion_year_p1  = simulation_year_start - 5
      last_roth_conversion_year_p2  = simulation_year_start - 5
      cur_investment_mix            = [ high_investment_p, mid_investment_p, low_investment_p ]
-     death_p1                      = alt_if_neg_i(life_expectancy_p1, rand_age(simulation_year_start-birthday_p1, usss_m_lx_dat, 0))
-     death_p2                      = alt_if_neg_i(life_expectancy_p2, rand_age(simulation_year_start-birthday_p2, usss_m_lx_dat, 0))
+     death_p1                      = life_expectancy_p1
+     death_p2                      = life_expectancy_p2
+     simulation_year_end           = -1
+
+     if (death_p1 < 0) then
+        if (sex_p1 == "M") then
+           death_p1 = rand_age(simulation_year_start-birthday_p1, usss_m_lx_dat, 0)
+        else
+           death_p1 = rand_age(simulation_year_start-birthday_p1, usss_f_lx_dat, 0)
+        end if
+     end if
+     if (death_p2 < 0) then
+        if (sex_p2 == "M") then
+           death_p2 = rand_age(simulation_year_start-birthday_p2, usss_m_lx_dat, 0)
+        else
+           death_p2 = rand_age(simulation_year_start-birthday_p2, usss_f_lx_dat, 0)
+        end if
+     end if
+
      simulation_year_end           = max(birthday_p1+death_p1, birthday_p2+death_p2)
 
      do year=simulation_year_start, simulation_year_end

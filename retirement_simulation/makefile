@@ -33,7 +33,31 @@ graphs : retire.out retire.R
 clean : clean_multi_mrffl
 	rm -f *~ retire retire.o retire.exe retire.obj retire.out paidunpaid.png savings.png
 	rm -f endSavings.png brokeAge.png simCompBox.png colCases.png simCompLine.png savings_cm.png savings_i.png savings_crg.png savings.png paidunpaid.png paidsource.png
+	rm config.nml
 
+# These targets reproduce the graphics included in the online documentation
 
+20 : retire$(EXE_SUFFIX) retire.R config_20.nml
+	cp config_20.nml config.nml
+	rm -f retire.out
+	make CONFIG_FILE=config.nml graphs
+	sed 's/ 4\.0/ -4.0/; s/ 3\.0/ -3.0/; s/ 110,/ -110,/' config_20.nml > config.nml
+	rm -f retire.out
+	make CONFIG_FILE=config.nml graphs
+	rm config.nml
 
+60ml : retire$(EXE_SUFFIX) retire.R config_60.nml
+	sed 's/500000/625000/; s/110000/100000/; s/ 80/ 50/; s/ 20\.0/ 50.0/; s/ 7\.0/ -7.0/; s/ 5\.0/ -5.0/; s/ 3\.0/ -3.0/;' config_60.nml > config.nml
+	rm -f retire.out
+	make CONFIG_FILE=config.nml graphs
+	rm config.nml
+
+60o : retire$(EXE_SUFFIX) retire.R config_60.nml
+	cp config_60.nml config.nml
+	rm -f retire.out
+	make CONFIG_FILE=config.nml graphs
+	sed 's/ 7\.0/ -7.0/; s/ 5\.0/ -5.0/; s/ 3\.0/ -3.0/' config_60.nml > config.nml
+	rm -f retire.out
+	make CONFIG_FILE=config.nml graphs
+	rm config.nml
 

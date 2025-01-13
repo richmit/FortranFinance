@@ -12,7 +12,7 @@
 !-----------------------------------------------------------------------------------------------------------------------
 &SIMPARM
 monte_carlo_years                   = 40,        !! Years of reference data to use
-monte_carlo_runs                    = 1000,     !! Number of sims
+monte_carlo_runs                    = 10000,     !! Number of sims
 
 initial_brokerage_balance           = 0.0,       !! Sum of all normally taxable accounts
 initial_ira_balance_p1              = 0.0,       !! Sum of all tax deferred accounts for p1
@@ -58,7 +58,7 @@ social_security_start_age_p1        = 65,        !! First year we get SS for p1
 social_security_start_age_p2        = 65,        !! First year we get SS for p2
 initial_social_security_monthly_p1  = 1000.0,    !! Just a guess.  Probably low.
 initial_social_security_monthly_p2  = 1000.0,    !! Just a guess.  Probably low.
-social_security_growth              = 3.0,       !! Usually matches inflation
+social_security_growth              = -1.0,      !! Usually matches inflation
                                                  !! If negative, then set to inflation
 
 initial_gross_work_salary_p1        = 100000.0,  !! Taxable part of p1's salary
