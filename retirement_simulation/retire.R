@@ -112,7 +112,10 @@ if (nSims > 1) {
   nColps <- sum(bySimSum$min_savings<=0)
   if (nColps > 0) {
 
-    gp <- ggplot(daDat %>% group_by(Year) %>% summarize(fails=cumsum(length(unique(sim[total_savings<=0.01]))), suc_prob=100-min(100, 100*fails/nSims))) +
+    gp <- ggplot(daDat %>% 
+                 group_by(Year)
+                 %>% summarize(fail_per_year=length(unique(sim[total_savings<=0.01])), .groups='drop') %>%
+                     mutate(fail_cum=cumsum(fail_per_year), fail_prob=100*fail_cum/nSims, suc_prob=100-fail_prob)) +
       geom_line(aes(x=Year, y=suc_prob), col='red', linewidth=2, alpha=1.0) +
       scale_x_continuous(name='', breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
       #coord_cartesian(ylim=c(0, max100)) + 
