@@ -119,7 +119,6 @@ ggplot() +
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # This is a PDF of expected death for someone at age 'cage'
 cage <- 50
-deno <- 
 ggplot() + 
   geom_line(data=usss_m_lx %>% filter(age>=cage), aes(x=age, y=dx/max(lx)), stat='identity', col='blue') + 
   geom_line(data=usss_f_lx %>% filter(age>=cage), aes(x=age, y=dx/max(lx)), stat='identity', col='red')
