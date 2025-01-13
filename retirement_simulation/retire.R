@@ -47,7 +47,7 @@ if (nSims > 1) {
               died_p2          = max(Year[S2!='D'])+1,
               end_year         = max(Year))
 
-  if (length(unique(bySimSum$end_year)) > 1) {
+  if ((length(unique(bySimSum$died_p1)) > 1) || (length(unique(bySimSum$died_p2)) > 1)) {
     gp <- ggplot(bySimSum %>% 
                  transmute(p1=died_p1, p2=died_p2) %>%
                  tidyr::pivot_longer(cols=c(1:2), names_to='Person', values_to='Year')) +
@@ -110,25 +110,40 @@ if (nSims > 1) {
   if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
   nColps <- sum(bySimSum$min_savings<=0)
-  if ((nColps > 0) && (nColps < 4000)) {
+  if (nColps > 0) {
+
+    gp <- ggplot(daDat %>% group_by(Year) %>% summarize(fails=cumsum(length(unique(sim[total_savings<=0.01]))), suc_prob=100-min(100, 100*fails/nSims))) +
+      geom_line(aes(x=Year, y=suc_prob), col='red', linewidth=2, alpha=1.0) +
+      scale_x_continuous(name='', breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
+      #coord_cartesian(ylim=c(0, max100)) + 
+      theme(panel.grid.minor.x = element_blank()) + 
+      labs(title='Probability Of Success') +
+      ylab('Probability Of Success (%)') +
+      geom_text(aes(x=last(Year), y=last(suc_prob), label=paste(last(suc_prob), '%', sep='')), size=10, col='black', vjust="bottom", hjust="right")
+    fname <- "probOfSuccess.png"
+    ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
+    if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
+
     n <- pmin(2000, nSims)
     gp <- ggplot() + 
       geom_line(data=daDat %>% filter(Sim<=n),
-                aes(x=Year, y=total_savings1p, group=Sim), linewidth=2, alpha=0.01, show.legend=FALSE) + 
+                aes(x=Year, y=total_savings1p, group=Sim, col='First 2K Simulations'), linewidth=2, alpha=0.01) + 
       geom_line(data=daDat %>% filter(Sim %in% bySimSum$Sim[bySimSum$min_savings<=0]), 
-                aes(x=Year, y=total_savings1p, group=Sim), show.legend=FALSE, alpha=0.1, linewidth=0.5, col='red') + 
+                aes(x=Year, y=total_savings1p, group=Sim, col='All Collapse Trajectories'), alpha=0.1, linewidth=0.5) + 
       geom_point(data=daDat %>% filter(Sim<=n & S1=='D' & S2=='D') %>% group_by(Sim) %>% summarize(Year=first(Year), total_savings1p=first(total_savings1p)),
-                 aes(x=Year, y=total_savings1p), show.legend=FALSE, alpha=0.1, col='blue') + 
+                 aes(x=Year, y=total_savings1p, col='Death'), alpha=0.1) + 
       geom_line(data=daDat %>% 
                   filter(Sim %in% bySimSum$Sim[bySimSum$min_savings<=0]) %>% 
                   group_by(Year) %>% 
                   summarize(maxc=max(total_savings1p), .groups='drop') %>% 
                   group_by(Year),
-                aes(x=Year, y=maxc), show.legend=FALSE, alpha=1.0, col='green') + 
+                aes(x=Year, y=maxc, col='Collapse Trajectory Envelope'), alpha=1.0) + 
+      scale_colour_manual("", values = c("First 2K Simulations"="black", "All Collapse Trajectories"="red", "Death"="blue", "Collapse Trajectory Envelope"="green")) +
       scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), trans='log10') + 
       scale_x_continuous(name='', breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
       coord_cartesian(ylim=c(1, max(daDat$total_savings1p))) + 
       theme(panel.grid.minor.x = element_blank()) + 
+      theme(legend.position = "bottom") +
       labs(title=paste('Composite of ', n, ' Simulation Runs and ', nColps, ' failure Runs Of ', nSims, ' Total Runs', sep='')) +
       ylab('Total Savings')
     fname <- "compColCases.png"

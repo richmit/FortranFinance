@@ -137,10 +137,7 @@ tool that essentially simulates the annual financial transactions for a retired 
       - +Add random generator that uses life table as the distribution.  Take age into consideration.+ (Completed 2025-01-12)
     - simulation changes
       - +Option to set simulation end at highest survivor date in life table for sex of person+ (Completed 2025-01-12)
-      - Add probability of survival given age to output table
-      - Add a "probability of success" value adjusted with survival probability
-      - Add graph showing probability of running out of cash by given date
-      - Add graph showing probability of running out of cash by given date adjusted with survival probability
+      - +Add graph showing probability of running out of cash by given date+ (Completed 2025-01-12)
       - +Add dots to the trajectory graph showing when both people died+ (Completed 2025-01-12)
       - +Do MC lifespan+ (Completed 2025-01-12)
 
