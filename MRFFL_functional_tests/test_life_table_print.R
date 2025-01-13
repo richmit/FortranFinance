@@ -109,3 +109,17 @@ lx_vs_qxlx <-
   mutate(maxDIF=pmax(abs(qxDif), abs(lxDif), abs(dxDif), abs(LxDif), abs(TxDif), abs(exDif)))
 head(lx_vs_qxlx)
 lx_vs_qxlx %>% filter(maxDIF > quantile(lx_vs_qxlx$maxDIF, .9))
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# This is a PDF of expected death for someone at age 0
+ggplot() + 
+  geom_line(data=usss_m_lx, aes(x=age, y=dx/100000), stat='identity', col='blue') + 
+  geom_line(data=usss_f_lx, aes(x=age, y=dx/100000), stat='identity', col='red')
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# This is a PDF of expected death for someone at age 'cage'
+cage <- 50
+deno <- 
+ggplot() + 
+  geom_line(data=usss_m_lx %>% filter(age>=cage), aes(x=age, y=dx/max(lx)), stat='identity', col='blue') + 
+  geom_line(data=usss_f_lx %>% filter(age>=cage), aes(x=age, y=dx/max(lx)), stat='identity', col='red')
