@@ -41,7 +41,13 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
 
 #+TOC: headlines 5
 
-  - [[file:MRFFL/index.html][MRFFL Documentation]]
-  - [[file:retirement_simulation/index.html][Retirement Simulator]]
-  - [[file:monte_carlo/index.html][Monte Carlo Examples]]
-  - [[file:loans/index.html][Loans]]
+  - [[file:retirement_simulation/index.html][Retirement Simulator]] ::
+    This tool essentially simulates the annual financial transactions for a retired couple.  It allows for Monte Carlo or fixed simulation parameters.  It has
+    a good understanding of US taxes, Roth conversions, inflation, etc...  I've also included an ~R~ script that produces some nice visualizations of the
+    results.
+  - [[file:MRFFL/index.html][MRFFL Documentation]] ::
+    MRFFL is a collection of Fortran libraries for finance.  It has sophisticated modules for TVM (Time Value of Money) calculations with standard financial
+    products or and for cash-flows.  It also provides data access and Monte Carlo simulations for things like US inflation, US market returns, and US life
+    expectancy.  
+    - [[file:monte_carlo/index.html][Monte Carlo Examples]]: Examples of MRFFL's Monte Carlo features.
+    - [[file:loans/index.html][Loans]]: Examples using MRFFL's to solve loan problems.
