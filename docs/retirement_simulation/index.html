@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-14 Tue 17:22 -->
+<!-- 2025-01-14 Tue 17:51 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance: Retirement Simulation</title>
@@ -232,12 +232,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-14 17:22:04</i></td>
+<td class="org-left"><i>2025-01-14 17:50:38</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-14 17:22:10</i></td>
+<td class="org-left"><i>2025-01-14 17:51:02</i></td>
 </tr>
 </tbody>
 </table>
@@ -263,30 +263,30 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <li><a href="#commonprob">1.5. Evaluating retirement planning software</a></li>
 </ul>
 </li>
-<li><a href="#ops">2. Operation</a>
+<li><a href="#examples">2. Examples</a>
 <ul>
-<li><a href="#env">2.1. Environment</a></li>
-<li><a href="#down">2.2. Download</a></li>
-<li><a href="#build">2.3. Software Build</a></li>
-<li><a href="#dowrun">2.4. Running The Simulator</a></li>
+<li><a href="#case_20_intro">2.1. Just Starting Out</a>
+<ul>
+<li><a href="#case_20_fixed">2.1.1. Fixed</a></li>
+<li><a href="#case_20_mc">2.1.2. MC</a></li>
+<li><a href="#case_20_config">2.1.3. Config File</a></li>
 </ul>
 </li>
-<li><a href="#examples">3. Examples</a>
+<li><a href="#case_60_intro">2.2. Approaching Retirement</a>
 <ul>
-<li><a href="#case_20_intro">3.1. Just Starting Out</a>
-<ul>
-<li><a href="#case_20_fixed">3.1.1. Fixed</a></li>
-<li><a href="#case_20_mc">3.1.2. MC</a></li>
-<li><a href="#case_20_config">3.1.3. Config File</a></li>
+<li><a href="#case_60_danger">2.2.1. A Risky Plan</a></li>
+<li><a href="#case_60o_ml">2.2.2. An Alternate Plan</a></li>
+<li><a href="#case_60_config">2.2.3. Config Files</a></li>
 </ul>
 </li>
-<li><a href="#case_60_intro">3.2. Approaching Retirement</a>
-<ul>
-<li><a href="#case_60_danger">3.2.1. A Risky Plan</a></li>
-<li><a href="#case_60o_ml">3.2.2. An Alternate Plan</a></li>
-<li><a href="#case_60_config">3.2.3. Config Files</a></li>
 </ul>
 </li>
+<li><a href="#ops">3. Operation</a>
+<ul>
+<li><a href="#env">3.1. Environment</a></li>
+<li><a href="#down">3.2. Download</a></li>
+<li><a href="#build">3.3. Software Build</a></li>
+<li><a href="#dowrun">3.4. Running The Simulator</a></li>
 </ul>
 </li>
 <li><a href="#platforms">4. Platform Notes &amp; Testing</a>
@@ -575,93 +575,13 @@ make sure the tool is being intelligent and not just "blindly picking a number".
 </div>
 </div>
 
-<div id="outline-container-ops" class="outline-2">
-<h2 id="ops"><span class="section-number-2">2.</span> Operation</h2>
-<div class="outline-text-2" id="text-ops">
-<p>
-The simulator may be found in the <a href="https://github.com/richmit/FortranFinance">FortranFinance</a> package under the sub-directory <code>retirement_simulation</code>.  This
-document forms the primary documentation, and its permanent home is <a href="https://richmit.github.io/FortranFinance/retirement_simulation/index.html">here</a>.
-</p>
-</div>
-
-<div id="outline-container-env" class="outline-3">
-<h3 id="env"><span class="section-number-3">2.1.</span> Environment</h3>
-<div class="outline-text-3" id="text-env">
-<p>
-The simulator is designed to run in a command line environment (MSYS2 on Windows, UNIX, Linux, Linux on WSL, MacOS X).  I expect that you already have a
-<a href="https://www.mitchr.me/SS/tools/index.html#fortran">Fortran development environment</a>, <a href="https://www.mitchr.me/SS/tools/index.html#scm">git</a>, and
-<a href="https://www.mitchr.me/SS/tools/index.html#code-build">GNU Make</a> installed.  In order to run the visualizations, you will need
-<a href="https://www.mitchr.me/SS/tools/index.html#stats">R</a> and the following CRAN packages installed: <code>knitr</code>, <code>jsonlite</code>, <code>quantmod</code>, <code>gridExtra</code>, <code>data.table</code>,
-<code>dplyr</code>, <code>tidyr</code>, <code>ggplot2</code>, <code>scales</code>, <code>RColorBrewer</code>.
-</p>
-</div>
-</div>
-
-<div id="outline-container-down" class="outline-3">
-<h3 id="down"><span class="section-number-3">2.2.</span> Download</h3>
-<div class="outline-text-3" id="text-down">
-<p>
-The easiest way to download everything is to clone with git:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-sh">git clone <span style="color: #fa8072;">'https://github.com/richmit/FortranFinance.git'</span>
-</pre>
-</div>
-</div>
-</div>
-
-<div id="outline-container-build" class="outline-3">
-<h3 id="build"><span class="section-number-3">2.3.</span> Software Build</h3>
-<div class="outline-text-3" id="text-build">
-<p>
-The simulator is in the <code>retirement_simulation</code> directory.  That directory contains a <code>makefile</code> that will build the application.  You may need
-to edit that makefile for your system configuration &#x2013; follow the instructions  <a href="../MRFFL/index.html#examples">here</a>.  Once you have the
-<code>makefile</code> working, you can build with the following command:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-sh">make retire
-</pre>
-</div>
-
-<p>
-This will result in a executable (named "<code>retire</code>" on most UNIX-like platforms, and "<code>retire.exe</code>" on Windows).  
-</p>
-</div>
-</div>
-
-<div id="outline-container-dowrun" class="outline-3">
-<h3 id="dowrun"><span class="section-number-3">2.4.</span> Running The Simulator</h3>
-<div class="outline-text-3" id="text-dowrun">
-<p>
-The <code>retire</code> command takes the name of the the configuration describing the simulation parameters as an optional argument.  If it is missing, then the name
-is assumed to be "<code>retire.nml</code>".  This document contains a couple example configuration files: <a href="#case_20_config">config_20.nml</a> and
-<a href="#case_60_config">config_60.nml</a>.
-</p>
-
-<p>
-When run, the <code>retire</code> command will place its results in a file called "<code>retire.out</code>".  This output file is a simple text file that you could load into Excel
-to analyze.  I use an <a href="https://www.mitchr.me/SS/tools/index.html#stats">R</a> script for the analysis called "<code>retire.R</code>".  If you run this script, you will
-get lots of graphics (see the <a href="#examples">Examples</a> section below).  In summary, you might do the following:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-sh">./retire.exe my_config.nml
-R -q -f retire.R
-</pre>
-</div>
-</div>
-</div>
-</div>
-
 <div id="outline-container-examples" class="outline-2">
-<h2 id="examples"><span class="section-number-2">3.</span> Examples</h2>
+<h2 id="examples"><span class="section-number-2">2.</span> Examples</h2>
 <div class="outline-text-2" id="text-examples">
 </div>
 
 <div id="outline-container-case_20_intro" class="outline-3">
-<h3 id="case_20_intro"><span class="section-number-3">3.1.</span> Just Starting Out</h3>
+<h3 id="case_20_intro"><span class="section-number-3">2.1.</span> Just Starting Out</h3>
 <div class="outline-text-3" id="text-case_20_intro">
 <p>
 Here we have a couple starting to save for retirement at age 25.  They both have good jobs earning 100K, and they
@@ -673,7 +593,7 @@ earns 0.01% interest, and the emergency fund is in CDs earning 3%.
 </div>
 
 <div id="outline-container-case_20_fixed" class="outline-4">
-<h4 id="case_20_fixed"><span class="section-number-4">3.1.1.</span> Fixed</h4>
+<h4 id="case_20_fixed"><span class="section-number-4">2.1.1.</span> Fixed</h4>
 <div class="outline-text-4" id="text-case_20_fixed">
 <p>
 The graphs in this section are what you get from <code>retire.R</code> when the simulation has no monte carlo.  This is similar to what most retirement calculators will
@@ -685,7 +605,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="org752d9e9" class="figure">
+<div id="org548814f" class="figure">
 <p><a href="pics/savings_by_type_20_fix_full.png"><img src="pics/savings_by_type_20_fix_800x.png" alt="savings_by_type_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -695,7 +615,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="orgebef333" class="figure">
+<div id="orgefbb437" class="figure">
 <p><a href="pics/paid_and_unpaid_20_fix_full.png"><img src="pics/paid_and_unpaid_20_fix_800x.png" alt="paid_and_unpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -706,7 +626,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="orge7a5c40" class="figure">
+<div id="orgde6221e" class="figure">
 <p><a href="pics/paid_by_source_20_fix_full.png"><img src="pics/paid_by_source_20_fix_800x.png" alt="paid_by_source_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -714,7 +634,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </div>
 
 <div id="outline-container-case_20_mc" class="outline-4">
-<h4 id="case_20_mc"><span class="section-number-4">3.1.2.</span> MC</h4>
+<h4 id="case_20_mc"><span class="section-number-4">2.1.2.</span> MC</h4>
 <div class="outline-text-4" id="text-case_20_mc">
 <p>
 The graphs in this section are what you get from <code>retire.R</code> when the simulation has monte carlo.  
@@ -727,7 +647,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="orgc97b643" class="figure">
+<div id="org93e7224" class="figure">
 <p><a href="pics/savings_by_year_probability_bands_20_mc_full.png"><img src="pics/savings_by_year_probability_bands_20_mc_800x.png" alt="savings_by_year_probability_bands_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -739,7 +659,7 @@ both people have died.
 </p>
 
 
-<div id="org84c95a8" class="figure">
+<div id="orgf064475" class="figure">
 <p><a href="pics/composite_trajectories_20_mc_full.png"><img src="pics/composite_trajectories_20_mc_800x.png" alt="composite_trajectories_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -749,7 +669,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="org6705b4a" class="figure">
+<div id="org54f467d" class="figure">
 <p><a href="pics/savings_by_year_boxplot_20_mc_full.png"><img src="pics/savings_by_year_boxplot_20_mc_800x.png" alt="savings_by_year_boxplot_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -759,7 +679,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="orgb2a2da3" class="figure">
+<div id="org98efb52" class="figure">
 <p><a href="pics/probability_of_failure_by_year_20_mc_full.png"><img src="pics/probability_of_failure_by_year_20_mc_800x.png" alt="probability_of_failure_by_year_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -769,7 +689,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="orgf32a6f5" class="figure">
+<div id="org309db32" class="figure">
 <p><a href="pics/final_savings_by_type_20_mc_full.png"><img src="pics/final_savings_by_type_20_mc_800x.png" alt="final_savings_by_type_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -777,7 +697,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </div>
 
 <div id="outline-container-case_20_config" class="outline-4">
-<h4 id="case_20_config"><span class="section-number-4">3.1.3.</span> Config File</h4>
+<h4 id="case_20_config"><span class="section-number-4">2.1.3.</span> Config File</h4>
 <div class="outline-text-4" id="text-case_20_config">
 <div class="org-src-container">
 <pre class="src src-f90">&amp;SIMPARM
@@ -880,7 +800,7 @@ verbosity                           = 10         <span style="color: #ffa500;">!
 
 
 <div id="outline-container-case_60_intro" class="outline-3">
-<h3 id="case_60_intro"><span class="section-number-3">3.2.</span> Approaching Retirement</h3>
+<h3 id="case_60_intro"><span class="section-number-3">2.2.</span> Approaching Retirement</h3>
 <div class="outline-text-3" id="text-case_60_intro">
 <p>
 Here we have a couple (47 &amp; 55 years old).  Each have 500k in a 401k.  They plan on putting 50% in the S&amp;P, and 50% in
@@ -893,7 +813,7 @@ one will start at age 70.
 </div>
 
 <div id="outline-container-case_60_danger" class="outline-4">
-<h4 id="case_60_danger"><span class="section-number-4">3.2.1.</span> A Risky Plan</h4>
+<h4 id="case_60_danger"><span class="section-number-4">2.2.1.</span> A Risky Plan</h4>
 <div class="outline-text-4" id="text-case_60_danger">
 <p>
 In my opinion, this plan is too aggressive.  I know the S&amp;P 500 has an average return of 10% over the last couple decades, but depending on a 7% return is just
@@ -905,7 +825,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="orgc1b8d1e" class="figure">
+<div id="org2efd7dc" class="figure">
 <p><a href="pics/savings_by_type_60o_fix_full.png"><img src="pics/savings_by_type_60o_fix_800x.png" alt="savings_by_type_60o_fix_800x.png" /></a>
 </p>
 </div>
@@ -915,7 +835,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org89d1bc0" class="figure">
+<div id="org4f58c93" class="figure">
 <p><a href="pics/savings_by_year_probability_bands_60o_mc_full.png"><img src="pics/savings_by_year_probability_bands_60o_mc_800x.png" alt="savings_by_year_probability_bands_60o_mc_800x.png" /></a>
 </p>
 </div>
@@ -925,7 +845,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org5e1e6a0" class="figure">
+<div id="org0a1b1b2" class="figure">
 <p><a href="pics/composite_trajectories_60o_mc_full.png"><img src="pics/composite_trajectories_60o_mc_800x.png" alt="composite_trajectories_60o_mc_800x.png" /></a>
 </p>
 </div>
@@ -936,7 +856,7 @@ outcome from this plan.
 </p>
 
 
-<div id="org4790139" class="figure">
+<div id="org7e9bbb3" class="figure">
 <p><a href="pics/final_savings_by_type_60o_mc_full.png"><img src="pics/final_savings_by_type_60o_mc_800x.png" alt="final_savings_by_type_60o_mc_800x.png" /></a>
 </p>
 </div>
@@ -944,7 +864,7 @@ outcome from this plan.
 </div>
 
 <div id="outline-container-case_60o_ml" class="outline-4">
-<h4 id="case_60o_ml"><span class="section-number-4">3.2.2.</span> An Alternate Plan</h4>
+<h4 id="case_60o_ml"><span class="section-number-4">2.2.2.</span> An Alternate Plan</h4>
 <div class="outline-text-4" id="text-case_60o_ml">
 <p>
 They can dramatically improve the chances of success by saving more (bumping up total savings by 250k), and spending less (drop annual expenses by 1k).  
@@ -955,7 +875,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org0fe1694" class="figure">
+<div id="org4512f6d" class="figure">
 <p><a href="pics/savings_by_year_probability_bands_60ml_mc_full.png"><img src="pics/savings_by_year_probability_bands_60ml_mc_800x.png" alt="savings_by_year_probability_bands_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -965,7 +885,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="org1ed7884" class="figure">
+<div id="org5616975" class="figure">
 <p><a href="pics/composite_trajectories_60ml_mc_full.png"><img src="pics/composite_trajectories_60ml_mc_800x.png" alt="composite_trajectories_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -975,7 +895,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org292724b" class="figure">
+<div id="org5582727" class="figure">
 <p><a href="pics/final_savings_by_type_60ml_mc_full.png"><img src="pics/final_savings_by_type_60ml_mc_800x.png" alt="final_savings_by_type_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -983,7 +903,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </div>
 
 <div id="outline-container-case_60_config" class="outline-4">
-<h4 id="case_60_config"><span class="section-number-4">3.2.3.</span> Config Files</h4>
+<h4 id="case_60_config"><span class="section-number-4">2.2.3.</span> Config Files</h4>
 <div class="outline-text-4" id="text-case_60_config">
 <p>
 The original plan config file is here:
@@ -1096,6 +1016,86 @@ low_investment_p                    = 20.0,      <span style="color: #ffa500;">!
 initial_expected_expenses_shr       = 100000.0,  <span style="color: #ffa500;">!! </span><span style="color: #ff7f24;">First year expenses.</span>
 </pre>
 </div>
+</div>
+</div>
+</div>
+</div>
+
+<div id="outline-container-ops" class="outline-2">
+<h2 id="ops"><span class="section-number-2">3.</span> Operation</h2>
+<div class="outline-text-2" id="text-ops">
+<p>
+The simulator may be found in the <a href="https://github.com/richmit/FortranFinance">FortranFinance</a> package under the sub-directory <code>retirement_simulation</code>.  This
+document forms the primary documentation, and its permanent home is <a href="https://richmit.github.io/FortranFinance/retirement_simulation/index.html">here</a>.
+</p>
+</div>
+
+<div id="outline-container-env" class="outline-3">
+<h3 id="env"><span class="section-number-3">3.1.</span> Environment</h3>
+<div class="outline-text-3" id="text-env">
+<p>
+The simulator is designed to run in a command line environment (MSYS2 on Windows, UNIX, Linux, Linux on WSL, MacOS X).  I expect that you already have a
+<a href="https://www.mitchr.me/SS/tools/index.html#fortran">Fortran development environment</a>, <a href="https://www.mitchr.me/SS/tools/index.html#scm">git</a>, and
+<a href="https://www.mitchr.me/SS/tools/index.html#code-build">GNU Make</a> installed.  In order to run the visualizations, you will need
+<a href="https://www.mitchr.me/SS/tools/index.html#stats">R</a> and the following CRAN packages installed: <code>knitr</code>, <code>jsonlite</code>, <code>quantmod</code>, <code>gridExtra</code>, <code>data.table</code>,
+<code>dplyr</code>, <code>tidyr</code>, <code>ggplot2</code>, <code>scales</code>, <code>RColorBrewer</code>.
+</p>
+</div>
+</div>
+
+<div id="outline-container-down" class="outline-3">
+<h3 id="down"><span class="section-number-3">3.2.</span> Download</h3>
+<div class="outline-text-3" id="text-down">
+<p>
+The easiest way to download everything is to clone with git:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">git clone <span style="color: #fa8072;">'https://github.com/richmit/FortranFinance.git'</span>
+</pre>
+</div>
+</div>
+</div>
+
+<div id="outline-container-build" class="outline-3">
+<h3 id="build"><span class="section-number-3">3.3.</span> Software Build</h3>
+<div class="outline-text-3" id="text-build">
+<p>
+The simulator is in the <code>retirement_simulation</code> directory.  That directory contains a <code>makefile</code> that will build the application.  You may need
+to edit that makefile for your system configuration &#x2013; follow the instructions  <a href="../MRFFL/index.html#examples">here</a>.  Once you have the
+<code>makefile</code> working, you can build with the following command:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">make retire
+</pre>
+</div>
+
+<p>
+This will result in a executable (named "<code>retire</code>" on most UNIX-like platforms, and "<code>retire.exe</code>" on Windows).  
+</p>
+</div>
+</div>
+
+<div id="outline-container-dowrun" class="outline-3">
+<h3 id="dowrun"><span class="section-number-3">3.4.</span> Running The Simulator</h3>
+<div class="outline-text-3" id="text-dowrun">
+<p>
+The <code>retire</code> command takes the name of the the configuration describing the simulation parameters as an optional argument.  If it is missing, then the name
+is assumed to be "<code>retire.nml</code>".  This document contains a couple example configuration files: <a href="#case_20_config">config_20.nml</a> and
+<a href="#case_60_config">config_60.nml</a>.
+</p>
+
+<p>
+When run, the <code>retire</code> command will place its results in a file called "<code>retire.out</code>".  This output file is a simple text file that you could load into Excel
+to analyze.  I use an <a href="https://www.mitchr.me/SS/tools/index.html#stats">R</a> script for the analysis called "<code>retire.R</code>".  If you run this script, you will
+get lots of graphics (see the <a href="#examples">Examples</a> section below).  In summary, you might do the following:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-sh">./retire.exe my_config.nml
+R -q -f retire.R
+</pre>
 </div>
 </div>
 </div>

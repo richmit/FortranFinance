@@ -237,69 +237,6 @@ in doing the same kind of research.
    - Make sure they have a published privacy policy.  If they don't, assume anything you give them will be sold.
    - Do your best to verify data security.
 
-* Operation
-:PROPERTIES:
-:CUSTOM_ID: ops
-:END:
-
-The simulator may be found in the [[https://github.com/richmit/FortranFinance][FortranFinance]] package under the sub-directory ~retirement_simulation~.  This
-document forms the primary documentation, and its permanent home is [[https://richmit.github.io/FortranFinance/retirement_simulation/index.html][here]].
-
-** Environment
-:PROPERTIES:
-:CUSTOM_ID: env
-:END:
-
-The simulator is designed to run in a command line environment (MSYS2 on Windows, UNIX, Linux, Linux on WSL, MacOS X).  I expect that you already have a
-[[https://www.mitchr.me/SS/tools/index.html#fortran][Fortran development environment]], [[https://www.mitchr.me/SS/tools/index.html#scm][git]], and
-[[https://www.mitchr.me/SS/tools/index.html#code-build][GNU Make]] installed.  In order to run the visualizations, you will need
-[[https://www.mitchr.me/SS/tools/index.html#stats][R]] and the following CRAN packages installed: ~knitr~, ~jsonlite~, ~quantmod~, ~gridExtra~, ~data.table~,
-~dplyr~, ~tidyr~, ~ggplot2~, ~scales~, ~RColorBrewer~.
-
-** Download 
-:PROPERTIES:
-:CUSTOM_ID: down
-:END:
-
-The easiest way to download everything is to clone with git:
-
-#+begin_src sh
-git clone 'https://github.com/richmit/FortranFinance.git'
-#+end_src
-
-** Software Build
-:PROPERTIES:
-:CUSTOM_ID: build
-:END:
-
-The simulator is in the ~retirement_simulation~ directory.  That directory contains a ~makefile~ that will build the application.  You may need
-to edit that makefile for your system configuration -- follow the instructions  [[file:../MRFFL/index.html#examples][here]].  Once you have the
-~makefile~ working, you can build with the following command:
-
-#+begin_src sh
-make retire
-#+end_src
-
-This will result in a executable (named "~retire~" on most UNIX-like platforms, and "~retire.exe~" on Windows).  
-
-** Running The Simulator
-:PROPERTIES:
-:CUSTOM_ID: dowrun
-:END:
-
-The ~retire~ command takes the name of the the configuration describing the simulation parameters as an optional argument.  If it is missing, then the name
-is assumed to be "~retire.nml~".  This document contains a couple example configuration files: [[#case_20_config][config_20.nml]] and
-[[#case_60_config][config_60.nml]].
-
-When run, the ~retire~ command will place its results in a file called "~retire.out~".  This output file is a simple text file that you could load into Excel
-to analyze.  I use an [[https://www.mitchr.me/SS/tools/index.html#stats][R]] script for the analysis called "~retire.R~".  If you run this script, you will
-get lots of graphics (see the [[#examples][Examples]] section below).  In summary, you might do the following:
-
-#+begin_src sh
-./retire.exe my_config.nml
-R -q -f retire.R
-#+end_src
-
 * Examples
 :PROPERTIES:
 :CUSTOM_ID: examples
@@ -654,6 +591,69 @@ initial_ira_balance_p2              = 625000.0,  !! Sum of all tax deferred acco
 high_investment_p                   = 50.0,      !! percentage of investments at high growth
 low_investment_p                    = 20.0,      !! percentage of investments at low growth
 initial_expected_expenses_shr       = 100000.0,  !! First year expenses.
+#+end_src
+
+* Operation
+:PROPERTIES:
+:CUSTOM_ID: ops
+:END:
+
+The simulator may be found in the [[https://github.com/richmit/FortranFinance][FortranFinance]] package under the sub-directory ~retirement_simulation~.  This
+document forms the primary documentation, and its permanent home is [[https://richmit.github.io/FortranFinance/retirement_simulation/index.html][here]].
+
+** Environment
+:PROPERTIES:
+:CUSTOM_ID: env
+:END:
+
+The simulator is designed to run in a command line environment (MSYS2 on Windows, UNIX, Linux, Linux on WSL, MacOS X).  I expect that you already have a
+[[https://www.mitchr.me/SS/tools/index.html#fortran][Fortran development environment]], [[https://www.mitchr.me/SS/tools/index.html#scm][git]], and
+[[https://www.mitchr.me/SS/tools/index.html#code-build][GNU Make]] installed.  In order to run the visualizations, you will need
+[[https://www.mitchr.me/SS/tools/index.html#stats][R]] and the following CRAN packages installed: ~knitr~, ~jsonlite~, ~quantmod~, ~gridExtra~, ~data.table~,
+~dplyr~, ~tidyr~, ~ggplot2~, ~scales~, ~RColorBrewer~.
+
+** Download 
+:PROPERTIES:
+:CUSTOM_ID: down
+:END:
+
+The easiest way to download everything is to clone with git:
+
+#+begin_src sh
+git clone 'https://github.com/richmit/FortranFinance.git'
+#+end_src
+
+** Software Build
+:PROPERTIES:
+:CUSTOM_ID: build
+:END:
+
+The simulator is in the ~retirement_simulation~ directory.  That directory contains a ~makefile~ that will build the application.  You may need
+to edit that makefile for your system configuration -- follow the instructions  [[file:../MRFFL/index.html#examples][here]].  Once you have the
+~makefile~ working, you can build with the following command:
+
+#+begin_src sh
+make retire
+#+end_src
+
+This will result in a executable (named "~retire~" on most UNIX-like platforms, and "~retire.exe~" on Windows).  
+
+** Running The Simulator
+:PROPERTIES:
+:CUSTOM_ID: dowrun
+:END:
+
+The ~retire~ command takes the name of the the configuration describing the simulation parameters as an optional argument.  If it is missing, then the name
+is assumed to be "~retire.nml~".  This document contains a couple example configuration files: [[#case_20_config][config_20.nml]] and
+[[#case_60_config][config_60.nml]].
+
+When run, the ~retire~ command will place its results in a file called "~retire.out~".  This output file is a simple text file that you could load into Excel
+to analyze.  I use an [[https://www.mitchr.me/SS/tools/index.html#stats][R]] script for the analysis called "~retire.R~".  If you run this script, you will
+get lots of graphics (see the [[#examples][Examples]] section below).  In summary, you might do the following:
+
+#+begin_src sh
+./retire.exe my_config.nml
+R -q -f retire.R
 #+end_src
 
 * Platform Notes & Testing
