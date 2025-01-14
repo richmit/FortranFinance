@@ -74,7 +74,7 @@ contains
     if (to_year   < lbound(inf_dat, 1)) error stop "ERROR(inf_aggregate): to_year too small"
     if (to_year   > ubound(inf_dat, 1)) error stop "ERROR(inf_aggregate): to_year too large"
     inf_aggregate = 1.0
-    do year=(min(from_year, to_year)+1),max(from_year, to_year)
+    do year=(min(from_year, to_year)+1_ik),max(from_year, to_year)
        inf_aggregate = inf_aggregate + percentage_of(inf_aggregate, inf_dat(year))
     end do
     if (from_year > to_year) then

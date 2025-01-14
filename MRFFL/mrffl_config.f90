@@ -43,8 +43,8 @@ module mrffl_config
   implicit none
   private
 
-  integer(kind=c_int32_t), parameter, public :: mrfflik       = c_int32_t !< Integer kinds used in interfaces
-  integer(kind=c_int32_t), parameter, public :: mrfflrk       = c_double  !< Real kind used in interfaces
+  integer, parameter, public :: mrfflik       = c_int32_t !< Integer kinds used in interfaces
+  integer, parameter, public :: mrfflrk       = c_double  !< Real kind used in interfaces
 
   real(kind=mrfflrk),      parameter, public :: zero_epsilon  = 1.0d-8    !< Used to test for zero
 

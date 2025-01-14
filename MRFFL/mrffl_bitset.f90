@@ -52,15 +52,15 @@ contains
   !------------------------------------------------------------------------------------------------------------------------------
   !> Return the number of elements in bitset.
   !!
-  integer pure function bitset_size(bitset)
+  integer(kind=ik) pure function bitset_size(bitset)
     integer(kind=ik), intent(in) :: bitset
-    bitset_size = popcnt(bitset)
+    bitset_size = int(popcnt(bitset), kind=ik)
   end function bitset_size
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Return the set diffrence between bitset1 and bitset2.
   !!
-  integer pure function bitset_minus(bitset1, bitset2)
+  integer(kind=ik) pure function bitset_minus(bitset1, bitset2)
     integer(kind=ik), intent(in) :: bitset1, bitset2
     bitset_minus = iand(bitset1, not(bitset2))
   end function bitset_minus

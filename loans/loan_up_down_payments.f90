@@ -102,7 +102,7 @@ program loan_level_payments
 
   ! Now we find PV & FV for an annuity with the rounded payment that ends one period early
   print "(a)", repeat("=", 111)
-  call tvm_delayed_level_annuity_solve(n, i, a_pv, a_fv, a_a, a_d, a_e+1, var_fv+var_pv, status)
+  call tvm_delayed_level_annuity_solve(n, i, a_pv, a_fv, a_a, a_d, a_e+1_ik, var_fv+var_pv, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
   print "(a60,f15.4)", "Rounded (n-1) Annuity PV: ", a_pv
   print "(a60,f15.4)", "Rounded (n-1) Annuity FV: ", a_fv
@@ -122,7 +122,7 @@ program loan_level_payments
 
   ! Next we add the rounded up
   print "(a)", repeat("=", 111)
-  call make_cashflow_vector_delayed_level_annuity(cfm(:,2), a_a, a_d, a_e+1, status)
+  call make_cashflow_vector_delayed_level_annuity(cfm(:,2), a_a, a_d, a_e+1_ik, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Finally we add the last payment

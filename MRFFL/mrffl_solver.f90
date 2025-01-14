@@ -165,7 +165,7 @@ contains
     logical,          intent(in)  :: progress
     integer(kind=ik)              :: interval, num_intervals
 
-    num_intervals = size(x0_init)
+    num_intervals = size(x0_init, kind=ik)
     do interval=1,num_intervals
        if (progress) print *, "Bisection on [", x0_init(interval), ", ", x1_init(interval), "]"
        call bisection(xc, x0_init(interval), x1_init(interval), f, x_epsilon, y_epsilon, max_itr, &

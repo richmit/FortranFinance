@@ -68,7 +68,7 @@ program cashflow_retire
   print "(a30,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Last we add cashflows for our expenses (growing with inflation)
-  call make_cashflow_vector_delayed_geometric_annuity(cfm(:,3), 3.0_rk, -9e4_rk, 1, 0, status)
+  call make_cashflow_vector_delayed_geometric_annuity(cfm(:,3), 3.0_rk, -9e4_rk, 1_ik, 0_ik, status)
   print "(a30,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Finally we print it all out.

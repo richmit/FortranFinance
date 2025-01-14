@@ -37,251 +37,252 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program test_life_table
   use, intrinsic:: iso_c_binding
+  use mrffl_config, only: ik=>mrfflik
   use mrffl_life_table
   use mrffl_prt_sets
   implicit none
 
   print '(a)', repeat("=", 115)
 
-  print '(a55,f30.10,f30.10)', "survivors(-10,  usss_f_qx_dat, 100000): ", survivors(-10,  usss_f_qx_dat, 100000), survivors(-10,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "survivors(-10,  usss_m_qx_dat, 100000): ", survivors(-10,  usss_m_qx_dat, 100000), survivors(-10,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "survivors(-10_ik,  usss_f_qx_dat, 100000_ik): ", survivors(-10_ik,  usss_f_qx_dat, 100000_ik), survivors(-10_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "survivors(-10_ik,  usss_m_qx_dat, 100000_ik): ", survivors(-10_ik,  usss_m_qx_dat, 100000_ik), survivors(-10_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "survivors(-1,   usss_f_qx_dat, 100000): ", survivors(-1,   usss_f_qx_dat, 100000), survivors(-1,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "survivors(-1,   usss_m_qx_dat, 100000): ", survivors(-1,   usss_m_qx_dat, 100000), survivors(-1,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "survivors(-1_ik,   usss_f_qx_dat, 100000_ik): ", survivors(-1_ik,   usss_f_qx_dat, 100000_ik), survivors(-1_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "survivors(-1_ik,   usss_m_qx_dat, 100000_ik): ", survivors(-1_ik,   usss_m_qx_dat, 100000_ik), survivors(-1_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "survivors(0,    usss_f_qx_dat, 100000): ", survivors(0,    usss_f_qx_dat, 100000), survivors(0,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "survivors(0,    usss_m_qx_dat, 100000): ", survivors(0,    usss_m_qx_dat, 100000), survivors(0,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "survivors(0_ik,    usss_f_qx_dat, 100000_ik): ", survivors(0_ik,    usss_f_qx_dat, 100000_ik), survivors(0_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "survivors(0_ik,    usss_m_qx_dat, 100000_ik): ", survivors(0_ik,    usss_m_qx_dat, 100000_ik), survivors(0_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "survivors(1,    usss_f_qx_dat, 100000): ", survivors(1,    usss_f_qx_dat, 100000), survivors(1,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "survivors(1,    usss_m_qx_dat, 100000): ", survivors(1,    usss_m_qx_dat, 100000), survivors(1,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "survivors(1_ik,    usss_f_qx_dat, 100000_ik): ", survivors(1_ik,    usss_f_qx_dat, 100000_ik), survivors(1_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "survivors(1_ik,    usss_m_qx_dat, 100000_ik): ", survivors(1_ik,    usss_m_qx_dat, 100000_ik), survivors(1_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "survivors(10,   usss_f_qx_dat, 100000): ", survivors(10,   usss_f_qx_dat, 100000), survivors(10,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "survivors(10,   usss_m_qx_dat, 100000): ", survivors(10,   usss_m_qx_dat, 100000), survivors(10,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "survivors(10_ik,   usss_f_qx_dat, 100000_ik): ", survivors(10_ik,   usss_f_qx_dat, 100000_ik), survivors(10_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "survivors(10_ik,   usss_m_qx_dat, 100000_ik): ", survivors(10_ik,   usss_m_qx_dat, 100000_ik), survivors(10_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "survivors(100,  usss_f_qx_dat, 100000): ", survivors(100,  usss_f_qx_dat, 100000), survivors(100,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "survivors(100,  usss_m_qx_dat, 100000): ", survivors(100,  usss_m_qx_dat, 100000), survivors(100,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "survivors(100_ik,  usss_f_qx_dat, 100000_ik): ", survivors(100_ik,  usss_f_qx_dat, 100000_ik), survivors(100_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "survivors(100_ik,  usss_m_qx_dat, 100000_ik): ", survivors(100_ik,  usss_m_qx_dat, 100000_ik), survivors(100_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "survivors(119,  usss_f_qx_dat, 100000): ", survivors(119,  usss_f_qx_dat, 100000), survivors(119,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "survivors(119,  usss_m_qx_dat, 100000): ", survivors(119,  usss_m_qx_dat, 100000), survivors(119,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "survivors(119_ik,  usss_f_qx_dat, 100000_ik): ", survivors(119_ik,  usss_f_qx_dat, 100000_ik), survivors(119_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "survivors(119_ik,  usss_m_qx_dat, 100000_ik): ", survivors(119_ik,  usss_m_qx_dat, 100000_ik), survivors(119_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "survivors(120,  usss_f_qx_dat, 100000): ", survivors(120,  usss_f_qx_dat, 100000), survivors(120,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "survivors(120,  usss_m_qx_dat, 100000): ", survivors(120,  usss_m_qx_dat, 100000), survivors(120,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "survivors(120_ik,  usss_f_qx_dat, 100000_ik): ", survivors(120_ik,  usss_f_qx_dat, 100000_ik), survivors(120_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "survivors(120_ik,  usss_m_qx_dat, 100000_ik): ", survivors(120_ik,  usss_m_qx_dat, 100000_ik), survivors(120_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "survivors(1000, usss_f_qx_dat, 100000): ", survivors(1000, usss_f_qx_dat, 100000), survivors(1000, usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "survivors(1000, usss_m_qx_dat, 100000): ", survivors(1000, usss_m_qx_dat, 100000), survivors(1000, usss_m_lx_dat, 0)
-
-  print '(a)', repeat("=", 115)
-
-  print '(a55,f30.10,f30.10)', "probability_of_death(-10,  usss_f_qx_dat, 100000): ", probability_of_death(-10,  usss_f_qx_dat, 100000), probability_of_death(-10,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "probability_of_death(-10,  usss_m_qx_dat, 100000): ", probability_of_death(-10,  usss_m_qx_dat, 100000), probability_of_death(-10,  usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "probability_of_death(-1,   usss_f_qx_dat, 100000): ", probability_of_death(-1,   usss_f_qx_dat, 100000), probability_of_death(-1,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "probability_of_death(-1,   usss_m_qx_dat, 100000): ", probability_of_death(-1,   usss_m_qx_dat, 100000), probability_of_death(-1,   usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "probability_of_death(0,    usss_f_qx_dat, 100000): ", probability_of_death(0,    usss_f_qx_dat, 100000), probability_of_death(0,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "probability_of_death(0,    usss_m_qx_dat, 100000): ", probability_of_death(0,    usss_m_qx_dat, 100000), probability_of_death(0,    usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "probability_of_death(1,    usss_f_qx_dat, 100000): ", probability_of_death(1,    usss_f_qx_dat, 100000), probability_of_death(1,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "probability_of_death(1,    usss_m_qx_dat, 100000): ", probability_of_death(1,    usss_m_qx_dat, 100000), probability_of_death(1,    usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "probability_of_death(10,   usss_f_qx_dat, 100000): ", probability_of_death(10,   usss_f_qx_dat, 100000), probability_of_death(10,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "probability_of_death(10,   usss_m_qx_dat, 100000): ", probability_of_death(10,   usss_m_qx_dat, 100000), probability_of_death(10,   usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "probability_of_death(100,  usss_f_qx_dat, 100000): ", probability_of_death(100,  usss_f_qx_dat, 100000), probability_of_death(100,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "probability_of_death(100,  usss_m_qx_dat, 100000): ", probability_of_death(100,  usss_m_qx_dat, 100000), probability_of_death(100,  usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "probability_of_death(119,  usss_f_qx_dat, 100000): ", probability_of_death(119,  usss_f_qx_dat, 100000), probability_of_death(119,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "probability_of_death(119,  usss_m_qx_dat, 100000): ", probability_of_death(119,  usss_m_qx_dat, 100000), probability_of_death(119,  usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "probability_of_death(120,  usss_f_qx_dat, 100000): ", probability_of_death(120,  usss_f_qx_dat, 100000), probability_of_death(120,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "probability_of_death(120,  usss_m_qx_dat, 100000): ", probability_of_death(120,  usss_m_qx_dat, 100000), probability_of_death(120,  usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "probability_of_death(1000, usss_f_qx_dat, 100000): ", probability_of_death(1000, usss_f_qx_dat, 100000), probability_of_death(1000, usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "probability_of_death(1000, usss_m_qx_dat, 100000): ", probability_of_death(1000, usss_m_qx_dat, 100000), probability_of_death(1000, usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "survivors(1000_ik, usss_f_qx_dat, 100000_ik): ", survivors(1000_ik, usss_f_qx_dat, 100000_ik), survivors(1000_ik, usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "survivors(1000_ik, usss_m_qx_dat, 100000_ik): ", survivors(1000_ik, usss_m_qx_dat, 100000_ik), survivors(1000_ik, usss_m_lx_dat, 0_ik)
 
   print '(a)', repeat("=", 115)
 
-  print '(a55,f30.10,f30.10)', "died(-10,  usss_f_qx_dat, 100000): ", died(-10,  usss_f_qx_dat, 100000), died(-10,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "died(-10,  usss_m_qx_dat, 100000): ", died(-10,  usss_m_qx_dat, 100000), died(-10,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "probability_of_death(-10_ik,  usss_f_qx_dat, 100000_ik): ", probability_of_death(-10_ik,  usss_f_qx_dat, 100000_ik), probability_of_death(-10_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "probability_of_death(-10_ik,  usss_m_qx_dat, 100000_ik): ", probability_of_death(-10_ik,  usss_m_qx_dat, 100000_ik), probability_of_death(-10_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "died(-1,   usss_f_qx_dat, 100000): ", died(-1,   usss_f_qx_dat, 100000), died(-1,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "died(-1,   usss_m_qx_dat, 100000): ", died(-1,   usss_m_qx_dat, 100000), died(-1,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "probability_of_death(-1_ik,   usss_f_qx_dat, 100000_ik): ", probability_of_death(-1_ik,   usss_f_qx_dat, 100000_ik), probability_of_death(-1_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "probability_of_death(-1_ik,   usss_m_qx_dat, 100000_ik): ", probability_of_death(-1_ik,   usss_m_qx_dat, 100000_ik), probability_of_death(-1_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "died(0,    usss_f_qx_dat, 100000): ", died(0,    usss_f_qx_dat, 100000), died(0,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "died(0,    usss_m_qx_dat, 100000): ", died(0,    usss_m_qx_dat, 100000), died(0,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "probability_of_death(0_ik,    usss_f_qx_dat, 100000_ik): ", probability_of_death(0_ik,    usss_f_qx_dat, 100000_ik), probability_of_death(0_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "probability_of_death(0_ik,    usss_m_qx_dat, 100000_ik): ", probability_of_death(0_ik,    usss_m_qx_dat, 100000_ik), probability_of_death(0_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "died(1,    usss_f_qx_dat, 100000): ", died(1,    usss_f_qx_dat, 100000), died(1,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "died(1,    usss_m_qx_dat, 100000): ", died(1,    usss_m_qx_dat, 100000), died(1,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "probability_of_death(1_ik,    usss_f_qx_dat, 100000_ik): ", probability_of_death(1_ik,    usss_f_qx_dat, 100000_ik), probability_of_death(1_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "probability_of_death(1_ik,    usss_m_qx_dat, 100000_ik): ", probability_of_death(1_ik,    usss_m_qx_dat, 100000_ik), probability_of_death(1_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "died(10,   usss_f_qx_dat, 100000): ", died(10,   usss_f_qx_dat, 100000), died(10,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "died(10,   usss_m_qx_dat, 100000): ", died(10,   usss_m_qx_dat, 100000), died(10,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "probability_of_death(10_ik,   usss_f_qx_dat, 100000_ik): ", probability_of_death(10_ik,   usss_f_qx_dat, 100000_ik), probability_of_death(10_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "probability_of_death(10_ik,   usss_m_qx_dat, 100000_ik): ", probability_of_death(10_ik,   usss_m_qx_dat, 100000_ik), probability_of_death(10_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "died(100,  usss_f_qx_dat, 100000): ", died(100,  usss_f_qx_dat, 100000), died(100,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "died(100,  usss_m_qx_dat, 100000): ", died(100,  usss_m_qx_dat, 100000), died(100,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "probability_of_death(100_ik,  usss_f_qx_dat, 100000_ik): ", probability_of_death(100_ik,  usss_f_qx_dat, 100000_ik), probability_of_death(100_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "probability_of_death(100_ik,  usss_m_qx_dat, 100000_ik): ", probability_of_death(100_ik,  usss_m_qx_dat, 100000_ik), probability_of_death(100_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "died(119,  usss_f_qx_dat, 100000): ", died(119,  usss_f_qx_dat, 100000), died(119,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "died(119,  usss_m_qx_dat, 100000): ", died(119,  usss_m_qx_dat, 100000), died(119,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "probability_of_death(119_ik,  usss_f_qx_dat, 100000_ik): ", probability_of_death(119_ik,  usss_f_qx_dat, 100000_ik), probability_of_death(119_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "probability_of_death(119_ik,  usss_m_qx_dat, 100000_ik): ", probability_of_death(119_ik,  usss_m_qx_dat, 100000_ik), probability_of_death(119_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "died(120,  usss_f_qx_dat, 100000): ", died(120,  usss_f_qx_dat, 100000), died(120,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "died(120,  usss_m_qx_dat, 100000): ", died(120,  usss_m_qx_dat, 100000), died(120,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "probability_of_death(120_ik,  usss_f_qx_dat, 100000_ik): ", probability_of_death(120_ik,  usss_f_qx_dat, 100000_ik), probability_of_death(120_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "probability_of_death(120_ik,  usss_m_qx_dat, 100000_ik): ", probability_of_death(120_ik,  usss_m_qx_dat, 100000_ik), probability_of_death(120_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "died(1000, usss_f_qx_dat, 100000): ", died(1000, usss_f_qx_dat, 100000), died(1000, usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "died(1000, usss_m_qx_dat, 100000): ", died(1000, usss_m_qx_dat, 100000), died(1000, usss_m_lx_dat, 0)
-
-  print '(a)', repeat("=", 115)
-
-  print '(a55,f30.10,f30.10)', "life_expectancy(-10,  usss_f_qx_dat, 100000): ", life_expectancy(-10,  usss_f_qx_dat, 100000), life_expectancy(-10,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy(-10,  usss_m_qx_dat, 100000): ", life_expectancy(-10,  usss_m_qx_dat, 100000), life_expectancy(-10,  usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "life_expectancy(-1,   usss_f_qx_dat, 100000): ", life_expectancy(-1,   usss_f_qx_dat, 100000), life_expectancy(-1,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy(-1,   usss_m_qx_dat, 100000): ", life_expectancy(-1,   usss_m_qx_dat, 100000), life_expectancy(-1,   usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "life_expectancy(0,    usss_f_qx_dat, 100000): ", life_expectancy(0,    usss_f_qx_dat, 100000), life_expectancy(0,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy(0,    usss_m_qx_dat, 100000): ", life_expectancy(0,    usss_m_qx_dat, 100000), life_expectancy(0,    usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "life_expectancy(1,    usss_f_qx_dat, 100000): ", life_expectancy(1,    usss_f_qx_dat, 100000), life_expectancy(1,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy(1,    usss_m_qx_dat, 100000): ", life_expectancy(1,    usss_m_qx_dat, 100000), life_expectancy(1,    usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "life_expectancy(10,   usss_f_qx_dat, 100000): ", life_expectancy(10,   usss_f_qx_dat, 100000), life_expectancy(10,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy(10,   usss_m_qx_dat, 100000): ", life_expectancy(10,   usss_m_qx_dat, 100000), life_expectancy(10,   usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "life_expectancy(100,  usss_f_qx_dat, 100000): ", life_expectancy(100,  usss_f_qx_dat, 100000), life_expectancy(100,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy(100,  usss_m_qx_dat, 100000): ", life_expectancy(100,  usss_m_qx_dat, 100000), life_expectancy(100,  usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "life_expectancy(119,  usss_f_qx_dat, 100000): ", life_expectancy(119,  usss_f_qx_dat, 100000), life_expectancy(119,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy(119,  usss_m_qx_dat, 100000): ", life_expectancy(119,  usss_m_qx_dat, 100000), life_expectancy(119,  usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "life_expectancy(120,  usss_f_qx_dat, 100000): ", life_expectancy(120,  usss_f_qx_dat, 100000), life_expectancy(120,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy(120,  usss_m_qx_dat, 100000): ", life_expectancy(120,  usss_m_qx_dat, 100000), life_expectancy(120,  usss_m_lx_dat, 0)
-
-  print '(a55,f30.10,f30.10)', "life_expectancy(1000, usss_f_qx_dat, 100000): ", life_expectancy(1000, usss_f_qx_dat, 100000), life_expectancy(1000, usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy(1000, usss_m_qx_dat, 100000): ", life_expectancy(1000, usss_m_qx_dat, 100000), life_expectancy(1000, usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "probability_of_death(1000_ik, usss_f_qx_dat, 100000_ik): ", probability_of_death(1000_ik, usss_f_qx_dat, 100000_ik), probability_of_death(1000_ik, usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "probability_of_death(1000_ik, usss_m_qx_dat, 100000_ik): ", probability_of_death(1000_ik, usss_m_qx_dat, 100000_ik), probability_of_death(1000_ik, usss_m_lx_dat, 0_ik)
 
   print '(a)', repeat("=", 115)
 
-  print '(a55,f30.10,f30.10)', "mortality_rate(-10,  usss_f_qx_dat, 100000): ", mortality_rate(-10,  usss_f_qx_dat, 100000), mortality_rate(-10,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "mortality_rate(-10,  usss_m_qx_dat, 100000): ", mortality_rate(-10,  usss_m_qx_dat, 100000), mortality_rate(-10,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "died(-10_ik,  usss_f_qx_dat, 100000_ik): ", died(-10_ik,  usss_f_qx_dat, 100000_ik), died(-10_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "died(-10_ik,  usss_m_qx_dat, 100000_ik): ", died(-10_ik,  usss_m_qx_dat, 100000_ik), died(-10_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "mortality_rate(-1,   usss_f_qx_dat, 100000): ", mortality_rate(-1,   usss_f_qx_dat, 100000), mortality_rate(-1,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "mortality_rate(-1,   usss_m_qx_dat, 100000): ", mortality_rate(-1,   usss_m_qx_dat, 100000), mortality_rate(-1,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "died(-1_ik,   usss_f_qx_dat, 100000_ik): ", died(-1_ik,   usss_f_qx_dat, 100000_ik), died(-1_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "died(-1_ik,   usss_m_qx_dat, 100000_ik): ", died(-1_ik,   usss_m_qx_dat, 100000_ik), died(-1_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "mortality_rate(0,    usss_f_qx_dat, 100000): ", mortality_rate(0,    usss_f_qx_dat, 100000), mortality_rate(0,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "mortality_rate(0,    usss_m_qx_dat, 100000): ", mortality_rate(0,    usss_m_qx_dat, 100000), mortality_rate(0,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "died(0_ik,    usss_f_qx_dat, 100000_ik): ", died(0_ik,    usss_f_qx_dat, 100000_ik), died(0_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "died(0_ik,    usss_m_qx_dat, 100000_ik): ", died(0_ik,    usss_m_qx_dat, 100000_ik), died(0_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "mortality_rate(1,    usss_f_qx_dat, 100000): ", mortality_rate(1,    usss_f_qx_dat, 100000), mortality_rate(1,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "mortality_rate(1,    usss_m_qx_dat, 100000): ", mortality_rate(1,    usss_m_qx_dat, 100000), mortality_rate(1,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "died(1_ik,    usss_f_qx_dat, 100000_ik): ", died(1_ik,    usss_f_qx_dat, 100000_ik), died(1_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "died(1_ik,    usss_m_qx_dat, 100000_ik): ", died(1_ik,    usss_m_qx_dat, 100000_ik), died(1_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "mortality_rate(10,   usss_f_qx_dat, 100000): ", mortality_rate(10,   usss_f_qx_dat, 100000), mortality_rate(10,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "mortality_rate(10,   usss_m_qx_dat, 100000): ", mortality_rate(10,   usss_m_qx_dat, 100000), mortality_rate(10,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "died(10_ik,   usss_f_qx_dat, 100000_ik): ", died(10_ik,   usss_f_qx_dat, 100000_ik), died(10_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "died(10_ik,   usss_m_qx_dat, 100000_ik): ", died(10_ik,   usss_m_qx_dat, 100000_ik), died(10_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "mortality_rate(100,  usss_f_qx_dat, 100000): ", mortality_rate(100,  usss_f_qx_dat, 100000), mortality_rate(100,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "mortality_rate(100,  usss_m_qx_dat, 100000): ", mortality_rate(100,  usss_m_qx_dat, 100000), mortality_rate(100,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "died(100_ik,  usss_f_qx_dat, 100000_ik): ", died(100_ik,  usss_f_qx_dat, 100000_ik), died(100_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "died(100_ik,  usss_m_qx_dat, 100000_ik): ", died(100_ik,  usss_m_qx_dat, 100000_ik), died(100_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "mortality_rate(119,  usss_f_qx_dat, 100000): ", mortality_rate(119,  usss_f_qx_dat, 100000), mortality_rate(119,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "mortality_rate(119,  usss_m_qx_dat, 100000): ", mortality_rate(119,  usss_m_qx_dat, 100000), mortality_rate(119,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "died(119_ik,  usss_f_qx_dat, 100000_ik): ", died(119_ik,  usss_f_qx_dat, 100000_ik), died(119_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "died(119_ik,  usss_m_qx_dat, 100000_ik): ", died(119_ik,  usss_m_qx_dat, 100000_ik), died(119_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "mortality_rate(120,  usss_f_qx_dat, 100000): ", mortality_rate(120,  usss_f_qx_dat, 100000), mortality_rate(120,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "mortality_rate(120,  usss_m_qx_dat, 100000): ", mortality_rate(120,  usss_m_qx_dat, 100000), mortality_rate(120,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "died(120_ik,  usss_f_qx_dat, 100000_ik): ", died(120_ik,  usss_f_qx_dat, 100000_ik), died(120_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "died(120_ik,  usss_m_qx_dat, 100000_ik): ", died(120_ik,  usss_m_qx_dat, 100000_ik), died(120_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "mortality_rate(1000, usss_f_qx_dat, 100000): ", mortality_rate(1000, usss_f_qx_dat, 100000), mortality_rate(1000, usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "mortality_rate(1000, usss_m_qx_dat, 100000): ", mortality_rate(1000, usss_m_qx_dat, 100000), mortality_rate(1000, usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "died(1000_ik, usss_f_qx_dat, 100000_ik): ", died(1000_ik, usss_f_qx_dat, 100000_ik), died(1000_ik, usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "died(1000_ik, usss_m_qx_dat, 100000_ik): ", died(1000_ik, usss_m_qx_dat, 100000_ik), died(1000_ik, usss_m_lx_dat, 0_ik)
 
   print '(a)', repeat("=", 115)
 
-  print '(a55,f30.10,f30.10)', "person_years(-10,  usss_f_qx_dat, 100000): ", person_years(-10,  usss_f_qx_dat, 100000), person_years(-10,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "person_years(-10,  usss_m_qx_dat, 100000): ", person_years(-10,  usss_m_qx_dat, 100000), person_years(-10,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "life_expectancy(-10_ik,  usss_f_qx_dat, 100000_ik): ", life_expectancy(-10_ik,  usss_f_qx_dat, 100000_ik), life_expectancy(-10_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy(-10_ik,  usss_m_qx_dat, 100000_ik): ", life_expectancy(-10_ik,  usss_m_qx_dat, 100000_ik), life_expectancy(-10_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "person_years(-1,   usss_f_qx_dat, 100000): ", person_years(-1,   usss_f_qx_dat, 100000), person_years(-1,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "person_years(-1,   usss_m_qx_dat, 100000): ", person_years(-1,   usss_m_qx_dat, 100000), person_years(-1,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "life_expectancy(-1_ik,   usss_f_qx_dat, 100000_ik): ", life_expectancy(-1_ik,   usss_f_qx_dat, 100000_ik), life_expectancy(-1_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy(-1_ik,   usss_m_qx_dat, 100000_ik): ", life_expectancy(-1_ik,   usss_m_qx_dat, 100000_ik), life_expectancy(-1_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "person_years(0,    usss_f_qx_dat, 100000): ", person_years(0,    usss_f_qx_dat, 100000), person_years(0,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "person_years(0,    usss_m_qx_dat, 100000): ", person_years(0,    usss_m_qx_dat, 100000), person_years(0,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "life_expectancy(0_ik,    usss_f_qx_dat, 100000_ik): ", life_expectancy(0_ik,    usss_f_qx_dat, 100000_ik), life_expectancy(0_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy(0_ik,    usss_m_qx_dat, 100000_ik): ", life_expectancy(0_ik,    usss_m_qx_dat, 100000_ik), life_expectancy(0_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "person_years(1,    usss_f_qx_dat, 100000): ", person_years(1,    usss_f_qx_dat, 100000), person_years(1,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "person_years(1,    usss_m_qx_dat, 100000): ", person_years(1,    usss_m_qx_dat, 100000), person_years(1,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "life_expectancy(1_ik,    usss_f_qx_dat, 100000_ik): ", life_expectancy(1_ik,    usss_f_qx_dat, 100000_ik), life_expectancy(1_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy(1_ik,    usss_m_qx_dat, 100000_ik): ", life_expectancy(1_ik,    usss_m_qx_dat, 100000_ik), life_expectancy(1_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "person_years(10,   usss_f_qx_dat, 100000): ", person_years(10,   usss_f_qx_dat, 100000), person_years(10,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "person_years(10,   usss_m_qx_dat, 100000): ", person_years(10,   usss_m_qx_dat, 100000), person_years(10,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "life_expectancy(10_ik,   usss_f_qx_dat, 100000_ik): ", life_expectancy(10_ik,   usss_f_qx_dat, 100000_ik), life_expectancy(10_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy(10_ik,   usss_m_qx_dat, 100000_ik): ", life_expectancy(10_ik,   usss_m_qx_dat, 100000_ik), life_expectancy(10_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "person_years(100,  usss_f_qx_dat, 100000): ", person_years(100,  usss_f_qx_dat, 100000), person_years(100,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "person_years(100,  usss_m_qx_dat, 100000): ", person_years(100,  usss_m_qx_dat, 100000), person_years(100,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "life_expectancy(100_ik,  usss_f_qx_dat, 100000_ik): ", life_expectancy(100_ik,  usss_f_qx_dat, 100000_ik), life_expectancy(100_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy(100_ik,  usss_m_qx_dat, 100000_ik): ", life_expectancy(100_ik,  usss_m_qx_dat, 100000_ik), life_expectancy(100_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "person_years(119,  usss_f_qx_dat, 100000): ", person_years(119,  usss_f_qx_dat, 100000), person_years(119,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "person_years(119,  usss_m_qx_dat, 100000): ", person_years(119,  usss_m_qx_dat, 100000), person_years(119,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "life_expectancy(119_ik,  usss_f_qx_dat, 100000_ik): ", life_expectancy(119_ik,  usss_f_qx_dat, 100000_ik), life_expectancy(119_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy(119_ik,  usss_m_qx_dat, 100000_ik): ", life_expectancy(119_ik,  usss_m_qx_dat, 100000_ik), life_expectancy(119_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "person_years(120,  usss_f_qx_dat, 100000): ", person_years(120,  usss_f_qx_dat, 100000), person_years(120,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "person_years(120,  usss_m_qx_dat, 100000): ", person_years(120,  usss_m_qx_dat, 100000), person_years(120,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "life_expectancy(120_ik,  usss_f_qx_dat, 100000_ik): ", life_expectancy(120_ik,  usss_f_qx_dat, 100000_ik), life_expectancy(120_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy(120_ik,  usss_m_qx_dat, 100000_ik): ", life_expectancy(120_ik,  usss_m_qx_dat, 100000_ik), life_expectancy(120_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "person_years(1000, usss_f_qx_dat, 100000): ", person_years(1000, usss_f_qx_dat, 100000), person_years(1000, usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "person_years(1000, usss_m_qx_dat, 100000): ", person_years(1000, usss_m_qx_dat, 100000), person_years(1000, usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "life_expectancy(1000_ik, usss_f_qx_dat, 100000_ik): ", life_expectancy(1000_ik, usss_f_qx_dat, 100000_ik), life_expectancy(1000_ik, usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy(1000_ik, usss_m_qx_dat, 100000_ik): ", life_expectancy(1000_ik, usss_m_qx_dat, 100000_ik), life_expectancy(1000_ik, usss_m_lx_dat, 0_ik)
+
+  print '(a)', repeat("=", 115)
+
+  print '(a55,f30.10,f30.10)', "mortality_rate(-10_ik,  usss_f_qx_dat, 100000_ik): ", mortality_rate(-10_ik,  usss_f_qx_dat, 100000_ik), mortality_rate(-10_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "mortality_rate(-10_ik,  usss_m_qx_dat, 100000_ik): ", mortality_rate(-10_ik,  usss_m_qx_dat, 100000_ik), mortality_rate(-10_ik,  usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "mortality_rate(-1_ik,   usss_f_qx_dat, 100000_ik): ", mortality_rate(-1_ik,   usss_f_qx_dat, 100000_ik), mortality_rate(-1_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "mortality_rate(-1_ik,   usss_m_qx_dat, 100000_ik): ", mortality_rate(-1_ik,   usss_m_qx_dat, 100000_ik), mortality_rate(-1_ik,   usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "mortality_rate(0_ik,    usss_f_qx_dat, 100000_ik): ", mortality_rate(0_ik,    usss_f_qx_dat, 100000_ik), mortality_rate(0_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "mortality_rate(0_ik,    usss_m_qx_dat, 100000_ik): ", mortality_rate(0_ik,    usss_m_qx_dat, 100000_ik), mortality_rate(0_ik,    usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "mortality_rate(1_ik,    usss_f_qx_dat, 100000_ik): ", mortality_rate(1_ik,    usss_f_qx_dat, 100000_ik), mortality_rate(1_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "mortality_rate(1_ik,    usss_m_qx_dat, 100000_ik): ", mortality_rate(1_ik,    usss_m_qx_dat, 100000_ik), mortality_rate(1_ik,    usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "mortality_rate(10_ik,   usss_f_qx_dat, 100000_ik): ", mortality_rate(10_ik,   usss_f_qx_dat, 100000_ik), mortality_rate(10_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "mortality_rate(10_ik,   usss_m_qx_dat, 100000_ik): ", mortality_rate(10_ik,   usss_m_qx_dat, 100000_ik), mortality_rate(10_ik,   usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "mortality_rate(100_ik,  usss_f_qx_dat, 100000_ik): ", mortality_rate(100_ik,  usss_f_qx_dat, 100000_ik), mortality_rate(100_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "mortality_rate(100_ik,  usss_m_qx_dat, 100000_ik): ", mortality_rate(100_ik,  usss_m_qx_dat, 100000_ik), mortality_rate(100_ik,  usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "mortality_rate(119_ik,  usss_f_qx_dat, 100000_ik): ", mortality_rate(119_ik,  usss_f_qx_dat, 100000_ik), mortality_rate(119_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "mortality_rate(119_ik,  usss_m_qx_dat, 100000_ik): ", mortality_rate(119_ik,  usss_m_qx_dat, 100000_ik), mortality_rate(119_ik,  usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "mortality_rate(120_ik,  usss_f_qx_dat, 100000_ik): ", mortality_rate(120_ik,  usss_f_qx_dat, 100000_ik), mortality_rate(120_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "mortality_rate(120_ik,  usss_m_qx_dat, 100000_ik): ", mortality_rate(120_ik,  usss_m_qx_dat, 100000_ik), mortality_rate(120_ik,  usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "mortality_rate(1000_ik, usss_f_qx_dat, 100000_ik): ", mortality_rate(1000_ik, usss_f_qx_dat, 100000_ik), mortality_rate(1000_ik, usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "mortality_rate(1000_ik, usss_m_qx_dat, 100000_ik): ", mortality_rate(1000_ik, usss_m_qx_dat, 100000_ik), mortality_rate(1000_ik, usss_m_lx_dat, 0_ik)
+
+  print '(a)', repeat("=", 115)
+
+  print '(a55,f30.10,f30.10)', "person_years(-10_ik,  usss_f_qx_dat, 100000_ik): ", person_years(-10_ik,  usss_f_qx_dat, 100000_ik), person_years(-10_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "person_years(-10_ik,  usss_m_qx_dat, 100000_ik): ", person_years(-10_ik,  usss_m_qx_dat, 100000_ik), person_years(-10_ik,  usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "person_years(-1_ik,   usss_f_qx_dat, 100000_ik): ", person_years(-1_ik,   usss_f_qx_dat, 100000_ik), person_years(-1_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "person_years(-1_ik,   usss_m_qx_dat, 100000_ik): ", person_years(-1_ik,   usss_m_qx_dat, 100000_ik), person_years(-1_ik,   usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "person_years(0_ik,    usss_f_qx_dat, 100000_ik): ", person_years(0_ik,    usss_f_qx_dat, 100000_ik), person_years(0_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "person_years(0_ik,    usss_m_qx_dat, 100000_ik): ", person_years(0_ik,    usss_m_qx_dat, 100000_ik), person_years(0_ik,    usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "person_years(1_ik,    usss_f_qx_dat, 100000_ik): ", person_years(1_ik,    usss_f_qx_dat, 100000_ik), person_years(1_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "person_years(1_ik,    usss_m_qx_dat, 100000_ik): ", person_years(1_ik,    usss_m_qx_dat, 100000_ik), person_years(1_ik,    usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "person_years(10_ik,   usss_f_qx_dat, 100000_ik): ", person_years(10_ik,   usss_f_qx_dat, 100000_ik), person_years(10_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "person_years(10_ik,   usss_m_qx_dat, 100000_ik): ", person_years(10_ik,   usss_m_qx_dat, 100000_ik), person_years(10_ik,   usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "person_years(100_ik,  usss_f_qx_dat, 100000_ik): ", person_years(100_ik,  usss_f_qx_dat, 100000_ik), person_years(100_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "person_years(100_ik,  usss_m_qx_dat, 100000_ik): ", person_years(100_ik,  usss_m_qx_dat, 100000_ik), person_years(100_ik,  usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "person_years(119_ik,  usss_f_qx_dat, 100000_ik): ", person_years(119_ik,  usss_f_qx_dat, 100000_ik), person_years(119_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "person_years(119_ik,  usss_m_qx_dat, 100000_ik): ", person_years(119_ik,  usss_m_qx_dat, 100000_ik), person_years(119_ik,  usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "person_years(120_ik,  usss_f_qx_dat, 100000_ik): ", person_years(120_ik,  usss_f_qx_dat, 100000_ik), person_years(120_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "person_years(120_ik,  usss_m_qx_dat, 100000_ik): ", person_years(120_ik,  usss_m_qx_dat, 100000_ik), person_years(120_ik,  usss_m_lx_dat, 0_ik)
+
+  print '(a55,f30.10,f30.10)', "person_years(1000_ik, usss_f_qx_dat, 100000_ik): ", person_years(1000_ik, usss_f_qx_dat, 100000_ik), person_years(1000_ik, usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "person_years(1000_ik, usss_m_qx_dat, 100000_ik): ", person_years(1000_ik, usss_m_qx_dat, 100000_ik), person_years(1000_ik, usss_m_lx_dat, 0_ik)
 
   print '(a)', repeat("=", 235)
 
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(-10,  usss_f_qx_dat, 100000): ", probability_of_survival_1(-10,  usss_f_qx_dat, 100000), probability_of_survival_n(-10,  1, usss_f_qx_dat, 100000), 1-probability_of_death(-10,  usss_f_qx_dat, 100000), probability_of_survival_1(-10,  usss_f_lx_dat, 0), probability_of_survival_n(-10,  1, usss_f_lx_dat, 0), 1-probability_of_death(-10,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(-10,  usss_m_qx_dat, 100000): ", probability_of_survival_1(-10,  usss_m_qx_dat, 100000), probability_of_survival_n(-10,  1, usss_m_qx_dat, 100000), 1-probability_of_death(-10,  usss_m_qx_dat, 100000), probability_of_survival_1(-10,  usss_m_lx_dat, 0), probability_of_survival_n(-10,  1, usss_m_lx_dat, 0), 1-probability_of_death(-10,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(-10_ik,  usss_f_qx_dat, 100000_ik): ", probability_of_survival_1(-10_ik,  usss_f_qx_dat, 100000_ik), probability_of_survival_n(-10_ik,  1_ik, usss_f_qx_dat, 100000_ik), 1-probability_of_death(-10_ik,  usss_f_qx_dat, 100000_ik), probability_of_survival_1(-10_ik,  usss_f_lx_dat, 0_ik), probability_of_survival_n(-10_ik,  1_ik, usss_f_lx_dat, 0_ik), 1-probability_of_death(-10_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(-10_ik,  usss_m_qx_dat, 100000_ik): ", probability_of_survival_1(-10_ik,  usss_m_qx_dat, 100000_ik), probability_of_survival_n(-10_ik,  1_ik, usss_m_qx_dat, 100000_ik), 1-probability_of_death(-10_ik,  usss_m_qx_dat, 100000_ik), probability_of_survival_1(-10_ik,  usss_m_lx_dat, 0_ik), probability_of_survival_n(-10_ik,  1_ik, usss_m_lx_dat, 0_ik), 1-probability_of_death(-10_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(-1,   usss_f_qx_dat, 100000): ", probability_of_survival_1(-1,   usss_f_qx_dat, 100000), probability_of_survival_n(-1,   1, usss_f_qx_dat, 100000), 1-probability_of_death(-1,   usss_f_qx_dat, 100000), probability_of_survival_1(-1,   usss_f_lx_dat, 0), probability_of_survival_n(-1,   1, usss_f_lx_dat, 0), 1-probability_of_death(-1,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(-1,   usss_m_qx_dat, 100000): ", probability_of_survival_1(-1,   usss_m_qx_dat, 100000), probability_of_survival_n(-1,   1, usss_m_qx_dat, 100000), 1-probability_of_death(-1,   usss_m_qx_dat, 100000), probability_of_survival_1(-1,   usss_m_lx_dat, 0), probability_of_survival_n(-1,   1, usss_m_lx_dat, 0), 1-probability_of_death(-1,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(-1_ik,   usss_f_qx_dat, 100000_ik): ", probability_of_survival_1(-1_ik,   usss_f_qx_dat, 100000_ik), probability_of_survival_n(-1_ik,   1_ik, usss_f_qx_dat, 100000_ik), 1-probability_of_death(-1_ik,   usss_f_qx_dat, 100000_ik), probability_of_survival_1(-1_ik,   usss_f_lx_dat, 0_ik), probability_of_survival_n(-1_ik,   1_ik, usss_f_lx_dat, 0_ik), 1-probability_of_death(-1_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(-1_ik,   usss_m_qx_dat, 100000_ik): ", probability_of_survival_1(-1_ik,   usss_m_qx_dat, 100000_ik), probability_of_survival_n(-1_ik,   1_ik, usss_m_qx_dat, 100000_ik), 1-probability_of_death(-1_ik,   usss_m_qx_dat, 100000_ik), probability_of_survival_1(-1_ik,   usss_m_lx_dat, 0_ik), probability_of_survival_n(-1_ik,   1_ik, usss_m_lx_dat, 0_ik), 1-probability_of_death(-1_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(0,    usss_f_qx_dat, 100000): ", probability_of_survival_1(0,    usss_f_qx_dat, 100000), probability_of_survival_n(0,    1, usss_f_qx_dat, 100000), 1-probability_of_death(0,    usss_f_qx_dat, 100000), probability_of_survival_1(0,    usss_f_lx_dat, 0), probability_of_survival_n(0,    1, usss_f_lx_dat, 0), 1-probability_of_death(0,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(0,    usss_m_qx_dat, 100000): ", probability_of_survival_1(0,    usss_m_qx_dat, 100000), probability_of_survival_n(0,    1, usss_m_qx_dat, 100000), 1-probability_of_death(0,    usss_m_qx_dat, 100000), probability_of_survival_1(0,    usss_m_lx_dat, 0), probability_of_survival_n(0,    1, usss_m_lx_dat, 0), 1-probability_of_death(0,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(0_ik,    usss_f_qx_dat, 100000_ik): ", probability_of_survival_1(0_ik,    usss_f_qx_dat, 100000_ik), probability_of_survival_n(0_ik,    1_ik, usss_f_qx_dat, 100000_ik), 1-probability_of_death(0_ik,    usss_f_qx_dat, 100000_ik), probability_of_survival_1(0_ik,    usss_f_lx_dat, 0_ik), probability_of_survival_n(0_ik,    1_ik, usss_f_lx_dat, 0_ik), 1-probability_of_death(0_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(0_ik,    usss_m_qx_dat, 100000_ik): ", probability_of_survival_1(0_ik,    usss_m_qx_dat, 100000_ik), probability_of_survival_n(0_ik,    1_ik, usss_m_qx_dat, 100000_ik), 1-probability_of_death(0_ik,    usss_m_qx_dat, 100000_ik), probability_of_survival_1(0_ik,    usss_m_lx_dat, 0_ik), probability_of_survival_n(0_ik,    1_ik, usss_m_lx_dat, 0_ik), 1-probability_of_death(0_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(1,    usss_f_qx_dat, 100000): ", probability_of_survival_1(1,    usss_f_qx_dat, 100000), probability_of_survival_n(1,    1, usss_f_qx_dat, 100000), 1-probability_of_death(1,    usss_f_qx_dat, 100000), probability_of_survival_1(1,    usss_f_lx_dat, 0), probability_of_survival_n(1,    1, usss_f_lx_dat, 0), 1-probability_of_death(1,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(1,    usss_m_qx_dat, 100000): ", probability_of_survival_1(1,    usss_m_qx_dat, 100000), probability_of_survival_n(1,    1, usss_m_qx_dat, 100000), 1-probability_of_death(1,    usss_m_qx_dat, 100000), probability_of_survival_1(1,    usss_m_lx_dat, 0), probability_of_survival_n(1,    1, usss_m_lx_dat, 0), 1-probability_of_death(1,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(1_ik,    usss_f_qx_dat, 100000_ik): ", probability_of_survival_1(1_ik,    usss_f_qx_dat, 100000_ik), probability_of_survival_n(1_ik,    1_ik, usss_f_qx_dat, 100000_ik), 1-probability_of_death(1_ik,    usss_f_qx_dat, 100000_ik), probability_of_survival_1(1_ik,    usss_f_lx_dat, 0_ik), probability_of_survival_n(1_ik,    1_ik, usss_f_lx_dat, 0_ik), 1-probability_of_death(1_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(1_ik,    usss_m_qx_dat, 100000_ik): ", probability_of_survival_1(1_ik,    usss_m_qx_dat, 100000_ik), probability_of_survival_n(1_ik,    1_ik, usss_m_qx_dat, 100000_ik), 1-probability_of_death(1_ik,    usss_m_qx_dat, 100000_ik), probability_of_survival_1(1_ik,    usss_m_lx_dat, 0_ik), probability_of_survival_n(1_ik,    1_ik, usss_m_lx_dat, 0_ik), 1-probability_of_death(1_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(10,   usss_f_qx_dat, 100000): ", probability_of_survival_1(10,   usss_f_qx_dat, 100000), probability_of_survival_n(10,   1, usss_f_qx_dat, 100000), 1-probability_of_death(10,   usss_f_qx_dat, 100000), probability_of_survival_1(10,   usss_f_lx_dat, 0), probability_of_survival_n(10,   1, usss_f_lx_dat, 0), 1-probability_of_death(10,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(10,   usss_m_qx_dat, 100000): ", probability_of_survival_1(10,   usss_m_qx_dat, 100000), probability_of_survival_n(10,   1, usss_m_qx_dat, 100000), 1-probability_of_death(10,   usss_m_qx_dat, 100000), probability_of_survival_1(10,   usss_m_lx_dat, 0), probability_of_survival_n(10,   1, usss_m_lx_dat, 0), 1-probability_of_death(10,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(10_ik,   usss_f_qx_dat, 100000_ik): ", probability_of_survival_1(10_ik,   usss_f_qx_dat, 100000_ik), probability_of_survival_n(10_ik,   1_ik, usss_f_qx_dat, 100000_ik), 1-probability_of_death(10_ik,   usss_f_qx_dat, 100000_ik), probability_of_survival_1(10_ik,   usss_f_lx_dat, 0_ik), probability_of_survival_n(10_ik,   1_ik, usss_f_lx_dat, 0_ik), 1-probability_of_death(10_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(10_ik,   usss_m_qx_dat, 100000_ik): ", probability_of_survival_1(10_ik,   usss_m_qx_dat, 100000_ik), probability_of_survival_n(10_ik,   1_ik, usss_m_qx_dat, 100000_ik), 1-probability_of_death(10_ik,   usss_m_qx_dat, 100000_ik), probability_of_survival_1(10_ik,   usss_m_lx_dat, 0_ik), probability_of_survival_n(10_ik,   1_ik, usss_m_lx_dat, 0_ik), 1-probability_of_death(10_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(100,  usss_f_qx_dat, 100000): ", probability_of_survival_1(100,  usss_f_qx_dat, 100000), probability_of_survival_n(100,  1, usss_f_qx_dat, 100000), 1-probability_of_death(100,  usss_f_qx_dat, 100000), probability_of_survival_1(100,  usss_f_lx_dat, 0), probability_of_survival_n(100,  1, usss_f_lx_dat, 0), 1-probability_of_death(100,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(100,  usss_m_qx_dat, 100000): ", probability_of_survival_1(100,  usss_m_qx_dat, 100000), probability_of_survival_n(100,  1, usss_m_qx_dat, 100000), 1-probability_of_death(100,  usss_m_qx_dat, 100000), probability_of_survival_1(100,  usss_m_lx_dat, 0), probability_of_survival_n(100,  1, usss_m_lx_dat, 0), 1-probability_of_death(100,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(100_ik,  usss_f_qx_dat, 100000_ik): ", probability_of_survival_1(100_ik,  usss_f_qx_dat, 100000_ik), probability_of_survival_n(100_ik,  1_ik, usss_f_qx_dat, 100000_ik), 1-probability_of_death(100_ik,  usss_f_qx_dat, 100000_ik), probability_of_survival_1(100_ik,  usss_f_lx_dat, 0_ik), probability_of_survival_n(100_ik,  1_ik, usss_f_lx_dat, 0_ik), 1-probability_of_death(100_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(100_ik,  usss_m_qx_dat, 100000_ik): ", probability_of_survival_1(100_ik,  usss_m_qx_dat, 100000_ik), probability_of_survival_n(100_ik,  1_ik, usss_m_qx_dat, 100000_ik), 1-probability_of_death(100_ik,  usss_m_qx_dat, 100000_ik), probability_of_survival_1(100_ik,  usss_m_lx_dat, 0_ik), probability_of_survival_n(100_ik,  1_ik, usss_m_lx_dat, 0_ik), 1-probability_of_death(100_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(119,  usss_f_qx_dat, 100000): ", probability_of_survival_1(119,  usss_f_qx_dat, 100000), probability_of_survival_n(119,  1, usss_f_qx_dat, 100000), 1-probability_of_death(119,  usss_f_qx_dat, 100000), probability_of_survival_1(119,  usss_f_lx_dat, 0), probability_of_survival_n(119,  1, usss_f_lx_dat, 0), 1-probability_of_death(119,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(119,  usss_m_qx_dat, 100000): ", probability_of_survival_1(119,  usss_m_qx_dat, 100000), probability_of_survival_n(119,  1, usss_m_qx_dat, 100000), 1-probability_of_death(119,  usss_m_qx_dat, 100000), probability_of_survival_1(119,  usss_m_lx_dat, 0), probability_of_survival_n(119,  1, usss_m_lx_dat, 0), 1-probability_of_death(119,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(119_ik,  usss_f_qx_dat, 100000_ik): ", probability_of_survival_1(119_ik,  usss_f_qx_dat, 100000_ik), probability_of_survival_n(119_ik,  1_ik, usss_f_qx_dat, 100000_ik), 1-probability_of_death(119_ik,  usss_f_qx_dat, 100000_ik), probability_of_survival_1(119_ik,  usss_f_lx_dat, 0_ik), probability_of_survival_n(119_ik,  1_ik, usss_f_lx_dat, 0_ik), 1-probability_of_death(119_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(119_ik,  usss_m_qx_dat, 100000_ik): ", probability_of_survival_1(119_ik,  usss_m_qx_dat, 100000_ik), probability_of_survival_n(119_ik,  1_ik, usss_m_qx_dat, 100000_ik), 1-probability_of_death(119_ik,  usss_m_qx_dat, 100000_ik), probability_of_survival_1(119_ik,  usss_m_lx_dat, 0_ik), probability_of_survival_n(119_ik,  1_ik, usss_m_lx_dat, 0_ik), 1-probability_of_death(119_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(120,  usss_f_qx_dat, 100000): ", probability_of_survival_1(120,  usss_f_qx_dat, 100000), probability_of_survival_n(120,  1, usss_f_qx_dat, 100000), 1-probability_of_death(120,  usss_f_qx_dat, 100000), probability_of_survival_1(120,  usss_f_lx_dat, 0), probability_of_survival_n(120,  1, usss_f_lx_dat, 0), 1-probability_of_death(120,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(120,  usss_m_qx_dat, 100000): ", probability_of_survival_1(120,  usss_m_qx_dat, 100000), probability_of_survival_n(120,  1, usss_m_qx_dat, 100000), 1-probability_of_death(120,  usss_m_qx_dat, 100000), probability_of_survival_1(120,  usss_m_lx_dat, 0), probability_of_survival_n(120,  1, usss_m_lx_dat, 0), 1-probability_of_death(120,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(120_ik,  usss_f_qx_dat, 100000_ik): ", probability_of_survival_1(120_ik,  usss_f_qx_dat, 100000_ik), probability_of_survival_n(120_ik,  1_ik, usss_f_qx_dat, 100000_ik), 1-probability_of_death(120_ik,  usss_f_qx_dat, 100000_ik), probability_of_survival_1(120_ik,  usss_f_lx_dat, 0_ik), probability_of_survival_n(120_ik,  1_ik, usss_f_lx_dat, 0_ik), 1-probability_of_death(120_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(120_ik,  usss_m_qx_dat, 100000_ik): ", probability_of_survival_1(120_ik,  usss_m_qx_dat, 100000_ik), probability_of_survival_n(120_ik,  1_ik, usss_m_qx_dat, 100000_ik), 1-probability_of_death(120_ik,  usss_m_qx_dat, 100000_ik), probability_of_survival_1(120_ik,  usss_m_lx_dat, 0_ik), probability_of_survival_n(120_ik,  1_ik, usss_m_lx_dat, 0_ik), 1-probability_of_death(120_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(1000, usss_f_qx_dat, 100000): ", probability_of_survival_1(1000, usss_f_qx_dat, 100000), probability_of_survival_n(1000, 1, usss_f_qx_dat, 100000), 1-probability_of_death(1000, usss_f_qx_dat, 100000), probability_of_survival_1(1000, usss_f_lx_dat, 0), probability_of_survival_n(1000, 1, usss_f_lx_dat, 0), 1-probability_of_death(1000, usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(1000, usss_m_qx_dat, 100000): ", probability_of_survival_1(1000, usss_m_qx_dat, 100000), probability_of_survival_n(1000, 1, usss_m_qx_dat, 100000), 1-probability_of_death(1000, usss_m_qx_dat, 100000), probability_of_survival_1(1000, usss_m_lx_dat, 0), probability_of_survival_n(1000, 1, usss_m_lx_dat, 0), 1-probability_of_death(1000, usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(1000_ik, usss_f_qx_dat, 100000_ik): ", probability_of_survival_1(1000_ik, usss_f_qx_dat, 100000_ik), probability_of_survival_n(1000_ik, 1_ik, usss_f_qx_dat, 100000_ik), 1-probability_of_death(1000_ik, usss_f_qx_dat, 100000_ik), probability_of_survival_1(1000_ik, usss_f_lx_dat, 0_ik), probability_of_survival_n(1000_ik, 1_ik, usss_f_lx_dat, 0_ik), 1-probability_of_death(1000_ik, usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10,f30.10,f30.10,f30.10,f30.10)', "probability_of_survival_1(1000_ik, usss_m_qx_dat, 100000_ik): ", probability_of_survival_1(1000_ik, usss_m_qx_dat, 100000_ik), probability_of_survival_n(1000_ik, 1_ik, usss_m_qx_dat, 100000_ik), 1-probability_of_death(1000_ik, usss_m_qx_dat, 100000_ik), probability_of_survival_1(1000_ik, usss_m_lx_dat, 0_ik), probability_of_survival_n(1000_ik, 1_ik, usss_m_lx_dat, 0_ik), 1-probability_of_death(1000_ik, usss_m_lx_dat, 0_ik)
 
   print '(a)', repeat("=", 235)
 
-  print '(a55,f30.10,f30.10)', "total_person_years(-10,  usss_f_qx_dat, 100000): ", total_person_years(-10,  usss_f_qx_dat, 100000), total_person_years(-10,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "total_person_years(-10,  usss_m_qx_dat, 100000): ", total_person_years(-10,  usss_m_qx_dat, 100000), total_person_years(-10,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "total_person_years(-10_ik,  usss_f_qx_dat, 100000_ik): ", total_person_years(-10_ik,  usss_f_qx_dat, 100000_ik), total_person_years(-10_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "total_person_years(-10_ik,  usss_m_qx_dat, 100000_ik): ", total_person_years(-10_ik,  usss_m_qx_dat, 100000_ik), total_person_years(-10_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "total_person_years(-1,   usss_f_qx_dat, 100000): ", total_person_years(-1,   usss_f_qx_dat, 100000), total_person_years(-1,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "total_person_years(-1,   usss_m_qx_dat, 100000): ", total_person_years(-1,   usss_m_qx_dat, 100000), total_person_years(-1,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "total_person_years(-1_ik,   usss_f_qx_dat, 100000_ik): ", total_person_years(-1_ik,   usss_f_qx_dat, 100000_ik), total_person_years(-1_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "total_person_years(-1_ik,   usss_m_qx_dat, 100000_ik): ", total_person_years(-1_ik,   usss_m_qx_dat, 100000_ik), total_person_years(-1_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "total_person_years(0,    usss_f_qx_dat, 100000): ", total_person_years(0,    usss_f_qx_dat, 100000), total_person_years(0,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "total_person_years(0,    usss_m_qx_dat, 100000): ", total_person_years(0,    usss_m_qx_dat, 100000), total_person_years(0,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "total_person_years(0_ik,    usss_f_qx_dat, 100000_ik): ", total_person_years(0_ik,    usss_f_qx_dat, 100000_ik), total_person_years(0_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "total_person_years(0_ik,    usss_m_qx_dat, 100000_ik): ", total_person_years(0_ik,    usss_m_qx_dat, 100000_ik), total_person_years(0_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "total_person_years(1,    usss_f_qx_dat, 100000): ", total_person_years(1,    usss_f_qx_dat, 100000), total_person_years(1,    usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "total_person_years(1,    usss_m_qx_dat, 100000): ", total_person_years(1,    usss_m_qx_dat, 100000), total_person_years(1,    usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "total_person_years(1_ik,    usss_f_qx_dat, 100000_ik): ", total_person_years(1_ik,    usss_f_qx_dat, 100000_ik), total_person_years(1_ik,    usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "total_person_years(1_ik,    usss_m_qx_dat, 100000_ik): ", total_person_years(1_ik,    usss_m_qx_dat, 100000_ik), total_person_years(1_ik,    usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "total_person_years(10,   usss_f_qx_dat, 100000): ", total_person_years(10,   usss_f_qx_dat, 100000), total_person_years(10,   usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "total_person_years(10,   usss_m_qx_dat, 100000): ", total_person_years(10,   usss_m_qx_dat, 100000), total_person_years(10,   usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "total_person_years(10_ik,   usss_f_qx_dat, 100000_ik): ", total_person_years(10_ik,   usss_f_qx_dat, 100000_ik), total_person_years(10_ik,   usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "total_person_years(10_ik,   usss_m_qx_dat, 100000_ik): ", total_person_years(10_ik,   usss_m_qx_dat, 100000_ik), total_person_years(10_ik,   usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "total_person_years(100,  usss_f_qx_dat, 100000): ", total_person_years(100,  usss_f_qx_dat, 100000), total_person_years(100,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "total_person_years(100,  usss_m_qx_dat, 100000): ", total_person_years(100,  usss_m_qx_dat, 100000), total_person_years(100,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "total_person_years(100_ik,  usss_f_qx_dat, 100000_ik): ", total_person_years(100_ik,  usss_f_qx_dat, 100000_ik), total_person_years(100_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "total_person_years(100_ik,  usss_m_qx_dat, 100000_ik): ", total_person_years(100_ik,  usss_m_qx_dat, 100000_ik), total_person_years(100_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "total_person_years(119,  usss_f_qx_dat, 100000): ", total_person_years(119,  usss_f_qx_dat, 100000), total_person_years(119,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "total_person_years(119,  usss_m_qx_dat, 100000): ", total_person_years(119,  usss_m_qx_dat, 100000), total_person_years(119,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "total_person_years(119_ik,  usss_f_qx_dat, 100000_ik): ", total_person_years(119_ik,  usss_f_qx_dat, 100000_ik), total_person_years(119_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "total_person_years(119_ik,  usss_m_qx_dat, 100000_ik): ", total_person_years(119_ik,  usss_m_qx_dat, 100000_ik), total_person_years(119_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "total_person_years(120,  usss_f_qx_dat, 100000): ", total_person_years(120,  usss_f_qx_dat, 100000), total_person_years(120,  usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "total_person_years(120,  usss_m_qx_dat, 100000): ", total_person_years(120,  usss_m_qx_dat, 100000), total_person_years(120,  usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "total_person_years(120_ik,  usss_f_qx_dat, 100000_ik): ", total_person_years(120_ik,  usss_f_qx_dat, 100000_ik), total_person_years(120_ik,  usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "total_person_years(120_ik,  usss_m_qx_dat, 100000_ik): ", total_person_years(120_ik,  usss_m_qx_dat, 100000_ik), total_person_years(120_ik,  usss_m_lx_dat, 0_ik)
 
-  print '(a55,f30.10,f30.10)', "total_person_years(1000, usss_f_qx_dat, 100000): ", total_person_years(1000, usss_f_qx_dat, 100000), total_person_years(1000, usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "total_person_years(1000, usss_m_qx_dat, 100000): ", total_person_years(1000, usss_m_qx_dat, 100000), total_person_years(1000, usss_m_lx_dat, 0)
-
-  print '(a)', repeat("=", 115)
-
-  print '(a55,f30.10,f30.10)', "age_all_dead(-10,  usss_f_qx_dat, 100000): ", age_all_dead(usss_f_qx_dat, 100000), age_all_dead(usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "age_all_dead(-10,  usss_m_qx_dat, 100000): ", age_all_dead(usss_m_qx_dat, 100000), age_all_dead(usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "total_person_years(1000_ik, usss_f_qx_dat, 100000_ik): ", total_person_years(1000_ik, usss_f_qx_dat, 100000_ik), total_person_years(1000_ik, usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "total_person_years(1000_ik, usss_m_qx_dat, 100000_ik): ", total_person_years(1000_ik, usss_m_qx_dat, 100000_ik), total_person_years(1000_ik, usss_m_lx_dat, 0_ik)
 
   print '(a)', repeat("=", 115)
 
-  print '(a55,f30.10,f30.10)', "life_expectancy_at_birth(-10,  usss_f_qx_dat, 100000): ", life_expectancy_at_birth(usss_f_qx_dat, 100000), life_expectancy_at_birth(usss_f_lx_dat, 0)
-  print '(a55,f30.10,f30.10)', "life_expectancy_at_birth(-10,  usss_m_qx_dat, 100000): ", life_expectancy_at_birth(usss_m_qx_dat, 100000), life_expectancy_at_birth(usss_m_lx_dat, 0)
+  print '(a55,f30.10,f30.10)', "age_all_dead(-10_ik,  usss_f_qx_dat, 100000_ik): ", age_all_dead(usss_f_qx_dat, 100000_ik), age_all_dead(usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "age_all_dead(-10_ik,  usss_m_qx_dat, 100000_ik): ", age_all_dead(usss_m_qx_dat, 100000_ik), age_all_dead(usss_m_lx_dat, 0_ik)
+
+  print '(a)', repeat("=", 115)
+
+  print '(a55,f30.10,f30.10)', "life_expectancy_at_birth(-10_ik,  usss_f_qx_dat, 100000_ik): ", life_expectancy_at_birth(usss_f_qx_dat, 100000_ik), life_expectancy_at_birth(usss_f_lx_dat, 0_ik)
+  print '(a55,f30.10,f30.10)', "life_expectancy_at_birth(-10_ik,  usss_m_qx_dat, 100000_ik): ", life_expectancy_at_birth(usss_m_qx_dat, 100000_ik), life_expectancy_at_birth(usss_m_lx_dat, 0_ik)
 
   print '(a)', repeat("=", 115)
 

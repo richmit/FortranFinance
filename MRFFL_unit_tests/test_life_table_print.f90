@@ -37,25 +37,26 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program test_life_table_print
   use, intrinsic :: iso_fortran_env, only: output_unit
+  use mrffl_config, only: ik=>mrfflik
   use mrffl_life_table
   use mrffl_prt_sets
   implicit none
 
   print '(a)', "usss_f_qx_dat"
-  call life_table_print(output_unit, prt_ALL, usss_f_qx_dat, 100000)
+  call life_table_print(output_unit, prt_ALL, usss_f_qx_dat, 100000_ik)
   print '(a)', "usss_f_lx_dat"
-  call life_table_print(output_unit, prt_ALL, usss_f_lx_dat,      0)
+  call life_table_print(output_unit, prt_ALL, usss_f_lx_dat,      0_ik)
   print '(a)', "usss_m_qx_dat"
-  call life_table_print(output_unit, prt_ALL, usss_m_qx_dat, 100000)
+  call life_table_print(output_unit, prt_ALL, usss_m_qx_dat, 100000_ik)
   print '(a)', "usss_m_lx_dat"
-  call life_table_print(output_unit, prt_ALL, usss_m_lx_dat,      0)
+  call life_table_print(output_unit, prt_ALL, usss_m_lx_dat,      0_ik)
   print '(a)', "uscdc_w_f_lx_dat"
-  call life_table_print(output_unit, prt_ALL, uscdc_w_f_lx_dat,   0)
+  call life_table_print(output_unit, prt_ALL, uscdc_w_f_lx_dat,   0_ik)
   print '(a)', "uscdc_w_f_lx_dat"
-  call life_table_print(output_unit, prt_ALL, uscdc_w_f_lx_dat,   0)
+  call life_table_print(output_unit, prt_ALL, uscdc_w_f_lx_dat,   0_ik)
   print '(a)', "uscdc_w_lx_dat"
-  call life_table_print(output_unit, prt_ALL, uscdc_w_lx_dat,     0)
+  call life_table_print(output_unit, prt_ALL, uscdc_w_lx_dat,     0_ik)
   print '(a)', "uscdc_lx_dat"
-  call life_table_print(output_unit, prt_ALL, uscdc_lx_dat,       0)
+  call life_table_print(output_unit, prt_ALL, uscdc_lx_dat,       0_ik)
 
 end program test_life_table_print

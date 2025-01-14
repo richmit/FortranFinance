@@ -118,7 +118,7 @@ program retire
   character(len=1)  :: sex_p1                              = 'F'
   character(len=1)  :: sex_p2                              = 'F'
 
-  integer(kind=ik)  :: simulation_year_start               = seed_tax_year
+  integer(kind=ik)  :: simulation_year_start               = seed_tax_year + 1
 
   integer(kind=ik)  :: verbosity                           = 10
 
@@ -148,9 +148,9 @@ program retire
   if (verbosity >= 30) write (output_unit, '(a40,i20)') "simulation_year_start:", simulation_year_start
   if (life_expectancy_p1 == 0) then
      if (sex_p1 == 'F') then
-        life_expectancy_p1 = ceiling(life_expectancy(simulation_year_start-birthday_p1, usss_f_lx_dat, 0)) + simulation_year_start - birthday_p1
+        life_expectancy_p1 = ceiling(life_expectancy(simulation_year_start-birthday_p1, usss_f_lx_dat, 0_ik), kind=ik) + simulation_year_start - birthday_p1
      else
-        life_expectancy_p1 = ceiling(life_expectancy(simulation_year_start-birthday_p1, usss_m_lx_dat, 0)) + simulation_year_start - birthday_p1
+        life_expectancy_p1 = ceiling(life_expectancy(simulation_year_start-birthday_p1, usss_m_lx_dat, 0_ik), kind=ik) + simulation_year_start - birthday_p1
      end if
   end if
   if (verbosity >= 30) write (output_unit, '(a40,i20)') "birthday_p1:", birthday_p1
@@ -158,9 +158,9 @@ program retire
   if (verbosity >= 30) write (output_unit, '(a40,i20)') "life_expectancy_p1:", life_expectancy_p1
   if (life_expectancy_p2 == 0) then
      if (sex_p2 == 'F') then
-        life_expectancy_p2 = ceiling(life_expectancy(simulation_year_start-birthday_p2, usss_f_lx_dat, 0)) + simulation_year_start - birthday_p2
+        life_expectancy_p2 = ceiling(life_expectancy(simulation_year_start-birthday_p2, usss_f_lx_dat, 0_ik), kind=ik) + simulation_year_start - birthday_p2
      else
-        life_expectancy_p2 = ceiling(life_expectancy(simulation_year_start-birthday_p2, usss_m_lx_dat, 0)) + simulation_year_start - birthday_p2
+        life_expectancy_p2 = ceiling(life_expectancy(simulation_year_start-birthday_p2, usss_m_lx_dat, 0_ik), kind=ik) + simulation_year_start - birthday_p2
      end if
   end if
   if (verbosity >= 30) write (output_unit, '(a40,i20)') "birthday_p2:", birthday_p2
@@ -186,16 +186,16 @@ program retire
   if (verbosity >= 30) write (output_unit, '(a40,l20)') "MC fixed_inflation_rate:", (fixed_inflation_rate < 0)
   if (verbosity >= 30) write (output_unit, '(a40,i20)') "num_runs:", num_runs
 
-  mc_year_high = simulation_year_start + 10000
-  mc_year_high = min(mc_year_high, ubound(snp_dat, 1))
-  mc_year_high = min(mc_year_high, ubound(dgs10_dat, 1))
-  mc_year_high = min(mc_year_high, ubound(inf_dat, 1))
+  mc_year_high = simulation_year_start + 10000_ik
+  mc_year_high = min(mc_year_high, ubound(snp_dat, 1, kind=ik))
+  mc_year_high = min(mc_year_high, ubound(dgs10_dat, 1, kind=ik))
+  mc_year_high = min(mc_year_high, ubound(inf_dat, 1, kind=ik))
   if (verbosity >= 30) write (output_unit, '(a40,i20)') "mc_year_high:", mc_year_high
 
   mc_year_low  = mc_year_high - monte_carlo_years
-  mc_year_low  = max(mc_year_low,  lbound(snp_dat, 1))
-  mc_year_low  = max(mc_year_low,  lbound(dgs10_dat, 1))
-  mc_year_low  = max(mc_year_low,  lbound(inf_dat, 1))
+  mc_year_low  = max(mc_year_low,  lbound(snp_dat, 1, kind=ik))
+  mc_year_low  = max(mc_year_low,  lbound(dgs10_dat, 1, kind=ik))
+  mc_year_low  = max(mc_year_low,  lbound(inf_dat, 1, kind=ik))
   if (verbosity >= 30) write (output_unit, '(a40,i20)') "mc_year_low:", mc_year_low
 
   if ( (mc_year_high - mc_year_low) < monte_carlo_years) then
@@ -213,7 +213,7 @@ program retire
   if (verbosity >= 10)write (output_unit, '(a40)') "Running Simulations"
   do tmp_j=1,num_runs
      call main_sim(tmp_j)
-     if ((verbosity >= 10) .and. (mod(tmp_j, max(1, num_runs/10)) == 0)) write (output_unit, '(a40,i20)') "runs complete:", tmp_j
+     if ((verbosity >= 10) .and. (mod(tmp_j, max(1_ik, num_runs/10_ik)) == 0)) write (output_unit, '(a40,i20)') "runs complete:", tmp_j
   end do
   if (verbosity >= 10)write (output_unit, '(a40)') "Simulations Complete"
 
@@ -298,8 +298,8 @@ contains
      taxable_income                = -1.0
      tax_rate                      = -1.0
      total_expected_expenses       = -1.0
-     last_roth_conversion_year_p1  = simulation_year_start - 5
-     last_roth_conversion_year_p2  = simulation_year_start - 5
+     last_roth_conversion_year_p1  = simulation_year_start - 5_ik
+     last_roth_conversion_year_p2  = simulation_year_start - 5_ik
      cur_investment_mix            = [ high_investment_p, mid_investment_p, low_investment_p ]
      death_p1                      = life_expectancy_p1
      death_p2                      = life_expectancy_p2
@@ -307,16 +307,16 @@ contains
 
      if (death_p1 < 0) then
         if (sex_p1 == "M") then
-           death_p1 = rand_age(simulation_year_start-birthday_p1, usss_m_lx_dat, 0)
+           death_p1 = rand_age(simulation_year_start-birthday_p1, usss_m_lx_dat, 0_ik)
         else
-           death_p1 = rand_age(simulation_year_start-birthday_p1, usss_f_lx_dat, 0)
+           death_p1 = rand_age(simulation_year_start-birthday_p1, usss_f_lx_dat, 0_ik)
         end if
      end if
      if (death_p2 < 0) then
         if (sex_p2 == "M") then
-           death_p2 = rand_age(simulation_year_start-birthday_p2, usss_m_lx_dat, 0)
+           death_p2 = rand_age(simulation_year_start-birthday_p2, usss_m_lx_dat, 0_ik)
         else
-           death_p2 = rand_age(simulation_year_start-birthday_p2, usss_f_lx_dat, 0)
+           death_p2 = rand_age(simulation_year_start-birthday_p2, usss_f_lx_dat, 0_ik)
         end if
      end if
 
@@ -367,7 +367,7 @@ contains
         ! Fix a value for investments (invest or use cash)
         if ((worst_case_inflation_rate < 0) .or. &
              (cash_reserves + emergency_fund + brokerage_balance + ira_balance_p1 + ira_balance_p2 + roth_balance_p1 + roth_balance_p2 < &
-             tvm_geometric_annuity_sum_a(1+simulation_year_end-year, worst_case_inflation_rate, total_expected_expenses))) then
+             tvm_geometric_annuity_sum_a(1_ik+simulation_year_end-year, worst_case_inflation_rate, total_expected_expenses))) then
            cur_investment_apr(1)  = alt_if_neg(high_investment_apr, snp_dat(mc_year))
            cur_investment_apr(2)  = alt_if_neg(mid_investment_apr,  cur_investment_apr(1)/2)
            cur_investment_apr(3)  = alt_if_neg(low_investment_apr,  dgs10_dat(mc_year))

@@ -296,8 +296,8 @@ contains
              survivors = cohort_size          
           else
              survivors = cohort_size
-             do i=2,min(age+1, size(life_table))
-                survivors = (1 - life_table(i-1)) * survivors
+             do i=2,min(age+1_ik, size(life_table, kind=ik))
+                survivors = (1_ik - life_table(i-1)) * survivors
              end do
           end if
        end if
@@ -368,7 +368,7 @@ contains
     implicit none
     integer(kind=ik), intent(in) :: cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    life_expectancy_at_birth = life_expectancy(0, life_table, cohort_size)
+    life_expectancy_at_birth = life_expectancy(0_ik, life_table, cohort_size)
   end function life_expectancy_at_birth
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -403,7 +403,7 @@ contains
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    probability_of_survival_1 = probability_of_survival_n(age, 1, life_table, cohort_size)
+    probability_of_survival_1 = probability_of_survival_n(age, 1_ik, life_table, cohort_size)
   end function probability_of_survival_1
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -417,7 +417,7 @@ contains
     implicit none
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    died = survivors(age, life_table, cohort_size) - survivors(age+1, life_table, cohort_size)
+    died = survivors(age, life_table, cohort_size) - survivors(age+1_ik, life_table, cohort_size)
   end function died
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -433,7 +433,7 @@ contains
     real(kind=rk),    intent(in) :: life_table(:)
     real(kind=rk), parameter     :: ax = 0.5
     real(kind=rk)                :: tmp1
-    tmp1 = survivors(age+1, life_table, cohort_size)
+    tmp1 = survivors(age+1_ik, life_table, cohort_size)
     person_years = tmp1 + ax * (survivors(age, life_table, cohort_size) - tmp1)
   end function person_years
 
@@ -450,7 +450,7 @@ contains
     real(kind=rk),    intent(in) :: life_table(:)
     integer(kind=ik)             :: i
     total_person_years = 0
-    do i=age,size(life_table)-1
+    do i=age,size(life_table, kind=ik)-1_ik
        total_person_years = total_person_years + person_years(i, life_table, cohort_size)
     end do
   end function total_person_years
@@ -489,7 +489,7 @@ contains
     real(kind=rk),    intent(in) :: life_table(:)
     integer(kind=ik)             :: i
     age_all_dead = 0
-    do i=0,size(life_table)+1
+    do i=0,size(life_table, kind=ik)-1_ik
        if (abs(survivors(i, life_table, cohort_size)) <= zero_epsilon) then
           age_all_dead = i
           return
@@ -511,14 +511,14 @@ contains
     integer(kind=ik), intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
     integer(kind=ik)             :: i, r
-    r = rand_int(floor(survivors(age, life_table, cohort_size)))
-    do i=age,size(life_table)-1
+    r = rand_int(floor(survivors(age, life_table, cohort_size), kind=ik))
+    do i=age,size(life_table, kind=ik)-1_ik
        if (floor(survivors(i, life_table, cohort_size)) <= r) then
           rand_age = i
           return
        end if
     end do
-    rand_age = size(life_table)-1
+    rand_age = size(life_table, kind=ik)-1_ik
   end function rand_age
   
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -551,7 +551,7 @@ contains
        if (out_io_stat /= 0) error stop "ERROR(life_table_print): I/O Error!"
     end if
     if (bitset_subsetp(prt_table, print_out)) then
-       do age=0,size(life_table)-1
+       do age=0,size(life_table, kind=ik)-1_ik
           write (unit=out_io_unit, iostat=out_io_stat, fmt=fmt_n) &
                age, &
                probability_of_death(age, life_table, cohort_size), &

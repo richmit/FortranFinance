@@ -63,7 +63,7 @@ contains
        error stop "ERROR(rand_int): lower_bound > upper_bound!"
     end if
     call random_number(r) ! Random Number in [0, 1)
-    rand_int = lower_bound + int(r * (upper_bound - lower_bound))
+    rand_int = lower_bound + int(r * (upper_bound - lower_bound), kind=ik)
   end function rand_int
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -91,9 +91,9 @@ contains
     real(kind=rk), intent(in)    :: data(:)
     integer(kind=ik), intent(in) :: tail_length
     integer(kind=ik)             :: i
-    i = ubound(data, 1) - rand_int(min(tail_length, size(data)))
-    i = max(i, lbound(data, 1))
-    i = min(i, ubound(data, 1))
+    i = ubound(data, 1, kind=ik) - rand_int(min(tail_length, int(size(data), kind=ik)))
+    i = max(i, lbound(data, 1, kind=ik))
+    i = min(i, ubound(data, 1, kind=ik))
     resample_tail = data(i)
   end function resample_tail
 
@@ -105,9 +105,9 @@ contains
     real(kind=rk), intent(in)    :: data(:)
     integer(kind=ik), intent(in) :: head_length
     integer(kind=ik)             :: i
-    i = lbound(data, 1) + rand_int(min(head_length, size(data)))
-    i = max(i, lbound(data, 1))
-    i = min(i, ubound(data, 1))
+    i = lbound(data, 1, kind=ik) + rand_int(min(head_length, size(data, kind=ik)))
+    i = max(i, lbound(data, 1, kind=ik))
+    i = min(i, ubound(data, 1, kind=ik))
     resample_head = data(i)
   end function resample_head
 

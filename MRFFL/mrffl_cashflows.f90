@@ -95,7 +95,7 @@ contains
   !!
   character(len=5) function i2s(n)
     implicit none
-    integer, intent(in) :: n 
+    integer(kind=ik), intent(in) :: n 
     write(i2s,'(i5.5)') n
   end function i2s
 
@@ -163,8 +163,8 @@ contains
     integer(kind=ik), intent(in)  :: print_out
     integer(kind=ik)              :: num_bdrys, num_flows, j, flow
     real(kind=rk),allocatable     :: dfactors(:), cf_aggr(:), total_pv(:), total_fv(:)
-    num_bdrys = size(cf_mat, 1)
-    num_flows = size(cf_mat, 2)
+    num_bdrys = size(cf_mat, 1, kind=ik)
+    num_flows = size(cf_mat, 2, kind=ik)
     if (num_flows < 1) then
        status = 2130 ! "ERROR(cashflow_matrix_value): No flows found in matrix!"
        return
@@ -204,7 +204,7 @@ contains
        end if
        if (bitset_subsetp(prt_title+prt_table, print_out)) then
           if (num_flows > 1) then
-             print "(a6,*("//ctfmt//"))",  "Time", ( "CF_"//i2s(flow), flow = 1, num_flows ), &
+             print "(a6,*("//ctfmt//"))",  "Time", ( "CF_"//i2s(flow), flow = 1_rk, num_flows ), &
                   "CF_Aggregate", "PV", "FV", "PV_Total", "FV_Total"
           else
              print "(a6,*("//ctfmt//"))",  "Time", "CF", "PV", "FV", "PV_Total", "FV_Total"

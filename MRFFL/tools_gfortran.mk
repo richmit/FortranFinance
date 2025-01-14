@@ -36,3 +36,5 @@ AR := ar
 FC := gfortran
 FFLAGS := -O3 -Wall -Wsurprising -W -std=f2023
 FSHFLG = -o $(MRFFL_SHARED_LIB_FILE) -shared $(MRFFL_OBJ_FILES)
+
+# Should work with: -fdefault-integer-8

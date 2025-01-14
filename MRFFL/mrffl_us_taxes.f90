@@ -45,7 +45,7 @@ module mrffl_us_taxes
   implicit none  
   private                  
 
-  integer(kind=ik), parameter, public :: seed_tax_year                     = 2025 ! The year the following constants hold
+  integer(kind=ik), parameter, public :: seed_tax_year                     = 2024 ! The year the following constants hold
   real(kind=rk), parameter, public    :: std_tax_deduction_single          = 14600
   real(kind=rk), parameter, public    :: std_tax_deduction_joint           = 29200
   real(kind=rk), parameter, public    :: std_tax_deduction_separately      = 14600
@@ -89,16 +89,16 @@ contains
   integer(kind=ik) function max_bracket(val, brackets)
     real(kind=rk), intent(in) :: val
     real(kind=rk), intent(in) :: brackets(:)         
-    integer                   :: i
+    integer(kind=ik)          :: i
     if (val <= brackets(1)) then
-       max_bracket = 1
+       max_bracket = 1_ik
     else if (val >= brackets(size(brackets))) then
-       max_bracket = size(brackets)
+       max_bracket = size(brackets, kind=ik)
     else
-       max_bracket = 0
-       do i=size(brackets)-1,1,-1
+       max_bracket = 0_ik
+       do i=size(brackets, kind=ik)-1_ik,1_ik,-1_ik
           if (val > brackets(i)) then
-             max_bracket = i+1
+             max_bracket = i+1_ik
              exit
           end if
        end do
