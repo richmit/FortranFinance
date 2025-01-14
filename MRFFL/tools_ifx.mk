@@ -34,7 +34,7 @@
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 ifeq ($(OS),Windows_NT)
 	FC := ifx
-	FFLAGS := -stand:f23
+	FFLAGS := -stand:f23 -Qdiag-disable:5268
 	FSHFLG = -dll -Fe:$(MRFFL_SHARED_LIB_FILE) $(MRFFL_OBJ_FILES)
 else	
 	FC := ifx
