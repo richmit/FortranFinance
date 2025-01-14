@@ -51,3 +51,7 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
     expectancy.  
     - [[file:monte_carlo/index.html][Monte Carlo Examples]]: Examples of MRFFL's Monte Carlo features.
     - [[file:loans/index.html][Loans]]: Examples using MRFFL's to solve loan problems.
+
+
+
+  [[file:retirement_simulation/index.html][file:retirement_simulation/pics/composite_trajectories_20_mc_800x.png]]
