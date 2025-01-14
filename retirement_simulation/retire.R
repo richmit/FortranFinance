@@ -175,6 +175,7 @@ if (nSims > 1) {
   #-------------------------------------------------------------------------------------------------------------------------------------------------------------
   nColps <- sum(bySimSum$min_savings<=0)
   if (nColps > 0) {
+
     gp <- ggplot(byYearSum) +
       geom_line(aes(x=Year, y=suc_prob), col='red', linewidth=2, alpha=1.0) +
       scale_x_continuous(name='', breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
@@ -221,6 +222,29 @@ if (nSims > 1) {
     fname <- "composite_trajectories.png"
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
+
+    tmp <- daDat %>% 
+      filter(Year<2040) %>% 
+      group_by(Sim) %>% 
+      summarize(minB=min(total_savings1p), maxB=max(total_savings1p), .group='drop') %>% 
+      summarize(ll=quantile(minB, 0), ul=quantile(maxB, .9))
+    gp <- ggplot() + 
+      geom_line(data=daDat %>% filter(Year<2040)%>% filter(Sim %in% bySimSum$Sim[bySimSum$min_savings>0]), 
+                aes(x=Year, y=total_savings1p, group=Sim, col='Success Trajectories'), linewidth=2, alpha=0.01) + 
+      ## geom_line(data=daDat %>% filter(Year<2040) %>% filter(Sim %in% bySimSum$Sim[bySimSum$min_savings<=0]), 
+      ##           aes(x=Year, y=total_savings1p, group=Sim, col='Fail Trajectories'), alpha=0.5, linewidth=0.5) + 
+      scale_colour_manual("", values = c("Success Trajectories"="black", "Fail Trajectories"="red")) +
+      scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), n.breaks=20) + 
+      scale_x_continuous(name='', breaks=minYear:(minYear+10)) +
+      coord_cartesian(ylim=c(tmp$ll, tmp$ul), xlim=c(minYear, minYear+10)) + 
+      theme(panel.grid.minor.x = element_blank()) + 
+      theme(legend.position = "bottom") +
+      labs(title=paste('Composite of ', nSims, ' Simulation Runs Over First 10 Years', sep='')) +
+      ylab('Total Savings')
+    fname <- "composite_trajectories_zoom.png"
+    ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
+    if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
+
   } else {
     n <- pmin(2000, nSims)
     gp <- ggplot(daDat %>% filter(Sim<=n)) + 
