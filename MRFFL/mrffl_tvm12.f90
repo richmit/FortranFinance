@@ -127,8 +127,8 @@ contains
           pmt = i * (fv + ip1tn * pv) / (i + 1 - (1+i) * ip1tn)
           status = 0
        else if (unknown == var_i) then
-          call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0d-5, 1.0d-5, 1000_ik, status, .false.)
-          !call multi_bisection(i, islvivl0, islvivl1, i_slv_func, r_dat, i_dat, 1.0d-5, 1.0d-5, 1000, status, .false.)
+          call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
+          !call multi_bisection(i, islvivl0, islvivl1, i_slv_func, r_dat, i_dat, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
           if (status /= 0) then
              status = 3005 ! "ERROR(tvm_solve): Unable to solve for i!"
           end if
@@ -153,8 +153,8 @@ contains
           pmt = -i / (ip1tn - 1) * (fv + ip1tn * pv)
           status = 0
        else if (unknown == var_i) then
-          call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0d-5, 1.0d-5, 1000_ik, status, .false.)
-          !call multi_bisection(i, islvivl0, islvivl1, i_slv_func, r_dat, i_dat, 1.0d-5, 1.0d-5, 1000, status, .false.)
+          call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
+          !call multi_bisection(i, islvivl0, islvivl1, i_slv_func, r_dat, i_dat, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
           if (status /= 0) then
              status = 3007 ! "ERROR(tvm_solve): Unable to solve for i!"
           end if

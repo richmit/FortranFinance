@@ -599,7 +599,7 @@ contains
                 else if ((d==1) .and. (e==1)) then
                    i = f2p((fv - pv) * a / pv / (a + fv))
                 else
-                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_n, 1.0d-5, 1.0d-5, 1000_ik, status, .false.)
+                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_n, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
                    if (status /= 0) then
                       status = 1099 ! "ERROR(tvm_delayed_level_annuity_solve): i solver failed for unknown n case!"
                       return
@@ -616,13 +616,13 @@ contains
           else
              if (bitset_subsetp(var_i, unknowns)) then          ! a & n are known. i is unknown
                 if (bitset_subsetp(var_fv, unknowns)) then      ! a, n, & pv are known. i & fv are unknown  
-                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_fv, 1.0d-7, 1.0d-7, 1000_ik, status, .false.)
+                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_fv, 1.0e-7_rk, 1.0e-7_rk, 1000_ik, status, .false.)
                    if (status /= 0) then
                       status = 1100 ! "ERROR(tvm_delayed_level_annuity_solve): i solver failed for unknown fv case!"
                       return
                    end if
                 else if (bitset_subsetp(var_pv, unknowns)) then      ! a, n, & fv are known. i & pv are be unknown.
-                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_pv, 1.0d-7, 1.0d-7, 1000_ik, status, .false.)
+                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_pv, 1.0e-7_rk, 1.0e-7_rk, 1000_ik, status, .false.)
                    if (status /= 0) then
                       status = 1101 ! "ERROR(tvm_delayed_level_annuity_solve): i solver failed for unknown pv case!"
                       return
