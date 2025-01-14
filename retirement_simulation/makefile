@@ -3,9 +3,9 @@
 
 MRFFL_PATH = ../MRFFL
 
-include $(MRFFL_PATH)/tools_gfortran.mk
+# include $(MRFFL_PATH)/tools_gfortran.mk
 # include $(MRFFL_PATH)/tools_flang.mk
-# include $(MRFFL_PATH)/tools_ifx.mk
+include $(MRFFL_PATH)/tools_ifx.mk
 # include $(MRFFL_PATH)/tools_lfortran.mk
 # include $(MRFFL_PATH)/tools_nvfortran.mk
 
@@ -21,13 +21,16 @@ retire : retire.f90 mrffl_bitset$(OBJ_SUFFIX) mrffl_percentages$(OBJ_SUFFIX) mrf
 retire.out : retire
 	./retire$(EXE_SUFFIX) $(CONFIG_FILE)
 
+check_out : retire.out
+	not grep -m 10 '\*' retire.out
+
 .PHONY: table
 table : retire.out
 	head -n 100 retire.out | grep -E '^( *Sim| *1 )'
 
 .PHONY: graphs
-graphs : retire.out retire.R
-	R -q -f retire.R
+graphs : check_out retire.out retire.R
+	R -q -f retire.R > /dev/null
 
 .PHONY: clean
 clean : clean_multi_mrffl
