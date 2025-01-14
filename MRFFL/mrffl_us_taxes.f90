@@ -45,7 +45,7 @@ module mrffl_us_taxes
   implicit none  
   private                  
 
-  integer(kind=ik), parameter, public :: seed_tax_year                     = 2024 ! The year the following constants hold
+  integer(kind=ik), parameter, public :: seed_tax_year                     = 2025 ! The year the following constants hold
   real(kind=rk), parameter, public    :: std_tax_deduction_single          = 14600
   real(kind=rk), parameter, public    :: std_tax_deduction_joint           = 29200
   real(kind=rk), parameter, public    :: std_tax_deduction_separately      = 14600
