@@ -108,7 +108,7 @@ if (nSims > 1) {
     gp <- ggplot(bySimSum %>% 
                  transmute(p1=died_p1, p2=died_p2) %>%
                  tidyr::pivot_longer(cols=c(1:2), names_to='Person', values_to='Year')) +
-      geom_density(aes(x=Year, y=..density.., group=Person, col=Person), linewidth=2)+
+      geom_density(aes(x=Year, y=after_stat(density), group=Person, col=Person), linewidth=2)+
       labs(title='Death') +
       scale_x_continuous(breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
       theme(panel.grid.minor.x = element_blank()) + 
@@ -126,7 +126,7 @@ if (nSims > 1) {
 
   #-------------------------------------------------------------------------------------------------------------------------------------------------------------
   gp <-ggplot(bySimSum) + 
-    geom_histogram(aes(x=end_savings+1, y=..density..), bins=50, fill='pink', col='red') +
+    geom_histogram(aes(x=end_savings+1, y=after_stat(density)), bins=50, fill='pink', col='red') +
     scale_x_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), trans='log10') + 
     labs(title=paste('Savings Balance At Death Observed From ', nSims, ' Simulation Runs', sep='')) +
     xlab('Total Savings') +
@@ -139,7 +139,7 @@ if (nSims > 1) {
   portfolio_collapse_probability <- 100.0 * sum(bySimSum$min_savings <= 0) / nSims
   if (sum(bySimSum$min_savings <= 0) > 10) { # Only draw histogram if we have enough collapse cases
     gp <- ggplot(bySimSum %>% filter(min_savings <= 0)) + 
-      geom_histogram(aes(x=min_savings_year, y=..density..), fill='pink', col='red', breaks=c(seq(minYear-0.5, maxYear+1, 3))) +
+      geom_histogram(aes(x=min_savings_year, y=after_stat(density)), fill='pink', col='red', breaks=c(seq(minYear-0.5, maxYear+1, 3))) +
       labs(title='Account Collapse vs Age') +
       scale_x_continuous(breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
       theme(panel.grid.minor.x = element_blank()) + 
@@ -223,27 +223,29 @@ if (nSims > 1) {
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
-    tmp <- daDat %>% 
-      filter(Year<2040) %>% 
-      group_by(Sim) %>% 
-      summarize(minB=min(total_savings1p), maxB=max(total_savings1p), .group='drop') %>% 
-      summarize(ll=quantile(minB, 0), ul=quantile(maxB, .9))
-    gp <- ggplot() + 
-      geom_line(data=daDat %>% filter(Year<2040)%>% filter(Sim %in% bySimSum$Sim[bySimSum$min_savings>0]), 
-                aes(x=Year, y=total_savings1p, group=Sim, col='Success Trajectories'), linewidth=2, alpha=0.01) + 
-      ## geom_line(data=daDat %>% filter(Year<2040) %>% filter(Sim %in% bySimSum$Sim[bySimSum$min_savings<=0]), 
-      ##           aes(x=Year, y=total_savings1p, group=Sim, col='Fail Trajectories'), alpha=0.5, linewidth=0.5) + 
-      scale_colour_manual("", values = c("Success Trajectories"="black", "Fail Trajectories"="red")) +
-      scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), n.breaks=20) + 
-      scale_x_continuous(name='', breaks=minYear:(minYear+10)) +
-      coord_cartesian(ylim=c(tmp$ll, tmp$ul), xlim=c(minYear, minYear+10)) + 
-      theme(panel.grid.minor.x = element_blank()) + 
-      theme(legend.position = "bottom") +
-      labs(title=paste('Composite of ', nSims, ' Simulation Runs Over First 10 Years', sep='')) +
-      ylab('Total Savings')
-    fname <- "composite_trajectories_zoom.png"
-    ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
-    if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
+    if (nSims < 100001) {
+      tmp <- daDat %>% 
+        filter(Year<2040) %>% 
+        group_by(Sim) %>% 
+        summarize(minB=min(total_savings1p), maxB=max(total_savings1p), .group='drop') %>% 
+        summarize(ll=quantile(minB, 0), ul=quantile(maxB, .9))
+      gp <- ggplot() + 
+        geom_line(data=daDat %>% filter(Year<2040)%>% filter(Sim %in% bySimSum$Sim[bySimSum$min_savings>0]), 
+                  aes(x=Year, y=total_savings1p, group=Sim, col='Success Trajectories'), linewidth=2, alpha=0.01) + 
+        ## geom_line(data=daDat %>% filter(Year<2040) %>% filter(Sim %in% bySimSum$Sim[bySimSum$min_savings<=0]), 
+        ##           aes(x=Year, y=total_savings1p, group=Sim, col='Fail Trajectories'), alpha=0.5, linewidth=0.5) + 
+        scale_colour_manual("", values = c("Success Trajectories"="black", "Fail Trajectories"="red")) +
+        scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), n.breaks=20) + 
+        scale_x_continuous(name='', breaks=minYear:(minYear+10)) +
+        coord_cartesian(ylim=c(tmp$ll, tmp$ul), xlim=c(minYear, minYear+10)) + 
+        theme(panel.grid.minor.x = element_blank()) + 
+        theme(legend.position = "bottom") +
+        labs(title=paste('Composite of ', nSims, ' Simulation Runs Over First 10 Years', sep='')) +
+        ylab('Total Savings')
+      fname <- "composite_trajectories_zoom.png"
+      ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
+      if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
+    }
 
   } else {
     n <- pmin(2000, nSims)
