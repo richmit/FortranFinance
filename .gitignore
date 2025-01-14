@@ -43,6 +43,7 @@ a.out
 
 /retirement_simulation/retire
 /retirement_simulation/retire.out
+/retirement_simulation/config.nml
 /retirement_simulation/*.png
 
 
