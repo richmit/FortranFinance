@@ -242,8 +242,8 @@ contains
      character(len=1)  :: status_p1, status_p2
 
      !                                         s   y a1 a2    S1/S2      cash       inf       CpI/ST/SI/SR  ef B I12 R12  apr          roth con1/2  ss1/2 wrk1/2 sav1 sav2 exp epI/T/I/R  taxbl      bkt       tax tpI/T/SI/SR
-     character(len=*), parameter  :: fmt_n = "(i7, 3(1x, i4), 2(1x, a2), 1x, f12.2, 1x, f5.1, 4(1x, f10.2), 6(1x, f16.2), 3(1x, f6.1), 2(1x, f9.2), 4(1x, f9.2), 2(1x, f8.2), 5(1x, f11.2), 1x, f14.2, 1x, f6.2, 5(1x, f14.2))"
-     character(len=*), parameter  :: fmt_h = "(a7, 3(1x, a4), 2(1x, a2), 1x, a12,   1x, a5,   4(1x, a10),   6(1x, a16),   3(1x, a6),   2(1x, a9),   4(1x, a9),   2(1x, a8),   5(1x, a11),   1x, a14,   1x, a6,   5(1x, a14) )"
+     character(len=*), parameter  :: fmt_n = "(i7, 3(1x, i4), 2(1x, a2), 1x, f12.2, 1x, f5.1, 4(1x, f10.2), 6(1x, f16.2), 3(1x, f6.1), 2(1x, f11.2), 4(1x, f9.2), 2(1x, f8.2), 5(1x, f11.2), 1x, f14.2, 1x, f6.2, 5(1x, f14.2))"
+     character(len=*), parameter  :: fmt_h = "(a7, 3(1x, a4), 2(1x, a2), 1x, a12,   1x, a5,   4(1x, a10),   6(1x, a16),   3(1x, a6),   2(1x, a11),   4(1x, a9),   2(1x, a8),   5(1x, a11),   1x, a14,   1x, a6,   5(1x, a14) )"
 
      if (sim == 1) then
         write (unit=out_io_unit, iostat=out_io_stat, iomsg=out_io_msg, fmt=fmt_h) &
