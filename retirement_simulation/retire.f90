@@ -132,6 +132,9 @@ program retire
   character(len=10)  :: out_file_name = 'retire.out'
   integer            :: out_io_stat, out_io_unit
   character(len=512) :: out_io_msg
+  real               :: cpu_time_start, cpu_time_end
+
+  call cpu_time(cpu_time_start)
 
   if (verbosity >= 10)write (output_unit, '(a40)') "Reading Config"
   call read_config();
@@ -199,6 +202,8 @@ program retire
      error stop "Not enough historical data to support monte_carlo_years setting"
   end if
 
+  if (verbosity >= 30) write (output_unit, '(a40,f20.2)') "Initial Assets:", (initial_brokerage_balance + initial_ira_balance_p1 + initial_ira_balance_p2 + initial_roth_balance_p1 + initial_roth_balance_p2 + initial_cash_reserves + initial_emergency_fund)
+
   open(newunit=out_io_unit, file=out_file_name, form='formatted', action='write', iostat=out_io_stat, iomsg=out_io_msg)
   if (out_io_stat /= 0) then
      write (error_unit, '(a)') trim(out_io_msg)
@@ -217,6 +222,10 @@ program retire
      write (error_unit, '(a)') trim(out_io_msg)
      error stop "I/O error closing output file"
   end if
+
+  call cpu_time(cpu_time_end)
+
+  if (verbosity >= 10)write (output_unit, '(a40,f20.1)') "CPU Time (s):", (cpu_time_end-cpu_time_start)
 
 contains
 
