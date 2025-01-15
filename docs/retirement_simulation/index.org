@@ -124,12 +124,14 @@ number of image files.  I'll describe them here, but I think it's easier to just
 :END:
 
    - ~death_distribution.png~                  Histogram for each person showing when they died in the simulations
-   - ~final_savings_by_type.png~               Histogram for final savings balance at death
+   - ~final_savings.png~                       Histogram for final savings balance at death
    - ~probability_of_failure_by_year.png~      Histogram showing number of failure trajectories over time
    - ~savings_by_year_boxplot.png~             Box plot showing total savings balance over time along with number of failures
    - ~savings_by_year_probability_bands.png~   Shows bands containing the given percentage of total savings balance trajectories
    - ~probability_of_success_by_year.png~      Line plot showing the probability of failure over time
    - ~composite_trajectories.png~              Composite of total balance trajectories
+   - ~y10_savings.png~                         Histogram of 10 year balance broken out by success & fail trajectories
+   - ~composite_trajectories_y10.png~          Composite of *ALL* success trajectories zoomed in to the first 10 years
 
 ** Some Observations
 :PROPERTIES:
@@ -308,7 +310,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 
 Lastly we have a graph that shows us the probability distribution of final savings balance at the end of the simulation.
 
-  [[file:pics/final_savings_by_type_20_mc_full.png][file:pics/final_savings_by_type_20_mc_800x.png]]
+  [[file:pics/final_savings_20_mc_full.png][file:pics/final_savings_20_mc_800x.png]]
 
 *** Config File
 :PROPERTIES:
@@ -456,7 +458,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 Another way to look at this is the distribution of final savings.  That huge bar on the left tells us that running out of money is the single most probable
 outcome from this plan.
 
-  [[file:pics/final_savings_by_type_60o_mc_full.png][file:pics/final_savings_by_type_60o_mc_800x.png]]
+  [[file:pics/final_savings_60o_mc_full.png][file:pics/final_savings_60o_mc_800x.png]]
 
 *** An Alternate Plan
 :PROPERTIES:
@@ -475,7 +477,7 @@ And the overall path picture is much more positive:
 
 Lastly, the distribution of final savings no longer shows dying broke as the highest probability outcome.
 
-  [[file:pics/final_savings_by_type_60ml_mc_full.png][file:pics/final_savings_by_type_60ml_mc_800x.png]]
+  [[file:pics/final_savings_60ml_mc_full.png][file:pics/final_savings_60ml_mc_800x.png]]
 
 *** Config Files
 :PROPERTIES:

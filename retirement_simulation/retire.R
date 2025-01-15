@@ -131,9 +131,31 @@ if (nSims > 1) {
     labs(title=paste('Savings Balance At Death Observed From ', nSims, ' Simulation Runs', sep='')) +
     xlab('Total Savings') +
     ylab('Probability')
-  fname <- 'final_savings_by_type.png'
+  fname <- 'final_savings.png'
   ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
   if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
+
+
+  #-------------------------------------------------------------------------------------------------------------------------------------------------------------
+  if (maxYear-minYear > 15) {
+    tenYrBal <- bind_rows(daDat %>% filter(Sim %in% bySimSum$Sim[bySimSum$min_savings<=0], Year==(minYear+10))  %>% select(Year, total_savings) %>% mutate(Result='Fail'),
+                          daDat %>% filter(Year==(minYear+10)) %>% select(Year, total_savings) %>% mutate(Result='Success'))
+    gp <-ggplot(tenYrBal) +
+      geom_histogram(aes(x=total_savings, fill=Result, col=Result), bins=50, alpha=0.75, show.legend=FALSE) +
+      facet_wrap(~Result, ncol=1, scales = "free") +
+      scale_x_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), trans='log10') + 
+      labs(title=paste('Savings Balance At End Of ', (minYear+10), ' Observed From ', nSims, ' Simulation Runs', sep='')) +
+      scale_colour_manual("Trajectory Type", values = c("Fail"="Red", 
+                                                        "Success"="Blue")) +
+      scale_fill_manual("Trajectory Type", values = c("Fail"="Pink", 
+                                                      "Success"="Lightblue")) +
+      theme(legend.position = "bottom") +
+      xlab('Total Savings') +
+      ylab('Simulation Count')
+    fname <- 'y10_savings.png'
+    ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
+    if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
+  }
 
   #-------------------------------------------------------------------------------------------------------------------------------------------------------------
   portfolio_collapse_probability <- 100.0 * sum(bySimSum$min_savings <= 0) / nSims
@@ -223,7 +245,7 @@ if (nSims > 1) {
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
-    if (nSims < 100001) {
+    if ((nSims < 100001) && (maxYear-minYear > 15)) {
       tmp <- daDat %>% 
         filter(Year<2040) %>% 
         group_by(Sim) %>% 
@@ -242,7 +264,7 @@ if (nSims > 1) {
         theme(legend.position = "bottom") +
         labs(title=paste('Composite of ', nSims, ' Simulation Runs Over First 10 Years', sep='')) +
         ylab('Total Savings')
-      fname <- "composite_trajectories_zoom.png"
+      fname <- "composite_trajectories_y10.png"
       ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
       if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
     }
