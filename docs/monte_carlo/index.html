@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-16 Thu 12:11 -->
+<!-- 2025-01-16 Thu 14:38 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-16 12:11:55</i></td>
+<td class="org-left"><i>2025-01-16 14:38:23</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-16 12:11:57</i></td>
+<td class="org-left"><i>2025-01-16 14:38:25</i></td>
 </tr>
 </tbody>
 </table>
@@ -280,7 +280,7 @@ See inflation.f90 for an example of "end point" Monte Carlo &#x2013; where we on
 </p>
 
 
-<div id="orged42f9e" class="figure">
+<div id="org4b7984b" class="figure">
 <p><a href="pics/inflation_full.png"><img src="pics/inflation_800x.png" alt="inflation_800x.png" /></a>
 </p>
 </div>
@@ -303,13 +303,13 @@ scenario using resampled values from historical data, and then analyze the resul
 </p>
 
 
-<div id="orgec5f770" class="figure">
+<div id="org7bfb76a" class="figure">
 <p><a href="pics/stocks_paths_full.png"><img src="pics/stocks_paths_800x.png" alt="stocks_paths_800x.png" /></a>
 </p>
 </div>
 
 
-<div id="org6e62bda" class="figure">
+<div id="org4271492" class="figure">
 <p><a href="pics/stocks_ranges_full.png"><img src="pics/stocks_ranges_800x.png" alt="stocks_ranges_800x.png" /></a>
 </p>
 </div>
@@ -335,16 +335,27 @@ Approach:
 
 <p>
 For each possible integer percentage mix of S&amp;P &amp; bonds (i.e. percentages of S&amp;P that range from 0% up to 100%) we run 100000
-(trials) simulations.  The simulations use historical data.  The technique is called "coupled resampling" where we pick a
+(<code>trials</code>) simulations.  The simulations use historical data.  The technique is called "coupled resampling" where we pick a
 random year, and use the measured values for that year for all three variables (S&amp;P 500 return, 10 year US Treasury bond
 return, and US inflation).  This technique attempts to capture the inherent correlation between the variables; however, when
-used with low resolution data it can create bias in the results.
+used with low resolution data it can create bias in the results.  Note we can switch to uncoupled via the variable
+<code>coupled_mc</code>.
 </p>
 
 
-
-<div id="org2f6404d" class="figure">
+<div id="org5180b87" class="figure">
 <p><a href="pics/blend_risk_full.png"><img src="pics/blend_risk_800x.png" alt="blend_risk_800x.png" /></a>
+</p>
+</div>
+
+<p>
+This next image shows the difference in results between coupled resampling (correlated) and uncoupled resampling (uncorrelated) monte carlo for this
+particular scenario.
+</p>
+
+
+<div id="org1ac2740" class="figure">
+<p><a href="pics/blend_risk_cvuc_full.png"><img src="pics/blend_risk_cvuc_800x.png" alt="blend_risk_cvuc_800x.png" /></a>
 </p>
 </div>
 </div>

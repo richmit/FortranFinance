@@ -42,10 +42,11 @@
 !!  Approach:
 !!
 !!  For each possible integer percentage mix of S&P & bonds (i.e. percentages of S&P that range from 0% up to 100%) we run 100000
-!!  (trials) simulations.  The simulations use historical data.  The technique is called "coupled resampling" where we pick a
+!!  (`trials`) simulations.  The simulations use historical data.  The technique is called "coupled resampling" where we pick a
 !!  random year, and use the measured values for that year for all three variables (S&P 500 return, 10 year US Treasury bond
 !!  return, and US inflation).  This technique attempts to capture the inherent correlation between the variables; however, when
-!!  used with low resolution data it can create bias in the results.
+!!  used with low resolution data it can create bias in the results.  Note we can switch to uncoupled via the variable
+!!  `coupled_mc`.
 !!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
@@ -61,8 +62,9 @@ program blend_risk
   integer,          parameter :: trials             = 100000   ! Number of trials to run
   real(kind=rk),    parameter :: initial_balance    = 4000000  ! This is the balance we will stocks adjusted over the years
   real(kind=rk),    parameter :: initial_withdrawal = 100000   ! Annual withdrawal
+  logical,          parameter :: coupled_mc         = .TRUE.   ! Use coupled resampling
   
-  real(kind=rk)               :: balance, withdrawal
+  real(kind=rk)               :: balance, withdrawal, c_snp, c_dgs, c_inf
   integer                     :: year, trial, hp
   integer(kind=ik)            :: rand_year
 
@@ -73,10 +75,19 @@ program blend_risk
         balance = initial_balance
         withdrawal = initial_withdrawal
         do year=1,years
-           rand_year = rand_int(2023, 2000)
-           balance = p_add(p_of(balance, real(hp, rk)), snp_dat(rand_year)) + p_add(p_of(balance, real(100-hp, rk)), dgs10_dat(rand_year))
+           if (coupled_mc) then
+              rand_year = rand_int(2023, 2000)
+              c_snp = snp_dat(rand_year)
+              c_dgs = dgs10_dat(rand_year)
+              c_inf = inf_dat(rand_year)
+           else
+              c_snp = snp_dat(rand_int(2023, 2000))
+              c_dgs = dgs10_dat(rand_int(2023, 2000))
+              c_inf = inf_dat(rand_int(2023, 2000))
+           end if
+           balance = p_add(p_of(balance, real(hp, rk)), c_snp) + p_add(p_of(balance, real(100-hp, rk)), c_dgs)
            balance = balance - min(withdrawal, balance)
-           withdrawal = p_add(withdrawal, max(0.0_rk, inf_dat(rand_year)))
+           withdrawal = p_add(withdrawal, max(0.0_rk, c_inf))
         end do
         print '(i10,i10,f20.5)', trial, hp, balance
      end do

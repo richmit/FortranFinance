@@ -58,7 +58,7 @@ daDat <- fread("blend_risk.txt") %>% mutate(hp=factor(hp))
 ## print(gp)
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-successDat <- daDat %>% group_by(hp) %>% summarize(success=100-100*sum(balance<=0)/length(balance), .group='drop') %>% mutate(hp=as.integer(hp))
+successDat <- daDat %>% group_by(hp) %>% summarize(success=100-100*sum(balance<=0)/length(balance), .groups='drop') %>% mutate(hp=as.integer(hp))
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 gp <- ggplot(data=successDat) +

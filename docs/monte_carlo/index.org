@@ -108,10 +108,15 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
   Approach:
 
   For each possible integer percentage mix of S&P & bonds (i.e. percentages of S&P that range from 0% up to 100%) we run 100000
-  (trials) simulations.  The simulations use historical data.  The technique is called "coupled resampling" where we pick a
+  (=trials=) simulations.  The simulations use historical data.  The technique is called "coupled resampling" where we pick a
   random year, and use the measured values for that year for all three variables (S&P 500 return, 10 year US Treasury bond
   return, and US inflation).  This technique attempts to capture the inherent correlation between the variables; however, when
-  used with low resolution data it can create bias in the results.
-
+  used with low resolution data it can create bias in the results.  Note we can switch to uncoupled via the variable
+  =coupled_mc=.
 
   [[file:pics/blend_risk_full.png][file:pics/blend_risk_800x.png]]
+
+  This next image shows the difference in results between coupled resampling (correlated) and uncoupled resampling (uncorrelated) monte carlo for this
+  particular scenario.
+
+  [[file:pics/blend_risk_cvuc_full.png][file:pics/blend_risk_cvuc_800x.png]]
