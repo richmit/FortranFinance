@@ -49,7 +49,7 @@ TXT_TARGETS := inflation.txt stocks.txt blend.out
 PNG_TARGETS := inflation.png stocks_paths.png stocks_ranges.png blend_risk.png
 
 inflation.png : inflation.R inflation.txt
-	R -q -f inflation.R
+	R -q -f inflation.R > /dev/null
 
 inflation.txt : inflation
 	rm -f inflation.txt
@@ -59,7 +59,7 @@ inflation : inflation.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 
 stocks_ranges.png stocks_paths.png &: stocks.R stocks.txt
-	R -q -f stocks.R
+	R -q -f stocks.R > /dev/null
 
 stocks.txt : stocks
 	rm -f stocks.txt
@@ -69,7 +69,7 @@ stocks : stocks.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 
 blend_risk.png &: blend_risk.R blend_risk.txt
-	R -q -f blend_risk.R
+	R -q -f blend_risk.R > /dev/null
 
 blend_risk.txt : blend_risk
 	rm -f blend_risk.txt
