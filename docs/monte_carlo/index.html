@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-02 Thu 16:18 -->
+<!-- 2025-01-16 Thu 12:11 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-02 16:18:28</i></td>
+<td class="org-left"><i>2025-01-16 12:11:55</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-02 16:18:35</i></td>
+<td class="org-left"><i>2025-01-16 12:11:57</i></td>
 </tr>
 </tbody>
 </table>
@@ -254,6 +254,7 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <ul>
 <li><a href="#inflation">1. <code>inflation.f90</code> &amp; <code>inflation.R</code></a></li>
 <li><a href="#stocks">2. <code>stocks.f90</code> &amp; <code>stocks.R</code></a></li>
+<li><a href="#blend_risk">3. <code>blend_risk.f90</code> &amp; <code>blend_risk.R</code></a></li>
 </ul>
 </div>
 </div>
@@ -279,8 +280,8 @@ See inflation.f90 for an example of "end point" Monte Carlo &#x2013; where we on
 </p>
 
 
-<div id="org104e457" class="figure">
-<p><a href="pics/inflation.png"><img src="pics/inflation_512.png" alt="inflation_512.png" /></a>
+<div id="orged42f9e" class="figure">
+<p><a href="pics/inflation_full.png"><img src="pics/inflation_800x.png" alt="inflation_800x.png" /></a>
 </p>
 </div>
 </div>
@@ -302,15 +303,48 @@ scenario using resampled values from historical data, and then analyze the resul
 </p>
 
 
-
-<div id="orgbb883a3" class="figure">
-<p><a href="pics/stocks_paths.png"><img src="pics/stocks_paths_512.png" alt="stocks_paths_512.png" /></a>
+<div id="orgec5f770" class="figure">
+<p><a href="pics/stocks_paths_full.png"><img src="pics/stocks_paths_800x.png" alt="stocks_paths_800x.png" /></a>
 </p>
 </div>
 
 
-<div id="org401ca4a" class="figure">
-<p><a href="pics/stocks_ranges.png"><img src="pics/stocks_ranges_512.png" alt="stocks_ranges_512.png" /></a>
+<div id="org6e62bda" class="figure">
+<p><a href="pics/stocks_ranges_full.png"><img src="pics/stocks_ranges_800x.png" alt="stocks_ranges_800x.png" /></a>
+</p>
+</div>
+</div>
+</div>
+
+
+<div id="outline-container-blend_risk" class="outline-2">
+<h2 id="blend_risk"><span class="section-number-2">3.</span> <code>blend_risk.f90</code> &amp; <code>blend_risk.R</code></h2>
+<div class="outline-text-2" id="text-blend_risk">
+<p>
+Scenario:
+</p>
+
+<p>
+We start with 4M in the bank.  Over the next 50 years we wish to withdrawal 100K at the end of each year &#x2013; and grow that
+value over time with inflation.  We invest the money in a blend of S&amp;P 500 and US 10 year treasury bonds.
+</p>
+
+<p>
+Approach:
+</p>
+
+<p>
+For each possible integer percentage mix of S&amp;P &amp; bonds (i.e. percentages of S&amp;P that range from 0% up to 100%) we run 100000
+(trials) simulations.  The simulations use historical data.  The technique is called "coupled resampling" where we pick a
+random year, and use the measured values for that year for all three variables (S&amp;P 500 return, 10 year US Treasury bond
+return, and US inflation).  This technique attempts to capture the inherent correlation between the variables; however, when
+used with low resolution data it can create bias in the results.
+</p>
+
+
+
+<div id="org2f6404d" class="figure">
+<p><a href="pics/blend_risk_full.png"><img src="pics/blend_risk_800x.png" alt="blend_risk_800x.png" /></a>
 </p>
 </div>
 </div>

@@ -20,6 +20,7 @@ a.out
 /monte_carlo/stocks
 /monte_carlo/inflation.txt
 /monte_carlo/stocks.txt 
+/monte_carlo/blend_risk.txt
 /monte_carlo/*.png
 
 /MRFFL_functional_tests/test_markets

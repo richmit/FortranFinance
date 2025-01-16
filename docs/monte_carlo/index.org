@@ -50,7 +50,7 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
 :END:
 
 #+begin_src sh :results output raw :exports results 
-~/core/codeBits/bin/srcHdrInfo -i details inflation.f90
+~/core/codeBits/bin/srcHdrInfo -i details ../../monte_carlo/inflation.f90
 #+end_src
 
 #+RESULTS:
@@ -63,7 +63,7 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
   This is sometimes called "trajectory" Monte Carlo because we record the entire trajectory, the steps, of each simulation.
   See inflation.f90 for an example of "end point" Monte Carlo -- where we only store the final step of each simulation.
 
-  [[file:pics/inflation.png][file:pics/inflation_512.png]]
+  [[file:pics/inflation_full.png][file:pics/inflation_800x.png]]
 
 * ~stocks.f90~ & ~stocks.R~
 :PROPERTIES:
@@ -71,7 +71,7 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
 :END:
 
 #+begin_src sh :results output raw :exports results 
-~/core/codeBits/bin/srcHdrInfo -i details stocks.f90
+~/core/codeBits/bin/srcHdrInfo -i details  ../../monte_carlo/stocks.f90
 #+end_src
 
 #+RESULTS:
@@ -84,8 +84,34 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
   This technique is frequently called "monte carlo" in finance circles.  The heart of the idea is pretty simple.  Simulate the
   scenario using resampled values from historical data, and then analyze the result.
 
+  [[file:pics/stocks_paths_full.png][file:pics/stocks_paths_800x.png]]
 
-  [[file:pics/stocks_paths.png][file:pics/stocks_paths_512.png]]
+  [[file:pics/stocks_ranges_full.png][file:pics/stocks_ranges_800x.png]]
 
-  [[file:pics/stocks_ranges.png][file:pics/stocks_ranges_512.png]]
 
+* ~blend_risk.f90~ & ~blend_risk.R~
+:PROPERTIES:
+:CUSTOM_ID: blend_risk
+:END:
+
+#+begin_src sh :results output raw :exports results 
+~/core/codeBits/bin/srcHdrInfo -i details ../../monte_carlo/blend_risk.f90
+#+end_src
+
+#+RESULTS:
+
+  Scenario:
+
+  We start with 4M in the bank.  Over the next 50 years we wish to withdrawal 100K at the end of each year -- and grow that
+  value over time with inflation.  We invest the money in a blend of S&P 500 and US 10 year treasury bonds.
+
+  Approach:
+
+  For each possible integer percentage mix of S&P & bonds (i.e. percentages of S&P that range from 0% up to 100%) we run 100000
+  (trials) simulations.  The simulations use historical data.  The technique is called "coupled resampling" where we pick a
+  random year, and use the measured values for that year for all three variables (S&P 500 return, 10 year US Treasury bond
+  return, and US inflation).  This technique attempts to capture the inherent correlation between the variables; however, when
+  used with low resolution data it can create bias in the results.
+
+
+  [[file:pics/blend_risk_full.png][file:pics/blend_risk_800x.png]]

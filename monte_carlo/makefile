@@ -44,9 +44,9 @@ include $(MRFFL_PATH)/include.mk
 
 ################################################################################################################################################################
 
-EXE_TARGETS := inflation stocks
-TXT_TARGETS := inflation.txt stocks.txt 
-PNG_TARGETS := inflation.png stocks_paths.png stocks_ranges.png
+EXE_TARGETS := inflation stocks blend
+TXT_TARGETS := inflation.txt stocks.txt blend.out
+PNG_TARGETS := inflation.png stocks_paths.png stocks_ranges.png blend_risk.png
 
 inflation.png : inflation.R inflation.txt
 	R -q -f inflation.R
@@ -66,6 +66,16 @@ stocks.txt : stocks
 	./stocks$(EXE_SUFFIX) > stocks.txt
 
 stocks : stocks.f90 $(MRFFL_OBJ_FILES)
+	$(FC) $(FFLAGS) $^ -o $@
+
+blend_risk.png &: blend_risk.R blend_risk.txt
+	R -q -f blend_risk.R
+
+blend_risk.txt : blend_risk
+	rm -f blend_risk.txt
+	./blend_risk$(EXE_SUFFIX) > blend_risk.txt
+
+blend_risk : blend_risk.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 
 ################################################################################################################################################################
