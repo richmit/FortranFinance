@@ -32,6 +32,11 @@
 !!  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 !!  OF THE POSSIBILITY OF SUCH DAMAGE.
 !!  @endparblock
+!!
+!!  Todo:
+!!   - Add IRR
+!!   - NPV -- it's just PV in this module, but a wrapper might help people find it.  
+!!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
