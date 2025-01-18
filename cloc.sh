@@ -34,4 +34,4 @@
 DIRS='MRFFL_unit_tests MRFFL_functional_tests cashflows retirement loans monte_carlo retirement_simulation docs'
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-cloc --force-lang='Fortran 90',nml --force-lang=make,mk --exclude-ext=html --force-lang=Markdown,org  $DIRS
+cloc --force-lang='Fortran 90',nml --force-lang=make,mk --exclude-ext=html,txt --force-lang=Markdown,org  $DIRS

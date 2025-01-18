@@ -41,6 +41,7 @@ program test_stats
   real(kind=rk)    :: m, v
   integer(kind=ik) :: lim = 5
   integer          :: i
+  integer          :: out_io_unit
 
   print *
   call mean_and_variance(m, v, a)
@@ -72,5 +73,12 @@ program test_stats
   end do
 
   print *
+
+  open(newunit=out_io_unit, file='test_stats_rand_norm_std.txt', form='formatted', action='write')
+  write (unit=out_io_unit, fmt='(a20,a20)') "z_box", "z_probit"
+  do i=1,1000000
+     write (unit=out_io_unit, fmt='(f20.5,f20.5)') rand_norm_std(), rand_norm_std_probit()
+  end do
+  close(unit=out_io_unit, status='keep')
 
 end program test_stats

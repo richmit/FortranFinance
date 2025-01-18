@@ -38,14 +38,16 @@
 !> Some statstical utilities supporting other MRFFL modules.
 !!
 module mrffl_stats
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
   implicit none  
   private                  
 
-  public  :: resample_tail, resample_head
   public  :: mean_and_variance
-  public  :: rand_int, rand_real
-  public  :: rand_norm_std, rand_norm, rand_log_norm
+  public  :: rand_int, rand_real                     ! Function wrapper on built in PRNG
+  public  :: resample_tail, resample_head            ! Use rand_int
+  public  :: rand_norm_std_box, rand_norm_std_probit ! Use: rand_real -- these are the fundamental normal generators
+  public  :: rand_norm_std                           ! Use: rand_norm_std_box or rand_norm_std_probit
+  public  :: rand_norm, rand_log_norm                ! Use: rand_norm_std
   public  :: probit
 
 contains
@@ -142,14 +144,42 @@ contains
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Return random value from the standard normal distribution.
   !!
+  !! This function simply calls the preferred rand_norm_std_* function.  Currently that's rand_norm_std_probit().
+  !!
   real(kind=rk) function rand_norm_std()
+    implicit none
+    rand_norm_std = rand_norm_std_probit()
+  end function rand_norm_std
+
+  !--------------------------------------------------------------------------------------------------------------------------------
+  !> Return random value from the standard normal distribution using the Box-Muller transform.
+  !!
+  !! Reference:
+  !!   Box, G. E. P., and Mervin E. Muller. 1958. "A Note on the Generation of Random Normal Deviates." The Annals of Mathematical Statistics 29 (2): 610-11.
+  !!
+  real(kind=rk) function rand_norm_std_box()
     implicit none
     real(kind=rk), parameter :: pi = 4.0_rk * atan(1.0_rk)
     real(kind=rk)            :: u, v
     call random_number(u)
     call random_number(v)
-    rand_norm_std = sqrt(-2 * log(u)) * cos(2 * pi * v)  ! sqrt(-2 * log(u)) * sin(2 * pi * v)
-  end function rand_norm_std
+    rand_norm_std_box = sqrt(-2 * log(u)) * cos(2 * pi * v)  ! sqrt(-2 * log(u)) * sin(2 * pi * v)
+  end function rand_norm_std_box
+
+  !--------------------------------------------------------------------------------------------------------------------------------
+  !> Return random value from the standard normal distribution using the Probit function.
+  !!
+  real(kind=rk) function rand_norm_std_probit()
+    implicit none
+    real(kind=rk) :: u
+    do 
+       call random_number(u)
+       if ((u > zero_epsilon) .and. (u < (1.0_rk - zero_epsilon))) then
+          rand_norm_std_probit = probit(u)
+          return
+       end if
+    end do
+  end function rand_norm_std_probit
 
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Return random value from the specified normal distribution.
@@ -247,7 +277,9 @@ contains
   end function probit
 
   !--------------------------------------------------------------------------------------------------------------------------------
-  !> Evaluate a univariate polynomial.
+  !> Evaluate a univariate polynomial.  
+  !!
+  !! Used by probit.  Not exported from the module.
   !!
   !! The polynomial is ordered in the natural way with the highest coefficient first in the array:
   !!   @f[ p=\sum_{k=1}^{d+1} p_kx^{1+d-k} @f]
