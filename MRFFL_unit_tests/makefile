@@ -47,24 +47,24 @@ include $(MRFFL_PATH)/include.mk
 
 NDIF := ~/world/my_prog/utils/float_diff.rb
 
-EXE_TARGETS := test_percentages test_tvm_lump_sum_solve test_inflation test_tvm_delayed_geometric_annuity_solve test_tvm_delayed_lump_sum_solve test_tvm_cashflows test_tvm_delayed_arithmetic_annuity_solve test_taxes test_tvm12 test_tvm_delayed_level_annuity_solve test_life_table test_life_table_print test_stats_probit
+EXE_TARGETS := utest_percentages utest_tvm_lump_sum_solve utest_inflation utest_tvm_delayed_geometric_annuity_solve utest_tvm_delayed_lump_sum_solve utest_tvm_cashflows utest_tvm_delayed_arithmetic_annuity_solve utest_taxes utest_tvm12 utest_tvm_delayed_level_annuity_solve utest_life_table utest_life_table_print utest_stats_probit
 
 # Set RUNEM to something to run the binaries after being built.  I normally set it on the command line like this: 
-#     make RUNEM=T test_percentages
+#     make RUNEM=T utest_percentages
 # The value need not be "T" -- any non-whitespace should work.
 RUNEM := 
 
 # Set TESTEM to something to run tests after being built.  I normally set it on the command line like this: 
-#     make TESTEM=T test_percentages
+#     make TESTEM=T utest_percentages
 # The value need not be "T" -- any non-whitespace should work.
 TESTEM :=
 
 # Set GOLDEM to something to create golden regression files.  I normally set it on the command line like this: 
-#     make GOLDEM=T test_percentages
+#     make GOLDEM=T utest_percentages
 # The value need not be "T" -- any non-whitespace should work.
 GOLDEM := 
 
-test_stats_probit : test_stats_probit.f90 $(MRFFL_OBJ_FILES)
+utest_stats_probit : utest_stats_probit.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -78,7 +78,7 @@ ifdef TESTEM
 endif
 
 
-test_life_table_print : test_life_table_print.f90 $(MRFFL_OBJ_FILES)
+utest_life_table_print : utest_life_table_print.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -91,7 +91,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_life_table : test_life_table.f90 $(MRFFL_OBJ_FILES)
+utest_life_table : utest_life_table.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -104,7 +104,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_inflation : test_inflation.f90 $(MRFFL_OBJ_FILES)
+utest_inflation : utest_inflation.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -117,7 +117,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_percentages : test_percentages.f90 $(MRFFL_OBJ_FILES)
+utest_percentages : utest_percentages.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -130,7 +130,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_tvm_lump_sum_solve : test_tvm_lump_sum_solve.f90 $(MRFFL_OBJ_FILES)
+utest_tvm_lump_sum_solve : utest_tvm_lump_sum_solve.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -143,7 +143,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_tvm12 : test_tvm12.f90 $(MRFFL_OBJ_FILES)
+utest_tvm12 : utest_tvm12.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -156,7 +156,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_tvm_delayed_level_annuity_solve : test_tvm_delayed_level_annuity_solve.f90 $(MRFFL_OBJ_FILES)
+utest_tvm_delayed_level_annuity_solve : utest_tvm_delayed_level_annuity_solve.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -169,7 +169,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_tvm_delayed_geometric_annuity_solve : test_tvm_delayed_geometric_annuity_solve.f90 $(MRFFL_OBJ_FILES)
+utest_tvm_delayed_geometric_annuity_solve : utest_tvm_delayed_geometric_annuity_solve.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -182,7 +182,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_tvm_delayed_lump_sum_solve : test_tvm_delayed_lump_sum_solve.f90 $(MRFFL_OBJ_FILES)
+utest_tvm_delayed_lump_sum_solve : utest_tvm_delayed_lump_sum_solve.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -195,7 +195,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_tvm_cashflows : test_tvm_cashflows.f90 $(MRFFL_OBJ_FILES)
+utest_tvm_cashflows : utest_tvm_cashflows.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -208,7 +208,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_taxes : test_taxes.f90 $(MRFFL_OBJ_FILES)
+utest_taxes : utest_taxes.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -221,7 +221,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_markets : test_markets.f90 $(MRFFL_OBJ_FILES)
+utest_markets : utest_markets.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
@@ -234,7 +234,7 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-test_tvm_delayed_arithmetic_annuity_solve : test_tvm_delayed_arithmetic_annuity_solve.f90 $(MRFFL_OBJ_FILES)
+utest_tvm_delayed_arithmetic_annuity_solve : utest_tvm_delayed_arithmetic_annuity_solve.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
 	./$@$(EXE_SUFFIX)
