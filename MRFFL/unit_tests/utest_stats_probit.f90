@@ -1,6 +1,6 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program test_stats_probit
-  use mrffl_config, only: rk=>mrfflrk
+  use mrffl_config, only: rk=>mrfflrk, zero_epsilon
   use mrffl_stats
 
   print '(a30,es20.8,a20)',   "probit(-1.0_rk)",          probit(-1.0_rk),           "Neg Inf"
@@ -27,5 +27,8 @@ program test_stats_probit
   print '(a30,f20.8,f20.8)',  "probit(0.9999_rk)",        probit(0.9999_rk),         3.7190164113084019_rk   
                                                                                    
   print '(a30,f20.8,f20.8)',  "probit(0.025_rk)",         probit(0.025_rk),         -1.9599639350393654_rk  
+
+  print *, probit(zero_epsilon)
+  print *, probit(1-zero_epsilon)
 
 end program test_stats_probit

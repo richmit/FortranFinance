@@ -1,7 +1,7 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      test_markets.f90
+!! @file      ftest_markets.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
 !! @brief     Test resample methods in mrffl_us_markets.@EOL
@@ -35,7 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program test_markets
+program ftest_markets
   use mrffl_config, only: ik=>mrfflik
   use mrffl_us_markets, only: snp_resample
   integer :: i
@@ -44,4 +44,4 @@ program test_markets
      print "(a50,f20.5)", "snp_resample", snp_resample(10_ik)
   end do
 
-end program test_markets
+end program ftest_markets

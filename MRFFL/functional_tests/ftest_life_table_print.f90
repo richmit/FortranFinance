@@ -1,7 +1,7 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      test_life_table_print.f90
+!! @file      ftest_life_table_print.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
 !! @brief     Test life_table_print subroutine.@EOL
@@ -35,7 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program test_life_table_print
+program ftest_life_table_print
   use, intrinsic :: iso_fortran_env,   only: output_unit
   use, intrinsic :: iso_c_binding
   use            :: mrffl_config,      only: rk=>mrfflrk, ik=>mrfflik
@@ -78,44 +78,44 @@ program test_life_table_print
        1.0000000]
 
   integer :: out_io_unit
-open(newunit=out_io_unit, file='test_life_table_print_usss_f_qx.txt', form='formatted', action='write')
+open(newunit=out_io_unit, file='ftest_life_table_print_usss_f_qx.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_title+prt_table, usss_f_qx_dat, 100000_ik)
   close(unit=out_io_unit, status='keep')
 
-  open(newunit=out_io_unit, file='test_life_table_print_usss_f_lx.txt', form='formatted', action='write')
+  open(newunit=out_io_unit, file='ftest_life_table_print_usss_f_lx.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_title+prt_table, usss_f_lx_dat,      0_ik)
   close(unit=out_io_unit, status='keep')
 
-  open(newunit=out_io_unit, file='test_life_table_print_usss_m_qx.txt', form='formatted', action='write')
+  open(newunit=out_io_unit, file='ftest_life_table_print_usss_m_qx.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_title+prt_table, usss_m_qx_dat, 100000_ik)
   close(unit=out_io_unit, status='keep')
 
-  open(newunit=out_io_unit, file='test_life_table_print_usss_m_lx.txt', form='formatted', action='write')
+  open(newunit=out_io_unit, file='ftest_life_table_print_usss_m_lx.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_title+prt_table, usss_m_lx_dat, 0_ik)
   close(unit=out_io_unit, status='keep')
 
-  open(newunit=out_io_unit, file='test_life_table_print_cdc_wm_lx.txt', form='formatted', action='write')
+  open(newunit=out_io_unit, file='ftest_life_table_print_cdc_wm_lx.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_ALL, uscdc_w_m_lx_dat, 0_ik)
   close(unit=out_io_unit, status='keep')
 
-  open(newunit=out_io_unit, file='test_life_table_print_cdc_wf_lx.txt', form='formatted', action='write')
+  open(newunit=out_io_unit, file='ftest_life_table_print_cdc_wf_lx.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_ALL, uscdc_w_f_lx_dat, 0_ik)
   close(unit=out_io_unit, status='keep')
 
-  open(newunit=out_io_unit, file='test_life_table_print_cdc_w_lx.txt', form='formatted', action='write')
+  open(newunit=out_io_unit, file='ftest_life_table_print_cdc_w_lx.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_ALL, uscdc_w_lx_dat, 0_ik)
   close(unit=out_io_unit, status='keep')
 
-  open(newunit=out_io_unit, file='test_life_table_print_cdc_lx.txt', form='formatted', action='write')
+  open(newunit=out_io_unit, file='ftest_life_table_print_cdc_lx.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_ALL, uscdc_lx_dat, 0_ik)
   close(unit=out_io_unit, status='keep')
 
-  open(newunit=out_io_unit, file='test_life_table_print_cdc_qx.txt', form='formatted', action='write')
+  open(newunit=out_io_unit, file='ftest_life_table_print_cdc_qx.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_ALL, uscdc_qx_dat, 100000_ik)
   close(unit=out_io_unit, status='keep')
 
-  open(newunit=out_io_unit, file='test_life_table_print_cdc_qxlx_dat.txt', form='formatted', action='write')
+  open(newunit=out_io_unit, file='ftest_life_table_print_cdc_qxlx_dat.txt', form='formatted', action='write')
   call life_table_print(out_io_unit, prt_ALL, uscdc_qxlx_dat, 100000_ik)
   close(unit=out_io_unit, status='keep')
 
-end program test_life_table_print
+end program ftest_life_table_print

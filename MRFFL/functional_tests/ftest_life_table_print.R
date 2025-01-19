@@ -2,10 +2,10 @@
 # -*- Mode:ess-r; Coding:us-ascii-unix; fill-column:158 -*-
 #########################################################################################################################################################.H.S.##
 ##
-# @file      test_life_table_print.R
+# @file      ftest_life_table_print.R
 # @author    Mitch Richling http://www.mitchr.me/
 # @date      2025-01-11
-# @brief     Analyze data from test_life_table_print.f90.@EOL
+# @brief     Analyze data from ftest_life_table_print.f90.@EOL
 # @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 # @std       GNU-R
 # @see       https://github.com/richmit/FortranFinance
@@ -40,18 +40,18 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-cdc_lx    <- fread('test_life_table_print_cdc_lx.txt')
-cdc_qx    <- fread('test_life_table_print_cdc_qx.txt')
-cdc_wf_lx <- fread('test_life_table_print_cdc_wf_lx.txt')
-cdc_wm_lx <- fread('test_life_table_print_cdc_wm_lx.txt')
-cdc_w_lx  <- fread('test_life_table_print_cdc_w_lx.txt')
-usss_f_lx <- fread('test_life_table_print_usss_f_lx.txt')
-usss_f_qx <- fread('test_life_table_print_usss_f_qx.txt')
-usss_m_lx <- fread('test_life_table_print_usss_m_lx.txt')
-usss_m_qx <- fread('test_life_table_print_usss_m_qx.txt')
+cdc_lx    <- fread('ftest_life_table_print_cdc_lx.txt')
+cdc_qx    <- fread('ftest_life_table_print_cdc_qx.txt')
+cdc_wf_lx <- fread('ftest_life_table_print_cdc_wf_lx.txt')
+cdc_wm_lx <- fread('ftest_life_table_print_cdc_wm_lx.txt')
+cdc_w_lx  <- fread('ftest_life_table_print_cdc_w_lx.txt')
+usss_f_lx <- fread('ftest_life_table_print_usss_f_lx.txt')
+usss_f_qx <- fread('ftest_life_table_print_usss_f_qx.txt')
+usss_m_lx <- fread('ftest_life_table_print_usss_m_lx.txt')
+usss_m_qx <- fread('ftest_life_table_print_usss_m_qx.txt')
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-cdc_qxlx_lx <- fread('test_life_table_print_cdc_qxlx_dat.txt')
+cdc_qxlx_lx <- fread('ftest_life_table_print_cdc_qxlx_dat.txt')
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 cdc_src    <- fread('../../data/cdc_us_population_2021.csv')
