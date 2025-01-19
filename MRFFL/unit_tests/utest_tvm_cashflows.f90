@@ -1,7 +1,7 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      test_cashflows.f90
+!! @file      utest_cashflows.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
 !! @brief     Unit Tests: mrffl_cashflows.@EOL
@@ -35,7 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program test_cashflows
+program utest_cashflows
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
   use mrffl_cashflows
   use mrffl_prt_sets
@@ -95,5 +95,5 @@ program test_cashflows
   call make_cashflow_vector_delayed_lump(cfm(:,7), 100.0_rk, 3_ik, status)
   call cashflow_matrix_value_print(cfm, i, pv, fv, status, prt_ALL)
 
-end program test_cashflows
+end program utest_cashflows
 

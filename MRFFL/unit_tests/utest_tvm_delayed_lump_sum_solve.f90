@@ -1,10 +1,10 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      test_tvm_delayed_lump_sum_solve.f90
+!! @file      utest_tvm_delayed_lump_sum_solve.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
-!! @brief     Unit Tests: test_tvm_delayed_lump_sum_solve from mrffl_tvm.@EOL
+!! @brief     Unit Tests: utest_tvm_delayed_lump_sum_solve from mrffl_tvm.@EOL
 !! @keywords  finance fortran monte carlo cashflows cashflow time value of money tvm cashflows taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
@@ -35,7 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program test_tvm_delayed_lump_sum_solve
+program utest_tvm_delayed_lump_sum_solve
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
   use mrffl_tvm
   use mrffl_var_sets
@@ -245,4 +245,4 @@ contains
        status = -1
     end if
   end subroutine setem
-end program test_tvm_delayed_lump_sum_solve
+end program utest_tvm_delayed_lump_sum_solve

@@ -1,7 +1,7 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      test_taxes.f90
+!! @file      utest_taxes.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
 !! @brief     Unit Tests: mrffl_us_taxes.@EOL
@@ -35,7 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program test_taxes
+program utest_taxes
   use, intrinsic:: iso_c_binding
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
   use mrffl_us_taxes
@@ -106,4 +106,4 @@ program test_taxes
   print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax(12761.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 10.0_rk), 12760.0_rk*10/100 + 12.0_rk/100
 
 
-end program test_taxes
+end program utest_taxes

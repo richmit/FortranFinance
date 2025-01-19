@@ -1,7 +1,7 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      test_inflation.f90
+!! @file      utest_inflation.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
 !! @brief     Unit Tests: mrffl_us_inflation.@EOL
@@ -35,7 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program test_inflation
+program utest_inflation
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
   use mrffl_us_inflation
 
@@ -57,4 +57,4 @@ program test_inflation
                                                                                                             
   print "(a50,f20.5,f20.5)", "inf_dat(2023)",                            inf_dat(2023),                     4.1000000000000000
 
-end program test_inflation
+end program utest_inflation

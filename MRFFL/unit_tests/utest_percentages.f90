@@ -1,7 +1,7 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      test_percentages.f90
+!! @file      utest_percentages.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
 !! @brief     Unit Tests: mrffl_percentages.@EOL
@@ -35,7 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program test_percentages
+program utest_percentages
   use mrffl_config, only: rk=>mrfflrk !, ik=>mrfflik
   use mrffl_percentages
 
@@ -84,4 +84,4 @@ program test_percentages
                             
   print "(a20,*(f20.5))", " VEC:",             percentage_of_total( [150.0_rk, 100.0_rk], [100.0_rk, 150.0_rk])  ! 66.666666666666657        150.00000000000000     
 
-end program test_percentages
+end program utest_percentages

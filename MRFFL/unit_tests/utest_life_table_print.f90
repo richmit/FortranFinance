@@ -1,7 +1,7 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      test_life_table_print.f90
+!! @file      utest_life_table_print.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-02
 !! @brief     Unit tests for life_table_print subroutine.@EOL
@@ -35,7 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program test_life_table_print
+program utest_life_table_print
   use, intrinsic :: iso_fortran_env, only: output_unit
   use mrffl_config, only: ik=>mrfflik
   use mrffl_life_table
@@ -59,4 +59,4 @@ program test_life_table_print
   print '(a)', "uscdc_lx_dat"
   call life_table_print(output_unit, prt_ALL, uscdc_lx_dat,       0_ik)
 
-end program test_life_table_print
+end program utest_life_table_print

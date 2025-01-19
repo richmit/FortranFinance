@@ -220,19 +220,6 @@ ifdef TESTEM
 	$(NDIF) -Dba -e 1e-5 $@.good $@.test
 endif
 
-utest_markets : utest_markets.f90 $(MRFFL_OBJ_FILES)
-	$(FC) $(FFLAGS) $^ -o $@
-ifdef RUNEM
-	./$@$(EXE_SUFFIX)
-endif
-ifdef GOLDEM
-	./$@$(EXE_SUFFIX) > $@.good
-endif
-ifdef TESTEM
-	./$@$(EXE_SUFFIX) > $@.test
-	$(NDIF) -Dba -e 1e-5 $@.good $@.test
-endif
-
 utest_tvm_delayed_arithmetic_annuity_solve : utest_tvm_delayed_arithmetic_annuity_solve.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
 ifdef RUNEM
