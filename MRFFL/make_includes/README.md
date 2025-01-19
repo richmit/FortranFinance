@@ -4,4 +4,4 @@ This directory contains some GNU Make files to be included in make files using M
 
 -mitch
 
-Have Fun
+PS: Have Fun!

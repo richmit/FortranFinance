@@ -9,4 +9,4 @@ to my web site.
 
 -mitch
 
-Have Fun
+PS: Have Fun!

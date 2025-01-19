@@ -4,4 +4,4 @@ This directory contains the source for the MRFFL library.
 
 -mitch
 
-Have Fun
+PS: Have Fun!

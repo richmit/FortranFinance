@@ -8,4 +8,4 @@ compared to a known good output file.
 
 -mitch
 
-Have Fun
+PS: Have Fun!

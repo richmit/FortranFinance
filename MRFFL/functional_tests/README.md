@@ -7,4 +7,4 @@ on the rest.
 
 -mitch
 
-Have Fun
+PS: Have Fun!

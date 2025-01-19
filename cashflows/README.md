@@ -6,4 +6,4 @@ I may add more someday.
 
 -mitch
 
-PS: Have fun!
+PS: Have Fun!

@@ -4,5 +4,5 @@ Documentation is published here: [Docs](https://richmit.github.io/FortranFinance
 
 -mitch
 
-Have Fun
+PS: Have Fun!
 
