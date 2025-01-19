@@ -46,6 +46,7 @@ clean : clean_mrffl
 	rm -f *~ *.tmp.o
 	rm -f $(addsuffix $(EXE_SUFFIX), $(EXE_TARGETS)) $(addsuffix $(OBJ_SUFFIX), $(EXE_TARGETS)) 
 	rm -f test_life_table_print_*.txt
+	rm -f test_stats_rand_norm_std.txt
 
 .PHONY: all
 all : $(EXE_TARGETS) 
