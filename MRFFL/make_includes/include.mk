@@ -59,49 +59,49 @@ MRFFL_STATIC_LIB_FILE  := libmrffl.a
 MRFFL_SHARED_LIB_FILE  := libmrffl$(SLB_SUFFIX)
 MRFFL_LIB_FILES        := $(MRFFL_STATIC_LIB_FILE) $(MRFFL_SHARED_LIB_FILE)
 
-mrffl_config$(OBJ_SUFFIX) mrffl_config.mod &: $(MRFFL_PATH)/mrffl_config.f90
+mrffl_config$(OBJ_SUFFIX) mrffl_config.mod &: $(MRFFL_PATH)/src/mrffl_config.f90
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_stats$(OBJ_SUFFIX) mrffl_stats.mod &: $(MRFFL_PATH)/mrffl_stats.f90 mrffl_config.mod
+mrffl_stats$(OBJ_SUFFIX) mrffl_stats.mod &: $(MRFFL_PATH)/src/mrffl_stats.f90 mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_bitset$(OBJ_SUFFIX) mrffl_bitset.mod &: $(MRFFL_PATH)/mrffl_bitset.f90 mrffl_config.mod
+mrffl_bitset$(OBJ_SUFFIX) mrffl_bitset.mod &: $(MRFFL_PATH)/src/mrffl_bitset.f90 mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_prt_sets$(OBJ_SUFFIX) mrffl_prt_sets.mod &: $(MRFFL_PATH)/mrffl_prt_sets.f90 mrffl_config.mod
+mrffl_prt_sets$(OBJ_SUFFIX) mrffl_prt_sets.mod &: $(MRFFL_PATH)/src/mrffl_prt_sets.f90 mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_var_sets$(OBJ_SUFFIX) mrffl_var_sets.mod &: $(MRFFL_PATH)/mrffl_var_sets.f90 mrffl_config.mod
+mrffl_var_sets$(OBJ_SUFFIX) mrffl_var_sets.mod &: $(MRFFL_PATH)/src/mrffl_var_sets.f90 mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_solver$(OBJ_SUFFIX) mrffl_solver.mod &: $(MRFFL_PATH)/mrffl_solver.f90 mrffl_config.mod
+mrffl_solver$(OBJ_SUFFIX) mrffl_solver.mod &: $(MRFFL_PATH)/src/mrffl_solver.f90 mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_solver_ne$(OBJ_SUFFIX) mrffl_solver_ne.mod &: $(MRFFL_PATH)/mrffl_solver_ne.f90 mrffl_config.mod
+mrffl_solver_ne$(OBJ_SUFFIX) mrffl_solver_ne.mod &: $(MRFFL_PATH)/src/mrffl_solver_ne.f90 mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_tvm12$(OBJ_SUFFIX) mrffl_tvm12.mod &: $(MRFFL_PATH)/mrffl_tvm12.f90 mrffl_percentages.mod mrffl_solver.mod mrffl_tvm.mod mrffl_config.mod
+mrffl_tvm12$(OBJ_SUFFIX) mrffl_tvm12.mod &: $(MRFFL_PATH)/src/mrffl_tvm12.f90 mrffl_percentages.mod mrffl_solver.mod mrffl_tvm.mod mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_percentages$(OBJ_SUFFIX) mrffl_percentages.mod &: $(MRFFL_PATH)/mrffl_percentages.f90 mrffl_config.mod
+mrffl_percentages$(OBJ_SUFFIX) mrffl_percentages.mod &: $(MRFFL_PATH)/src/mrffl_percentages.f90 mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_us_markets$(OBJ_SUFFIX) mrffl_us_markets.mod &: $(MRFFL_PATH)/mrffl_us_markets.f90 mrffl_stats.mod mrffl_config.mod
+mrffl_us_markets$(OBJ_SUFFIX) mrffl_us_markets.mod &: $(MRFFL_PATH)/src/mrffl_us_markets.f90 mrffl_stats.mod mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_life_table$(OBJ_SUFFIX) mrffl_life_table.mod &: $(MRFFL_PATH)/mrffl_life_table.f90 mrffl_bitset.mod mrffl_stats.mod mrffl_prt_sets.mod mrffl_config.mod
+mrffl_life_table$(OBJ_SUFFIX) mrffl_life_table.mod &: $(MRFFL_PATH)/src/mrffl_life_table.f90 mrffl_bitset.mod mrffl_stats.mod mrffl_prt_sets.mod mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_us_inflation$(OBJ_SUFFIX) mrffl_us_inflation.mod &: $(MRFFL_PATH)/mrffl_us_inflation.f90 mrffl_percentages.mod mrffl_stats.mod mrffl_config.mod
+mrffl_us_inflation$(OBJ_SUFFIX) mrffl_us_inflation.mod &: $(MRFFL_PATH)/src/mrffl_us_inflation.f90 mrffl_percentages.mod mrffl_stats.mod mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_tvm$(OBJ_SUFFIX) mrffl_tvm.mod &: $(MRFFL_PATH)/mrffl_tvm.f90 mrffl_solver.mod mrffl_percentages.mod mrffl_config.mod
+mrffl_tvm$(OBJ_SUFFIX) mrffl_tvm.mod &: $(MRFFL_PATH)/src/mrffl_tvm.f90 mrffl_solver.mod mrffl_percentages.mod mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_cashflows$(OBJ_SUFFIX) mrffl_cashflows.mod &: $(MRFFL_PATH)/mrffl_cashflows.f90 mrffl_tvm.mod  mrffl_config.mod
+mrffl_cashflows$(OBJ_SUFFIX) mrffl_cashflows.mod &: $(MRFFL_PATH)/src/mrffl_cashflows.f90 mrffl_tvm.mod  mrffl_config.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
-mrffl_us_taxes$(OBJ_SUFFIX) mrffl_us_taxes.mod &: $(MRFFL_PATH)/mrffl_us_taxes.f90 mrffl_config.mod mrffl_tvm.mod
+mrffl_us_taxes$(OBJ_SUFFIX) mrffl_us_taxes.mod &: $(MRFFL_PATH)/src/mrffl_us_taxes.f90 mrffl_config.mod mrffl_tvm.mod
 	$(FC) $(FFLAGS) -c $< -o $(basename $@)$(OBJ_SUFFIX)
 
 $(MRFFL_STATIC_LIB_FILE) : $(MRFFL_MOD_FILES) $(MRFFL_OBJ_FILES)
