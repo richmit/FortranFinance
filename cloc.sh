@@ -31,7 +31,7 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-DIRS='MRFFL_unit_tests MRFFL_functional_tests cashflows retirement loans monte_carlo retirement_simulation docs'
+DIRS='MRFFL/src MRFFL/unit_tests MRFFL/functional_tests MRFFL/doxygen cashflows retirement loans monte_carlo retirement_simulation docs'
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-cloc --force-lang='Fortran 90',nml --force-lang=make,mk --exclude-ext=html,txt --force-lang=Markdown,org  $DIRS
+cloc --force-lang='Fortran 90',nml --force-lang=make,mk --exclude-ext=html,txt,css,js,svg --not-match-f=DTAGS --force-lang=Markdown,org  $DIRS
