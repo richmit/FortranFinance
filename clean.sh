@@ -6,10 +6,4 @@
 rm -f *~
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-for d in *; do
-  if [ -d $d ]; then
-    if [ -e $d/makefile ]; then
-      (cd $d; make clean)
-    fi
-  fi
-done
+PATH=/usr/bin/ find . -name makefile -execdir sh -c 'pwd; make clean' \;
