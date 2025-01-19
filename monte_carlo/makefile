@@ -44,8 +44,8 @@ include $(MRFFL_PATH)/make_includes/include.mk
 
 ################################################################################################################################################################
 
-EXE_TARGETS := inflation stocks blend
-TXT_TARGETS := inflation.txt stocks.txt blend.out
+EXE_TARGETS := inflation stocks blend_risk
+TXT_TARGETS := inflation.txt stocks.txt blend_risk.txt
 PNG_TARGETS := inflation.png stocks_paths.png stocks_ranges.png blend_risk.png
 
 inflation.png : inflation.R inflation.txt
@@ -83,7 +83,8 @@ blend_risk : blend_risk.f90 $(MRFFL_OBJ_FILES)
 .PHONY: clean
 clean : clean_mrffl 
 	rm -f *~ $(addsuffix $(EXE_SUFFIX), $(EXE_TARGETS)) $(addsuffix $(OBJ_SUFFIX), $(EXE_TARGETS)) $(TXT_TARGETS) $(PNG_TARGETS)
+	rm -f blend_risk_cvuc.png
 
 .PHONY: all
-all : $(PNG_TARGETS)
+all : $(PNG_TARGETS) 
 
