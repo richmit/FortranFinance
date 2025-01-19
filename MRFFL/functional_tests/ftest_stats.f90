@@ -1,7 +1,7 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      test_stats.f90
+!! @file      ftest_stats.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-01
 !! @brief     Test mrffl_stats.@EOL
@@ -33,7 +33,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program test_stats
+program ftest_stats
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
   use mrffl_stats
 
@@ -74,11 +74,11 @@ program test_stats
 
   print *
 
-  open(newunit=out_io_unit, file='test_stats_rand_norm_std.txt', form='formatted', action='write')
-  write (unit=out_io_unit, fmt='(a20,a20)') "z_box", "z_probit"
-  do i=1,1000000
-     write (unit=out_io_unit, fmt='(f20.5,f20.5)') rand_norm_std(), rand_norm_std_probit()
+  open(newunit=out_io_unit, file='ftest_stats_rand_norm_std.txt', form='formatted', action='write')
+  write (unit=out_io_unit, fmt='(a20,a20,a20)') "z_box", "z_probit", "z_probit_clip"
+  do i=1,100000
+     write (unit=out_io_unit, fmt='(f20.5,f20.5,f20.5)') rand_norm_std(), rand_norm_std_probit(), rand_norm_std_probit_clip()
   end do
   close(unit=out_io_unit, status='keep')
 
-end program test_stats
+end program ftest_stats
