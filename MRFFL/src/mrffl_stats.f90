@@ -161,9 +161,18 @@ contains
     implicit none
     real(kind=rk), parameter :: pi = 4.0_rk * atan(1.0_rk)
     real(kind=rk)            :: u, v
-    call random_number(u)
-    call random_number(v)
-    rand_norm_std_box = sqrt(-2 * log(u)) * cos(2 * pi * v)  ! sqrt(-2 * log(u)) * sin(2 * pi * v)
+    logical, save            :: cached_valid = .false.
+    real(kind=rk), save      :: cached_value = 0.0_rk
+    if (cached_valid) then
+       rand_norm_std_box = cached_value
+       cached_valid      = .false.
+    else
+       call random_number(u)
+       call random_number(v)
+       rand_norm_std_box = sqrt(-2 * log(u)) * cos(2 * pi * v) 
+       cached_value      = sqrt(-2 * log(u)) * sin(2 * pi * v)
+       cached_valid      = .true.
+    end if
   end function rand_norm_std_box
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -189,7 +198,7 @@ contains
     real(kind=rk) :: u
     do 
        call random_number(u)
-       if (u >= 1.0_rk) then
+       if (u < 1.0_rk) then
           rand_norm_std_probit = probit(u)
           return
        end if

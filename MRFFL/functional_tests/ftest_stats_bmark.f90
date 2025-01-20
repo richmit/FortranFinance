@@ -1,7 +1,7 @@
 ! -*- Mode:F90; Coding:us-ascii-unix; fill-column:129 -*-
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.S.!!
 !>
-!! @file      ftest_stats.f90
+!! @file      ftest_stats_bmark.f90
 !! @author    Mitch Richling http://www.mitchr.me/
 !! @date      2025-01-01
 !! @brief     Test mrffl_stats.@EOL
@@ -33,52 +33,39 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !----------------------------------------------------------------------------------------------------------------------------------
-program ftest_stats
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
+program ftest_stats_bmark
+  use mrffl_config, only: rk=>mrfflrk
   use mrffl_stats
 
-  real(kind=rk)    :: a(7) = [1,2,3,4,5,6,7]
-  real(kind=rk)    :: m, v
-  integer(kind=ik) :: lim = 5
-  integer          :: i
-  integer          :: out_io_unit
+  integer, parameter :: num_runs = 10000000
+  real(kind=rk)      :: sum
+  integer            :: i, clock_rate, clock_max, clock_start, clock_end
 
-  print *
-  call mean_and_variance(m, v, a)
-  print *, m, v
+  call system_clock(count_rate=clock_rate)
+  call system_clock(count_max=clock_max)
 
-  print *
-  do i=1,10
-     print *, "tail ", resample_tail(a, lim)
+  call system_clock(clock_start)
+  sum = 0
+  do i=1,num_runs
+     sum = sum + rand_norm_std_probit()
   end do
+  call system_clock(clock_end)
+  print '(a25,i10)', "rand_norm_std_probit time: ", (clock_end-clock_start)
 
-  print *
-  do i=1,10
-     print *, "head ", resample_head(a, lim)
+  call system_clock(clock_start)
+  sum = 0
+  do i=1,num_runs
+     sum = sum + rand_norm_std_probit_clip()
   end do
+  call system_clock(clock_end)
+  print '(a25,i10)', "rand_norm_std_probit_clip time: ", (clock_end-clock_start)
 
-  print *
-  do i=1,10
-     print *, "std norm ", rand_norm_std()
+  call system_clock(clock_start)
+  sum = 0
+  do i=1,num_runs
+     sum = sum + rand_norm_std_box()
   end do
+  call system_clock(clock_end)
+  print '(a25,i10)', "rand_norm_std_box time: ", (clock_end-clock_start)
 
-  print *
-  do i=1,10
-     print *, "2,1 norm ", rand_norm(2.0_rk, 1.0_rk)
-  end do
-
-  print *
-  do i=1,10
-     print *, "0,1/4 log_norm ", rand_log_norm(0.0_rk, 0.25_rk)
-  end do
-
-  print *
-
-  open(newunit=out_io_unit, file='ftest_stats_rand_norm_std.txt', form='formatted', action='write')
-  write (unit=out_io_unit, fmt='(a20,a20,a20)') "z_box", "z_probit", "z_probit_clip"
-  do i=1,100000
-     write (unit=out_io_unit, fmt='(f20.5,f20.5,f20.5)') rand_norm_std_box(), rand_norm_std_probit(), rand_norm_std_probit_clip()
-  end do
-  close(unit=out_io_unit, status='keep')
-
-end program ftest_stats
+end program ftest_stats_bmark
