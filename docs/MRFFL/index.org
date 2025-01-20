@@ -31,6 +31,16 @@
 #+HTML_LINK_UP: https://richmit.github.io/FortranFinance/index.html
 # ######################################################################################################################################################.H.E.##
 
+#+ATTR_HTML: :border 2 solid #ccc :frame hsides :align center
+|          <r> | <l>                                          |
+|    *Author:* | /{{{author}}}/                               |
+|   *Updated:* | /{{{modification-time(%Y-%m-%d %H:%M:%S)}}}/ |
+| *Generated:* | /{{{time(%Y-%m-%d %H:%M:%S)}}}/              |
+#+ATTR_HTML: :align center
+Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
+
+#+TOC: headlines 5
+
 * Introduciton
 :PROPERTIES:
 :CUSTOM_ID: intro
@@ -82,19 +92,25 @@ the same variables to populate a cashflow that can be further analyzed or printe
 
 You will find several programs, most of which use MRFFL, in various directories at the base of the
 [[https://github.com/richmit/FortranFinance][FortranFinance]] repository:
-  - [[https://github.com/richmit/FortranFinance/tree/main/cashflows][cashflows]]                           :: Some simple MRFFL cashflow examples.
-  - [[https://github.com/richmit/FortranFinance/tree/main/loans][loans]]                                   :: Illustrates how to use MRFFL TVM solvers in combination with cashflow series.
-  - [[https://github.com/richmit/FortranFinance/tree/main/monte_carlo][monte_carlo]]                       :: Illustrates basic resampling monte carlo for inflation and stock market returns.
-  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_functional_tests][MRFFL_functional_tests]] :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
-  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_unit_tests][MRFFL_unit_tests]]             :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
-  - [[https://github.com/richmit/FortranFinance/tree/main/retirement][retirement]]                         :: Some TVM based retirement computations.
-  - [[https://github.com/richmit/FortranFinance/tree/main/retirement_simulation][retirement_simulation]]   :: A comprehensive simulator for a married couple's retirement (not much MRFFL used here)
+  - [[https://github.com/richmit/FortranFinance/tree/main/cashflows][=cashflows=]]                           :: Some simple MRFFL cashflow examples.
+  - [[https://github.com/richmit/FortranFinance/tree/main/loans][=loans=]]                                   :: Illustrates how to use MRFFL TVM solvers in combination with cashflow series.
+  - [[https://github.com/richmit/FortranFinance/tree/main/monte_carlo][=monte_carlo=]]                       :: Illustrates basic resampling monte carlo for inflation and stock market returns.
+  - [[https://github.com/richmit/FortranFinance/tree/main/retirement][=retirement=]]                         :: Some TVM based retirement computations.
+  - [[https://github.com/richmit/FortranFinance/tree/main/retirement_simulation][=retirement_simulation=]]   :: A comprehensive simulator for a married couple's retirement (not much MRFFL used here)
 
-I use a GNU make based build flow.  You *must* use GNU make to utilize it as I've used some GNU make'isms in the makefiles.  If you don't use GNU make you are
-pretty much on your own.
+In addiont, the unit & functional tests in the MRFFL directory can provide some insight into the useage ofMRFFL:
+  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/functional_tests][=MRFFL/functional_tests=]] :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
+  - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/unit_tests][=MRFFL/unit_tests=]]             :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
 
-In order to compile these on your platform you may need to modify the ~makefile~ in each directory to use your favorite Fortran compiler.  At the top of each
-makefile you will find something like this:
+** Building Example Programs With GNU Make
+:PROPERTIES:
+:CUSTOM_ID: examples-build-make
+:END:
+
+This section describes how to build using GNU Make.  A [[#examples-build-cmake][later section]] describes how to build with CMake.
+
+The GNU Make based build is the one I use day to day, and thus gets more testing and is more complete.  In order to compile on your platform you may need to
+modify the ~makefile~ in each directory to use your favorite Fortran compiler.  At the top of each makefile you will find something like this:
 
 #+begin_src sh :results output verbatum :exports results :wrap "src makefile :eval never :tangle no"
 head -n 20 ../../MRFFL_unit_tests/makefile | grep -B 20 '#####' | grep -A 20 '#####' | sed -E 's/^####*/################################################/'
@@ -136,9 +152,112 @@ FSHFLG = -o $(MRFFL_SHARED_LIB_FILE) -shared $(MRFFL_OBJ_FILES)
 The only tricky one is the ~FSHFLG~ variable.  Luckily you only need the ~FSHFLG~ variable if you plan on building a shared library.  The shared library is
 completely unnecessary for making full use of the modules, so you you can safely ignore that one unless you really, really want to use a shared library. ~;)~
 
+** Building Example Programs With CMake
+:PROPERTIES:
+:CUSTOM_ID: examples-build-cmake
+:END:
+
+This section describes how to build using CMake.  A [[#examples-build-make][previous section]] describes how to build with GNU Make.
+
+Most of the programs in [[https://github.com/richmit/FortranFinance][FortranFinance]] make use of MRFFL.  When using a CMake based workflow, MRFFL is accessed
+via a central include directory of compiled module files and a static library.  Before we can compile any examples, we must create these module files and
+library. 
+
+#+begin_src sh
+cd MRFFL/build
+rm -rf *
+cmake .. -DCMAKE_Fortran_COMPILER=gfortran
+cmake --build .
+#+end_src
+
+Now that MRFFL is compiled, we can make use of it.  As an example, we can build the =irr= executable in the =cashflows= directory like so:
+
+#+begin_src sh
+cd cashflows/build
+rm -rf *
+cmake .. -DCMAKE_Fortran_COMPILER=gfortran
+cmake --build .
+#+end_src
+
 * Using MRFFL (MR Fortran Finance Library) Modules
 :PROPERTIES:
 :CUSTOM_ID: use
+:END:
+
+
+** Using CMake
+:PROPERTIES:
+:CUSTOM_ID: use-cmake
+:END:
+
+In the [[#examples-build-cmake][section on building examples]] we build the MRFFL library using CMake.  This process will result in several new files and
+directories:
+
+ - =MRFFL/build/lib/= will contain the compiled MRFFL library.
+ - =MRFFL/build/modules/= will contain the generated module files.
+ - =MRFFL/build/MRFFL.cmake/= a CMake include file that can be used to compile things with the MRFFL library.
+
+For the most part, the following compilers are well supported:
+ - GNU Fortran
+ - Intel ifx
+ - NVIDIA HPC Fortran
+ - Flang
+
+If you are using a compiler not on this list, then more configuration may be required (=-DCMAKE_Fortran_FLAGS= for example).
+
+With MRFFL compiled using CMake, we can use it from another project.  The =cashflows= directory contains an example =CMakeLists.txt= for the =irr= executable:
+
+#+begin_src sh :results output verbatum :exports results :wrap "src cmake :eval never :tangle no"
+~/core/codeBits/bin/src2orgListing ../../cashflows/CMakeLists.txt
+#+end_src
+
+#+RESULTS:
+#+begin_src cmake :eval never :tangle no
+cmake_minimum_required(VERSION 3.30)
+
+project(MRFFL_cashflow_examples VERSION 0.1
+        DESCRIPTION "Examples for MRFFL_cashflows module"
+        LANGUAGES Fortran)
+
+set(CMAKE_Fortran_PREPROCESS NO)
+
+# Find and include the MRFFL.cmake file.  This will setup the MRFFL library -- it's include dirs and link dir.
+if(EXISTS "../../MRFFL/build/MRFFL.cmake")
+  message(STATUS " MRFFL Search: Found: Exported")
+  include("../MRFFL/build/MRFFL.cmake")
+  if(NOT (EXISTS "../../MRFFL/build/modules/mrffl_config.mod") )
+    message(ERROR " MRFFL Search: Found exported cmake file, but MRFFL library has not been built!!!")
+  endif()
+else()
+  message(ERROR " MRFFL Search: Failed!!!")
+endif()
+
+add_executable(irr irr.f90)
+target_link_libraries(irr PRIVATE MRFFL)
+#+end_src
+
+That's really all we need to ake use of MRFFL.  Note this =CMakeLists.txt= uses =MRFFL.cmake=, but this is not strictly required. The paths can be set by
+hand, and the following would work instead:
+
+#+begin_src cmake :eval never :tangle no
+cmake_minimum_required(VERSION 3.30)
+
+project(MRFFL_cashflow_examples VERSION 0.1
+        DESCRIPTION "Examples for MRFFL_cashflows module"
+        LANGUAGES Fortran)
+
+set(CMAKE_Fortran_PREPROCESS NO)
+
+add_executable(irr irr.f90)
+target_link_libraries(irr PRIVATE MRFFL)
+target_include_directories(irr AFTER PRIVATE ../MRFFL/build/modules)
+target_link_directories(irr BEFORE PRIVATE ../MRFFL/build/lib)
+#+end_src
+
+
+** Using GNU Make
+:PROPERTIES:
+:CUSTOM_ID: use-make
 :END:
 
 All of the code is in the module source files with no external dependencies at all.  So you just need to call the modules from your code, and then
@@ -179,12 +298,12 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
 	$(FC) $(FFLAGS) $^ -o $@
 #+end_src
 
-* Notes about ~include.mk~
+*** Notes about ~include.mk~
 :PROPERTIES:
-:CUSTOM_ID: makeinc
+:CUSTOM_ID: use-makeinc
 :END:
 
-** Names of files
+**** Names of files
 :PROPERTIES:
 :CUSTOM_ID: makeinc-names
 :END:
@@ -198,7 +317,7 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
    - Shared libraries use ~.so~
    - Object files will use ~.o~
 
-** Useful Variables
+**** Useful Variables
 :PROPERTIES:
 :CUSTOM_ID: makeinc-vars
 :END:
@@ -208,7 +327,7 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
   - ~MRFFL_STATIC_LIB_FILE~ :: The name of the static library file.  It's not created by default.  It will appear in your build directory if it is listed as a dependency on one of your targets.
   - ~MRFFL_SHARED_LIB_FILE~ :: The name of the shared library file.  It's not created by default.  It will appear in your build directory if it is listed as a dependency on one of your targets.
 
-** Useful Targets
+**** Useful Targets
 :PROPERTIES:
 :CUSTOM_ID: makeinc-target
 :END:
@@ -224,7 +343,7 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
                            delete object files with an extension of ~.obj~ on windows and an extension of ~.o~ on UNIX'ish platforms.  I use the same directories to
                            build for all platforms, so I sometimes want to clean up the build products from all platforms at once.  That's what this target will do.
 
-** Static Library
+**** Static Library
 :PROPERTIES:
 :CUSTOM_ID: makeinc-stlib
 :END:
@@ -238,7 +357,7 @@ your_program : your_program.f90 $(MRFFL_STATIC_LIB_FILE)
 	$(FC) $(FFLAGS) $^ $(MRFFL_STATIC_LIB_FILE) -o $@
 #+end_src
 
-** Dynamic Library (~.so~ and ~.dll~ files)
+**** Dynamic Library (~.so~ and ~.dll~ files)
 :PROPERTIES:
 :CUSTOM_ID: makeinc-dylib
 :END:
