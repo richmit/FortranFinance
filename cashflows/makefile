@@ -38,6 +38,7 @@ endif
 clean : clean_mrffl
 	rm -f *~ *.tmp.o
 	rm -f $(addsuffix $(EXE_SUFFIX), $(EXE_TARGETS)) $(addsuffix $(OBJ_SUFFIX), $(EXE_TARGETS))
+	rm -rf build/* build/.???*
 
 .PHONY: all
 all : $(EXE_TARGETS) 
