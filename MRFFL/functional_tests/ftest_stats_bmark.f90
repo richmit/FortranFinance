@@ -37,7 +37,7 @@ program ftest_stats_bmark
   use mrffl_config, only: rk=>mrfflrk
   use mrffl_stats
 
-  integer, parameter :: num_runs = 10000000
+  integer, parameter :: num_runs = 100000000
   real(kind=rk)      :: sum
   integer            :: i, clock_rate, clock_max, clock_start, clock_end
 
@@ -50,7 +50,7 @@ program ftest_stats_bmark
      sum = sum + rand_norm_std_probit()
   end do
   call system_clock(clock_end)
-  print '(a25,i10)', "rand_norm_std_probit time: ", (clock_end-clock_start)
+  print '(a40,f10.4)', "rand_norm_std_probit time: ", (clock_end-clock_start)/real(clock_rate, rk)
 
   call system_clock(clock_start)
   sum = 0
@@ -58,7 +58,7 @@ program ftest_stats_bmark
      sum = sum + rand_norm_std_probit_clip()
   end do
   call system_clock(clock_end)
-  print '(a25,i10)', "rand_norm_std_probit_clip time: ", (clock_end-clock_start)
+  print '(a40,f10.4)', "rand_norm_std_probit_clip time: ", (clock_end-clock_start)/real(clock_rate, rk)
 
   call system_clock(clock_start)
   sum = 0
@@ -66,6 +66,6 @@ program ftest_stats_bmark
      sum = sum + rand_norm_std_box()
   end do
   call system_clock(clock_end)
-  print '(a25,i10)', "rand_norm_std_box time: ", (clock_end-clock_start)
+  print '(a40,f10.4)', "rand_norm_std_box time: ", (clock_end-clock_start)/real(clock_rate, rk)
 
 end program ftest_stats_bmark
