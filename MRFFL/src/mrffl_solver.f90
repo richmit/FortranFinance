@@ -40,7 +40,9 @@
 module mrffl_solver
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
   implicit none  
-  public
+  private
+
+  public :: bisection, multi_bisection
 
 contains
   
