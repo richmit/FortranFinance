@@ -30,8 +30,13 @@
 #  @endparblock
 #########################################################################################################################################################.H.E.##
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
-DIRS='MRFFL/src MRFFL/unit_tests MRFFL/functional_tests MRFFL/doxygen cashflows retirement loans monte_carlo retirement_simulation docs scripts'
+
+read -r -d '' ORGD <<EOF
+Org-Mode
+    filter remove_matches ^\s*#[^+]
+    extension org
+    3rd_gen_scale 3.81
+EOF
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-cloc --force-lang='Fortran 90',nml --force-lang=make,mk --exclude-ext=html,txt,css,js,svg --not-match-f=DTAGS --force-lang=Markdown,org  $DIRS
+cloc cloc --read-lang-def=<(echo "$ORGD") --force-lang='Fortran 90',nml --force-lang=make,mk --exclude-ext=html,txt --not-match-d=autodocs --not-match-f=DTAGS --not-match-d=build  .
