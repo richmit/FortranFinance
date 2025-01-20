@@ -53,6 +53,10 @@ pub: $(PUB_DIR)/index.html
 .PHONY: all
 all: pub
 
+.PHONY: read
+read: $(LOC_DIR)/index.html
+	edge $(LOC_DIR)/index.html
+
 .PHONY: clean
 clean: 
 	rm -f *~
