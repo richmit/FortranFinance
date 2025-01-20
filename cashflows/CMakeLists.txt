@@ -38,8 +38,6 @@ project(MRFFL_cashflow_examples VERSION 0.1
         DESCRIPTION "Examples for MRFFL_cashflows module"
         LANGUAGES Fortran)
 
-enable_language(Fortran)
-
 set(CMAKE_Fortran_PREPROCESS NO)
 
 # Find and include the MRFFL.cmake file.  This will setup the MRFFL library -- it's include dirs and link dir.
@@ -55,7 +53,3 @@ endif()
 
 add_executable(irr irr.f90)
 target_link_libraries(irr PRIVATE MRFFL)
-
-# Instead of loading the MRFFL.cmake file, you could directly set the include and link directories like this:
-#    target_include_directories(irr AFTER PRIVATE ../MRFFL/build/modules)
-#    target_link_directories(irr BEFORE PRIVATE ../MRFFL/build/lib)
