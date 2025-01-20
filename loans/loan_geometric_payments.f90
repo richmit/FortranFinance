@@ -109,14 +109,14 @@ program loan_geometric_payments
 
   ! We can check our work by making sure our cashflows sum to zero.
   print "(a)", repeat("=", 111)
-  call cashflow_matrix_value(cfm, i, pvv, fvv, status)
-  print "(a60,i15)", "cashflow_matrix_value status: ", status
-  print "(a60,f15.4)", "cashflow_matrix_value PV Sum: ", sum(pvv)
-  print "(a60,f15.4)", "cashflow_matrix_value FV Sum: ", sum(fvv)
+  call cashflow_matrix_pv_fv(cfm, i, pvv, fvv, status)
+  print "(a60,i15)", "cashflow_matrix_pv_fv status: ", status
+  print "(a60,f15.4)", "cashflow_matrix_pv_fv PV Sum: ", sum(pvv)
+  print "(a60,f15.4)", "cashflow_matrix_pv_fv FV Sum: ", sum(fvv)
 
   ! Finally we an print out our cashflows.
   print "(a)", repeat("=", 111)
-  call cashflow_matrix_value_print(cfm, i, pvv, fvv, status, prt_ALL)
+  call cashflow_matrix_pv_fv_print(cfm, i, pvv, fvv, status, prt_ALL)
 
   print "(a)", repeat("=", 111)
 

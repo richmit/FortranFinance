@@ -60,8 +60,8 @@ program cashflow_vs_tvm_solver
 
   print "(a)", repeat("=", 100)
   print *, "Here we use the manually constructed cashflow to compute PV/FV"
-  call cashflow_vector_value_print(cfv, i, pvv, fvv, status, prt_ALL)
-  print "(a30,i15)", "cashflow_matrix_value status: ", status
+  call cashflow_vector_pv_fv_print(cfv, i, pvv, fvv, status, prt_ALL)
+  print "(a30,i15)", "cashflow_matrix_pv_fv status: ", status
   print *
   print "(a)", repeat("=", 100)
 

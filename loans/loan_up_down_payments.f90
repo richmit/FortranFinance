@@ -129,7 +129,7 @@ program loan_level_payments
   cfm(years+1, 2) = a_final
 
   ! Now we print the cashflow
-  call cashflow_matrix_value_print(cfm, i, pvv, fvv, status, prt_ALL)
+  call cashflow_matrix_pv_fv_print(cfm, i, pvv, fvv, status, prt_ALL)
   print "(a)", repeat("=", 111)
 
 end program loan_level_payments

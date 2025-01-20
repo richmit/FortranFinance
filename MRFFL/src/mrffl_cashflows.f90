@@ -73,18 +73,19 @@
 !! column of a matrix.  The entire matrix may then be used for TVM calculations.
 !!
 module mrffl_cashflows
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
-  use mrffl_bitset, only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp
+  use mrffl_config,      only: rk=>mrfflrk, ik=>mrfflik, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
+  use mrffl_bitset,      only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp
   use mrffl_prt_sets
   use mrffl_percentages, only: percentage_to_fraction
+  use mrffl_solver,      only: multi_bisection
   implicit none  
   private
 
   ! Work with one or more cashflow series in the columns of a matrix
-  public :: cashflow_matrix_value, cashflow_matrix_value_print
+  public :: cashflow_matrix_pv_fv, cashflow_matrix_pv_fv_print, cashflow_matrix_total_pv, cashflow_matrix_irr
 
   ! Work with one cashflow series in a vector
-  public :: cashflow_vector_value, cashflow_vector_value_print
+  public :: cashflow_vector_pv_fv, cashflow_vector_pv_fv_print, cashflow_vector_total_pv, cashflow_vector_irr
 
   ! Construct cashflow series
   public :: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity
@@ -93,7 +94,102 @@ module mrffl_cashflows
   ! Modify cashflow series
   public :: add_intrest_to_cashflow_vector, add_multi_intrest_to_cashflow_vector
 
+  ! interface cashflow_total_pv
+  !    module procedure cashflow_matrix_total_pv, cashflow_vector_total_pv
+  ! end interface cashflow_total_pv
+  ! public :: cashflow_total_pv
+
 contains
+
+  !------------------------------------------------------------------------------------------------------------------------------
+  !> Compute pv for a cashflow vector.
+  !!
+  !! See: cashflow_matrix_total_pv()
+  !!
+  real(kind=rk) pure function cashflow_vector_total_pv(cf_vec, i)
+    real(kind=rk),    intent(in)  :: cf_vec(:)
+    real(kind=rk),    intent(in)  :: i
+    integer(kind=ik)              :: j
+    cashflow_vector_total_pv = 0
+    do j=1,size(cf_vec)
+       cashflow_vector_total_pv = cashflow_vector_total_pv + cf_vec(j) / (1+percentage_to_fraction(i))**(j-1)
+    end do
+  end function cashflow_vector_total_pv
+
+  !------------------------------------------------------------------------------------------------------------------------------
+  !> Compute pv for a cashflow matrix.
+  !!
+  !! In this library, initial cashflows are simply at time 0.  NPV and PV are the same value in this context.  The value
+  !! returned by this function is identical to summing the pv_vec returned by cashflow_matrix_pv_fv; however, this function is
+  !! much faster and requires no temporary arrays.
+  !!
+  !! @param cf_mat    Matrix of cashflows (one cashflow sequence per column)
+  !! @param i         Interest/Rate/Growth 
+  !!
+  real(kind=rk) pure function cashflow_matrix_total_pv(cf_mat, i)
+    real(kind=rk),    intent(in)  :: cf_mat(:,:)
+    real(kind=rk),    intent(in)  :: i
+    real(kind=rk)                 :: cf
+    integer(kind=ik)              :: j, k
+    cashflow_matrix_total_pv = 0
+    do j=1,size(cf_mat, 1)
+       cf = cf_mat(j, 1)
+       do k=2,size(cf_mat, 2)
+          cf = cf + cf_mat(j, k)
+       end do
+       cashflow_matrix_total_pv = cashflow_matrix_total_pv + cf / (1+percentage_to_fraction(i))**(j-1)
+    end do
+  end function cashflow_matrix_total_pv
+
+  !------------------------------------------------------------------------------------------------------------------------------
+  !> Compute IRR for a cashflow vector.
+  !!
+  !! @param cf_vec    Vector of cashflows
+  !! @param irr       If the solver is successful, this will be the irr on return.
+  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4193-4224
+  !!
+  subroutine cashflow_vector_irr(cf_vec, irr, status)
+    real(kind=rk),    intent(in)    :: cf_vec(:)
+    real(kind=rk),    intent(inout) :: irr
+    integer(kind=ik), intent(out)   :: status
+    real(kind=rk)                   :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
+    real(kind=rk)                   :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
+    call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
+    if (status /= 0) then
+       status = 4161 ! "ERROR(cashflow_vector_irr): irr solver failed!"
+    end if
+    return
+  contains
+    real(kind=rk) function irr_solve(i)
+      real(kind=rk), intent(in) :: i
+      irr_solve = cashflow_vector_total_pv(cf_vec, i)
+    end function irr_solve
+  end subroutine cashflow_vector_irr
+
+  !------------------------------------------------------------------------------------------------------------------------------
+  !> Compute IRR for a cashflow matrix.
+  !!
+  !! @param cf_mat    Matrix of cashflows (one cashflow sequence per column)
+  !! @param irr       If the solver is successful, this will be the irr on return.
+  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4193-4224
+  !!
+  subroutine cashflow_matrix_irr(cf_mat, irr, status)
+    real(kind=rk),    intent(in)    :: cf_mat(:,:)
+    real(kind=rk),    intent(inout) :: irr
+    integer(kind=ik), intent(out)   :: status
+    real(kind=rk)                   :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
+    real(kind=rk)                   :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
+    call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
+    if (status /= 0) then
+       status = 4193 ! "ERROR(cashflow_matrix_irr): irr solver failed!"
+    end if
+    return
+  contains
+    real(kind=rk) function irr_solve(i)
+      real(kind=rk), intent(in) :: i
+      irr_solve = cashflow_matrix_total_pv(cf_mat, i)
+    end function irr_solve
+  end subroutine cashflow_matrix_irr
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Convert a cashflow number into a padded string for titles
@@ -107,29 +203,29 @@ contains
   !------------------------------------------------------------------------------------------------------------------------------
   !> Compute present and future values for a cashflow vector.
   !!
-  !! See: cashflow_matrix_value()
+  !! See: cashflow_matrix_pv_fv()
   !!
-  subroutine cashflow_vector_value(cf_vec, i, pv_vec, fv_vec, status)
+  subroutine cashflow_vector_pv_fv(cf_vec, i, pv_vec, fv_vec, status)
     real(kind=rk),    intent(in)  :: cf_vec(:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
     integer(kind=ik), intent(out) :: status
-    call cashflow_matrix_value_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, prt_NONE)
-  end subroutine cashflow_vector_value
+    call cashflow_matrix_pv_fv_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, prt_NONE)
+  end subroutine cashflow_vector_pv_fv
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Compute present and future values for a cashflow vector.
   !!
-  !! See: cashflow_matrix_value_print()
+  !! See: cashflow_matrix_pv_fv_print()
   !!
-  subroutine cashflow_vector_value_print(cf_vec, i, pv_vec, fv_vec, status, print_out)
+  subroutine cashflow_vector_pv_fv_print(cf_vec, i, pv_vec, fv_vec, status, print_out)
     real(kind=rk),    intent(in)  :: cf_vec(:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
     integer(kind=ik), intent(out) :: status
     integer(kind=ik), intent(in)  :: print_out
-     call cashflow_matrix_value_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, print_out)
-  end subroutine cashflow_vector_value_print
+     call cashflow_matrix_pv_fv_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, print_out)
+  end subroutine cashflow_vector_pv_fv_print
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Compute present and future values for a cashflow matrix.
@@ -138,15 +234,15 @@ contains
   !! @param i         Interest/Rate/Growth 
   !! @param pv_vec    Returns the present value vector
   !! @param fv_vec    Returns the future value vector
-  !! @param status    Returns status of operation.  0 if everything worked. See: cashflow_matrix_value_print() for range.
+  !! @param status    Returns status of operation.  0 if everything worked. See: cashflow_matrix_pv_fv_print() for range.
   !!
-  subroutine cashflow_matrix_value(cf_mat, i, pv_vec, fv_vec, status)
+  subroutine cashflow_matrix_pv_fv(cf_mat, i, pv_vec, fv_vec, status)
     real(kind=rk),    intent(in)  :: cf_mat(:,:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
     integer(kind=ik), intent(out) :: status
-    call cashflow_matrix_value_print(cf_mat, i, pv_vec, fv_vec, status, prt_NONE)
-  end subroutine cashflow_matrix_value
+    call cashflow_matrix_pv_fv_print(cf_mat, i, pv_vec, fv_vec, status, prt_NONE)
+  end subroutine cashflow_matrix_pv_fv
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Compute present and future values for a cashflow matrix.
@@ -160,7 +256,7 @@ contains
   !! @param status    Returns status of operation.  0 if everything worked. Range: 0 & 2129-2160.
   !! @param print_out Bitset built from the following constants prt_param, prt_title, prt_table, prt_total, & prt_space
   !!
-  subroutine cashflow_matrix_value_print(cf_mat, i, pv_vec, fv_vec, status, print_out)
+  subroutine cashflow_matrix_pv_fv_print(cf_mat, i, pv_vec, fv_vec, status, print_out)
     real(kind=rk),    intent(in)  :: cf_mat(:,:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
@@ -171,19 +267,19 @@ contains
     num_bdrys = size(cf_mat, 1, kind=ik)
     num_flows = size(cf_mat, 2, kind=ik)
     if (num_flows < 1) then
-       status = 2130 ! "ERROR(cashflow_matrix_value): No flows found in matrix!"
+       status = 2130 ! "ERROR(cashflow_matrix_pv_fv): No flows found in matrix!"
        return
     else if (abs(i+100) < zero_epsilon) then
-       status = 2132 ! "ERROR(cashflow_matrix_value): Value for i is too close -100%!"
+       status = 2132 ! "ERROR(cashflow_matrix_pv_fv): Value for i is too close -100%!"
        return
     else if (num_bdrys < 2) then
-       status = 2133 ! "ERROR(cashflow_matrix_value): Number of periods in cashflow is too small!"
+       status = 2133 ! "ERROR(cashflow_matrix_pv_fv): Number of periods in cashflow is too small!"
        return
     else if (num_bdrys > size(pv_vec)) then
-       status = 2134 ! "ERROR(cashflow_matrix_value): The pv_vec array is not long enough!"
+       status = 2134 ! "ERROR(cashflow_matrix_pv_fv): The pv_vec array is not long enough!"
        return
     else if (num_bdrys > size(fv_vec)) then
-       status = 2135 ! "ERROR(cashflow_matrix_value): The fv_vec array is not long enough!"
+       status = 2135 ! "ERROR(cashflow_matrix_pv_fv): The fv_vec array is not long enough!"
        return
     else
        status = 0
@@ -249,7 +345,7 @@ contains
           print *, ""
        end if
     end if
-  end subroutine cashflow_matrix_value_print
+  end subroutine cashflow_matrix_pv_fv_print
   
   !------------------------------------------------------------------------------------------------------------------------------
   !> Create a cashflow with a single (lump sum) payment.

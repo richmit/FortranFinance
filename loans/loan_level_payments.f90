@@ -107,14 +107,14 @@ program loan_level_payments
 
   ! Now we print it out.  Notice the PV & FV of the combined cashflow series is zero.
   print "(a)", repeat("=", 111)
-  call cashflow_matrix_value(cfm, i, pvv, fvv, status)
-  print "(a60,i15)", "cashflow_matrix_value status: ", status
-  print "(a60,f15.4)", "cashflow_matrix_value Sum: ",   sum(cfm)
-  print "(a60,f15.4)", "cashflow_matrix_value PV Sum: ", sum(pvv)
-  print "(a60,f15.4)", "cashflow_matrix_value FV Sum: ", sum(fvv)
+  call cashflow_matrix_pv_fv(cfm, i, pvv, fvv, status)
+  print "(a60,i15)", "cashflow_matrix_pv_fv status: ", status
+  print "(a60,f15.4)", "cashflow_matrix_pv_fv Sum: ",   sum(cfm)
+  print "(a60,f15.4)", "cashflow_matrix_pv_fv PV Sum: ", sum(pvv)
+  print "(a60,f15.4)", "cashflow_matrix_pv_fv FV Sum: ", sum(fvv)
   print "(a)", repeat("=", 111)
 
-  call cashflow_matrix_value_print(cfm, i, pvv, fvv, status, prt_ALL)
+  call cashflow_matrix_pv_fv_print(cfm, i, pvv, fvv, status, prt_ALL)
   print "(a)", repeat("=", 111)
 
 end program loan_level_payments

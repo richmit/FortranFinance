@@ -84,7 +84,7 @@ program roth_conversion
   vapr(conversion_years+1:) = add_percentage(apr, -retirement_tax)
   call add_multi_intrest_to_cashflow_vector(cf(:,3), vapr, status)
 
-  call cashflow_matrix_value_print(cf, rate, pv, fv, status, prt_ALL)
+  call cashflow_matrix_pv_fv_print(cf, rate, pv, fv, status, prt_ALL)
 
   ncv = sum(fv)
 
@@ -103,7 +103,7 @@ program roth_conversion
   vapr(conversion_years+1:) = add_percentage(apr, -retirement_tax)
   call add_multi_intrest_to_cashflow_vector(cf(:,3), vapr, status)
 
-  call cashflow_matrix_value_print(cf, rate, pv, fv, status, prt_ALL)
+  call cashflow_matrix_pv_fv_print(cf, rate, pv, fv, status, prt_ALL)
 
   wcv = sum(fv)
   print "(a)", repeat("=", 126)
