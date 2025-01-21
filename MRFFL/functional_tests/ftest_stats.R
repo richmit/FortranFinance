@@ -33,14 +33,30 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-daDat <- fread('ftest_stats_rand_norm_std.txt')
+stdNrmDat <- fread('ftest_stats_rand_norm_std.txt')
+logNrmDat <- fread('ftest_stats_rand_log_norm.txt')
+norm203dat <- fread('ftest_stats_rand_norm203.txt')
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 gp <- ggplot() + 
-  geom_line(data=data.table(x=seq(min(daDat$z_box), max(daDat$z_box), length=1000)) %>% mutate(y=dnorm(x, mean=0, sd=1)), aes(x=x, y=y), col='black', linewidth=15) +
-  geom_density(data=daDat, aes(x=z_box), col='red', fill=NA, alpha=0.5, linewidth=1) + 
-  geom_density(data=daDat, aes(x=z_probit), col='green', fill=NA, alpha=0.5, linewidth=1) + 
-  geom_density(data=daDat, aes(x=z_probit_clip), col='blue', fill=NA, alpha=0.5, linewidth=1) + 
+  geom_line(data=data.table(x=seq(min(stdNrmDat$z_box)-1, max(stdNrmDat$z_box)+1, length=1000)) %>% mutate(y=dnorm(x, mean=0, sd=1)), aes(x=x, y=y), col='black', linewidth=15) +
+  geom_density(data=stdNrmDat, aes(x=z_box), col='red', fill=NA, alpha=0.5, linewidth=1) + 
+  geom_density(data=stdNrmDat, aes(x=z_probit), col='green', fill=NA, alpha=0.5, linewidth=1) + 
+  geom_density(data=stdNrmDat, aes(x=z_probit_clip), col='blue', fill=NA, alpha=0.5, linewidth=1) + 
   xlim(c(-3,3)) +
   ylim(c(0,0.4))
+print(gp)
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+gp <- ggplot() + 
+  geom_line(data=data.table(x=seq(min(logNrmDat$log_norm)-1, max(logNrmDat$log_norm)+1, length=1000)) %>% mutate(y=dlnorm(x, mean=2, sd=0.5)), aes(x=x, y=y), col='black', linewidth=15) +
+  geom_density(data=logNrmDat, aes(x=log_norm), col='white', fill=NA, alpha=1.0, linewidth=1) + 
+  xlim(c(0,40)) +
+  ylim(c(0,0.13))
+print(gp)
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+gp <- ggplot() + 
+  geom_line(data=data.table(x=seq(min(norm203dat$norm203)-1, max(norm203dat$norm203)+1, length=1000)) %>% mutate(y=dnorm(x, mean=20, sd=3)), aes(x=x, y=y), col='black', linewidth=15) +
+  geom_density(data=norm203dat, aes(x=norm203), col='white', fill=NA, alpha=1.0, linewidth=1)
 print(gp)

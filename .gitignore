@@ -30,7 +30,8 @@ a.out
 /MRFFL/functional_tests/ftest_stats_bmark
 /MRFFL/functional_tests/ftest_life_table_print_*.txt
 /MRFFL/functional_tests/ftest_stats_rand_norm_std.txt
-/MRFFL/functional_tests/ftest_stats_rand_norm_std.txt
+/MRFFL/functional_tests/ftest_stats_rand_log_norm.txt
+/MRFFL/functional_tests/ftest_stats_rand_norm203.txt
 
 /MRFFL/unit_tests/test_percentages
 /MRFFL/unit_tests/test_tvm_lump_sum_solve

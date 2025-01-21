@@ -37,11 +37,12 @@ program ftest_stats
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
   use mrffl_stats
 
-  real(kind=rk)    :: a(7) = [1,2,3,4,5,6,7]
-  real(kind=rk)    :: m, v
-  integer(kind=ik) :: lim = 5
-  integer          :: i
-  integer          :: out_io_unit
+  integer, parameter :: num_runs = 10000
+  real(kind=rk)      :: a(7) = [1,2,3,4,5,6,7]
+  real(kind=rk)      :: m, v
+  integer(kind=ik)   :: lim = 5
+  integer            :: i
+  integer            :: out_io_unit
 
   print *
   call mean_and_variance(m, v, a)
@@ -58,25 +59,25 @@ program ftest_stats
   end do
 
   print *
-  do i=1,10
-     print *, "std norm ", rand_norm_std()
+  open(newunit=out_io_unit, file='ftest_stats_rand_norm203.txt', form='formatted', action='write')
+  write (unit=out_io_unit, fmt='(a20)') "norm203"
+  do i=1,num_runs
+     write (unit=out_io_unit, fmt='(f20.5)') rand_norm(20.0_rk, 3.0_rk)
   end do
+  close(unit=out_io_unit, status='keep')
 
   print *
-  do i=1,10
-     print *, "2,1 norm ", rand_norm(2.0_rk, 1.0_rk)
+  open(newunit=out_io_unit, file='ftest_stats_rand_log_norm.txt', form='formatted', action='write')
+  write (unit=out_io_unit, fmt='(a20)') "log_norm"
+  do i=1,num_runs
+     write (unit=out_io_unit, fmt='(f20.5)') rand_log_norm(2.0_rk, 0.5_rk)
   end do
+  close(unit=out_io_unit, status='keep')
 
   print *
-  do i=1,10
-     print *, "0,1/4 log_norm ", rand_log_norm(0.0_rk, 0.25_rk)
-  end do
-
-  print *
-
   open(newunit=out_io_unit, file='ftest_stats_rand_norm_std.txt', form='formatted', action='write')
   write (unit=out_io_unit, fmt='(a20,a20,a20)') "z_box", "z_probit", "z_probit_clip"
-  do i=1,100000
+  do i=1,num_runs
      write (unit=out_io_unit, fmt='(f20.5,f20.5,f20.5)') rand_norm_std_box(), rand_norm_std_probit(), rand_norm_std_probit_clip()
   end do
   close(unit=out_io_unit, status='keep')
