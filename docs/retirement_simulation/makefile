@@ -27,3 +27,6 @@ pics/stocks_ranges_1024.png : pics/stocks_ranges.png
 
 pics/stocks_ranges_512.png : pics/stocks_ranges.png
 	magick pics/stocks_ranges.png -resize 512x pics/stocks_ranges_512.png
+
+clean:
+	rm -f *~
