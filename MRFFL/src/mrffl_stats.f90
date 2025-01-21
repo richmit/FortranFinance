@@ -49,6 +49,7 @@ module mrffl_stats
   public  :: rand_norm_std                                                      ! Use: rand_norm_std_*
   public  :: rand_norm, rand_log_norm                                           ! Use: rand_norm_std
   public  :: probit
+  public  :: geometric_brownian_motion, zero_clipped_brownian_motion
 
 contains
   
@@ -322,5 +323,56 @@ contains
        poly_eval = poly_eval * x + p(i)
     end do
   end function poly_eval
+
+  !--------------------------------------------------------------------------------------------------------------------------------
+  !> Compute a set of random steps in a GBM process.
+  !!
+  !! @param s0          Initial value of an asset
+  !! @param mu          Mean gain for the assest over 1 unit of time
+  !! @param sigma       Standard deviation of gain for the assest over 1 unit of time
+  !! @param step_values A rank 1 array which will hold the values of the asset over time
+  !!
+  subroutine geometric_brownian_motion(step_values, s0, mu, sigma) 
+    real(kind=rk), intent(out) :: step_values(:)
+    real(kind=rk), intent(in)  :: s0, mu, sigma
+    real(kind=rk)              :: step_width, m, s, sum
+    integer                    :: i, num_steps
+    num_steps = size(step_values)
+    step_width = 1.0_rk / (num_steps-1)
+    m = (mu - 0.5 * sigma ** 2) * step_width
+    s = sigma * sqrt(step_width)
+    sum = 0
+    do i=1,num_steps
+       sum = sum + rand_norm(m, s)
+       step_values(i) = s0 * exp(sum)
+    end do
+  end subroutine geometric_brownian_motion
+
+  !--------------------------------------------------------------------------------------------------------------------------------
+  !> Compute a set of random steps in a zero clipped browinan motion.
+  !!
+  !! @param s0          Initial value of an asset
+  !! @param mu          Mean gain for the assest over 1 unit of time
+  !! @param sigma       Standard deviation of gain for the assest over 1 unit of time
+  !! @param step_values A rank 1 array which will hold the values of the asset over time
+  !!
+  subroutine zero_clipped_brownian_motion(step_values, s0, mu, sigma) 
+    real(kind=rk), intent(out) :: step_values(:)
+    real(kind=rk), intent(in)  :: s0, mu, sigma
+    real(kind=rk)              :: step_width, m, s
+    integer                    :: i, num_steps
+    num_steps = size(step_values)
+    step_width = 1.0_rk / (num_steps-1)
+    m = mu * step_width
+    s = sigma * sqrt(step_width)
+    step_values(1) = s0
+    do i=2,num_steps
+       if (abs(step_values(i-1)) < zero_epsilon) then
+          step_values(i) = 0.0_rk
+       else
+          step_values(i) = max(step_values(i-1) * (1 + rand_norm(m, s)), 0.0_rk)
+       end if
+    end do
+  end subroutine zero_clipped_brownian_motion
 
 end module mrffl_stats

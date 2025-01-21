@@ -42,6 +42,8 @@ a.out
 /MRFFL/functional_tests/ftest_life_table_print_usss_m_lx.txt
 /MRFFL/functional_tests/ftest_life_table_print_usss_m_qx.txt
 /MRFFL/functional_tests/ftest_markets
+/MRFFL/functional_tests/ftest_random_walk.txt
+/MRFFL/functional_tests/ftest_random_walk
 /MRFFL/functional_tests/ftest_stats
 /MRFFL/functional_tests/ftest_stats_bmark
 /MRFFL/functional_tests/ftest_stats_rand_log_norm.txt

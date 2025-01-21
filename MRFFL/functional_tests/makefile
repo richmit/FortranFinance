@@ -14,12 +14,18 @@ include $(MRFFL_PATH)/make_includes/include.mk
 
 NDIF := ~/world/my_prog/utils/float_diff.rb
 
-EXE_TARGETS := ftest_markets ftest_stats ftest_life_table_print ftest_stats_bmark
+EXE_TARGETS := ftest_markets ftest_stats ftest_life_table_print ftest_stats_bmark ftest_random_walk
 
 # Set RUNEM to something to run the binaries after being built.  I normally set it on the command line like this: 
 #     make RUNEM=T ftest_percentages
 # The value need not be "T" -- any non-whitespace should work.
 RUNEM := 
+
+ftest_random_walk : ftest_random_walk.f90 $(MRFFL_OBJ_FILES)
+	$(FC) $(FFLAGS) $^ -o $@
+ifdef RUNEM
+	./$@$(EXE_SUFFIX)
+endif
 
 ftest_stats_bmark : ftest_stats_bmark.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
