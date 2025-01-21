@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-02 Thu 22:56 -->
+<!-- 2025-01-21 Tue 13:41 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-02 22:56:50</i></td>
+<td class="org-left"><i>2025-01-21 13:40:58</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-02 22:56:50</i></td>
+<td class="org-left"><i>2025-01-21 13:41:00</i></td>
 </tr>
 </tbody>
 </table>
@@ -252,15 +252,15 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org70c6c2c">1. <code>loan_level_payments.f90</code></a></li>
-<li><a href="#org4e93b37">2. <code>loan_geometric_payments.f90</code></a></li>
-<li><a href="#orgedcde21">3. <code>loan_up_down_payments.f90</code></a></li>
+<li><a href="#org5266875">1. <code>loan_level_payments.f90</code></a></li>
+<li><a href="#orgf7ab189">2. <code>loan_geometric_payments.f90</code></a></li>
+<li><a href="#orga1b9a88">3. <code>loan_up_down_payments.f90</code></a></li>
 </ul>
 </div>
 </div>
 
-<div id="outline-container-org70c6c2c" class="outline-2">
-<h2 id="org70c6c2c"><span class="section-number-2">1.</span> <code>loan_level_payments.f90</code></h2>
+<div id="outline-container-org5266875" class="outline-2">
+<h2 id="org5266875"><span class="section-number-2">1.</span> <code>loan_level_payments.f90</code></h2>
 <div class="outline-text-2" id="text-1">
 <p>
 The typical approach to solving loan problems is to equate the present value of the principal with the present value of the
@@ -273,7 +273,7 @@ problem of the simple loan.
 </p>
 
 <p>
-We can model a loan as a pair of parallel cashflows: 
+We can model a loan as a pair of parallel cashflows:
 </p>
 <ul class="org-ul">
 <li>Money paid by the lender (i.e. the principal) &#x2013; a negative cash flow from the lender's perspective</li>
@@ -285,8 +285,8 @@ These two cash flows should have equal magnitude PV &amp; FV, but of opposite si
 </div>
 </div>
 
-<div id="outline-container-org4e93b37" class="outline-2">
-<h2 id="org4e93b37"><span class="section-number-2">2.</span> <code>loan_geometric_payments.f90</code></h2>
+<div id="outline-container-orgf7ab189" class="outline-2">
+<h2 id="orgf7ab189"><span class="section-number-2">2.</span> <code>loan_geometric_payments.f90</code></h2>
 <div class="outline-text-2" id="text-2">
 <p>
 This program extends the example from loan_level_payments.f90 to geometric payments.  Not much changes in the flow except the
@@ -306,8 +306,8 @@ wish to extend them the loan, and make 7%.
 </div>
 </div>
 
-<div id="outline-container-orgedcde21" class="outline-2">
-<h2 id="orgedcde21"><span class="section-number-2">3.</span> <code>loan_up_down_payments.f90</code></h2>
+<div id="outline-container-orga1b9a88" class="outline-2">
+<h2 id="orga1b9a88"><span class="section-number-2">3.</span> <code>loan_up_down_payments.f90</code></h2>
 <div class="outline-text-2" id="text-3">
 <p>
 This program extends the examples from loan_level_payments.f90 and loan_geometric_payments.f90 to a unequal, non-standard

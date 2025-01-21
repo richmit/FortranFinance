@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -41,8 +41,8 @@ module mrffl_us_inflation
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
   use mrffl_stats, only: resample_tail
   use mrffl_percentages, only: percentage_of, percentage_change, add_percentage
-  implicit none  
-  private                  
+  implicit none
+  private
   real(kind=rk), parameter, public :: inf_dat(1914:2023)  = [ &
                                  1.0,  1.0,  7.9, 17.4, 18.0, 14.6, & ! 1914-1919
        15.6, -10.5, -6.1,  1.8,  0.0,  2.3,  1.1, -1.7, -1.7,  0.0, & ! 1920-1929

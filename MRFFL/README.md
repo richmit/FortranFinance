@@ -5,4 +5,3 @@ Documentation is published here: [Docs](https://richmit.github.io/FortranFinance
 -mitch
 
 PS: Have Fun!
-

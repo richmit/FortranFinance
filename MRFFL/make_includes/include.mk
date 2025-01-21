@@ -8,20 +8,20 @@
 # @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 # @std       GNUmake
 # @see       https://github.com/richmit/FortranFinance
-# @copyright 
+# @copyright
 #  @parblock
 #  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-#  
+#
 #  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-#  
+#
 #  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following disclaimer.
-#  
+#
 #  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation
 #     and/or other materials provided with the distribution.
-#  
+#
 #  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software
 #     without specific prior written permission.
-#  
+#
 #  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 #  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
 #  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
@@ -33,7 +33,7 @@
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 ifndef MRFFL_PATH
-       $(error ERROR: The variable MRFFL_PATH must be set! It should point to the MRFFL source directory!!!) 
+	   $(error ERROR: The variable MRFFL_PATH must be set! It should point to the MRFFL source directory!!!)
 endif
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,8 +43,8 @@ ifeq ($(OS),Windows_NT)
 	EXE_SUFFIX := .exe
 	SLB_SUFFIX := .dll
 	OBJ_SUFFIX := .obj
-else	
-	EXE_SUFFIX := 
+else
+	EXE_SUFFIX :=
 	SLB_SUFFIX := .so
 	OBJ_SUFFIX := .o
 endif
@@ -122,27 +122,27 @@ all_mrffl_obj : $(MRFFL_OBJ_FILES)
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 .PHONY: clean_mrffl_mod
-clean_mrffl_mod : 
+clean_mrffl_mod :
 	rm -f $(MRFFL_MOD_FILES)
 
 .PHONY: clean_mrffl_obj
-clean_mrffl_obj : 
+clean_mrffl_obj :
 	rm -f $(MRFFL_OBJ_FILES)
 
 .PHONY: clean_mrffl_lib
-clean_mrffl_lib : 
+clean_mrffl_lib :
 	rm -f $(MRFFL_LIB_FILES)
 
-.PHONY: clean_mrffl 
+.PHONY: clean_mrffl
 clean_mrffl : clean_mrffl_obj clean_mrffl_mod clean_mrffl_lib
 
 .PHONY: clean_multi_mrffl
 clean_multi_mrffl :
-	rm -f $(addsuffix .mod,$(MRFFL_MODS)) 
-	rm -f $(addsuffix .obj,$(MRFFL_MODS)) 
-	rm -f $(addsuffix .o,$(MRFFL_MODS)) 
-	rm -f libmrffl.so 
-	rm -f libmrffl.dll 
+	rm -f $(addsuffix .mod,$(MRFFL_MODS))
+	rm -f $(addsuffix .obj,$(MRFFL_MODS))
+	rm -f $(addsuffix .o,$(MRFFL_MODS))
+	rm -f libmrffl.so
+	rm -f libmrffl.dll
 	rm -f libmrffl.a
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------

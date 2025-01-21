@@ -9,20 +9,20 @@
 # @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 # @std       GNU-R
 # @see       https://github.com/richmit/FortranFinance
-# @copyright 
+# @copyright
 #  @parblock
 #  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-#  
+#
 #  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-#  
+#
 #  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following disclaimer.
-#  
+#
 #  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation
 #     and/or other materials provided with the distribution.
-#  
+#
 #  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software
 #     without specific prior written permission.
-#  
+#
 #  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 #  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
 #  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
@@ -36,9 +36,9 @@
 #  together like this:
 #
 #    echo '     trial        hp             balance  Method' > blend_risk.txt
-#   
+#
 #    grep -v trial blend_risk_cor.txt | sed 's/$/   Correlated/'   >> blend_risk.txt
-#   
+#
 #    grep -v trial blend_risk_uncor.txt | sed 's/$/  Uncorrelated/' >> blend_risk.txt
 #
 #########################################################################################################################################################.H.E.##
@@ -63,16 +63,16 @@ a<-fread('blend_risk.txt')
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 successDat <- a %>%
-  group_by(hp, Method) %>% 
-  summarize(success=100-100*sum(balance<=0)/length(balance), .groups='drop') %>% 
+  group_by(hp, Method) %>%
+  summarize(success=100-100*sum(balance<=0)/length(balance), .groups='drop') %>%
   mutate(hp=as.integer(hp))
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-gp <- ggplot(data=successDat) + 
+gp <- ggplot(data=successDat) +
   geom_line(aes(x=hp, y=success, col=Method), linewidth=1) +
   labs(title='Correlated vs Uncorrelated Monte Carlo',
        subtitle='Chances of making it 50 years on 4M withdrawing 100K annually adjusted by inflation on a mix of bonds and S&P',
-       x='Percentage of portfolio in S&P vs. 10 Year US Treasury Bonds', 
+       x='Percentage of portfolio in S&P vs. 10 Year US Treasury Bonds',
        y='Chance Of Success')
 fname <- "blend_risk_cvuc.png"
 ggsave(fname, width=12, height=10)

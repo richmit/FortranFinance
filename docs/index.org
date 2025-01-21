@@ -9,7 +9,7 @@
 #+DESCRIPTION: Fortran Finance repo documentation landing page
 #+KEYWORDS:    finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 #+LANGUAGE:    en
-#+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil 
+#+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil
 #+SEQ_TODO:    TODO:NEW(t)                         TODO:WORK(w)    TODO:HOLD(h)    | TODO:FUTURE(f)   TODO:DONE(d)    TODO:CANCELED(c)
 #+PROPERTY: header-args :eval never-export
 #+HTML_HEAD: <style>body { width: 95%; margin: 2% auto; font-size: 18px; line-height: 1.4em; font-family: Georgia, serif; color: black; background-color: white; }</style>
@@ -48,7 +48,7 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
   - [[file:MRFFL/index.html][MRFFL Documentation]] ::
     MRFFL is a collection of Fortran libraries for finance.  It has sophisticated modules for TVM (Time Value of Money) calculations with standard financial
     products or and for cash-flows.  It also provides data access and Monte Carlo simulations for things like US inflation, US market returns, and US life
-    expectancy.  
+    expectancy.
     - [[file:monte_carlo/index.html][Monte Carlo Examples]]: Examples of MRFFL's Monte Carlo features.
     - [[file:loans/index.html][Loans]]: Examples using MRFFL's to solve loan problems.
 

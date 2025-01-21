@@ -7,22 +7,22 @@
 !! @brief     Value of a roth conversion.@EOL
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -31,7 +31,7 @@
 !!  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 !!  OF THE POSSIBILITY OF SUCH DAMAGE.
 !!  @endparblock
-!! @filedetails   
+!! @filedetails
 !!
 !!  Scenario:
 !!    - The time frame from this experiment is 10 years
@@ -41,7 +41,7 @@
 !!      - This conversion bumps up taxes that year to the higher rate.
 !!      - We pay the conversion taxes with the brokerage account
 !!    - We withdraw everything at the end of 10 years
-!!      - We use the higher tax rate for this single withdrawal from the ira.  
+!!      - We use the higher tax rate for this single withdrawal from the ira.
 !!        If the numbers were larger, then we would need to consider a higher rate or a phased withdrawal strategy.
 !!    - We assume we pay capital gains every year on gains brokerage account.  This is an overestimate of tax.
 !!
@@ -59,7 +59,7 @@ program roth_conversion
   integer(kind=ik), parameter :: years              = 10
   integer(kind=ik), parameter :: conversion_years   = 5
   real(kind=rk)               :: apr                = 4.0
-                              
+
   real(kind=rk)               :: retirement_tax     = 17.0
   real(kind=rk)               :: conversion_tax     = 15.0
   real(kind=rk)               :: conv_size          = 50000

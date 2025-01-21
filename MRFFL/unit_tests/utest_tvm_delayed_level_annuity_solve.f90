@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo cashflows cashflow time value of money tvm cashflows taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -214,7 +214,7 @@ contains
     ! ! d>1, e>1, i<-100%
     ! n        =  7
     ! i        =  -110
-    ! pv       =  9000000      
+    ! pv       =  9000000
     ! fv       =  -0.9
     ! a        =  1000
     ! d        =  3
@@ -222,21 +222,21 @@ contains
     ! status   =  -1
 
     if (k==1) then
-       ! d=1, e=1, i>0,  
+       ! d=1, e=1, i>0,
        n        =  7
        i        =  10
-       pv       =  4355.2606994622283           
-       fv       =  8487.1710000000112     
+       pv       =  4355.2606994622283
+       fv       =  8487.1710000000112
        a        =  1000
        d        =  1
        e        =  1
        status   =  -1
     else if (k==2) then
-       ! d=0, e=0, i>0,  
+       ! d=0, e=0, i>0,
        n        =  7
        i        =  10
-       pv       =  5868.4188176929347        
-       fv       =  11435.888100000011     
+       pv       =  5868.4188176929347
+       fv       =  11435.888100000011
        a        =  1000
        d        =  0
        e        =  0
@@ -245,8 +245,8 @@ contains
        ! d=1, e=0, i>0,  ordinary
        n        =  7
        i        =  10
-       pv       =  4868.4188176929347        
-       fv       =  9487.1710000000130     
+       pv       =  4868.4188176929347
+       fv       =  9487.1710000000130
        a        =  1000
        d        =  1
        e        =  0
@@ -255,8 +255,8 @@ contains
        ! d=0, e=1, i>0,  due
        n        =  7
        i        =  10
-       pv       =  5355.2606994622283        
-       fv       =  10435.888100000011   
+       pv       =  5355.2606994622283
+       fv       =  10435.888100000011
        a        =  1000
        d        =  0
        e        =  1
@@ -265,8 +265,8 @@ contains
        ! d=0, e>1, i>0
        n        =  7
        i        =  10
-       pv       =  1909.0909090909101        
-       fv       =  3720.2781000000027 
+       pv       =  1909.0909090909101
+       fv       =  3720.2781000000027
        a        =  1000
        d        =  0
        e        =  6
@@ -275,8 +275,8 @@ contains
        ! d=1, e>1, i>0
        n        =  7
        i        =  10
-       pv       =  1735.5371900826456        
-       fv       =  3382.0710000000063     
+       pv       =  1735.5371900826456
+       fv       =  3382.0710000000063
        a        =  1000
        d        =  1
        e        =  5
@@ -286,7 +286,7 @@ contains
        n        =  7
        i        =  10
        pv       =  1434.3282562666486
-       fv       =  2795.1000000000013     
+       fv       =  2795.1000000000013
        a        =  1000
        d        =  3
        e        =  3
@@ -295,8 +295,8 @@ contains
        ! d>1, e=0, i>0
        n        =  7
        i        =  10
-       pv       =  1077.6320482844853        
-       fv       =  2100.0000000000018     
+       pv       =  1077.6320482844853
+       fv       =  2100.0000000000018
        a        =  1000
        d        =  6
        e        =  0
@@ -305,8 +305,8 @@ contains
        ! d>1, e=1, i>0
        n        =  7
        i        =  10
-       pv       =  1185.3952531129339        
-       fv       =  2310.0000000000032     
+       pv       =  1185.3952531129339
+       fv       =  2310.0000000000032
        a        =  1000
        d        =  5
        e        =  1
@@ -315,8 +315,8 @@ contains
        ! d>1, e=1, -100<i<0
        n        =  7
        i        =  -10
-       pv       =  3575.1852040019489        
-       fv       =  1709.9999999999993     
+       pv       =  3575.1852040019489
+       fv       =  1709.9999999999993
        a        =  1000
        d        =  5
        e        =  1
@@ -334,7 +334,3 @@ contains
     end if
   end subroutine setem
 end program utest_tvm_delayed_level_annuity_solve
-
-
-
-

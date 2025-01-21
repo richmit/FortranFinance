@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -42,8 +42,8 @@ module mrffl_us_taxes
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
   use mrffl_percentages, only: percentage_of, percentage_of_total
   use mrffl_tvm, only: fv_from_pv_n_i
-  implicit none  
-  private                  
+  implicit none
+  private
 
   integer(kind=ik), parameter, public :: seed_tax_year                     = 2024 ! The year the following constants hold
   real(kind=rk), parameter, public    :: std_tax_deduction_single          = 14600
@@ -57,7 +57,7 @@ module mrffl_us_taxes
   real(kind=rk), parameter, public    :: tax_bracket_breaks_separately(7)  = [11600, 47150, 100525, 191950, 243725, 365600, 365601]
 
       ! 2024 US Tax Brackets
-      ! 
+      !
       ! | Tax rate | Single filer         | Married filing jointly | Married filing separately | Head of household    |
       ! |----------+----------------------+------------------------+---------------------------+----------------------|
       ! |      10% |       $0 to $11,600  |       $0 to  $23,200   |       $0 to  $11,600      |       $0 to  $16,550 |
@@ -67,7 +67,7 @@ module mrffl_us_taxes
       ! |      32% | $191,951 to $243,725 | $383,901 to $487,450   | $191,951 to $243,725      | $191,951 to $243,700 |
       ! |      35% | $243,726 to $609,350 | $487,451 to $731,200   | $243,726 to $365,600      | $243,701 to $609,350 |
       ! |      37% | $609,351 or more     | $731,201 or more       | $365,601 or more          | $609,350 or more     |
-      ! 
+      !
 
   public :: tax, projected_tax, max_bracket, effective_tax_rate
 
@@ -75,20 +75,20 @@ contains
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Find the bracket val belongs in given an array of bracket end points.
-  !! 
+  !!
   !! brackets is an array consisting of bracket endpoints @f$ [ e_1, e_2, ..., e_{n-1}, e_{n} ] @f$
   !! such that @f$ e_1 < e_2 < ... < e_{n-1} < e_n @f$.
   !!
-  !! The endpoints define a set of intervals:  
+  !! The endpoints define a set of intervals:
   !!                @f$ (-\infty, e1], (e_1, e_2], ..., (e_{n-2}, e_{n-1}], (e_{n-1}, e_n), [e_n, \infity) @f$
   !! Note the second to last interval is open -- the rest are half open.
-  !! We enumerate these intervals from 0 up to n.  
+  !! We enumerate these intervals from 0 up to n.
   !!
   !! This function returns the index for the interval containing val.
-  !! 
+  !!
   integer(kind=ik) function max_bracket(val, brackets)
     real(kind=rk), intent(in) :: val
-    real(kind=rk), intent(in) :: brackets(:)         
+    real(kind=rk), intent(in) :: brackets(:)
     integer(kind=ik)          :: i
     if (val <= brackets(1)) then
        max_bracket = 1_ik
@@ -107,12 +107,12 @@ contains
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Compute tax given value, bracket breaks, and bracket rates.
-  !! 
+  !!
   !! see max_bracket() for a description of breaks.  The rates array are the tax rates for each bracket.
-  !! 
+  !!
   real(kind=rk) function tax(val, breaks, rates)
     real(kind=rk),    intent(in) :: val
-    real(kind=rk),    intent(in) :: breaks(:), rates(:)         
+    real(kind=rk),    intent(in) :: breaks(:), rates(:)
     real(kind=rk)                :: val_in_bracket, last_break, cur_break
     integer                      :: idx
     if (val < zero_epsilon) then
@@ -136,12 +136,12 @@ contains
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Compute effective tax rate given value, bracket breaks, and bracket rates.
-  !! 
+  !!
   !! see max_bracket() for a description of breaks.  The rates array are the tax rates for each bracket.
-  !! 
+  !!
   real(kind=rk) function effective_tax_rate(val, breaks, rates)
     real(kind=rk),    intent(in) :: val
-    real(kind=rk),    intent(in) :: breaks(:), rates(:)         
+    real(kind=rk),    intent(in) :: breaks(:), rates(:)
     if (val < zero_epsilon) then
        effective_tax_rate = 0
     else
@@ -157,7 +157,7 @@ contains
   real(kind=rk) function projected_tax(val, breaks, rates, year, inflation)
     real(kind=rk),    intent(in) :: val, inflation
     integer(kind=ik), intent(in) :: year
-    real(kind=rk),    intent(in) :: breaks(:), rates(:)         
+    real(kind=rk),    intent(in) :: breaks(:), rates(:)
     if (year < seed_tax_year) then
        projected_tax = -1
     else if (year < seed_tax_year) then

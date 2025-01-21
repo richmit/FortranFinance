@@ -9,7 +9,7 @@
 #+DESCRIPTION: Documentation for loan examples in the Fortran Finance repository.
 #+KEYWORDS:    finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 #+LANGUAGE:    en
-#+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil 
+#+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil
 #+SEQ_TODO:    TODO:NEW(t)                         TODO:WORK(w)    TODO:HOLD(h)    | TODO:FUTURE(f)   TODO:DONE(d)    TODO:CANCELED(c)
 #+PROPERTY: header-args :eval never-export
 #+HTML_HEAD: <style>body { width: 95%; margin: 2% auto; font-size: 18px; line-height: 1.4em; font-family: Georgia, serif; color: black; background-color: white; }</style>
@@ -43,7 +43,7 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
 
 * ~loan_level_payments.f90~
 
-#+begin_src sh :results output raw :exports results 
+#+begin_src sh :results output raw :exports results
 ~/core/codeBits/bin/srcHdrInfo -i details loan_level_payments.f90
 #+end_src
 
@@ -57,14 +57,14 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
   approach such problems using a multiple cashflow methodology, this program applies the technique to solve the familiar
   problem of the simple loan.
 
-  We can model a loan as a pair of parallel cashflows: 
+  We can model a loan as a pair of parallel cashflows:
     - Money paid by the lender (i.e. the principal) -- a negative cash flow from the lender's perspective
     - Money paid to the lender (i.e. loan payments) -- a positive cash flow from the lender's perspective
   These two cash flows should have equal magnitude PV & FV, but of opposite sign.
 
 * ~loan_geometric_payments.f90~
 
-#+begin_src sh :results output raw :exports results 
+#+begin_src sh :results output raw :exports results
 ~/core/codeBits/bin/srcHdrInfo -i details loan_geometric_payments.f90
 #+end_src
 
@@ -82,7 +82,7 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
 
 * ~loan_up_down_payments.f90~
 
-#+begin_src sh :results output raw :exports results 
+#+begin_src sh :results output raw :exports results
 ~/core/codeBits/bin/srcHdrInfo -i details loan_up_down_payments.f90
 #+end_src
 
@@ -96,4 +96,3 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
   lender will not loose more than a fractional cent on the entire transaction, and the borrower don't pay more than the agreed
   upon rate (this second condition is required by law in many jurisdictions).  Note this method is unsuitable for very long
   term loans as it may shorten the overall term.
-  

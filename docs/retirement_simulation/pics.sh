@@ -28,7 +28,3 @@ for f in ~/world/my_prog/finance/FortranFinance/retirement_simulation/*.png; do
     fi
   done
 done
-
-
-
-

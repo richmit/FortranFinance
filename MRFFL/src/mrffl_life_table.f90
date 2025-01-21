@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -54,7 +54,7 @@
 !! @f$ q_x @f$ is the probability that someone aged exactly @f$ x @f$  will die before reaching age @f$ (x+1) @f$.
 !! @f[ q_x = 1 - \frac{l_{x+1}}{l_x} @f]
 !!
-!! @warning 
+!! @warning
 !! It is common for the value of @f$ q_x @f$ to be adjusted.  It is also common for life tables with adjusted @f$ q_x @f$ values
 !! to still report the actual values for @f$ l_x @f$ -- thus making the two columns inconsistent with each other with respect to
 !! the above formula.  The 2021 Social Security life table is an example.  This module treats this single life table as two
@@ -66,7 +66,7 @@
 !! @f[ p_x = \frac{l_{x+1}}{l_x} @f]
 !!
 !! @par `cohort_size`
-!! @f$ l_0 @f$ is the number of people in the cohort (sometimes called the "radix").  
+!! @f$ l_0 @f$ is the number of people in the cohort (sometimes called the "radix").
 !!
 !! @par `survivors` & `age_all_dead`
 !! @f$ l_x @f$ is the number of people who survive to age @f$ x @f$.
@@ -78,7 +78,7 @@
 !! @f[ d_x = l_x - l_{x+1} @f]
 !!
 !! @par `probability_of_survival_n`
-!! @f$ _tp_x @f$ the probability that someone aged exactly @f$ x @f$ will survive for @f$ t @f$ more years living up to 
+!! @f$ _tp_x @f$ the probability that someone aged exactly @f$ x @f$ will survive for @f$ t @f$ more years living up to
 !! at least age @f$ x+t @f$.
 !! @f[ _tp_x = \frac{l_{x+t}}{l_x} @f]
 !!
@@ -86,7 +86,7 @@
 !! @f$ L_x @f$ the total number of person-years lived by the cohort from age @f$ x @f$ to @f$ x+1 @f$.
 !! @f[ L_x = l_{x+1} + \frac{d_x}{2} @f]
 !!
-!! @warning 
+!! @warning
 !! I like the simple approach of assuming people die uniformly on the time interval.  That is to say the average number of years
 !! lived by people who died on the interval was 0.5 years.  There are several other methodologies in common use today that do not
 !! make this assumption.  The most common approaches are to use some kind of smoothing criteria.  For a popular example, see
@@ -102,7 +102,7 @@
 !! @f[ e_x = \frac{T_x}{l_x} @f]
 !!
 !! @par `mortality_rate`
-!! @f$ m_x @f$ is the mortality rate at age @f$ x @f$. 
+!! @f$ m_x @f$ is the mortality rate at age @f$ x @f$.
 !! @f[ m_x = \frac{d_x}{L_x} @f]
 !!
 !! @par life_table & cohort parameters
@@ -161,11 +161,11 @@ module mrffl_life_table
         26043, 22471, 19042, 15814, 12847, 10192,  7890,  5956,  4385,  3149, &
          2208,  1509,  1003,   646,   402,   241,   139,    77,    40,    20, &
             9,     4,     2,     1,     0,     0,     0,     0,     0,     0]
-  
+
   !--------------------------------------------------------------------------------------------------------------------------------
   !> @f$ q_x @f$ for males as recorded in the 2021 period life table for the US Social Security Administration.
   !! cohort_size=100000
-  !! 
+  !!
   real(kind=rk), public, parameter :: usss_m_qx_dat(0:119) = [ &
        0.0058600, 0.0004200, 0.0002720, 0.0002250, 0.0001840, 0.0001570, 0.0001400, 0.0001280, 0.0001220, 0.0001230, &
        0.0001290, 0.0001380, 0.0001640, 0.0002200, 0.0003100, 0.0004460, 0.0006370, 0.0008680, 0.0011000, 0.0012700, &
@@ -211,7 +211,7 @@ module mrffl_life_table
         89127, 88364, 87548, 86684, 85779, 84833, 83844, 82800, 81693, 80509, &
         79235, 77876, 76421, 74863, 73179, 71381, 69377, 67214, 64874, 62393, &
         59748, 56950, 54018, 50925, 47681, 44270, 40716, 37095, 33384, 29635, &
-        25909, 22273, 18795, 15540, 12566,  9919,  7628,  5706,  4143,  2915, & 
+        25909, 22273, 18795, 15540, 12566,  9919,  7628,  5706,  4143,  2915, &
          1985]
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -259,12 +259,12 @@ module mrffl_life_table
         85017, 84042, 83005, 81912, 80767, 79571, 78325, 77015, 75640, 74193, &
         72671, 71078, 69405, 67644, 65776, 63810, 61658, 59380, 56945, 54396, &
         51702, 48904, 45995, 42987, 39882, 36667, 33399, 30073, 26734, 23433, &
-        20222, 17157, 14288, 11660,  9310,  7260,  5520,  4086,  2940,  2053, & 
+        20222, 17157, 14288, 11660,  9310,  7260,  5520,  4086,  2940,  2053, &
          1390]
 
   public :: life_table_print
   public :: survivors, probability_of_death
-  public :: died, person_years, probability_of_survival_n, age_all_dead  
+  public :: died, person_years, probability_of_survival_n, age_all_dead
   public :: life_expectancy, rand_age
   public :: life_expectancy_at_birth, probability_of_survival_1, total_person_years, mortality_rate
 
@@ -293,7 +293,7 @@ contains
           end if
        else
           if (age <= 0) then
-             survivors = cohort_size          
+             survivors = cohort_size
           else
              survivors = cohort_size
              do i=2,min(age+1_ik, size(life_table, kind=ik))
@@ -478,7 +478,7 @@ contains
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Return lowest age for which @f$ l_x=0 @f$.  See the module documentation for a guide to symbols.
   !!
-  !! This function is super slow.  
+  !! This function is super slow.
   !!
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
@@ -500,7 +500,7 @@ contains
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Return random age for death given current age and life_table.
   !!
-  !! This function is super slow.  
+  !! This function is super slow.
   !!
   !! @param age Age of the person.
   !! @param life_table  Data for life table.  See module documentation for description.
@@ -520,7 +520,7 @@ contains
     end do
     rand_age = size(life_table, kind=ik)-1_ik
   end function rand_age
-  
+
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Print life table.
   !!

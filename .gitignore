@@ -25,9 +25,9 @@ a.out
 /monte_carlo/inflation.png
 /monte_carlo/inflation.txt
 /monte_carlo/stocks
-/monte_carlo/stocks.txt 
+/monte_carlo/stocks.txt
 /monte_carlo/stocks_paths.png
-/monte_carlo/stocks_ranges.png 
+/monte_carlo/stocks_ranges.png
 /monte_carlo/blend_risk_cvuc.png
 
 /MRFFL/functional_tests/ftest_life_table_print
@@ -84,5 +84,3 @@ a.out
 /retirement_simulation/retire.out
 /retirement_simulation/config.nml
 /retirement_simulation/*.png
-
-

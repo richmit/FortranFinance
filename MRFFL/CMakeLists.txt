@@ -12,7 +12,6 @@ set(CMAKE_Fortran_MODULE_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/modules)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/lib)
 
-
 if (UNIX)
   message(STATUS " MRFFL Compiler Setup: OS: UNIX")
   if(CMAKE_Fortran_COMPILER_ID MATCHES "Flang$")
@@ -39,7 +38,6 @@ else()
     message(STATUS " MRFFL Compiler Setup: Compiler Unknown: ${CMAKE_Fortran_COMPILER_ID}")
   endif()
 endif (UNIX)
-
 
 set(MY_MODS ../src/mrffl_config.f90
             ../src/mrffl_stats.f90

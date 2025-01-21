@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-15 Wed 13:00 -->
+<!-- 2025-01-21 Tue 13:41 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance: Retirement Simulation</title>
@@ -232,12 +232,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-15 13:00:03</i></td>
+<td class="org-left"><i>2025-01-21 13:41:47</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-15 13:00:04</i></td>
+<td class="org-left"><i>2025-01-21 13:41:48</i></td>
 </tr>
 </tbody>
 </table>
@@ -313,7 +313,7 @@ wrote this little tool &#x2013; it essentially simulates the annual financial tr
 <div class="outline-text-3" id="text-model">
 <ul class="org-ul">
 <li>Inflation can be a fixed rate or monte carlo.</li>
-<li>The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.  
+<li>The couple have a fixed set of expenses to meet every year (a budget).  This budget grows with inflation.
 <ul class="org-ul">
 <li>Expenses are broken into shared expenses and expenses related to each person.  Person specific expenses disappear when the associated person dies.</li>
 <li>Use the following sources in order for expenses: income, brokerage, IRA, Roth, &amp; emergency fund.</li>
@@ -340,7 +340,7 @@ wrote this little tool &#x2013; it essentially simulates the annual financial tr
 <li>All funds can be moved to the cash position if total assets are sufficient to meet future expenses under a worst case inflation condition.</li>
 </ul></li>
 </ul></li>
-<li>Each partner has a job.  
+<li>Each partner has a job.
 <ul class="org-ul">
 <li>They each have a retirement date at which they will stop working.</li>
 <li>While they work, they contribute to to their IRA. Maximum contributions are comprehended including "catch up" contributions after age 50.</li>
@@ -364,7 +364,7 @@ wrote this little tool &#x2013; it essentially simulates the annual financial tr
 <li>They file joint until one of them dies.</li>
 <li>Taxes are paid with the same strategy as expenses.</li>
 </ul></li>
-<li>They share an "emergency" fund invested in low risk investments.  
+<li>They share an "emergency" fund invested in low risk investments.
 <ul class="org-ul">
 <li>Funds used as a last resort.</li>
 <li>Return rate can be fixed or monte carlo</li>
@@ -443,7 +443,7 @@ number of image files.  I'll describe them here, but I think it's easier to just
 <div class="outline-text-3" id="text-future">
 <ul class="org-ul">
 <li>Add a way to remix investments later in retirement</li>
-<li>Add a way to change savings draw down later 
+<li>Add a way to change savings draw down later
 <ul class="org-ul">
 <li>Main use case: Switch from IRA first to IRA/Roth mix to level out tax burden.</li>
 </ul></li>
@@ -508,14 +508,14 @@ in doing the same kind of research.
 </p>
 
 <ul class="org-ul">
-<li>Monte carlo deficiencies 
+<li>Monte carlo deficiencies
 <ul class="org-ul">
 <li>Not using historical data for simulation parameters.
 <ul class="org-ul">
 <li>Seriously.  I came across a couple client side JavaScript retirement calculators that were just doing uniform random numbers between -7 and 7 for
 market returns.  That's pure trash.</li>
 </ul></li>
-<li>GBM models dubious parameter values.  
+<li>GBM models dubious parameter values.
 <ul class="org-ul">
 <li>It's impossible to tell the difference between the result of an incorrect analysis of historical data and a made up number.</li>
 <li>It is impossible to trust this kind of simulation unless they disclose the source for parameters.  My policy on this one is that if they won't share,
@@ -532,7 +532,7 @@ then I can't trust them.  It's that simple.</li>
 <li>As I side note, I am convinced some of these tools exist only to publish the "probability of failure" metric as a marketing strategy.  They hope to scare
 people into paying for a financial advisor.</li>
 </ul></li>
-<li>Unwillingness to divulge the underlying models and assumptions.  
+<li>Unwillingness to divulge the underlying models and assumptions.
 <ul class="org-ul">
 <li>This is a deal breaker for me.  It's like the GBM parameter item above &#x2013; if they won't tell, then I won't trust them.</li>
 <li>Note I'm not talking about "secret sauce" or "proprietary intellectual property".  I'm talking about the essential information required to understand
@@ -543,7 +543,7 @@ they don't have it in formal documentation posted on the web page, but they do h
 answers.</li>
 </ul></li>
 </ul></li>
-<li>Poor tax estimation 
+<li>Poor tax estimation
 <ul class="org-ul">
 <li>Blindly assuming a fixed tax rate over time is very common.
 <ul class="org-ul">
@@ -555,13 +555,13 @@ make sure the tool is being intelligent and not just "blindly picking a number".
 <li>Inability to specify tax filing status and deduction methodology.</li>
 <li>Not considering age related early withdrawal penalties for retirement accounts.</li>
 </ul></li>
-<li>Roth conversions 
+<li>Roth conversions
 <ul class="org-ul">
 <li>Most tools simply don't have the ability to plan for them at all</li>
 <li>Failing to comprehend the 5 year withdrawal penalties</li>
 <li>Failing to correctly compute tax consequences at time of conversion.</li>
 </ul></li>
-<li>Social Security 
+<li>Social Security
 <ul class="org-ul">
 <li>Not comprehending when one partner dies, or only having one SSI monthly value for the couple.</li>
 <li>Not supporting, or incorrectly supporting, survivor benefits.</li>
@@ -607,7 +607,7 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="orgadba6d4" class="figure">
+<div id="org7bec194" class="figure">
 <p><a href="pics/savings_by_type_20_fix_full.png"><img src="pics/savings_by_type_20_fix_800x.png" alt="savings_by_type_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -617,7 +617,7 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org0b149bc" class="figure">
+<div id="org083a5b2" class="figure">
 <p><a href="pics/paid_and_unpaid_20_fix_full.png"><img src="pics/paid_and_unpaid_20_fix_800x.png" alt="paid_and_unpaid_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -628,7 +628,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org573f78d" class="figure">
+<div id="org64ba52c" class="figure">
 <p><a href="pics/paid_by_source_20_fix_full.png"><img src="pics/paid_by_source_20_fix_800x.png" alt="paid_by_source_20_fix_800x.png" /></a>
 </p>
 </div>
@@ -639,7 +639,7 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 <h4 id="case_20_mc"><span class="section-number-4">2.1.2.</span> MC</h4>
 <div class="outline-text-4" id="text-case_20_mc">
 <p>
-The graphs in this section are what you get from <code>retire.R</code> when the simulation has monte carlo.  
+The graphs in this section are what you get from <code>retire.R</code> when the simulation has monte carlo.
 </p>
 
 <p>
@@ -649,7 +649,7 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="orgd85e16c" class="figure">
+<div id="orge7e8fdf" class="figure">
 <p><a href="pics/savings_by_year_probability_bands_20_mc_full.png"><img src="pics/savings_by_year_probability_bands_20_mc_800x.png" alt="savings_by_year_probability_bands_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -661,7 +661,7 @@ both people have died.
 </p>
 
 
-<div id="org0234152" class="figure">
+<div id="org5f8cc39" class="figure">
 <p><a href="pics/composite_trajectories_20_mc_full.png"><img src="pics/composite_trajectories_20_mc_800x.png" alt="composite_trajectories_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -671,7 +671,7 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="org309ec31" class="figure">
+<div id="orga68bb9a" class="figure">
 <p><a href="pics/savings_by_year_boxplot_20_mc_full.png"><img src="pics/savings_by_year_boxplot_20_mc_800x.png" alt="savings_by_year_boxplot_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -681,7 +681,7 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="orge05569c" class="figure">
+<div id="org7eebedc" class="figure">
 <p><a href="pics/probability_of_failure_by_year_20_mc_full.png"><img src="pics/probability_of_failure_by_year_20_mc_800x.png" alt="probability_of_failure_by_year_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -691,7 +691,7 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="org2a00025" class="figure">
+<div id="org4cd788a" class="figure">
 <p><a href="pics/final_savings_20_mc_full.png"><img src="pics/final_savings_20_mc_800x.png" alt="final_savings_20_mc_800x.png" /></a>
 </p>
 </div>
@@ -827,7 +827,7 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org62d1cc5" class="figure">
+<div id="org129c60b" class="figure">
 <p><a href="pics/savings_by_type_60o_fix_full.png"><img src="pics/savings_by_type_60o_fix_800x.png" alt="savings_by_type_60o_fix_800x.png" /></a>
 </p>
 </div>
@@ -837,7 +837,7 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org7289803" class="figure">
+<div id="org88e461c" class="figure">
 <p><a href="pics/savings_by_year_probability_bands_60o_mc_full.png"><img src="pics/savings_by_year_probability_bands_60o_mc_800x.png" alt="savings_by_year_probability_bands_60o_mc_800x.png" /></a>
 </p>
 </div>
@@ -847,7 +847,7 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org3c6944f" class="figure">
+<div id="org877187a" class="figure">
 <p><a href="pics/composite_trajectories_60o_mc_full.png"><img src="pics/composite_trajectories_60o_mc_800x.png" alt="composite_trajectories_60o_mc_800x.png" /></a>
 </p>
 </div>
@@ -858,7 +858,7 @@ outcome from this plan.
 </p>
 
 
-<div id="org990c13b" class="figure">
+<div id="org9dabd07" class="figure">
 <p><a href="pics/final_savings_60o_mc_full.png"><img src="pics/final_savings_60o_mc_800x.png" alt="final_savings_60o_mc_800x.png" /></a>
 </p>
 </div>
@@ -869,7 +869,7 @@ outcome from this plan.
 <h4 id="case_60o_ml"><span class="section-number-4">2.2.2.</span> An Alternate Plan</h4>
 <div class="outline-text-4" id="text-case_60o_ml">
 <p>
-They can dramatically improve the chances of success by saving more (bumping up total savings by 250k), and spending less (drop annual expenses by 1k).  
+They can dramatically improve the chances of success by saving more (bumping up total savings by 250k), and spending less (drop annual expenses by 1k).
 </p>
 
 <p>
@@ -877,7 +877,7 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org45f3d87" class="figure">
+<div id="org51cf20b" class="figure">
 <p><a href="pics/savings_by_year_probability_bands_60ml_mc_full.png"><img src="pics/savings_by_year_probability_bands_60ml_mc_800x.png" alt="savings_by_year_probability_bands_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -887,7 +887,7 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="orgda178ed" class="figure">
+<div id="orgc2db76c" class="figure">
 <p><a href="pics/composite_trajectories_60ml_mc_full.png"><img src="pics/composite_trajectories_60ml_mc_800x.png" alt="composite_trajectories_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -897,7 +897,7 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org72fd890" class="figure">
+<div id="org1f5524c" class="figure">
 <p><a href="pics/final_savings_60ml_mc_full.png"><img src="pics/final_savings_60ml_mc_800x.png" alt="final_savings_60ml_mc_800x.png" /></a>
 </p>
 </div>
@@ -1074,7 +1074,7 @@ to edit that makefile for your system configuration &#x2013; follow the instruct
 </div>
 
 <p>
-This will result in a executable (named "<code>retire</code>" on most UNIX-like platforms, and "<code>retire.exe</code>" on Windows).  
+This will result in a executable (named "<code>retire</code>" on most UNIX-like platforms, and "<code>retire.exe</code>" on Windows).
 </p>
 </div>
 </div>

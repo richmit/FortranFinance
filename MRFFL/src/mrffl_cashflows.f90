@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -37,7 +37,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 !> Tools for TVM computations with irregular/uneven cashflows.
-!! 
+!!
 !! The traditional definition of a cashflow is money received (positive) or paid (negative).  A cashflow stream or series (or
 !! sequence) is one or more cashflows received over a period of time.  Time up into a series of discreet "periods" corresponding
 !! naturally to the problem at hand. Each cashflow occurs at the beginning or ending of one of these periods.  For example, we
@@ -74,7 +74,7 @@ module mrffl_cashflows
   use mrffl_prt_sets
   use mrffl_percentages, only: percentage_to_fraction
   use mrffl_solver,      only: multi_bisection
-  implicit none  
+  implicit none
   private
 
   ! Work with one or more cashflow series in the columns of a matrix
@@ -120,7 +120,7 @@ contains
   !! much faster and requires no temporary arrays.
   !!
   !! @param cf_mat    Matrix of cashflows (one cashflow sequence per column)
-  !! @param i         Interest/Rate/Growth 
+  !! @param i         Interest/Rate/Growth
   !!
   real(kind=rk) pure function cashflow_matrix_total_pv(cf_mat, i)
     real(kind=rk),    intent(in)  :: cf_mat(:,:)
@@ -192,7 +192,7 @@ contains
   !!
   character(len=5) function i2s(n)
     implicit none
-    integer(kind=ik), intent(in) :: n 
+    integer(kind=ik), intent(in) :: n
     write(i2s,'(i5.5)') n
   end function i2s
 
@@ -227,7 +227,7 @@ contains
   !> Compute present and future values for a cashflow matrix.
   !!
   !! @param cf_mat    Matrix of cashflows (one cashflow sequence per column)
-  !! @param i         Interest/Rate/Growth 
+  !! @param i         Interest/Rate/Growth
   !! @param pv_vec    Returns the present value vector
   !! @param fv_vec    Returns the future value vector
   !! @param status    Returns status of operation.  0 if everything worked. See: cashflow_matrix_pv_fv_print() for range.
@@ -246,7 +246,7 @@ contains
   !! As a side effect, the cashflows may be printed.
   !!
   !! @param cf_mat    Matrix of cashflows (one cashflow sequence per column)
-  !! @param i         Interest/Rate/Growth 
+  !! @param i         Interest/Rate/Growth
   !! @param pv_vec    Returns the present value vector
   !! @param fv_vec    Returns the future value vector
   !! @param status    Returns status of operation.  0 if everything worked. Range: 0 & 2129-2160.
@@ -342,11 +342,11 @@ contains
        end if
     end if
   end subroutine cashflow_matrix_pv_fv_print
-  
+
   !------------------------------------------------------------------------------------------------------------------------------
   !> Create a cashflow with a single (lump sum) payment.
   !!
-  !! The number of periods is assumed from the size of the cashflow vector at size(cashflow)-1.  
+  !! The number of periods is assumed from the size of the cashflow vector at size(cashflow)-1.
   !! All payments other than the lump sum payment are set to zero.
   !!
   !! @param cf_vec    The resulting cashflow vector.
@@ -374,7 +374,7 @@ contains
        status = 0
     end if
   end subroutine make_cashflow_vector_delayed_lump
-  
+
   !------------------------------------------------------------------------------------------------------------------------------
   !> Create a cashflow of payments for a fixed annuity.
   !!
@@ -412,7 +412,7 @@ contains
        status = 0
     end if
   end subroutine make_cashflow_vector_delayed_level_annuity
-  
+
   !------------------------------------------------------------------------------------------------------------------------------
   !> Create a cashflow of payments for a growing annuity.
   !!

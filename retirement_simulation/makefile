@@ -1,4 +1,3 @@
-
 ################################################################################################################################################################################################################################################################
 
 MRFFL_PATH = ../MRFFL
@@ -15,7 +14,7 @@ include $(MRFFL_PATH)/make_includes/include.mk
 
 CONFIG_FILE = config_20.nml
 
-retire : retire.f90 mrffl_bitset$(OBJ_SUFFIX) mrffl_percentages$(OBJ_SUFFIX) mrffl_bitset$(OBJ_SUFFIX) mrffl_var_sets$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX) mrffl_us_taxes$(OBJ_SUFFIX) mrffl_solver$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX) mrffl_stats$(OBJ_SUFFIX) mrffl_us_markets$(OBJ_SUFFIX) mrffl_us_inflation$(OBJ_SUFFIX) mrffl_prt_sets$(OBJ_SUFFIX) mrffl_life_table$(OBJ_SUFFIX) 
+retire : retire.f90 mrffl_bitset$(OBJ_SUFFIX) mrffl_percentages$(OBJ_SUFFIX) mrffl_bitset$(OBJ_SUFFIX) mrffl_var_sets$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX) mrffl_us_taxes$(OBJ_SUFFIX) mrffl_solver$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX) mrffl_stats$(OBJ_SUFFIX) mrffl_us_markets$(OBJ_SUFFIX) mrffl_us_inflation$(OBJ_SUFFIX) mrffl_prt_sets$(OBJ_SUFFIX) mrffl_life_table$(OBJ_SUFFIX)
 	$(FC) $(FFLAGS) $^ -o $@
 
 retire.out : retire
@@ -35,7 +34,7 @@ graphs : check_out retire.out retire.R
 .PHONY: clean
 clean : clean_multi_mrffl
 	rm -f *~ retire retire.o retire.exe retire.obj retire.out paidunpaid.png savings.png
-	rm -f endSavings.png brokeAge.png simCompBox.png colCases.png simCompLine.png savings_cm.png savings_i.png savings_crg.png savings.png paidunpaid.png paidsource.png
+	rm -f composite_trajectories.png composite_trajectories_y10.png final_savings.png paid_and_unpaid.png paid_by_source.png probability_of_failure_by_year.png probability_of_success_by_year.png savings_by_type.png savings_by_year_boxplot.png savings_by_year_probability_bands.png y10_savings.png
 	rm -f config.nml
 
 # These targets reproduce the graphics included in the online documentation
@@ -63,4 +62,3 @@ clean : clean_multi_mrffl
 	rm -f retire.out
 	make CONFIG_FILE=config.nml graphs
 	rm -f config.nml
-

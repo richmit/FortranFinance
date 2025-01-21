@@ -7,7 +7,7 @@
 !! @brief     Retirement Simulator.@EOL
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
-!! @see       https://github.com/richmit/FortranFinance 
+!! @see       https://github.com/richmit/FortranFinance
 !! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
@@ -529,7 +529,7 @@ contains
         ! ------------------------------------------------------------------------------------------------------------------------
         ! Print status to output file
         write (unit=out_io_unit, iostat=out_io_stat, iomsg=out_io_msg, fmt=fmt_n) &
-             sim, year, age_p1, age_p2, status_p1, status_p2, &               
+             sim, year, age_p1, age_p2, status_p1, status_p2, &
              cash_reserves, cur_inflation_rate, cr_paied_cash, cr_paied_savings, cr_paied_ira, cr_paied_roth, &
              emergency_fund, brokerage_balance, ira_balance_p1, ira_balance_p2,roth_balance_p1, roth_balance_p2, &
              cur_investment_apr(1), cur_investment_apr(2), cur_investment_apr(3), &

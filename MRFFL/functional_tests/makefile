@@ -56,7 +56,10 @@ endif
 .PHONY: clean
 clean : clean_mrffl
 	rm -f *~ *.tmp.o
-	rm -f $(addsuffix $(EXE_SUFFIX), $(EXE_TARGETS)) $(addsuffix $(OBJ_SUFFIX), $(EXE_TARGETS)) 
+	rm -f $(EXE_TARGETS) 
+	rm -f $(addsuffix .exe, $(EXE_TARGETS))
+	rm -f $(addsuffix .obj, $(EXE_TARGETS)) 
+	rm -f $(addsuffix .o, $(EXE_TARGETS)) 
 	rm -f ftest_life_table_print_*.txt
 	rm -f ftest_stats_rand_norm_std.txt
 

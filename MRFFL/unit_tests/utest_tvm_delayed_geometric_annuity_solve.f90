@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo cashflows cashflow time value of money tvm cashflows taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -247,8 +247,8 @@ contains
        n        =  15
        i        =   4
        g        =   3
-       pv       =   13491.599717769010        
-       fv       =   24297.608890615225     
+       pv       =   13491.599717769010
+       fv       =   24297.608890615225
        a        =   1000
        d        =   1
        e        =   0
@@ -258,8 +258,8 @@ contains
        n        =  15
        i        =   -4
        g        =   3
-       pv       =   26771.722696416953     
-       fv       =   14512.586239140792        
+       pv       =   26771.722696416953
+       fv       =   14512.586239140792
        a        =   1000
        d        =   1
        e        =   0
@@ -269,8 +269,8 @@ contains
        n        =  15
        i        =   4
        g        =   4
-       pv       =   14423.076923076922        
-       fv       =   25975.146714042068     
+       pv       =   14423.076923076922
+       fv       =   25975.146714042068
        a        =   1000
        d        =   1
        e        =   0
@@ -280,8 +280,8 @@ contains
        n        =  15
        i        =   -4
        g        =   -4
-       pv       =   15625.000000000002        
-       fv       =   8470.0996853267043     
+       pv       =   15625.000000000002
+       fv       =   8470.0996853267043
        a        =   1000
        d        =   1
        e        =   0
@@ -292,8 +292,8 @@ contains
        n        =  5
        i        =   -110
        g        =   3
-       pv       =   -102591.51099999959        
-       fv       =   1.0259151099999999     
+       pv       =   -102591.51099999959
+       fv       =   1.0259151099999999
        a        =   1
        d        =   1
        e        =   0

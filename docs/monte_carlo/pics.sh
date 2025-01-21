@@ -18,7 +18,3 @@ for f in ~/world/my_prog/finance/FortranFinance/monte_carlo/*.png; do
     fi
   done
 done
-
-
-
-

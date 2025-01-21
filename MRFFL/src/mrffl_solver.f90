@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -36,23 +36,23 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 !> Root solvers.
-!! 
+!!
 module mrffl_solver
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  implicit none  
+  implicit none
   private
 
   public :: bisection, multi_bisection
 
 contains
-  
+
   !------------------------------------------------------------------------------------------------------------------------------
   !> Search for a root for the function f in the interval [x0_init, x1_init].
-  !! 
+  !!
   !! The process is iterative.  At each step the size of the search interval is cut in half.  If the search interval gets too
   !! small (< x_epsilon), then the process is abandoned.  If no zero is found after max_itr, then the process is abandoned.
-  !! 
-  !! @param xc         The solution (or last value tested if no solution is found) 
+  !!
+  !! @param xc         The solution (or last value tested if no solution is found)
   !! @param x0_init    Left side of search interval
   !! @param x1_init    Right side of search interval
   !! @param f          Function to solve for zero
@@ -86,14 +86,14 @@ contains
     xc = x0
     f0 = f(xc)
     if (abs(f0) < y_epsilon) then
-       status = 0   
+       status = 0
     else
        x1 = x1_init
        xc = x1
        f1 = f(xc)
        if (abs(f1) < y_epsilon) then
           xc = x1
-          status = 0   
+          status = 0
        else
           if (progress)  print *, 0, x0, f0, x1, f1
           if (((f0 < 0) .and. (f1 < 0)) .or. ((f0 > 0) .and. (f1 > 0))) then
@@ -133,11 +133,11 @@ contains
        end if
     end if
   end subroutine bisection
-  
+
   !------------------------------------------------------------------------------------------------------------------------------
   !> Use bisection() to search for a root for the function f in a list of intervals returning the first root found.
-  !! 
-  !! @param xc         The solution (or last value tested if no solution is found) 
+  !!
+  !! @param xc         The solution (or last value tested if no solution is found)
   !! @param x0_init    A *VECTOR* of left sides for search intervals
   !! @param x1_init    A *VECTOR* of right sides for search intervals
   !! @param f          Function to solve for zero

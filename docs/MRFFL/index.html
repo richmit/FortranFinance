@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-20 Mon 16:13 -->
+<!-- 2025-01-21 Tue 13:41 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>MR Fortran Finance Library (MRFFL)</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-20 16:13:49</i></td>
+<td class="org-left"><i>2025-01-21 13:41:36</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-20 16:13:49</i></td>
+<td class="org-left"><i>2025-01-21 13:41:37</i></td>
 </tr>
 </tbody>
 </table>
@@ -423,7 +423,7 @@ This section describes how to build using CMake.  A <a href="#examples-build-mak
 <p>
 Most of the programs in <a href="https://github.com/richmit/FortranFinance">FortranFinance</a> make use of MRFFL.  When using a CMake based workflow, MRFFL is accessed
 via a central include directory of compiled module files and a static library.  Before we can compile any examples, we must create these module files and
-library. 
+library.
 </p>
 
 <div class="org-src-container">
@@ -567,8 +567,8 @@ Your makefile will look something like this:
 <div class="org-src-container">
 <pre class="src src-makefile"><span style="color: #7fffd4;">MRFFL_PATH</span> = ../MRFFL
 
-<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set FC, FFLAGS, &amp; AR here.  The include below has the settings I use on my system.    </span>
-<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">MRFFL_PATH</span>)/tools_gfortran.mk 
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set FC, FFLAGS, &amp; AR here.  The include below has the settings I use on my system.</span>
+<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">MRFFL_PATH</span>)/tools_gfortran.mk
 
 <span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">MRFFL_PATH</span>)/include.mk
 
@@ -584,7 +584,7 @@ modules in the makefile if you wish.  Such a rule might look like the following:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-makefile"><span style="color: #00fa9a; font-weight: bold;">your_program</span> : your_program.f90 mrffl_config$(<span style="color: #7fffd4;">OBJ_SUFFIX</span>) mrffl_tvm$(<span style="color: #7fffd4;">OBJ_SUFFIX</span>) mrffl_solver$(<span style="color: #7fffd4;">OBJ_SUFFIX</span>) 
+<pre class="src src-makefile"><span style="color: #00fa9a; font-weight: bold;">your_program</span> : your_program.f90 mrffl_config$(<span style="color: #7fffd4;">OBJ_SUFFIX</span>) mrffl_tvm$(<span style="color: #7fffd4;">OBJ_SUFFIX</span>) mrffl_solver$(<span style="color: #7fffd4;">OBJ_SUFFIX</span>)
     $(<span style="color: #7fffd4;">FC</span>) $(<span style="color: #7fffd4;">FFLAGS</span>) $<span style="color: #8470ff; font-weight: bold;">^</span> -o <span style="color: #00fa9a; font-weight: bold;">$</span><span style="color: #8470ff; font-weight: bold;">@</span>
 </pre>
 </div>

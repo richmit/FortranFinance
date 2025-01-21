@@ -18,8 +18,6 @@ various computational finance topics:
   - [loans](https://richmit.github.io/FortranFinance/loans/index.html) : Various loan TVM problems.
   - [retirement](https://github.com/richmit/FortranFinance/tree/main/retirement) : Some TVM-style retirement problems.
   - [cashflows](https://github.com/richmit/FortranFinance/tree/main/cashflows) : Just a demo of the cashflow module.
-  - [MRFFL_functional_tests](https://github.com/richmit/FortranFinance/tree/main/MRFFL_functional_tests) : Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
-  - [MRFFL_unit_tests](https://github.com/richmit/FortranFinance/tree/main/MRFFL_unit_tests) : Unit tests for MRFFL.  
 
 ### WARNING
 

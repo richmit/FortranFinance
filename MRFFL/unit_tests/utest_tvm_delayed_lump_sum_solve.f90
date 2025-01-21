@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo cashflows cashflow time value of money tvm cashflows taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -62,7 +62,7 @@ program utest_tvm_delayed_lump_sum_solve
   status = -1
   print "(a3,i7,5(f20.4),i4,i7)", "BF", status, n, i, pv, fv, a, d, var_g
   call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_g, status)
-  print "(a3,i7,5(f20.4),i4,i7,a)", "AF", status, n, i, pv, fv, a, d, var_g, " ERROR unk"  
+  print "(a3,i7,5(f20.4),i4,i7,a)", "AF", status, n, i, pv, fv, a, d, var_g, " ERROR unk"
 
   !! Var Combos:
   !! NONE
@@ -194,15 +194,15 @@ program utest_tvm_delayed_lump_sum_solve
      call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, var_a, status)
      print "(a3,i7,5(f20.4),i4,i7)", "AF", status, n, i, pv, fv, a, d, var_a
   end do
-  print "(a)", repeat("=", 121)  
+  print "(a)", repeat("=", 121)
 contains
   subroutine setem(k)
     integer, intent(in) :: k
-    if (k==1) then      
+    if (k==1) then
        ! Case: d=0, i>0
        i = 10
-       pv = 1100.0000000000000        
-       fv = 1610.5100000000004     
+       pv = 1100.0000000000000
+       fv = 1610.5100000000004
        a  = 1100
        n = 4
        d = 0
@@ -210,8 +210,8 @@ contains
     else if (k==2) then
        ! Case: d=1, i>0
        i = 10
-       pv = 1000.0000000000000        
-       fv = 1464.1000000000004     
+       pv = 1000.0000000000000
+       fv = 1464.1000000000004
        a = 1100
        n = 4
        d = 1
@@ -219,8 +219,8 @@ contains
     else if (k==3) then
        ! Case: 1<d<n-1, i>0
        i = 10
-       pv = 909.09090909090901           
-       fv = 1331.0000000000002     
+       pv = 909.09090909090901
+       fv = 1331.0000000000002
        a = 1100
        n = 4
        d = 2
@@ -228,8 +228,8 @@ contains
     else if (k==4) then
        ! Case: d=n-1, i>0
        i = 10
-       pv = 826.44628099173531           
-       fv = 1210.0000000000000     
+       pv = 826.44628099173531
+       fv = 1210.0000000000000
        a = 1100
        n = 4
        d = 3
@@ -237,8 +237,8 @@ contains
     else if (k==5) then
        ! Case: d=n, i>0
        i = 10
-       pv = 751.31480090157754        
-       fv = 1100.0000000000000     
+       pv = 751.31480090157754
+       fv = 1100.0000000000000
        a = 1100
        n = 4
        d = 4

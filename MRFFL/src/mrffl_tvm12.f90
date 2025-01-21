@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -37,7 +37,7 @@
 
 !##################################################################################################################################
 !> Provides a TVM solver with functionality similar to modern financial calculators.
-!! 
+!!
 !! Most financial calculators use the following relationship to implement TVM functionality:
 !! @f[ 0=PV+(1+i\cdot b)\cdot\frac{PMT}{i}\cdot\left(1-\frac{1}{(1+i)^n}\right)+\frac{FV}{(1+i)^n} @f]
 !!
@@ -53,13 +53,13 @@ module mrffl_tvm12
   use mrffl_solver, only: multi_bisection
   ! use mrffl_solver_ne, only: multi_bisection
   use mrffl_prt_sets, only: prt_param, prt_table, prt_title
-  implicit none  
+  implicit none
   private
 
   ! Quite a lot of code depends on the values being 1 & 0.  Do not change them!
   integer(kind=ik), parameter, public  ::  pmt_at_beginning = 1
   integer(kind=ik), parameter, public  ::  pmt_at_end       = 0
-                                              
+
   public :: tvm12_solve, tvm12_print
   public :: var_i, var_n, var_pv, var_fv, var_pmt
 
@@ -80,7 +80,7 @@ contains
   !!  -  8 - ERROR(tvm_solve): i near zero!
   !!  -  9 - Reserved
   !!
-  !! WARNING: Solving for i is not entirely reliable.  Only values between -1 and 1 may be found.  Additionally it is 
+  !! WARNING: Solving for i is not entirely reliable.  Only values between -1 and 1 may be found.  Additionally it is
   !! possible a solution in that range might not be found.
   !!
   !! @param n         Number of compounding periods
@@ -116,7 +116,7 @@ contains
           status = 3004 ! "ERROR(tvm_solve): i near -1!"
           return
        end if
-    end if    
+    end if
     r_dat = [ i, pv, pmt, fv ]
     i_dat = [ n, pmt_time ]
     islvivl0  = [ 0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
@@ -221,7 +221,7 @@ contains
     real(kind=rk),    intent(in) :: i, pv, fv, pmt
     real (kind=rk)               :: tot_pmt, cur_pv
     integer(kind=ik)             :: k
-    
+
     if ((pmt_time /= pmt_at_beginning) .and. (pmt_time /= pmt_at_end)) then
        stop "ERROR(tvm_solve): Unsupported value for pmt_time (must be one of pmt_at_beginning or pmt_at_end)"
     end if

@@ -15,5 +15,5 @@ include $(MRFFL_PATH)/make_includes/include.mk
 clean : clean_multi_mrffl
 	rm -f *~
 
-clean_docs : 
+clean_docs :
 	rm -rf autodocs

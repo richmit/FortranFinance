@@ -9,20 +9,20 @@
 # @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 # @std       R
 # @see       https://github.com/richmit/FortranFinance/monte_carlo
-# @copyright 
+# @copyright
 #  @parblock
 #  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-#  
+#
 #  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
-#  
+#
 #  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following disclaimer.
-#  
+#
 #  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following disclaimer in the documentation
 #     and/or other materials provided with the distribution.
-#  
+#
 #  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software
 #     without specific prior written permission.
-#  
+#
 #  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
 #  IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE
 #  LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
@@ -53,7 +53,7 @@ daDat <- fread("blend_risk.txt") %>% mutate(hp=factor(hp))
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## gp <- ggplot(data=daDat %>% filter(hp==75 & balance < 70e6)) +
 ##   geom_histogram(aes(x=balance), col='red', fill='pink', breaks=seq(0, 40e6, by=5e6)) +
-##   scale_x_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale())) + 
+##   scale_x_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale())) +
 ##   labs(title='Ending balance of making it 50 years on 4M withdrawing 100K annually adjusted by inflation', x='Balance', y='')
 ## print(gp)
 
@@ -70,4 +70,3 @@ gp <- ggplot(data=successDat) +
 fname <- "blend_risk.png"
 ggsave(fname, width=12, height=10)
 if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
-

@@ -1,5 +1,3 @@
-
-
 ################################################################################################################################################################################################################################################################
 
 MRFFL_PATH = ../MRFFL
@@ -15,10 +13,10 @@ include $(MRFFL_PATH)/make_includes/include.mk
 
 EXE_TARGETS := cashflow_vs_tvm_solver irr
 
-# Set RUNEM to something to run examples after being built.  I normally set it on the command line like this: 
+# Set RUNEM to something to run examples after being built.  I normally set it on the command line like this:
 #     make RUNEM=T test_tvm_cashflows
 # The value need not be "T" -- any non-whitespace should work.
-RUNEM := 
+RUNEM :=
 
 cashflow_vs_tvm_solver : cashflow_vs_tvm_solver.f90 $(MRFFL_OBJ_FILES)
 	$(FC) $(FFLAGS) $^ -o $@
@@ -41,5 +39,4 @@ clean : clean_mrffl
 	rm -rf build/* build/.???*
 
 .PHONY: all
-all : $(EXE_TARGETS) 
-
+all : $(EXE_TARGETS)

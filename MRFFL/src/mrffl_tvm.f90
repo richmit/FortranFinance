@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -36,7 +36,7 @@
 
 !------------------------------------------------------------------------------------------------------------------------------
 !> Solvers for TVM problems involving lump sums, level (fixed) annuities, and geometric (growing) annuities.
-!! 
+!!
 !! @par Definitions and Notation
 !!
 !!   - Annuity in advance, annuity due: Payment at beginning of each period. Ex: Rent and subscription fees.
@@ -64,12 +64,12 @@
 !!  - I avoid the adjectives "guaranteed" and "guarantee" with regard to annuities because they are confused with the term
 !!    "non-contingent". As such I use the word "certain".  In this module all annuities are certain, so it is safe to assume an
 !!    annuity is certain when it's not explicity specified.
-!! 
+!!
 !!  - I avoid the adjective "growing" with regard to annuities simply because it is too generic and offends my mathematical sense
 !!    of precision. Arithmetic annuities are "growing" too?!? Right?!?  As such I use the term "geometric".
-!! 
+!!
 !! @par Approach
-!! 
+!!
 !! It's common practice in financial problem solving to produce a single set of TVM equations for a particular scenario, and then
 !! solve the resulting equation(s).  For example a loan might be thought of as a single cashflow stream starting with a negative
 !! cashflow for the principal followed by sequence of negative, equal cash flows for the payments with the overall condition that
@@ -110,7 +110,7 @@
 !! @par Lump Sums
 !!
 !! Like the annuity solvers, the lump sum solver in this module is also uniquely flexible.  Instead of the lump sum always being
-!! paid at the beginning of the first period, this library allows one to specify the payment on any period boundary.  
+!! paid at the beginning of the first period, this library allows one to specify the payment on any period boundary.
 !!
 !!   - For an "ordinary lump sum" use d=0
 !!     Note that some packages call this "a lump sum with payment mode `BEGIN`"
@@ -137,7 +137,7 @@
 !! These arguments are followed by the delay (`d`) argument.  For annuities this is followed by the early end argument (`e`).  Next
 !! is the `unknown` argument that specifies what variables we wish to solve for.  Lastly is a `status` argument used to return
 !! errors.
-!! 
+!!
 !!                                                                              delay
 !!                                                                              |  early end
 !!                                                        ---- variables ----   |  |
@@ -157,7 +157,7 @@
 !!
 !! For the lump sum solver there are 15 possible combinations of 1 or 2 variables:
 !!
-!!   var_n, var_n+var_i, var_n+var_pv, var_n+var_fv, var_n+var_a, var_i, var_i+var_pv, var_i+var_fv, 
+!!   var_n, var_n+var_i, var_n+var_pv, var_n+var_fv, var_n+var_a, var_i, var_i+var_pv, var_i+var_fv,
 !!   var_i+var_a, var_pv, var_pv+var_fv, var_pv+var_a, var_fv, var_fv+var_a, var_a
 !!
 !! For the lump sum solver any of the combinations may be solved.  For others there are limitations.  See the documentation for the
@@ -178,10 +178,10 @@
 !! Solving for n.
 !!
 !! Logically the value for n is the number of periods -- a positive integer.  For these routines n is allowed to be any real
-!! value so that we can solve for the variable and produce consistent results.  If an integer value is required: 
-!!   -# First solve for n. 
-!!   -# Transform n to an integer in an appropriate way (perhaps ceiling for a loan). 
-!!   -# Using this integer n, now solve for two other variables in the equations (perhaps a & i for a loan).  
+!! value so that we can solve for the variable and produce consistent results.  If an integer value is required:
+!!   -# First solve for n.
+!!   -# Transform n to an integer in an appropriate way (perhaps ceiling for a loan).
+!!   -# Using this integer n, now solve for two other variables in the equations (perhaps a & i for a loan).
 !!      You will now have a consistent set of equations with an
 !!      integer number of periods with the two variables solved for in the last step being adjusted.
 !!
@@ -192,7 +192,7 @@
 !! this parameter is zero after a call, then no error conditions were encountered.  The error codes are allocated in blocks to
 !! each subroutine so that no subroutines share common error codes.  This is intended to assist the caller in ascertaining where
 !! the problem occurred.  In the code each error code is documented with a comment where the status value is set. i.e. search for
-!! the error code, and you will find the description.  
+!! the error code, and you will find the description.
 !!
 !! @par Other Approaches & References
 !!
@@ -208,7 +208,7 @@ module mrffl_tvm
   use mrffl_var_sets, only: var_NONE, var_a, var_p, var_i, var_g, var_n, var_pv, var_fv, var_q
   use mrffl_percentages, only: p2f => percentage_to_fraction, f2p => fraction_to_percentage
   use mrffl_solver, only: multi_bisection
-  implicit none  
+  implicit none
   private
 
   real(kind=rk),    parameter         :: consistent_epsilon = 1.0e-3_rk !< Used to check equation consistency
@@ -253,7 +253,7 @@ contains
   !!
   !! Formulas
   !! @f[ \begin{array}{ll}
-  !!    P_{sum} & = P\cdot\left(\frac{(i+1)^{n}-1}{i}\right) \\ 
+  !!    P_{sum} & = P\cdot\left(\frac{(i+1)^{n}-1}{i}\right) \\
   !!  \end{array} @f]
   !!
   !! @param n         Number of compounding periods (WARNING: Unlike elsewhere in this module, this is an INTEGER not a REAL)
@@ -267,7 +267,7 @@ contains
     if (n < 1) then
        tvm_geometric_annuity_sum_a = 0
     else
-       gq = p2f(g)    
+       gq = p2f(g)
        tvm_geometric_annuity_sum_a = a * ((1+gq)**n-1) / gq
        ! tvm_geometric_annuity_sum_a = 0
        ! do j=0,n-1
@@ -278,14 +278,14 @@ contains
 
   !----------------------------------------------------------------------------------------------------------------------------
   !> Return the number of payments given the period count (n), delay (d), and early end (e).
-  !! 
-  !!                 Example: 
+  !!
+  !!                 Example:
   !!                     d      0 1 2 3 4 5 6 7 8 9
   !!                     period 0 1 2 3 4 5 6 7 8 9
   !!                     e      9 8 7 6 5 4 3 2 1 0
   !!                              |           |   |
   !!                         d=1 -+      e=2 -+   +- n=9   -> num_payments = 1+n-e-d = 7
-  !! 
+  !!
   !! @param n         Number of periods.
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
   !! @param e         Early end counted from time end (t=n). i.e. e=0 means the last payment is at end of period n.
@@ -304,7 +304,7 @@ contains
   !! @param i         Annual growth rate as a percentage.
   !! @param pv        Present Value
   !! @param fv        Future Value
-  !! @param unknowns  What variable to solve for.  
+  !! @param unknowns  What variable to solve for.
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1193-1224.
   !!
   subroutine tvm_lump_sum_solve(n, i, pv, fv, unknowns, status)
@@ -334,12 +334,12 @@ contains
   !> Solve for TVM parameters for a generalized lump sum.
   !!
   !!  @f[ \begin{array}{cccc}
-  !!       t       &  V_t   & \mathrm{pv}_t           & \mathrm{fv}_t  \\  
-  !!       0       &  0     & 0                       & 0              \\  
+  !!       t       &  V_t   & \mathrm{pv}_t           & \mathrm{fv}_t  \\
+  !!       0       &  0     & 0                       & 0              \\
   !!       ...     &  ...   & ...                     & ...            \\
   !!       {d-1}   &  0     & 0                       & 0              \\
-  !!       d       &  a     & \frac{a}{(1+i)^{d}}     & a(1+i)^{n-d}   \\  
-  !!       {d+1}   &  0     & 0                       & 0              \\  
+  !!       d       &  a     & \frac{a}{(1+i)^{d}}     & a(1+i)^{n-d}   \\
+  !!       {d+1}   &  0     & 0                       & 0              \\
   !!       ...     &   ...  & ...                     & ...            \\
   !!       n       &  0     & 0                       & 0              \\
   !!  \end{array} @f]
@@ -352,14 +352,14 @@ contains
   !! cashflow to occur at the beginning or end of any period.
   !!
   !! This solver can find any combination of 1 or 2 of the following variables: n, i, pv, fv, & a.
-  !! 
+  !!
   !! @param n         Number of compounding periods
   !! @param i         Annual growth rate as a percentage.
   !! @param pv        Present Value
   !! @param fv        Future Value
   !! @param a         The size of the cashflow
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
-  !! @param unknowns  What variables to solve for.  
+  !! @param unknowns  What variables to solve for.
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1161-1192.
   !!
   subroutine tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, unknowns, status)
@@ -405,15 +405,15 @@ contains
                 return
              end if
              n = (d * log(1 + iq) + log(fv / a)) / log(1 + iq)
-          else if (bitset_subsetp(var_i, unknowns)) then          ! a & n are known. i is unknown. 
-             if      (bitset_subsetp(var_pv, unknowns)) then      ! a, n, & fv are known. i & pv are unknown  
+          else if (bitset_subsetp(var_i, unknowns)) then          ! a & n are known. i is unknown.
+             if      (bitset_subsetp(var_pv, unknowns)) then      ! a, n, & fv are known. i & pv are unknown
                 if (abs(d-n) < zero_epsilon) then
                    status = 1165 ! "ERROR(tvm_delayed_lump_sum_solve): Can not solve for pv with i unknown and d=n!"
                    return
                 else
                    pv = a * ((fv / a) ** (-1 / (d - n))) ** (-d)
                 end if
-             else if (bitset_subsetp(var_fv, unknowns)) then      ! a, n, & pv are known. i & fv are unknown  
+             else if (bitset_subsetp(var_fv, unknowns)) then      ! a, n, & pv are known. i & fv are unknown
                 if (abs(d) < zero_epsilon) then
                    status = 1166 ! "ERROR(tvm_delayed_lump_sum_solve): Can not solve for fv with i unknown and d=0!"
                    return
@@ -510,12 +510,12 @@ contains
   !> Solve for TVM parameters for a level annuity.
   !!
   !!  @f[ \begin{array}{cccc}
-  !!       t       &  V_t   & \mathrm{pv}_t           & \mathrm{fv}_t  \\  
-  !!       0       &  0     & 0                       & 0              \\  
+  !!       t       &  V_t   & \mathrm{pv}_t           & \mathrm{fv}_t  \\
+  !!       0       &  0     & 0                       & 0              \\
   !!       ...     &  ...   & ...                     & ...            \\
   !!       {d-1}   &  0     & 0                       & 0              \\
-  !!       d       &  a     & \frac{a}{(1+i)^{d}}     & a(1+i)^{n-d}   \\  
-  !!       {d+1}   &  a     & \frac{a}{(1+i)^{d+1}}   & a(1+i)^{n-d-1} \\  
+  !!       d       &  a     & \frac{a}{(1+i)^{d}}     & a(1+i)^{n-d}   \\
+  !!       {d+1}   &  a     & \frac{a}{(1+i)^{d+1}}   & a(1+i)^{n-d-1} \\
   !!       ...     &  ...   & ...                     & ...            \\
   !!       {t}     &  a     & \frac{a}{(1+i)^{t}}     & a(1+i)^{n-t}   \\
   !!       ...     &  ...   & ...                     & ...            \\
@@ -535,7 +535,7 @@ contains
   !! @f[ \mathrm{pv} = a\frac{\left(1+i \right)^{1-d}   -\left(1+i \right)^{-n+d}}{i} @f]
   !!
   !! This routine is capable of searching for any combination of 1 or 2 of the following variables: n, i, pv, fv, & a
-  !! 
+  !!
   !! @par Solving for i
   !! When possible a closed for solution is used.  In some cases (var_i+var_fv, var_i+var_pv, var_i+var_n when d or e is greater
   !! than 1) bisection is used to numerically solve for i.  When bisection is used, this routine will search for values for i
@@ -544,10 +544,10 @@ contains
   !! In other words, it can find values of i that are between -99999 and 99999 and at least zero_epsilon away from 0% and 100%.
   !! If the value for i is outside these ranges, then no solution will be found.  It is also possible that even if a solution
   !! exists inside these ranges that the search algorithm may fail.  If solutions exist in more than one range, then the first
-  !! one found is used.  
+  !! one found is used.
   !!
-  !! @warning  Solutions are unreliable when i is less than -100%.  
-  !! 
+  !! @warning  Solutions are unreliable when i is less than -100%.
+  !!
   !! @param n         Number of compounding periods
   !! @param i         Annual growth rate as a percentage.  When solving for this value only POSITIVE values are found.
   !! @param pv        Present Value
@@ -615,7 +615,7 @@ contains
              n = (log(1 + iq) * d - log(1 + iq) + log((a * exp(log(1 + iq) * e) + fv * iq) / a)) / log(1 + iq)
           else
              if (bitset_subsetp(var_i, unknowns)) then          ! a & n are known. i is unknown
-                if (bitset_subsetp(var_fv, unknowns)) then      ! a, n, & pv are known. i & fv are unknown  
+                if (bitset_subsetp(var_fv, unknowns)) then      ! a, n, & pv are known. i & fv are unknown
                    call multi_bisection(i, islvivl0, islvivl1, sf_i_no_fv, 1.0e-7_rk, 1.0e-7_rk, 1000_ik, status, .false.)
                    if (status /= 0) then
                       status = 1100 ! "ERROR(tvm_delayed_level_annuity_solve): i solver failed for unknown fv case!"
@@ -665,7 +665,7 @@ contains
       sf_i_no_pv = 1 / iq * (-(1 + iq) ** e + (1 + iq) ** (1 + n - d)) * a - fv
     end function sf_i_no_pv
   end subroutine tvm_delayed_level_annuity_solve
-  
+
   !----------------------------------------------------------------------------------------------------------------------------
   !> Check TVM parameters for a level annuity.
   !! @param n         Number of compounding periods
@@ -736,12 +736,12 @@ contains
   !> Solve for TVM parameters for a geometric annuity certain.
   !!
   !!  @f[ \begin{array}{cccc}
-  !!       t       &  V_t              & \mathrm{pv}_t                          & \mathrm{fv}_t                 \\  
-  !!       0       &  0                & 0                                      & 0                             \\  
+  !!       t       &  V_t              & \mathrm{pv}_t                          & \mathrm{fv}_t                 \\
+  !!       0       &  0                & 0                                      & 0                             \\
   !!       ...     &   ...             & ...                                    & ...                           \\
   !!       {d-1}   &  0                & 0                                      & 0                             \\
-  !!       d       &  a(1+g)^{0}       & a\frac{(1+g)^{0}}{(1+i)^{d}}           & a(1+g)^{0}(1+i)^{n-d}         \\  
-  !!       {d+1}   &  a(1+g)^{1}       & a\frac{(1+g)^{1}}{(1+i)^{d+1}}         & a(1+g)^{1}(1+i)^{n-d-1}       \\  
+  !!       d       &  a(1+g)^{0}       & a\frac{(1+g)^{0}}{(1+i)^{d}}           & a(1+g)^{0}(1+i)^{n-d}         \\
+  !!       {d+1}   &  a(1+g)^{1}       & a\frac{(1+g)^{1}}{(1+i)^{d+1}}         & a(1+g)^{1}(1+i)^{n-d-1}       \\
   !!       ...     &   ...             & ...                                    & ...                           \\
   !!       {t}     &  a(1+g)^{t-d}     & a\frac{(1+g)^{t-d}}{(1+i)^{t}}         & a(1+g)^{t-d}(1+i)^{n-t}       \\
   !!       ...     &   ...             & ...                                    & ...                           \\
@@ -774,7 +774,7 @@ contains
   !! @param a         First payment (Annuity)
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
   !! @param e         Early end counted from time end (t=n). i.e. e=0 means the last payment is at end of period n.
-  !! @param unknowns  What variables to solve for.  
+  !! @param unknowns  What variables to solve for.
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1033-1064.
   !!
   subroutine tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, unknowns, status)
@@ -792,12 +792,12 @@ contains
        status = 1034 ! "ERROR(tvm_delayed_geometric_annuity_solve): Unknown unknowns!"
     else
        iq = p2f(i)
-       gq = p2f(g)    
+       gq = p2f(g)
        iq1 = 1+iq
        gq1 = 1+gq
        giq = gq-iq
        if (num_unknowns > 0) then
-          if (abs(i-g) < zero_epsilon) then ! i=g case          
+          if (abs(i-g) < zero_epsilon) then ! i=g case
              if (bitset_subsetp(var_a, unknowns)) then              ! a is unknown
                 if      (bitset_subsetp(var_pv, unknowns)) then      ! a & pv are unknown
                    pv = fv * iq1 ** (-n)
@@ -810,7 +810,7 @@ contains
              else if (bitset_subsetp(var_n, unknowns)) then              ! n is unknown
                 if      (bitset_subsetp(var_fv, unknowns)) then      ! n & fv are unknown
                    fv = pv * iq1 ** ((iq1 ** d * pv + a * (-1 + d + e)) / a)
-                ! else if (bitset_subsetp(var_i, unknowns)) then      ! n & i are unknown                   
+                ! else if (bitset_subsetp(var_i, unknowns)) then      ! n & i are unknown
                 !    ! MJR TODO NOTE <2024-12-19T15:50:59-0600> tvm_delayed_geometric_annuity_solve: Add iterative solver for i here.
                 else if (num_unknowns > 1) then                      ! n & something otherthan fv are unknown
                    status = 1036 ! "ERROR(tvm_delayed_geometric_annuity_solve): Unsupported value for unknown (only var_fv supported with var_n)!"
@@ -921,7 +921,7 @@ contains
        status = 1023 ! "ERROR(tvm_delayed_geometric_annuity_check): Parameters inconsistent (a is NaN)!"
     else
        iq = p2f(i)
-       gq = p2f(g)    
+       gq = p2f(g)
        if (abs(i-g) < zero_epsilon) then ! i=g case
           if (abs(a * (1 + iq) ** (-dble(d) + dble(n)) * (-d + n - e + 1) - fv) > consistent_epsilon) then
              status = 1024 ! "ERROR(tvm_delayed_geometric_annuity_check): Inconsistent parameters (i=g & fv equation)!"
@@ -946,12 +946,12 @@ contains
   !> Solve for TVM parameters for a arithmetic annuity certain.
   !!
   !!  @f[ \begin{array}{cccc}
-  !!       t       &  V_t                & \mathrm{pv}_t                            & \mathrm{fv}_t                   \\  
-  !!       0       &  0                  & 0                                        & 0                               \\  
+  !!       t       &  V_t                & \mathrm{pv}_t                            & \mathrm{fv}_t                   \\
+  !!       0       &  0                  & 0                                        & 0                               \\
   !!       ...     &   ...               & ...                                      & ...                             \\
   !!       {d-1}   &  0                  & 0                                        & 0                               \\
-  !!       d       &  a+q\cdot 0         & \frac{a+q\cdot 0}{(1+i)^{d}}             & (a+q\cdot 0)(1+i)^{n-d}         \\  
-  !!       {d+1}   &  a+q\cdot 1         & \frac{a+q\cdot 1}{(1+i)^{d+1}}           & (a+q\cdot 1)(1+i)^{n-d-1}       \\  
+  !!       d       &  a+q\cdot 0         & \frac{a+q\cdot 0}{(1+i)^{d}}             & (a+q\cdot 0)(1+i)^{n-d}         \\
+  !!       {d+1}   &  a+q\cdot 1         & \frac{a+q\cdot 1}{(1+i)^{d+1}}           & (a+q\cdot 1)(1+i)^{n-d-1}       \\
   !!       ...     &   ...               & ...                                      & ...                             \\
   !!       {t}     &  a+q\cdot (t-d)     & \frac{a+q\cdot (t-d)}{(1+i)^{t}}         & (a+q\cdot (t-d))(1+i)^{n-t}     \\
   !!       ...     &   ...               & ...                                      & ...                             \\
@@ -981,7 +981,7 @@ contains
   !! @param a         First payment (Annuity)
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
   !! @param e         Early end counted from time end (t=n). i.e. e=0 means the last payment is at end of period n.
-  !! @param unknowns  What variables to solve for.  
+  !! @param unknowns  What variables to solve for.
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4129-4160.
   !!
   subroutine tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, unknowns, status)
@@ -997,7 +997,7 @@ contains
     iq1 = 1+iq
     epd = e + d
     n1 = n + 1
-    do 
+    do
        if (bitset_subsetp(var_i, cur_unk) .and. bitset_not_intersectp(cur_unk, var_fv+var_pv+var_n)) then      ! U=i,  K=fv+pv+n ?=q+a
           iq  = (fv / pv) ** (1 / n) - 1
           i   = f2p(iq)
@@ -1120,4 +1120,3 @@ contains
   end subroutine tvm_delayed_arithmetic_annuity_check
 
 end module mrffl_tvm
-

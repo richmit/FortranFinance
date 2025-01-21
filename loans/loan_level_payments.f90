@@ -8,22 +8,22 @@
 !! @keywords  mrffl finance
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -32,7 +32,7 @@
 !!  LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED
 !!  OF THE POSSIBILITY OF SUCH DAMAGE.
 !!  @endparblock
-!! @filedetails   
+!! @filedetails
 !!
 !!  The typical approach to solving loan problems is to equate the present value of the principal with the present value of the
 !!  payment cashflow stream in a single equation and solve for the payment.  With only one principal payment occurring at the
@@ -42,7 +42,7 @@
 !!  approach such problems using a multiple cashflow methodology, this program applies the technique to solve the familiar
 !!  problem of the simple loan.
 !!
-!!  We can model a loan as a pair of parallel cashflows: 
+!!  We can model a loan as a pair of parallel cashflows:
 !!    - Money paid by the lender (i.e. the principal) -- a negative cash flow from the lender's perspective
 !!    - Money paid to the lender (i.e. loan payments) -- a positive cash flow from the lender's perspective
 !!  These two cash flows should have equal magnitude PV & FV, but of opposite sign.
@@ -58,10 +58,10 @@ program loan_level_payments
   use mrffl_cashflows
   implicit none
 
-  real(kind=rk)    :: n  = 10  
+  real(kind=rk)    :: n  = 10
   real(kind=rk)    :: i  = 7
 
-  real(kind=rk)    :: a_pv, a_fv, a_a, p_pv, p_fv 
+  real(kind=rk)    :: a_pv, a_fv, a_a, p_pv, p_fv
   integer(kind=ik) :: a_d, a_e, p_d
 
   integer(kind=ik) :: status

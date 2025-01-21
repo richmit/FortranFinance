@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo cashflows cashflow time value of money tvm cashflows taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -81,7 +81,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      call setem(k)
      n = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_n
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_n
 
      print "(a)", repeat("=", 119)
@@ -89,7 +89,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      n = -1
      i = -1
      print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, q, pv, fv, a, d, e, var_n+var_i, "bad: n+i"
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_i, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_i, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_n+var_i
 
      print "(a)", repeat("=", 119)
@@ -97,7 +97,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      n = -1
      q = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_n+var_q
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_q, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_q, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_n+var_q
 
      print "(a)", repeat("=", 119)
@@ -105,7 +105,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      n = -1
      pv = -1
      print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, q, pv, fv, a, d, e, var_n+var_pv, "bad: n+pv"
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_pv, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_pv, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_n+var_pv
 
      print "(a)", repeat("=", 119)
@@ -113,7 +113,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      n = -1
      fv = -1
      print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, q, pv, fv, a, d, e, var_n+var_fv, "bad: n+fv"
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_fv, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_fv, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_n+var_fv
 
      print "(a)", repeat("=", 119)
@@ -121,14 +121,14 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      n = -1
      a = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_n+var_a
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_a, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_n+var_a, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_n+var_a
 
      print "(a)", repeat("=", 119)
      call setem(k)
      i = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_i
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_i
 
      print "(a)", repeat("=", 119)
@@ -136,7 +136,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      i = -1
      q = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_i+var_q
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i+var_q, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i+var_q, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_i+var_q
 
      print "(a)", repeat("=", 119)
@@ -144,7 +144,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      i = -1
      pv = -1
      print "(a3,i5,6(f15.4),3(i7), a10)", "BF", status, n, i, q, pv, fv, a, d, e, var_i+var_pv, "bad: i+pv"
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i+var_pv, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i+var_pv, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_i+var_pv
 
      print "(a)", repeat("=", 119)
@@ -152,7 +152,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      i = -1
      fv = -1
      print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, q, pv, fv, a, d, e, var_i+var_fv, "bad: i+fv"
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i+var_fv, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i+var_fv, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_i+var_fv
 
      print "(a)", repeat("=", 119)
@@ -160,14 +160,14 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      i = -1
      a = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_i+var_a
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i+var_a, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_i+var_a, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_i+var_a
 
      print "(a)", repeat("=", 119)
      call setem(k)
      q = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_q
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_q, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_q, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_q
 
      print "(a)", repeat("=", 119)
@@ -175,7 +175,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      q = -1
      pv = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_q+var_pv
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_q+var_pv, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_q+var_pv, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_q+var_pv
 
      print "(a)", repeat("=", 119)
@@ -183,7 +183,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      q = -1
      fv = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_q+var_fv
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_q+var_fv, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_q+var_fv, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_q+var_fv
 
      print "(a)", repeat("=", 119)
@@ -191,14 +191,14 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      q = -1
      a = -1
      print "(a3,i5,6(f15.4),3(i7),a10)", "BF", status, n, i, q, pv, fv, a, d, e, var_q+var_a, "bad: q+a"
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_q+var_a, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_q+var_a, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_q+var_a
 
      print "(a)", repeat("=", 119)
      call setem(k)
      pv = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_pv
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_pv, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_pv, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_pv
 
      print "(a)", repeat("=", 119)
@@ -206,7 +206,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      pv = -1
      fv = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_pv+var_fv
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_pv+var_fv, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_pv+var_fv, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_pv+var_fv
 
      print "(a)", repeat("=", 119)
@@ -214,14 +214,14 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      pv = -1
      a = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_pv+var_a
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_pv+var_a, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_pv+var_a, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_pv+var_a
 
      print "(a)", repeat("=", 119)
      call setem(k)
      fv = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_fv
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_fv, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_fv, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_fv
 
      print "(a)", repeat("=", 119)
@@ -229,14 +229,14 @@ program utest_tvm_delayed_arithmetic_annuity_solve
      pv = -1
      a = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_fv+var_a
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_fv+var_a, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_fv+var_a, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_fv+var_a
 
      print "(a)", repeat("=", 119)
      call setem(k)
      a = -1
      print "(a3,i5,6(f15.4),3(i7))", "BF", status, n, i, q, pv, fv, a, d, e, var_a
-     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_a, status)  ! 
+     call tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, var_a, status)  !
      print "(a3,i5,6(f15.4),3(i7))", "AF", status, n, i, q, pv, fv, a, d, e, var_a
 
   end do
@@ -250,8 +250,8 @@ contains
        n        =   9
        i        =   10
        q        =   100
-       pv       =   7701.1690671979450        
-       fv       =   18158.953820000024 
+       pv       =   7701.1690671979450
+       fv       =   18158.953820000024
        a        =   1000
        d        =   1
        e        =   0
@@ -261,8 +261,8 @@ contains
        n        =   9
        i        =   10
        q        =   100
-       pv       =   8471.2859739177366        
-       fv       =   19974.849202000038     
+       pv       =   8471.2859739177366
+       fv       =   19974.849202000038
        a        =   1000
        d        =   0
        e        =   1

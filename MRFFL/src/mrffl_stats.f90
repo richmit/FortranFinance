@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2024, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -39,8 +39,8 @@
 !!
 module mrffl_stats
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
-  implicit none  
-  private                  
+  implicit none
+  private
 
   public  :: mean_and_variance
   public  :: rand_int, rand_real                                                ! Function wrapper on built in PRNG
@@ -52,7 +52,7 @@ module mrffl_stats
   public  :: geometric_brownian_motion, zero_clipped_brownian_motion
 
 contains
-  
+
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Return random integer in U([optional_lower_bound,upper_bound)) -- optional_lower_bound is 0 if missing.
   !!
@@ -84,7 +84,7 @@ contains
     real(kind=rk),           intent(in) :: upper_bound
     real(kind=rk), optional, intent(in) :: optional_lower_bound
     real(kind=rk)                       :: lower_bound = 0
-    real(kind=rk)                       :: r  
+    real(kind=rk)                       :: r
     if (present(optional_lower_bound)) lower_bound = optional_lower_bound
     if (lower_bound > upper_bound) then
        error stop "ERROR(rand_real): lower_bound > upper_bound!"
@@ -170,7 +170,7 @@ contains
     else
        call random_number(u)
        call random_number(v)
-       rand_norm_std_box = sqrt(-2 * log(u)) * cos(2 * pi * v) 
+       rand_norm_std_box = sqrt(-2 * log(u)) * cos(2 * pi * v)
        cached_value      = sqrt(-2 * log(u)) * sin(2 * pi * v)
        cached_valid      = .true.
     end if
@@ -182,7 +182,7 @@ contains
   real(kind=rk) function rand_norm_std_probit_clip()
     implicit none
     real(kind=rk) :: u
-    do 
+    do
        call random_number(u)
        if ((u > zero_epsilon) .and. (u < (1.0_rk - zero_epsilon))) then
           rand_norm_std_probit_clip = probit(u)
@@ -197,7 +197,7 @@ contains
   real(kind=rk) function rand_norm_std_probit()
     implicit none
     real(kind=rk) :: u
-    do 
+    do
        call random_number(u)
        if (u < 1.0_rk) then
           rand_norm_std_probit = probit(u)
@@ -236,10 +236,10 @@ contains
 
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Probit function -- i.e. inverse of standard normal CDF.
-  !!    Return $z_p$ such that @f$ P(\mathcal{N}(0, 1)<=z_p) = p @f$ 
+  !!    Return $z_p$ such that @f$ P(\mathcal{N}(0, 1)<=z_p) = p @f$
   !!
   !!  Reference:
-  !!    Wichura, Michael J. 1988. "Algorithm AS 241: The Percentage Points of the Normal Distribution." Journal of the Royal Statistical Society. Series C (Applied Statistics) 37 (3): 477-84. 
+  !!    Wichura, Michael J. 1988. "Algorithm AS 241: The Percentage Points of the Normal Distribution." Journal of the Royal Statistical Society. Series C (Applied Statistics) 37 (3): 477-84.
   !!
   !! @param p  Probablity in @f$ (0,1) $f$.
   !! @param x  The value at which to evaluate the polynomial
@@ -283,11 +283,11 @@ contains
        else                           ! $ NOT p\in[0.075, 0.925] $
           if (q < 0.0_rk) then            ! $ p\in[0, 0.075) $
              r = p
-          else                            ! $ p\in(0.925, 1]) 
+          else                            ! $ p\in(0.925, 1])
              r = 1.0_rk - p
           end if
           r = sqrt(-log(abs(r)))          ! p in ( 1.3887943865e-11, 0.999999999986)
-          if (r <= split2) then           
+          if (r <= split2) then
              r = r - const2
              probit = poly_eval(r2_numr, r) / poly_eval(r2_dnom, r)
           else                            ! p is close to 0 or 1
@@ -302,7 +302,7 @@ contains
   end function probit
 
   !--------------------------------------------------------------------------------------------------------------------------------
-  !> Evaluate a univariate polynomial.  
+  !> Evaluate a univariate polynomial.
   !!
   !! Used by probit.  Not exported from the module.
   !!
@@ -332,7 +332,7 @@ contains
   !! @param sigma       Standard deviation of gain for the assest over 1 unit of time
   !! @param step_values A rank 1 array which will hold the values of the asset over time
   !!
-  subroutine geometric_brownian_motion(step_values, s0, mu, sigma) 
+  subroutine geometric_brownian_motion(step_values, s0, mu, sigma)
     real(kind=rk), intent(out) :: step_values(:)
     real(kind=rk), intent(in)  :: s0, mu, sigma
     real(kind=rk)              :: step_width, m, s, sum
@@ -356,7 +356,7 @@ contains
   !! @param sigma       Standard deviation of gain for the assest over 1 unit of time
   !! @param step_values A rank 1 array which will hold the values of the asset over time
   !!
-  subroutine zero_clipped_brownian_motion(step_values, s0, mu, sigma) 
+  subroutine zero_clipped_brownian_motion(step_values, s0, mu, sigma)
     real(kind=rk), intent(out) :: step_values(:)
     real(kind=rk), intent(in)  :: s0, mu, sigma
     real(kind=rk)              :: step_width, m, s

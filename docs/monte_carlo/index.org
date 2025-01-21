@@ -9,7 +9,7 @@
 #+DESCRIPTION: Documentation for monte carlo examples in the Fortran Finance repository.
 #+KEYWORDS:    finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 #+LANGUAGE:    en
-#+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil 
+#+OPTIONS:     num:t toc:nil \n:nil @:t ::t |:t ^:nil -:t f:t *:t <:t skip:nil d:nil todo:t pri:nil H:5 p:t author:t html-scripts:nil
 #+SEQ_TODO:    TODO:NEW(t)                         TODO:WORK(w)    TODO:HOLD(h)    | TODO:FUTURE(f)   TODO:DONE(d)    TODO:CANCELED(c)
 #+PROPERTY: header-args :eval never-export
 #+HTML_HEAD: <style>body { width: 95%; margin: 2% auto; font-size: 18px; line-height: 1.4em; font-family: Georgia, serif; color: black; background-color: white; }</style>
@@ -49,7 +49,7 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
 :CUSTOM_ID: inflation
 :END:
 
-#+begin_src sh :results output raw :exports results 
+#+begin_src sh :results output raw :exports results
 ~/core/codeBits/bin/srcHdrInfo -i details ../../monte_carlo/inflation.f90
 #+end_src
 
@@ -70,7 +70,7 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
 :CUSTOM_ID: stocks
 :END:
 
-#+begin_src sh :results output raw :exports results 
+#+begin_src sh :results output raw :exports results
 ~/core/codeBits/bin/srcHdrInfo -i details  ../../monte_carlo/stocks.f90
 #+end_src
 
@@ -94,7 +94,7 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
 :CUSTOM_ID: blend_risk
 :END:
 
-#+begin_src sh :results output raw :exports results 
+#+begin_src sh :results output raw :exports results
 ~/core/codeBits/bin/srcHdrInfo -i details ../../monte_carlo/blend_risk.f90
 #+end_src
 
