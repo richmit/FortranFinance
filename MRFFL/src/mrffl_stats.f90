@@ -56,8 +56,8 @@ contains
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Return random integer in U([optional_lower_bound,upper_bound)) -- optional_lower_bound is 0 if missing.
   !!
-  !! @param upper_bound  Upper bound for random number
-  !! @param lower_bound  Lower bound for random number
+  !! @param upper_bound          Upper bound for random number
+  !! @param optional_lower_bound Lower bound for random number
   !!
   integer(kind=ik) function rand_int(upper_bound, optional_lower_bound)
     implicit none
@@ -76,8 +76,8 @@ contains
   !--------------------------------------------------------------------------------------------------------------------------------
   !> Return random real value in U([optional_lower_bound,upper_bound)) -- optional_lower_bound is 0 if missing.
   !!
-  !! @param upper_bound  Upper bound for random number
-  !! @param lower_bound  Lower bound for random number
+  !! @param upper_bound          Upper bound for random number
+  !! @param optional_lower_bound Lower bound for random number
   !!
   real(kind=rk) function rand_real(upper_bound, optional_lower_bound)
     implicit none
@@ -225,13 +225,13 @@ contains
   !!  @f[ \text{median} = e^\mu                                              @f]
   !!  @f[ \text{variance} = \left[e^{\sigma^2}-1\right] e^{2\mu+\sigma^2}    @f]
   !!
-  !! @param mu     Mean of the distribution
-  !! @param sigma  Standard deviation of the distribution
+  !! @param mu    Mean of the distribution
+  !! @param sigma Standard deviation of the distribution
   !!
-  real(kind=rk) function rand_log_norm(mu, sd)
+  real(kind=rk) function rand_log_norm(mu, sigma)
     implicit none
-    real(kind=rk), intent(in) :: mu, sd
-    rand_log_norm = exp(rand_norm_std() * sd + mu)
+    real(kind=rk), intent(in) :: mu, sigma
+    rand_log_norm = exp(rand_norm_std() * sigma + mu)
   end function rand_log_norm
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -241,8 +241,7 @@ contains
   !!  Reference:
   !!    Wichura, Michael J. 1988. "Algorithm AS 241: The Percentage Points of the Normal Distribution." Journal of the Royal Statistical Society. Series C (Applied Statistics) 37 (3): 477-84.
   !!
-  !! @param p  Probablity in @f$ (0,1) $f$.
-  !! @param x  The value at which to evaluate the polynomial
+  !! @param p  Probablity in @f$ (0,1) @f$.
   !!
   real(kind=rk) function probit(p)
     implicit none
@@ -308,7 +307,7 @@ contains
   !!
   !! The polynomial is ordered in the natural way with the highest coefficient first in the array:
   !!   @f[ p=\sum_{k=1}^{d+1} p_kx^{1+d-k} @f]
-  !! Note that $k$ in the above formula is the index in the array `p`.
+  !! Note that $k$ in the above formula is the index in the array p.
   !!
   !! @param p  A $d+1$ element, rank 1 array holding the coefficients of a polynomial
   !! @param x  The value at which to evaluate the polynomial
