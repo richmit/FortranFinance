@@ -138,6 +138,7 @@
 !! is the `unknown` argument that specifies what variables we wish to solve for.  Lastly is a `status` argument used to return
 !! errors.
 !!
+!! @verbatim
 !!                                                                              delay
 !!                                                                              |  early end
 !!                                                        ---- variables ----   |  |
@@ -148,12 +149,15 @@
 !!                                                                                    |         |
 !!                                                                                    |         Used to return error codes
 !!                                                                                    Specifies unknown variables
+!! @endverbatim
 !!
 !! Every one of these solvers works with *two* equations (one for pv and one for fv).  As a system of two equations, we can
 !! normally solve for two unknowns.  The unknowns we wish to find are specified in the `unknowns` argument using a sum of
 !! variable constants.  For example, we would request that PV and FV be found with a sum like this:
 !!
+!! @verbatim
 !!                                     var_pv + var_fv
+!! @endverbatim
 !!
 !! For the lump sum solver there are 15 possible combinations of 1 or 2 variables:
 !!
@@ -279,12 +283,14 @@ contains
   !----------------------------------------------------------------------------------------------------------------------------
   !> Return the number of payments given the period count (n), delay (d), and early end (e).
   !!
+  !! @verbatim
   !!                 Example:
   !!                     d      0 1 2 3 4 5 6 7 8 9
   !!                     period 0 1 2 3 4 5 6 7 8 9
   !!                     e      9 8 7 6 5 4 3 2 1 0
   !!                              |           |   |
   !!                         d=1 -+      e=2 -+   +- n=9   -> num_payments = 1+n-e-d = 7
+  !! @endverbatim
   !!
   !! @param n         Number of periods.
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
