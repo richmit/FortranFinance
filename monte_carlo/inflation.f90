@@ -34,13 +34,10 @@
 !!  @endparblock
 !! @filedetails
 !!
-!!  This program runs 200000 (trials) inflation simulations on $100 (initial_value).  Each simulation is over 20 (years) years of
-!!  inflation using the last 30 (mc_history_years) years of historical US inflation data.  This program prints the value after 20
-!!  years for each simulation to STDOUT.  If placed in a file, this data may be consumed by inflation.R to produce a nice
-!!  histogram showing the probability of the value after 100 years.
-!!
-!!  This is sometimes called "trajectory" Monte Carlo because we record the entire trajectory, the steps, of each simulation.
-!!  See inflation.f90 for an example of "end point" Monte Carlo -- where we only store the final step of each simulation.
+!!  This program runs 100000 (`tirals`) Monte Carlo simulations of inflation for $100 (`initial_value`) over 20 (`years`) years
+!!  using the last 30 (`mc_history_years`) years of historical US inflation data.  This program prints the value after 20 years
+!!  for each simulation to `STDOUT`.  If placed in a file, this data may be consumed by `inflation.R` to produce a nice histogram
+!!  showing the probability of the value after 100 years.
 !!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 

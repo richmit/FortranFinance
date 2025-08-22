@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-21 Tue 13:41 -->
+<!-- 2025-08-22 Fri 10:00 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -11,7 +11,7 @@
 <meta name="description" content="Documentation for loan examples in the Fortran Finance repository." />
 <meta name="keywords" content="finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-21 13:40:58</i></td>
+<td class="org-left"><i>2025-08-22 10:00:36</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-21 13:41:00</i></td>
+<td class="org-left"><i>2025-08-22 10:00:36</i></td>
 </tr>
 </tbody>
 </table>
@@ -252,16 +252,16 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <h2>Table of Contents</h2>
 <div id="text-table-of-contents" role="doc-toc">
 <ul>
-<li><a href="#org5266875">1. <code>loan_level_payments.f90</code></a></li>
-<li><a href="#orgf7ab189">2. <code>loan_geometric_payments.f90</code></a></li>
-<li><a href="#orga1b9a88">3. <code>loan_up_down_payments.f90</code></a></li>
+<li><a href="#orgc9a5d06">1. <code>loan_level_payments.f90</code></a></li>
+<li><a href="#org7b1ba6e">2. <code>loan_geometric_payments.f90</code></a></li>
+<li><a href="#org4fa988c">3. <code>loan_up_down_payments.f90</code></a></li>
 </ul>
 </div>
 </div>
-
-<div id="outline-container-org5266875" class="outline-2">
-<h2 id="org5266875"><span class="section-number-2">1.</span> <code>loan_level_payments.f90</code></h2>
+<div id="outline-container-orgc9a5d06" class="outline-2">
+<h2 id="orgc9a5d06"><span class="section-number-2">1.</span> <code>loan_level_payments.f90</code></h2>
 <div class="outline-text-2" id="text-1">
+<div class="org" id="org02e6da7">
 <p>
 The typical approach to solving loan problems is to equate the present value of the principal with the present value of the
 payment cashflow stream in a single equation and solve for the payment.  With only one principal payment occurring at the
@@ -282,12 +282,90 @@ We can model a loan as a pair of parallel cashflows:
 <p>
 These two cash flows should have equal magnitude PV &amp; FV, but of opposite sign.
 </p>
-</div>
+
 </div>
 
-<div id="outline-container-orgf7ab189" class="outline-2">
-<h2 id="orgf7ab189"><span class="section-number-2">2.</span> <code>loan_geometric_payments.f90</code></h2>
+<p>
+Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blob/main/loans/loan_level_payments.f90">loan_level_payments.f90</a>):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">loan_level_payments</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>, <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk, ik=&gt;mrfflik
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_tvm</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_var_sets</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_prt_sets</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_cashflows</span>
+  <span style="color: #00ffff;">implicit</span> <span style="color: #63b8ff;">none</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> n  = 10</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> i  = 7</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> a_pv, a_fv, a_a, p_pv, p_fv</span>
+  <span style="color: #63b8ff;">integer</span>(kind=ik) ::<span style="color: #7fffd4;"> a_d, a_e, p_d</span>
+
+  <span style="color: #63b8ff;">integer</span>(kind=ik) ::<span style="color: #7fffd4;"> status</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> cfm(11,2), fvv(11),  pvv(11)</span>
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">First, we print out the term and interest.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"n: "</span>, n
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"i: "</span>, i
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Now we compute the PV &amp; FV of the principal cashflow.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  p_pv = -1000000
+  p_d = 0
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">tvm_lump_sum_solve</span>(n, i, p_pv, p_fv, var_fv, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"tvm_lump_sum_solve status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Loan PV: "</span>, p_pv
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Loan FV: "</span>, p_fv
+
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Now we compute the PV &amp; FV of the repayment cashflow stream.</span>
+  a_pv = -p_pv
+  a_d = 1
+  a_e = 0
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">tvm_delayed_level_annuity_solve</span>(n, i, a_pv, a_fv, a_a, a_d, a_e, var_fv+var_a, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"tvm_level_annuity_solve status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity PV: "</span>, a_pv
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity FV: "</span>, a_fv
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity A: "</span>,  a_a
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Just for fun, let's create cashflow sequences for everything, and print it out.</span>
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">First the principal cashflow.  Note we use the variables we used with the TVM solver.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">make_cashflow_vector_delayed_lump</span>(cfm(:,1), p_pv, p_d, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"make_cashflow_vector_delayed_lump status: "</span>, status
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Next the repayment cashflow.  Note we use the variables we used with the TVM solver.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">make_cashflow_vector_delayed_level_annuity</span>(cfm(:,2), a_a, a_d, a_e, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"make_cashflow_vector_delayed_level_annuity status: "</span>, status
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Now we print it out.  Notice the PV &amp; FV of the combined cashflow series is zero.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">cashflow_matrix_pv_fv</span>(cfm, i, pvv, fvv, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"cashflow_matrix_pv_fv status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"cashflow_matrix_pv_fv Sum: "</span>,   <span style="color: #00ffff;">sum</span>(cfm)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"cashflow_matrix_pv_fv PV Sum: "</span>, <span style="color: #00ffff;">sum</span>(pvv)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"cashflow_matrix_pv_fv FV Sum: "</span>, <span style="color: #00ffff;">sum</span>(fvv)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">cashflow_matrix_pv_fv_print</span>(cfm, i, pvv, fvv, status, prt_ALL)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+
+<span style="color: #00ffff;">end program</span> <span style="color: #00fa9a; font-weight: bold;">loan_level_payments</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org7b1ba6e" class="outline-2">
+<h2 id="org7b1ba6e"><span class="section-number-2">2.</span> <code>loan_geometric_payments.f90</code></h2>
 <div class="outline-text-2" id="text-2">
+<div class="org" id="orgc20856a">
 <p>
 This program extends the example from loan_level_payments.f90 to geometric payments.  Not much changes in the flow except the
 annuity type.
@@ -303,12 +381,96 @@ of the year they can afford to pay 95K.  The business has been experiencing 11% 
 projections showing that to continue.  Based on growth projections, they wish to increase loan payments by 10% per year.  We
 wish to extend them the loan, and make 7%.
 </p>
-</div>
+
 </div>
 
-<div id="outline-container-orga1b9a88" class="outline-2">
-<h2 id="orga1b9a88"><span class="section-number-2">3.</span> <code>loan_up_down_payments.f90</code></h2>
+<p>
+Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blob/main/loans/loan_geometric_payments.f90">loan_geometric_payments.f90</a>):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">loan_geometric_payments</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>, <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk, ik=&gt;mrfflik
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_tvm</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_var_sets</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_prt_sets</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_cashflows</span>
+  <span style="color: #00ffff;">implicit</span> <span style="color: #63b8ff;">none</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> n</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> i  = 7</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> a_pv = 1000000</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> a_fv</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> a_g = 10</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> a_a = 95000</span>
+  <span style="color: #63b8ff;">integer</span>(kind=ik) ::<span style="color: #7fffd4;"> a_d = 1</span>
+  <span style="color: #63b8ff;">integer</span>(kind=ik) ::<span style="color: #7fffd4;"> a_e = 0</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> p_pv = -1000000</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> p_fv</span>
+
+  <span style="color: #63b8ff;">integer</span>(kind=ik) ::<span style="color: #7fffd4;"> status</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk), <span style="color: #00ffff;">allocatable</span>    ::<span style="color: #7fffd4;"> cfm(:,:), fvv(:),  pvv(:)</span>
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">First we solve for the number of years and future value of our loan.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">tvm_delayed_geometric_annuity_solve</span>(n, i, a_g, a_pv, a_fv, a_a, a_d, a_e, var_n+var_fv, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"tvm_level_annuity_solve status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity n: "</span>, n
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity FV: "</span>, a_fv
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #fa8072;">"From this result we know the loan term needs to be just about 10 years."</span>
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Instead of using an odd term, we decide on an even 10 year term.</span>
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">So we must copute the initial loan payment, and loan FV</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  n = <span style="color: #00ffff;">ceiling</span>(n)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">tvm_delayed_geometric_annuity_solve</span>(n, i, a_g, a_pv, a_fv, a_a, a_d, a_e, var_a+var_fv, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"tvm_level_annuity_solve status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity a: "</span>, a_a
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity FV: "</span>, a_fv
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Next we check our work by solving for the FV of the lump sum.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">tvm_lump_sum_solve</span>(n, i, p_pv, p_fv, var_fv, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"tvm_lump_sum_solve status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Loan FV: "</span>, p_fv
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Allocate space for our cashflow matrix and the PV/FV vectors.  We don't check for allocation errors. ;)</span>
+  <span style="color: #00ffff;">allocate</span>(cfm(<span style="color: #00ffff;">nint</span>(n)+1,2))
+  <span style="color: #00ffff;">allocate</span>(fvv(<span style="color: #00ffff;">nint</span>(n)+1))
+  <span style="color: #00ffff;">allocate</span>(pvv(<span style="color: #00ffff;">nint</span>(n)+1))
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Now we populate a cashflow matrix with our two cashflows.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">make_cashflow_vector_delayed_lump</span>(cfm(:,1), p_pv, 0_ik, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"make_cashflow_vector_delayed_lump status: "</span>, status
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">make_cashflow_vector_delayed_geometric_annuity</span>(cfm(:,2), a_g, a_a, a_d, a_e, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"make_cashflow_vector_delayed_level_annuity status: "</span>, status
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">We can check our work by making sure our cashflows sum to zero.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">cashflow_matrix_pv_fv</span>(cfm, i, pvv, fvv, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"cashflow_matrix_pv_fv status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"cashflow_matrix_pv_fv PV Sum: "</span>, <span style="color: #00ffff;">sum</span>(pvv)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"cashflow_matrix_pv_fv FV Sum: "</span>, <span style="color: #00ffff;">sum</span>(fvv)
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Finally we an print out our cashflows.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">cashflow_matrix_pv_fv_print</span>(cfm, i, pvv, fvv, status, prt_ALL)
+
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+
+<span style="color: #00ffff;">end program</span> <span style="color: #00fa9a; font-weight: bold;">loan_geometric_payments</span>
+</pre>
+</div>
+</div>
+</div>
+<div id="outline-container-org4fa988c" class="outline-2">
+<h2 id="org4fa988c"><span class="section-number-2">3.</span> <code>loan_up_down_payments.f90</code></h2>
 <div class="outline-text-2" id="text-3">
+<div class="org" id="org3f6b68f">
 <p>
 This program extends the examples from loan_level_payments.f90 and loan_geometric_payments.f90 to a unequal, non-standard
 annuity designed to make payments round cent values.
@@ -321,6 +483,103 @@ lender will not loose more than a fractional cent on the entire transaction, and
 upon rate (this second condition is required by law in many jurisdictions).  Note this method is unsuitable for very long
 term loans as it may shorten the overall term.
 </p>
+
+</div>
+
+<p>
+Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blob/main/loans/loan_up_down_payments.f90">loan_up_down_payments.f90</a>):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">loan_level_payments</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>, <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk, ik=&gt;mrfflik
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_tvm</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_var_sets</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_prt_sets</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_cashflows</span>
+  <span style="color: #00ffff;">implicit</span> <span style="color: #63b8ff;">none</span>
+
+  <span style="color: #63b8ff;">integer</span>, <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> years = 10</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> n  = years</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> i  = 7</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> a_pv = 1000000</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> a_fv</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> a_a</span>
+  <span style="color: #63b8ff;">integer</span>(kind=ik) ::<span style="color: #7fffd4;"> a_d = 1</span>
+  <span style="color: #63b8ff;">integer</span>(kind=ik) ::<span style="color: #7fffd4;"> a_e = 0</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> p_pv = -1000000</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> p_fv</span>
+  <span style="color: #63b8ff;">integer</span>(kind=ik) ::<span style="color: #7fffd4;"> p_d = 0</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> a_final</span>
+
+  <span style="color: #63b8ff;">integer</span>(kind=ik) ::<span style="color: #7fffd4;"> status</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)    ::<span style="color: #7fffd4;"> cfm(years+1,2), fvv(years+1),  pvv(years+1)</span>
+
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"n: "</span>, n
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"i: "</span>, i
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">First we find the PV &amp; FV for the principal.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">tvm_lump_sum_solve</span>(n, i, p_pv, p_fv, var_fv, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"tvm_lump_sum_solve status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Loan PV: "</span>, p_pv
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Loan FV: "</span>, p_fv
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Now we solve for the payment (a in the annuity) and the fv</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">tvm_delayed_level_annuity_solve</span>(n, i, a_pv, a_fv, a_a, a_d, a_e, var_fv+var_a, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"tvm_level_annuity_solve status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity PV: "</span>, a_pv
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity FV: "</span>, a_fv
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Annuity A: "</span>,  a_a
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Now we round a_a UP to the nearest cent.</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  a_a = <span style="color: #00ffff;">ceiling</span>(100*a_a)
+  a_a = a_a / 100
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Rounded Up Annuity A: "</span>,  a_a
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Now we find PV &amp; FV for an annuity with the rounded payment that ends one period early</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">tvm_delayed_level_annuity_solve</span>(n, i, a_pv, a_fv, a_a, a_d, a_e+1_ik, var_fv+var_pv, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"tvm_level_annuity_solve status: "</span>, status
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Rounded (n-1) Annuity PV: "</span>, a_pv
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Rounded (n-1) Annuity FV: "</span>, a_fv
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">The final payment needs to be the difference between the principal FV and the rounded annuity FV</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  a_final = <span style="color: #00ffff;">floor</span>(-(p_fv+a_fv)*100)
+  a_final = a_final / 100
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,f15.4)"</span>, <span style="color: #fa8072;">"Final Payment: "</span>,  a_final
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Now we construct the cashflows so we can print a nice table</span>
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">We start with the principal</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">make_cashflow_vector_delayed_lump</span>(cfm(:,1), p_pv, p_d, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"make_cashflow_vector_delayed_lump status: "</span>, status
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Next we add the rounded up</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">make_cashflow_vector_delayed_level_annuity</span>(cfm(:,2), a_a, a_d, a_e+1_ik, status)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a60,i15)"</span>, <span style="color: #fa8072;">"make_cashflow_vector_delayed_level_annuity status: "</span>, status
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Finally we add the last payment</span>
+  cfm(years+1, 2) = a_final
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Now we print the cashflow</span>
+  <span style="color: #00ffff;">call</span> <span style="color: #00fa9a; font-weight: bold;">cashflow_matrix_pv_fv_print</span>(cfm, i, pvv, fvv, status, prt_ALL)
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">"(a)"</span>, <span style="color: #00ffff;">repeat</span>(<span style="color: #fa8072;">"="</span>, 111)
+
+<span style="color: #00ffff;">end program</span> <span style="color: #00fa9a; font-weight: bold;">loan_level_payments</span>
+</pre>
+</div>
 </div>
 </div>
 </div>

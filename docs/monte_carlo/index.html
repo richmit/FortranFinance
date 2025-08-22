@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-21 Tue 13:41 -->
+<!-- 2025-08-22 Fri 09:56 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -11,7 +11,7 @@
 <meta name="description" content="Documentation for monte carlo examples in the Fortran Finance repository." />
 <meta name="keywords" content="finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-21 13:41:20</i></td>
+<td class="org-left"><i>2025-08-22 09:56:30</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-21 13:41:21</i></td>
+<td class="org-left"><i>2025-08-22 09:56:31</i></td>
 </tr>
 </tbody>
 </table>
@@ -263,63 +263,213 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 These examples both use simple, resampling monte carlo on historical US financial data.  Both examples include both Fortran code to run the simulations, and R
 code to visualize them.  One of the examples illustrates endpoint distribution forecasting while the other illustrates trajectory forecasting.
 </p>
-
 <div id="outline-container-inflation" class="outline-2">
 <h2 id="inflation"><span class="section-number-2">1.</span> <code>inflation.f90</code> &amp; <code>inflation.R</code></h2>
 <div class="outline-text-2" id="text-inflation">
+<div class="org" id="orgdb24f6d">
 <p>
-This program runs 200000 (trials) inflation simulations on $100 (initial_value).  Each simulation is over 20 (years) years of
-inflation using the last 30 (mc_history_years) years of historical US inflation data.  This program prints the value after 20
-years for each simulation to STDOUT.  If placed in a file, this data may be consumed by inflation.R to produce a nice
-histogram showing the probability of the value after 100 years.
+This program runs 100000 (<code>tirals</code>) Monte Carlo simulations of inflation for $100 (<code>initial_value</code>) over 20 (<code>years</code>) years
+using the last 30 (<code>mc_history_years</code>) years of historical US inflation data.  This program prints the value after 20 years
+for each simulation to <code>STDOUT</code>.  If placed in a file, this data may be consumed by <code>inflation.R</code> to produce a nice histogram
+showing the probability of the value after 100 years.
 </p>
 
-<p>
-This is sometimes called "trajectory" Monte Carlo because we record the entire trajectory, the steps, of each simulation.
-See inflation.f90 for an example of "end point" Monte Carlo &#x2013; where we only store the final step of each simulation.
-</p>
+</div>
 
 
-<div id="orgd38eba8" class="figure">
+<div id="orgd610ea2" class="figure">
 <p><a href="pics/inflation_full.png"><img src="pics/inflation_800x.png" alt="inflation_800x.png" /></a>
 </p>
 </div>
-</div>
+
+<p>
+Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blob/main/monte_carlo/inflation.f90">inflation.f90</a>):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">inflation</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>, <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk, ik=&gt;mrfflik
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_inflation</span>
+
+  <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> years            = 20      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years to project out our inflation adjusted value</span>
+  <span style="color: #63b8ff;">integer</span>(kind=ik), <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> mc_history_years = 30      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years of US inflation data for our random inflation values</span>
+  <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> trials           = 100000  </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of trials to run</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk),    <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> initial_value    = 100     </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">This is the value we will inflation adjusted over the years</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)               ::<span style="color: #7fffd4;"> value</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)               ::<span style="color: #7fffd4;"> i</span>
+  <span style="color: #63b8ff;">integer</span>                     ::<span style="color: #7fffd4;"> year, trial</span>
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Run monte carlo simulations and dump the results to STDOUT</span>
+  <span style="color: #00ffff;">print</span> *, <span style="color: #fa8072;">"trial value"</span>
+  <span style="color: #00ffff;">do</span> trial=1,trials
+     <span style="color: #00ffff;">value</span> = initial_value
+     <span style="color: #00ffff;">do</span> year=2,years
+        i =  inf_resample(mc_history_years)
+        <span style="color: #00ffff;">value</span> = <span style="color: #00ffff;">value</span> * (1 - i/100)
+     <span style="color: #00ffff;">end do</span>
+     <span style="color: #00ffff;">print</span> *, trial, <span style="color: #00ffff;">value</span>
+  <span style="color: #00ffff;">end do</span>
+
+<span style="color: #00ffff;">end program</span> <span style="color: #00fa9a; font-weight: bold;">inflation</span>
+</pre>
 </div>
 
+<p>
+And here is the R code (<a href="https://github.com/richmit/FortranFinance/blob/main/monte_carlo/inflation.R">inflation.R</a>):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R"><span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images</span>
+imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #63b8ff;">TRUE</span>
+
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Try and find an image viewer</span>
+<span style="color: #00ffff;">if</span> (imageV == <span style="color: #63b8ff;">TRUE</span>) {
+  <span style="color: #00ffff;">if</span> (.Platform$OS == <span style="color: #fa8072;">"windows"</span>) {
+    imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"explorer"</span>
+  } <span style="color: #00ffff;">else</span> {
+    <span style="color: #00ffff;">for</span>(piv <span style="color: #00ffff;">in</span> c(<span style="color: #fa8072;">"/usr/bin/display"</span>, <span style="color: #fa8072;">"/usr/bin/pqiv"</span>, <span style="color: #fa8072;">"/usr/bin/nomacs"</span>))
+      <span style="color: #00ffff;">if</span>(file.exists(piv))
+        imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> piv
+  }
+}
+
+daDat <span style="color: #8470ff; font-weight: bold;">&lt;-</span> fread(<span style="color: #fa8072;">"inflation.txt"</span>)
+
+gp <span style="color: #8470ff; font-weight: bold;">&lt;-</span> ggplot(data=daDat) +
+  geom_histogram(aes(x=value), bins=30, col=<span style="color: #fa8072;">'black'</span>, fill=<span style="color: #fa8072;">'pink'</span>) +
+  labs(title=<span style="color: #fa8072;">'Value of $100 after 20 years'</span>, x=<span style="color: #fa8072;">'Value'</span>, y=<span style="color: #fa8072;">'Count'</span>)
+
+fname <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"inflation.png"</span>
+ggsave(fname, width=12, height=10)
+<span style="color: #00ffff;">if</span> (is.character(imageV)) system(paste(imageV, fname, sep=<span style="color: #fa8072;">' '</span>))
+</pre>
+</div>
+</div>
+</div>
 <div id="outline-container-stocks" class="outline-2">
 <h2 id="stocks"><span class="section-number-2">2.</span> <code>stocks.f90</code> &amp; <code>stocks.R</code></h2>
 <div class="outline-text-2" id="text-stocks">
+<div class="org" id="orgd264e7d">
 <p>
-This program runs 2000 (trials) stocks simulations on $100 (initial_value).  Each simulation is over 20 (years) years of
-stocks using the last 30 (mc_history_years) years of historical US stocks data.  This program prints the resulting
-value of each simulation to STDOUT.  If placed in a file, this data may be consumed by stocks.R to produce a
-nice histogram showing the probability of the value after 100 years.
+This program runs 2000 (<code>trials</code>) stocks simulations on $100 (<code>initial_value</code>).  Each simulation is over 20 (<code>years</code>) years
+using the last 30 (<code>mc_history_years</code>) years of historical US stocks data.  This program prints the resulting value of each
+simulation to STDOUT.  If placed in a file, this data may be consumed by <code>stocks.R</code> to produce a nice histogram showing the
+probability of the value after 100 years.
 </p>
 
-<p>
-This technique is frequently called "monte carlo" in finance circles.  The heart of the idea is pretty simple.  Simulate the
-scenario using resampled values from historical data, and then analyze the result.
-</p>
+</div>
 
 
-<div id="orgf060294" class="figure">
+<div id="org9bb6d08" class="figure">
 <p><a href="pics/stocks_paths_full.png"><img src="pics/stocks_paths_800x.png" alt="stocks_paths_800x.png" /></a>
 </p>
 </div>
 
 
-<div id="orgc93429f" class="figure">
+<div id="org786ec42" class="figure">
 <p><a href="pics/stocks_ranges_full.png"><img src="pics/stocks_ranges_800x.png" alt="stocks_ranges_800x.png" /></a>
 </p>
 </div>
-</div>
+
+<p>
+Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blob/main/monte_carlo/stocks.f90">stocks.f90</a>):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">stocks</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>, <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk, ik=&gt;mrfflik
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_markets</span>, <span style="color: #00ffff;">only</span>: rut_resample
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_percentages</span>, <span style="color: #00ffff;">only</span>: add_percentage
+
+  <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> years            = 20      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years to project out our stocks adjusted value</span>
+  <span style="color: #63b8ff;">integer</span>(kind=ik), <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> mc_history_years = 30      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years of US stocks data for our random stocks values</span>
+  <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> trials           = 2000    </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of trials to run</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk),    <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> initial_value    = 100     </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">This is the value we will stocks adjusted over the years</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)               ::<span style="color: #7fffd4;"> value</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk)               ::<span style="color: #7fffd4;"> i</span>
+  <span style="color: #63b8ff;">integer</span>                     ::<span style="color: #7fffd4;"> year, trial</span>
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Run monte carlo simulations and dump the results to STDOUT</span>
+  <span style="color: #00ffff;">print</span> *, <span style="color: #fa8072;">"trial year value"</span>
+  <span style="color: #00ffff;">do</span> trial=1,trials
+     <span style="color: #00ffff;">value</span> = initial_value
+     <span style="color: #00ffff;">print</span> *, trial, 1, <span style="color: #00ffff;">value</span>
+     <span style="color: #00ffff;">do</span> year=2,years
+        i =  rut_resample(mc_history_years)
+        <span style="color: #00ffff;">value</span> = add_percentage(<span style="color: #00ffff;">value</span>, i)
+        <span style="color: #00ffff;">print</span> *, trial, year, <span style="color: #00ffff;">value</span>
+     <span style="color: #00ffff;">end do</span>
+  <span style="color: #00ffff;">end do</span>
+
+<span style="color: #00ffff;">end program</span> <span style="color: #00fa9a; font-weight: bold;">stocks</span>
+</pre>
 </div>
 
+<p>
+And here is the R code (<a href="https://github.com/richmit/FortranFinance/blob/main/monte_carlo/stocks.R">stocks.R</a>):
+</p>
 
+<div class="org-src-container">
+<pre class="src src-R"><span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images</span>
+imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #63b8ff;">TRUE</span>
+
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Try and find an image viewer</span>
+<span style="color: #00ffff;">if</span> (imageV == <span style="color: #63b8ff;">TRUE</span>) {
+  <span style="color: #00ffff;">if</span> (.Platform$OS == <span style="color: #fa8072;">"windows"</span>) {
+    imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"explorer"</span>
+  } <span style="color: #00ffff;">else</span> {
+    <span style="color: #00ffff;">for</span>(piv <span style="color: #00ffff;">in</span> c(<span style="color: #fa8072;">"/usr/bin/display"</span>, <span style="color: #fa8072;">"/usr/bin/pqiv"</span>, <span style="color: #fa8072;">"/usr/bin/nomacs"</span>))
+      <span style="color: #00ffff;">if</span>(file.exists(piv))
+        imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> piv
+  }
+}
+
+daDat <span style="color: #8470ff; font-weight: bold;">&lt;-</span> fread(<span style="color: #fa8072;">"stocks.txt"</span>) <span style="color: #8470ff; font-weight: bold;">%&gt;%</span> mutate(trial=factor(trial))
+
+gp <span style="color: #8470ff; font-weight: bold;">&lt;-</span> ggplot(data=daDat) +
+  geom_line(aes(x=year, y=value+1, group=trial), alpha=0.03, linewidth=2, col=<span style="color: #fa8072;">'black'</span>, show.legend=<span style="color: #63b8ff;">FALSE</span>) +
+  scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), trans=<span style="color: #fa8072;">'log10'</span>) +
+  labs(title=<span style="color: #fa8072;">'Value of $100 after 20 years'</span>, x=<span style="color: #fa8072;">'Year'</span>, y=<span style="color: #fa8072;">'Value'</span>)
+
+fname <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"stocks_paths.png"</span>
+ggsave(fname, width=12, height=10)
+<span style="color: #00ffff;">if</span> (is.character(imageV)) system(paste(imageV, fname, sep=<span style="color: #fa8072;">' '</span>))
+
+bands <span style="color: #8470ff; font-weight: bold;">&lt;-</span> c(90, 80, 50)
+
+sumDat <span style="color: #8470ff; font-weight: bold;">&lt;-</span> group_by(daDat, year) <span style="color: #8470ff; font-weight: bold;">%&gt;%</span>
+  summarize(band_90_0 = pmax(0, quantile(value,  (50-bands[1]/2)/100)),
+            band_90_1 = pmax(0, quantile(value,  (50+bands[1]/2)/100)),
+            band_80_0 = pmax(0, quantile(value,  (50-bands[2]/2)/100)),
+            band_80_1 = pmax(0, quantile(value,  (50+bands[2]/2)/100)),
+            band_50_0 = pmax(0, quantile(value,  (50-bands[3]/2)/100)),
+            band_50_1 = pmax(0, quantile(value,  (50+bands[3]/2)/100)),
+            .groups=<span style="color: #fa8072;">'keep'</span>)
+
+gp <span style="color: #8470ff; font-weight: bold;">&lt;-</span> ggplot(sumDat) +
+  geom_ribbon(aes(x=year, ymin=band_90_0, ymax=band_90_1), fill=<span style="color: #fa8072;">'darkred'</span>,   alpha=0.7) +
+  geom_ribbon(aes(x=year, ymin=band_80_0, ymax=band_80_1), fill=<span style="color: #fa8072;">'goldenrod'</span>, alpha=0.7) +
+  geom_ribbon(aes(x=year, ymin=band_50_0, ymax=band_50_1), fill=<span style="color: #fa8072;">'darkgreen'</span>, alpha=0.7) +
+  annotate(<span style="color: #fa8072;">"text"</span>, x=17, y=mean(c(sumDat$band_90_0[17], sumDat$band_80_0[17])), label=<span style="color: #fa8072;">"90%"</span>, col=<span style="color: #fa8072;">'white'</span>, size=10, vjust=0.5) +
+  annotate(<span style="color: #fa8072;">"text"</span>, x=17, y=mean(c(sumDat$band_80_0[17], sumDat$band_50_0[17])), label=<span style="color: #fa8072;">"80%"</span>, col=<span style="color: #fa8072;">'white'</span>, size=10, vjust=0.5) +
+  annotate(<span style="color: #fa8072;">"text"</span>, x=17, y=mean(c(sumDat$band_50_0[17], sumDat$band_50_1[17])), label=<span style="color: #fa8072;">"50%"</span>, col=<span style="color: #fa8072;">'white'</span>, size=10, vjust=0.5) +
+  scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()), trans=<span style="color: #fa8072;">'log10'</span>) +
+  labs(title=<span style="color: #fa8072;">'Value Balance Ranges'</span>) +
+  ylab(<span style="color: #fa8072;">'Value'</span>) +
+  xlab(<span style="color: #fa8072;">'Year'</span>)
+fname <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">'stocks_ranges.png'</span>
+ggsave(fname, width=12, height=10, dpi=100, units=<span style="color: #fa8072;">'in'</span>, plot=gp);
+<span style="color: #00ffff;">if</span> (is.character(imageV)) system(paste(imageV, fname, sep=<span style="color: #fa8072;">' '</span>))
+</pre>
+</div>
+</div>
+</div>
 <div id="outline-container-blend_risk" class="outline-2">
 <h2 id="blend_risk"><span class="section-number-2">3.</span> <code>blend_risk.f90</code> &amp; <code>blend_risk.R</code></h2>
 <div class="outline-text-2" id="text-blend_risk">
+<div class="org" id="orga7d3f58">
 <p>
 Scenario:
 </p>
@@ -342,8 +492,10 @@ used with low resolution data it can create bias in the results.  Note we can sw
 <code>coupled_mc</code>.
 </p>
 
+</div>
 
-<div id="orgd305ea8" class="figure">
+
+<div id="orgcdbb616" class="figure">
 <p><a href="pics/blend_risk_full.png"><img src="pics/blend_risk_800x.png" alt="blend_risk_800x.png" /></a>
 </p>
 </div>
@@ -354,9 +506,100 @@ particular scenario.
 </p>
 
 
-<div id="org6c09c31" class="figure">
+<div id="org4922d59" class="figure">
 <p><a href="pics/blend_risk_cvuc_full.png"><img src="pics/blend_risk_cvuc_800x.png" alt="blend_risk_cvuc_800x.png" /></a>
 </p>
+</div>
+
+<p>
+Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blob/main/monte_carlo/blend_risk.f90">blend_risk.f90</a>):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">blend_risk</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>, <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk, ik=&gt;mrfflik
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_markets</span>, <span style="color: #00ffff;">only</span>: snp_dat, dgs10_dat
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_stats</span>, <span style="color: #00ffff;">only</span>: rand_int
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_inflation</span>, <span style="color: #00ffff;">only</span>: inf_dat
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_percentages</span>, <span style="color: #00ffff;">only</span>: p_add=&gt;add_percentage, p_of=&gt;percentage_of
+
+  <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> years              = 50       </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years to project out our stocks adjusted value</span>
+  <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> trials             = 100000   </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of trials to run</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk),    <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> initial_balance    = 4000000  </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">This is the balance we will stocks adjusted over the years</span>
+  <span style="color: #63b8ff;">real</span>(kind=rk),    <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> initial_withdrawal = 100000   </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Annual withdrawal</span>
+  <span style="color: #63b8ff;">logical</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> coupled_mc         = .TRUE.   </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Use coupled resampling</span>
+
+  <span style="color: #63b8ff;">real</span>(kind=rk)               ::<span style="color: #7fffd4;"> balance, withdrawal, c_snp, c_dgs, c_inf</span>
+  <span style="color: #63b8ff;">integer</span>                     ::<span style="color: #7fffd4;"> year, trial, hp</span>
+  <span style="color: #63b8ff;">integer</span>(kind=ik)            ::<span style="color: #7fffd4;"> rand_year</span>
+
+  <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Run monte carlo simulations and dump the results to STDOUT</span>
+  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">'(a10,a10,a20)'</span>, <span style="color: #fa8072;">"trial"</span>, <span style="color: #fa8072;">"hp"</span>, <span style="color: #fa8072;">"balance"</span>
+  <span style="color: #00ffff;">do</span> hp=0,100
+     <span style="color: #00ffff;">do</span> trial=1,trials
+        balance = initial_balance
+        withdrawal = initial_withdrawal
+        <span style="color: #00ffff;">do</span> year=1,years
+           <span style="color: #00ffff;">if</span> (coupled_mc) <span style="color: #00ffff;">then</span>
+              rand_year = rand_int(2023, 2000)
+              c_snp = snp_dat(rand_year)
+              c_dgs = dgs10_dat(rand_year)
+              c_inf = inf_dat(rand_year)
+           <span style="color: #00ffff;">else</span>
+              c_snp = snp_dat(rand_int(2023, 2000))
+              c_dgs = dgs10_dat(rand_int(2023, 2000))
+              c_inf = inf_dat(rand_int(2023, 2000))
+           <span style="color: #00ffff;">end if</span>
+           balance = p_add(p_of(balance, <span style="color: #00ffff;">real</span>(hp, rk)), c_snp) + p_add(p_of(balance, <span style="color: #00ffff;">real</span>(100-hp, rk)), c_dgs)
+           balance = balance - <span style="color: #00ffff;">min</span>(withdrawal, balance)
+           withdrawal = p_add(withdrawal, <span style="color: #00ffff;">max</span>(0.0_rk, c_inf))
+        <span style="color: #00ffff;">end do</span>
+        <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">'(i10,i10,f20.5)'</span>, trial, hp, balance
+     <span style="color: #00ffff;">end do</span>
+  <span style="color: #00ffff;">end do</span>
+
+<span style="color: #00ffff;">end program</span> <span style="color: #00fa9a; font-weight: bold;">blend_risk</span>
+</pre>
+</div>
+
+<p>
+And here is the R code (<a href="https://github.com/richmit/FortranFinance/blob/main/monte_carlo/blend_risk.R">blend_risk.R</a>):
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R"><span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images</span>
+imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #63b8ff;">TRUE</span>
+
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Try and find an image viewer</span>
+<span style="color: #00ffff;">if</span> (imageV == <span style="color: #63b8ff;">TRUE</span>) {
+  <span style="color: #00ffff;">if</span> (.Platform$OS == <span style="color: #fa8072;">"windows"</span>) {
+    imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"explorer"</span>
+  } <span style="color: #00ffff;">else</span> {
+    <span style="color: #00ffff;">for</span>(piv <span style="color: #00ffff;">in</span> c(<span style="color: #fa8072;">"/usr/bin/display"</span>, <span style="color: #fa8072;">"/usr/bin/pqiv"</span>, <span style="color: #fa8072;">"/usr/bin/nomacs"</span>))
+      <span style="color: #00ffff;">if</span>(file.exists(piv))
+        imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> piv
+  }
+}
+
+daDat <span style="color: #8470ff; font-weight: bold;">&lt;-</span> fread(<span style="color: #fa8072;">"blend_risk.txt"</span>) <span style="color: #8470ff; font-weight: bold;">%&gt;%</span> mutate(hp=factor(hp))
+
+<span style="color: #ffa500;">## </span><span style="color: #ff7f24;">gp &lt;- ggplot(data=daDat %&gt;% filter(hp==75 &amp; balance &lt; 70e6)) +</span>
+<span style="color: #ffa500;">##   </span><span style="color: #ff7f24;">geom_histogram(aes(x=balance), col='red', fill='pink', breaks=seq(0, 40e6, by=5e6)) +</span>
+<span style="color: #ffa500;">##   </span><span style="color: #ff7f24;">scale_x_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale())) +</span>
+<span style="color: #ffa500;">##   </span><span style="color: #ff7f24;">labs(title='Ending balance of making it 50 years on 4M withdrawing 100K annually adjusted by inflation', x='Balance', y='')</span>
+<span style="color: #ffa500;">## </span><span style="color: #ff7f24;">print(gp)</span>
+
+successDat <span style="color: #8470ff; font-weight: bold;">&lt;-</span> daDat <span style="color: #8470ff; font-weight: bold;">%&gt;%</span> group_by(hp) <span style="color: #8470ff; font-weight: bold;">%&gt;%</span> summarize(success=100-100*sum(balance&lt;=0)/length(balance), .groups=<span style="color: #fa8072;">'drop'</span>) <span style="color: #8470ff; font-weight: bold;">%&gt;%</span> mutate(hp=as.integer(hp))
+
+gp <span style="color: #8470ff; font-weight: bold;">&lt;-</span> ggplot(data=successDat) +
+  geom_smooth(aes(x=hp, y=success), method=<span style="color: #fa8072;">"loess"</span>, formula=<span style="color: #fa8072;">'y~x'</span>, span=0.2, level=.9999, se=<span style="color: #63b8ff;">TRUE</span>, linewidth=2) +
+  geom_text(data=successDat <span style="color: #8470ff; font-weight: bold;">%&gt;%</span> filter(success == max(success)), aes(x=hp, y=success, label=paste(<span style="color: #fa8072;">'Best Chance at '</span>, hp, <span style="color: #fa8072;">'% S&amp;P'</span>, sep=<span style="color: #fa8072;">''</span>)), vjust=<span style="color: #fa8072;">'bottom'</span>, hjust=<span style="color: #fa8072;">'centered'</span>, size=6) +
+  labs(title=<span style="color: #fa8072;">'Chances of making it 50 years on 4M withdrawing 100K annually adjusted by inflation on a mix of bonds and S&amp;P'</span>, x=<span style="color: #fa8072;">'Percentage of portfolio in S&amp;P vs. 10 Year US Treasury Bonds'</span>, y=<span style="color: #fa8072;">'Chance Of Success'</span>)
+
+fname <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"blend_risk.png"</span>
+ggsave(fname, width=12, height=10)
+<span style="color: #00ffff;">if</span> (is.character(imageV)) system(paste(imageV, fname, sep=<span style="color: #fa8072;">' '</span>))
+</pre>
 </div>
 </div>
 </div>

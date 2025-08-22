@@ -34,13 +34,10 @@
 !!  @endparblock
 !! @filedetails
 !!
-!!  This program runs 2000 (trials) stocks simulations on $100 (initial_value).  Each simulation is over 20 (years) years of
-!!  stocks using the last 30 (mc_history_years) years of historical US stocks data.  This program prints the resulting
-!!  value of each simulation to STDOUT.  If placed in a file, this data may be consumed by stocks.R to produce a
-!!  nice histogram showing the probability of the value after 100 years.
-!!
-!!  This technique is frequently called "monte carlo" in finance circles.  The heart of the idea is pretty simple.  Simulate the
-!!  scenario using resampled values from historical data, and then analyze the result.
+!!  This program runs 2000 (`trials`) stocks simulations on $100 (`initial_value`).  Each simulation is over 20 (`years`) years
+!!  using the last 30 (`mc_history_years`) years of historical US stocks data.  This program prints the resulting value of each
+!!  simulation to STDOUT.  If placed in a file, this data may be consumed by `stocks.R` to produce a nice histogram showing the
+!!  probability of the value after 100 years.
 !!
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
