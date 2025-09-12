@@ -46,12 +46,12 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program cashflow_retire
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_tvm
-  use mrffl_var_sets
-  use mrffl_cashflows
-  use mrffl_prt_sets
-  implicit none
+  use mrffl_config,    only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, &
+       &                     make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_pv_fv_print
+  use mrffl_prt_sets,  only: prt_ALL
+
+  implicit none (type, external)
 
   integer, parameter :: years = 25
   real(kind=rk)      :: cfi = 4.0

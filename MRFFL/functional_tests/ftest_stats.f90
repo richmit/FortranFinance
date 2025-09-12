@@ -6,22 +6,22 @@
 !! @date      2025-01-01
 !! @brief     Test mrffl_stats.@EOL
 !! @std       F2023
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -35,7 +35,11 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program ftest_stats
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_stats
+  use mrffl_stats,  only: rand_norm, rand_log_norm, rand_norm_std_box, rand_norm_std_probit, rand_norm_std_probit_clip, &
+       &                  mean_and_variance, resample_tail, resample_head
+
+  implicit none (type, external)
+
 
   integer, parameter :: num_runs = 10000
   real(kind=rk)      :: a(7) = [1,2,3,4,5,6,7]

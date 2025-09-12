@@ -43,7 +43,7 @@
 !!
 module mrffl_solver_ne
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  implicit none
+  implicit none (type, external)
   private
 
   public :: bisection, multi_bisection
@@ -69,12 +69,12 @@ contains
   !! @param progress   Print progress as solver searches for a solution
   !!
   subroutine bisection(xc, x0_init, x1_init, f, r_dat, i_dat, x_epsilon, y_epsilon, max_itr, status, progress)
-    implicit none
+    implicit none (type, external)
 
     interface
        real(kind=rk) function func_to_solve_t(x, r_dat, i_dat)
          use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-         implicit none
+         implicit none (type, external)
          real(kind=rk),    intent(in) :: x
          real(kind=rk),    intent(in) :: r_dat(:)
          integer(kind=ik), intent(in) :: i_dat(:)
@@ -161,12 +161,12 @@ contains
   !! @param progress   Print progress as solver searches for a solution
   !!
   subroutine multi_bisection(xc, x0_init, x1_init, f, r_dat, i_dat, x_epsilon, y_epsilon, max_itr, status, progress)
-    implicit none
+    implicit none (type, external)
 
     interface
        real(kind=rk) function func_to_solve_t(x, r_dat, i_dat)
          use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-         implicit none
+         implicit none (type, external)
          real(kind=rk),    intent(in) :: x
          real(kind=rk),    intent(in) :: r_dat(:)
          integer(kind=ik), intent(in) :: i_dat(:)

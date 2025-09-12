@@ -40,7 +40,7 @@
 !!
 module mrffl_percentages
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
-  implicit none
+  implicit none (type, external)
   private
 
   public :: percentage_to_fraction, fraction_to_percentage

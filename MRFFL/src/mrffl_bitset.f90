@@ -42,7 +42,7 @@
 !!
 module mrffl_bitset
   use mrffl_config, only: ik=>mrfflik
-  implicit none
+  implicit none (type, external)
   private
 
   public :: bitset_size, bitset_minus, bitset_subsetp, bitset_not_subsetp, bitset_intersectp, bitset_not_intersectp

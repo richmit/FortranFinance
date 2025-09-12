@@ -52,11 +52,13 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program blend_risk
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_us_markets, only: snp_dat, dgs10_dat
-  use mrffl_stats, only: rand_int
+  use mrffl_config,       only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_us_markets,   only: snp_dat, dgs10_dat
+  use mrffl_stats,        only: rand_int
   use mrffl_us_inflation, only: inf_dat
-  use mrffl_percentages, only: p_add=>add_percentage, p_of=>percentage_of
+  use mrffl_percentages,  only: p_add=>add_percentage, p_of=>percentage_of
+
+  implicit none (type, external)
 
   integer,          parameter :: years              = 50       ! Number of years to project out our stocks adjusted value
   integer,          parameter :: trials             = 100000   ! Number of trials to run

@@ -47,13 +47,13 @@
 !! however, the simplicity and familiarity of the classical calculator approach is sometimes more comfortable and direct.
 !!
 module mrffl_tvm12
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
-  use mrffl_bitset;
+  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
+  use mrffl_bitset,   only: bitset_intersectp, bitset_subsetp
   use mrffl_var_sets, only: var_i, var_n, var_pv, var_fv, var_pmt
-  use mrffl_solver, only: multi_bisection
+  use mrffl_solver,   only: multi_bisection
   ! use mrffl_solver_ne, only: multi_bisection
   use mrffl_prt_sets, only: prt_param, prt_table, prt_title
-  implicit none
+  implicit none (type, external)
   private
 
   ! Quite a lot of code depends on the values being 1 & 0.  Do not change them!
@@ -181,7 +181,7 @@ contains
     end if
   contains
     real(kind=rk) function i_slv_func(x)
-      implicit none
+      implicit none (type, external)
       real(kind=rk), intent(in) :: x
       i_slv_func = (((-pmt_time * pmt + fv) * x - pmt) * (1 + x) ** (-n) + (pmt_time * pmt + pv) * x + pmt) / x
     end  function i_slv_func
@@ -189,7 +189,7 @@ contains
 
 
   ! real(kind=rk) function i_slv_func(x, r_dat, i_dat)
-  !   implicit none
+  !   implicit none (type, external)
   !   real(kind=rk),    intent(in) :: x
   !   real(kind=rk),    intent(in) :: r_dat(:)
   !   integer(kind=ik), intent(in) :: i_dat(:)
@@ -216,7 +216,7 @@ contains
   !! @param pmt_time     Payments at beginning or end of period.  Allowed parameters: pmt_at_beginning or pmt_at_end
   !! @param print_out    Set made from the following constants: prt_param, prt_table, prt_title
   subroutine tvm12_print(n, i, pv, pmt, fv, pmt_time, print_out)
-    implicit none
+    implicit none (type, external)
     integer(kind=ik), intent(in) :: n, pmt_time, print_out
     real(kind=rk),    intent(in) :: i, pv, fv, pmt
     real (kind=rk)               :: tot_pmt, cur_pv

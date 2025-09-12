@@ -37,10 +37,14 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_life_table_print
   use, intrinsic :: iso_fortran_env, only: output_unit
-  use mrffl_config, only: ik=>mrfflik
-  use mrffl_life_table
-  use mrffl_prt_sets
-  implicit none
+
+  use mrffl_config,      only: ik=>mrfflik
+  use mrffl_life_table,  only: life_table_print, &
+       &                       uscdc_lx_dat, uscdc_w_f_lx_dat, uscdc_w_f_lx_dat, uscdc_w_lx_dat, &
+       &                       usss_f_lx_dat, usss_f_qx_dat, usss_m_lx_dat, usss_m_qx_dat
+  use mrffl_prt_sets,    only: prt_ALL
+
+  implicit none (type, external)
 
   print '(a)', "usss_f_qx_dat"
   call life_table_print(output_unit, prt_ALL, usss_f_qx_dat, 100000_ik)

@@ -1,159 +1,159 @@
 ===================================================================================================================
-               survivors(-10,  usss_f_qx_dat, 100000):              100000.0000000000             100000.0000000000
-               survivors(-10,  usss_m_qx_dat, 100000):              100000.0000000000             100000.0000000000
-               survivors(-1,   usss_f_qx_dat, 100000):              100000.0000000000             100000.0000000000
-               survivors(-1,   usss_m_qx_dat, 100000):              100000.0000000000             100000.0000000000
-               survivors(0,    usss_f_qx_dat, 100000):              100000.0000000000             100000.0000000000
-               survivors(0,    usss_m_qx_dat, 100000):              100000.0000000000             100000.0000000000
-               survivors(1,    usss_f_qx_dat, 100000):               99493.6999864876              99494.0000000000
-               survivors(1,    usss_m_qx_dat, 100000):               99414.0000082552              99414.0000000000
-               survivors(10,   usss_f_qx_dat, 100000):               99348.0329116062              99348.0000000000
-               survivors(10,   usss_m_qx_dat, 100000):               99238.0725067495              99238.0000000000
-               survivors(100,  usss_f_qx_dat, 100000):                2208.4516438870               2208.0000000000
-               survivors(100,  usss_m_qx_dat, 100000):                 698.0448850406                698.0000000000
-               survivors(119,  usss_f_qx_dat, 100000):                   0.0000729393                  0.0000000000
-               survivors(119,  usss_m_qx_dat, 100000):                   0.0000115874                  0.0000000000
-               survivors(120,  usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-               survivors(120,  usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-               survivors(1000, usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-               survivors(1000, usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
+         survivors(-10_ik,  usss_f_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+         survivors(-10_ik,  usss_m_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+         survivors(-1_ik,   usss_f_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+         survivors(-1_ik,   usss_m_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+         survivors(0_ik,    usss_f_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+         survivors(0_ik,    usss_m_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+         survivors(1_ik,    usss_f_qx_dat, 100000_ik):               99493.7000000000              99494.0000000000
+         survivors(1_ik,    usss_m_qx_dat, 100000_ik):               99414.0000000000              99414.0000000000
+         survivors(10_ik,   usss_f_qx_dat, 100000_ik):               99348.0329230480              99348.0000000000
+         survivors(10_ik,   usss_m_qx_dat, 100000_ik):               99238.0724995206              99238.0000000000
+         survivors(100_ik,  usss_f_qx_dat, 100000_ik):                2208.4515673296               2208.0000000000
+         survivors(100_ik,  usss_m_qx_dat, 100000_ik):                 698.0448335897                698.0000000000
+         survivors(119_ik,  usss_f_qx_dat, 100000_ik):                   0.0000729393                  0.0000000000
+         survivors(119_ik,  usss_m_qx_dat, 100000_ik):                   0.0000115874                  0.0000000000
+         survivors(120_ik,  usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+         survivors(120_ik,  usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+         survivors(1000_ik, usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+         survivors(1000_ik, usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
 ===================================================================================================================
-    probability_of_death(-10,  usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-    probability_of_death(-10,  usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-    probability_of_death(-1,   usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-    probability_of_death(-1,   usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-    probability_of_death(0,    usss_f_qx_dat, 100000):                   0.0050630001                  0.0050600000
-    probability_of_death(0,    usss_m_qx_dat, 100000):                   0.0058599999                  0.0058600000
-    probability_of_death(1,    usss_f_qx_dat, 100000):                   0.0003930000                  0.0003919834
-    probability_of_death(1,    usss_m_qx_dat, 100000):                   0.0004200000                  0.0004224757
-    probability_of_death(10,   usss_f_qx_dat, 100000):                   0.0001030000                  0.0001006563
-    probability_of_death(10,   usss_m_qx_dat, 100000):                   0.0001290000                  0.0001309982
-    probability_of_death(100,  usss_f_qx_dat, 100000):                   0.3166620135                  0.3165760870
-    probability_of_death(100,  usss_m_qx_dat, 100000):                   0.3587459922                  0.3581661891
-    probability_of_death(119,  usss_f_qx_dat, 100000):                   0.9065319896                  1.0000000000
-    probability_of_death(119,  usss_m_qx_dat, 100000):                   0.9065319896                  1.0000000000
-    probability_of_death(120,  usss_f_qx_dat, 100000):                   1.0000000000                  1.0000000000
-    probability_of_death(120,  usss_m_qx_dat, 100000):                   1.0000000000                  1.0000000000
-    probability_of_death(1000, usss_f_qx_dat, 100000):                   1.0000000000                  1.0000000000
-    probability_of_death(1000, usss_m_qx_dat, 100000):                   1.0000000000                  1.0000000000
+probability_of_death(-10_ik,  usss_f_qx_dat, 100000_ik)                  0.0000000000                  0.0000000000
+probability_of_death(-10_ik,  usss_m_qx_dat, 100000_ik)                  0.0000000000                  0.0000000000
+probability_of_death(-1_ik,   usss_f_qx_dat, 100000_ik)                  0.0000000000                  0.0000000000
+probability_of_death(-1_ik,   usss_m_qx_dat, 100000_ik)                  0.0000000000                  0.0000000000
+probability_of_death(0_ik,    usss_f_qx_dat, 100000_ik)                  0.0050630000                  0.0050600000
+probability_of_death(0_ik,    usss_m_qx_dat, 100000_ik)                  0.0058600000                  0.0058600000
+probability_of_death(1_ik,    usss_f_qx_dat, 100000_ik)                  0.0003930000                  0.0003919834
+probability_of_death(1_ik,    usss_m_qx_dat, 100000_ik)                  0.0004200000                  0.0004224757
+probability_of_death(10_ik,   usss_f_qx_dat, 100000_ik)                  0.0001030000                  0.0001006563
+probability_of_death(10_ik,   usss_m_qx_dat, 100000_ik)                  0.0001290000                  0.0001309982
+probability_of_death(100_ik,  usss_f_qx_dat, 100000_ik)                  0.3166620000                  0.3165760870
+probability_of_death(100_ik,  usss_m_qx_dat, 100000_ik)                  0.3587460000                  0.3581661891
+probability_of_death(119_ik,  usss_f_qx_dat, 100000_ik)                  0.9065320000                  1.0000000000
+probability_of_death(119_ik,  usss_m_qx_dat, 100000_ik)                  0.9065320000                  1.0000000000
+probability_of_death(120_ik,  usss_f_qx_dat, 100000_ik)                  1.0000000000                  1.0000000000
+probability_of_death(120_ik,  usss_m_qx_dat, 100000_ik)                  1.0000000000                  1.0000000000
+probability_of_death(1000_ik, usss_f_qx_dat, 100000_ik)                  1.0000000000                  1.0000000000
+probability_of_death(1000_ik, usss_m_qx_dat, 100000_ik)                  1.0000000000                  1.0000000000
 ===================================================================================================================
-                    died(-10,  usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-                    died(-10,  usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-                    died(-1,   usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-                    died(-1,   usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-                    died(0,    usss_f_qx_dat, 100000):                 506.3000135124                506.0000000000
-                    died(0,    usss_m_qx_dat, 100000):                 585.9999917448                586.0000000000
-                    died(1,    usss_f_qx_dat, 100000):                  39.1010235775                 39.0000000000
-                    died(1,    usss_m_qx_dat, 100000):                  41.7538796720                 42.0000000000
-                    died(10,   usss_f_qx_dat, 100000):                  10.2328472398                 10.0000000000
-                    died(10,   usss_m_qx_dat, 100000):                  12.8017106328                 13.0000000000
-                    died(100,  usss_f_qx_dat, 100000):                 699.3327443385                699.0000000000
-                    died(100,  usss_m_qx_dat, 100000):                 250.4208048726                250.0000000000
-                    died(119,  usss_f_qx_dat, 100000):                   0.0000729393                  0.0000000000
-                    died(119,  usss_m_qx_dat, 100000):                   0.0000115874                  0.0000000000
-                    died(120,  usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-                    died(120,  usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-                    died(1000, usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-                    died(1000, usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
+              died(-10_ik,  usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+              died(-10_ik,  usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+              died(-1_ik,   usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+              died(-1_ik,   usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+              died(0_ik,    usss_f_qx_dat, 100000_ik):                 506.3000000000                506.0000000000
+              died(0_ik,    usss_m_qx_dat, 100000_ik):                 586.0000000000                586.0000000000
+              died(1_ik,    usss_f_qx_dat, 100000_ik):                  39.1010241000                 39.0000000000
+              died(1_ik,    usss_m_qx_dat, 100000_ik):                  41.7538800000                 42.0000000000
+              died(10_ik,   usss_f_qx_dat, 100000_ik):                  10.2328473911                 10.0000000000
+              died(10_ik,   usss_m_qx_dat, 100000_ik):                  12.8017113524                 13.0000000000
+              died(100_ik,  usss_f_qx_dat, 100000_ik):                 699.3326902137                699.0000000000
+              died(100_ik,  usss_m_qx_dat, 100000_ik):                 250.4207918710                250.0000000000
+              died(119_ik,  usss_f_qx_dat, 100000_ik):                   0.0000729393                  0.0000000000
+              died(119_ik,  usss_m_qx_dat, 100000_ik):                   0.0000115874                  0.0000000000
+              died(120_ik,  usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+              died(120_ik,  usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+              died(1000_ik, usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+              died(1000_ik, usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
 ===================================================================================================================
-         life_expectancy(-10,  usss_f_qx_dat, 100000):                  89.3039692175                 89.3039200000
-         life_expectancy(-10,  usss_m_qx_dat, 100000):                  83.5428577053                 83.5425800000
-         life_expectancy(-1,   usss_f_qx_dat, 100000):                  80.3039692175                 80.3039200000
-         life_expectancy(-1,   usss_m_qx_dat, 100000):                  74.5428577053                 74.5425800000
-         life_expectancy(0,    usss_f_qx_dat, 100000):                  79.3039692175                 79.3039200000
-         life_expectancy(0,    usss_m_qx_dat, 100000):                  73.5428577053                 73.5425800000
-         life_expectancy(1,    usss_f_qx_dat, 100000):                  78.7049840625                 78.7046957605
-         life_expectancy(1,    usss_m_qx_dat, 100000):                  72.9734118929                 72.9731325568
-         life_expectancy(10,   usss_f_qx_dat, 100000):                  69.8155328629                 69.8155071063
-         life_expectancy(10,   usss_m_qx_dat, 100000):                  64.0966807547                 64.0964650638
-         life_expectancy(100,  usss_f_qx_dat, 100000):                   2.3532132628                  2.3537137681
-         life_expectancy(100,  usss_m_qx_dat, 100000):                   2.0893029509                  2.0931232092
-         life_expectancy(119,  usss_f_qx_dat, 100000):                   0.5000000000                  0.0000000000
-         life_expectancy(119,  usss_m_qx_dat, 100000):                   0.5000000000                  0.0000000000
-         life_expectancy(120,  usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-         life_expectancy(120,  usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-         life_expectancy(1000, usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-         life_expectancy(1000, usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
+   life_expectancy(-10_ik,  usss_f_qx_dat, 100000_ik):                  89.3039692494                 89.3039200000
+   life_expectancy(-10_ik,  usss_m_qx_dat, 100000_ik):                  83.5428576588                 83.5425800000
+   life_expectancy(-1_ik,   usss_f_qx_dat, 100000_ik):                  80.3039692494                 80.3039200000
+   life_expectancy(-1_ik,   usss_m_qx_dat, 100000_ik):                  74.5428576588                 74.5425800000
+   life_expectancy(0_ik,    usss_f_qx_dat, 100000_ik):                  79.3039692494                 79.3039200000
+   life_expectancy(0_ik,    usss_m_qx_dat, 100000_ik):                  73.5428576588                 73.5425800000
+   life_expectancy(1_ik,    usss_f_qx_dat, 100000_ik):                  78.7049840839                 78.7046957605
+   life_expectancy(1_ik,    usss_m_qx_dat, 100000_ik):                  72.9734118522                 72.9731325568
+   life_expectancy(10_ik,   usss_f_qx_dat, 100000_ik):                  69.8155328858                 69.8155071063
+   life_expectancy(10_ik,   usss_m_qx_dat, 100000_ik):                  64.0966807132                 64.0964650638
+   life_expectancy(100_ik,  usss_f_qx_dat, 100000_ik):                   2.3532133036                  2.3537137681
+   life_expectancy(100_ik,  usss_m_qx_dat, 100000_ik):                   2.0893029283                  2.0931232092
+   life_expectancy(119_ik,  usss_f_qx_dat, 100000_ik):                   0.5000000000                  0.0000000000
+   life_expectancy(119_ik,  usss_m_qx_dat, 100000_ik):                   0.5000000000                  0.0000000000
+   life_expectancy(120_ik,  usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+   life_expectancy(120_ik,  usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+   life_expectancy(1000_ik, usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+   life_expectancy(1000_ik, usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
 ===================================================================================================================
-          mortality_rate(-10,  usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-          mortality_rate(-10,  usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-          mortality_rate(-1,   usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-          mortality_rate(-1,   usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-          mortality_rate(0,    usss_f_qx_dat, 100000):                   0.0050758496                  0.0050728343
-          mortality_rate(0,    usss_m_qx_dat, 100000):                   0.0058772202                  0.0058772203
-          mortality_rate(1,    usss_f_qx_dat, 100000):                   0.0003930772                  0.0003920603
-          mortality_rate(1,    usss_m_qx_dat, 100000):                   0.0004200882                  0.0004225650
-          mortality_rate(10,   usss_f_qx_dat, 100000):                   0.0001030053                  0.0001006613
-          mortality_rate(10,   usss_m_qx_dat, 100000):                   0.0001290083                  0.0001310068
-          mortality_rate(100,  usss_f_qx_dat, 100000):                   0.3762310553                  0.3761097659
-          mortality_rate(100,  usss_m_qx_dat, 100000):                   0.4371608422                  0.4363001745
-          mortality_rate(119,  usss_f_qx_dat, 100000):                   2.0000000000                  1.0000000000
-          mortality_rate(119,  usss_m_qx_dat, 100000):                   2.0000000000                  1.0000000000
-          mortality_rate(120,  usss_f_qx_dat, 100000):                   1.0000000000                  1.0000000000
-          mortality_rate(120,  usss_m_qx_dat, 100000):                   1.0000000000                  1.0000000000
-          mortality_rate(1000, usss_f_qx_dat, 100000):                   1.0000000000                  1.0000000000
-          mortality_rate(1000, usss_m_qx_dat, 100000):                   1.0000000000                  1.0000000000
+    mortality_rate(-10_ik,  usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+    mortality_rate(-10_ik,  usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+    mortality_rate(-1_ik,   usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+    mortality_rate(-1_ik,   usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+    mortality_rate(0_ik,    usss_f_qx_dat, 100000_ik):                   0.0050758495                  0.0050728343
+    mortality_rate(0_ik,    usss_m_qx_dat, 100000_ik):                   0.0058772203                  0.0058772203
+    mortality_rate(1_ik,    usss_f_qx_dat, 100000_ik):                   0.0003930772                  0.0003920603
+    mortality_rate(1_ik,    usss_m_qx_dat, 100000_ik):                   0.0004200882                  0.0004225650
+    mortality_rate(10_ik,   usss_f_qx_dat, 100000_ik):                   0.0001030053                  0.0001006613
+    mortality_rate(10_ik,   usss_m_qx_dat, 100000_ik):                   0.0001290083                  0.0001310068
+    mortality_rate(100_ik,  usss_f_qx_dat, 100000_ik):                   0.3762310362                  0.3761097659
+    mortality_rate(100_ik,  usss_m_qx_dat, 100000_ik):                   0.4371608538                  0.4363001745
+    mortality_rate(119_ik,  usss_f_qx_dat, 100000_ik):                   2.0000000000                  1.0000000000
+    mortality_rate(119_ik,  usss_m_qx_dat, 100000_ik):                   2.0000000000                  1.0000000000
+    mortality_rate(120_ik,  usss_f_qx_dat, 100000_ik):                   1.0000000000                  1.0000000000
+    mortality_rate(120_ik,  usss_m_qx_dat, 100000_ik):                   1.0000000000                  1.0000000000
+    mortality_rate(1000_ik, usss_f_qx_dat, 100000_ik):                   1.0000000000                  1.0000000000
+    mortality_rate(1000_ik, usss_m_qx_dat, 100000_ik):                   1.0000000000                  1.0000000000
 ===================================================================================================================
-            person_years(-10,  usss_f_qx_dat, 100000):              100000.0000000000             100000.0000000000
-            person_years(-10,  usss_m_qx_dat, 100000):              100000.0000000000             100000.0000000000
-            person_years(-1,   usss_f_qx_dat, 100000):              100000.0000000000             100000.0000000000
-            person_years(-1,   usss_m_qx_dat, 100000):              100000.0000000000             100000.0000000000
-            person_years(0,    usss_f_qx_dat, 100000):               99746.8499932438              99747.0000000000
-            person_years(0,    usss_m_qx_dat, 100000):               99707.0000041276              99707.0000000000
-            person_years(1,    usss_f_qx_dat, 100000):               99474.1494746989              99474.5000000000
-            person_years(1,    usss_m_qx_dat, 100000):               99393.1230684192              99393.0000000000
-            person_years(10,   usss_f_qx_dat, 100000):               99342.9164879863              99343.0000000000
-            person_years(10,   usss_m_qx_dat, 100000):               99231.6716514331              99231.5000000000
-            person_years(100,  usss_f_qx_dat, 100000):                1858.7852717178               1858.5000000000
-            person_years(100,  usss_m_qx_dat, 100000):                 572.8344826043                573.0000000000
-            person_years(119,  usss_f_qx_dat, 100000):                   0.0000364696                  0.0000000000
-            person_years(119,  usss_m_qx_dat, 100000):                   0.0000057937                  0.0000000000
-            person_years(120,  usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-            person_years(120,  usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-            person_years(1000, usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-            person_years(1000, usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
+      person_years(-10_ik,  usss_f_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+      person_years(-10_ik,  usss_m_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+      person_years(-1_ik,   usss_f_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+      person_years(-1_ik,   usss_m_qx_dat, 100000_ik):              100000.0000000000             100000.0000000000
+      person_years(0_ik,    usss_f_qx_dat, 100000_ik):               99746.8500000000              99747.0000000000
+      person_years(0_ik,    usss_m_qx_dat, 100000_ik):               99707.0000000000              99707.0000000000
+      person_years(1_ik,    usss_f_qx_dat, 100000_ik):               99474.1494879500              99474.5000000000
+      person_years(1_ik,    usss_m_qx_dat, 100000_ik):               99393.1230600000              99393.0000000000
+      person_years(10_ik,   usss_f_qx_dat, 100000_ik):               99342.9164993524              99343.0000000000
+      person_years(10_ik,   usss_m_qx_dat, 100000_ik):               99231.6716438444              99231.5000000000
+      person_years(100_ik,  usss_f_qx_dat, 100000_ik):                1858.7852222227               1858.5000000000
+      person_years(100_ik,  usss_m_qx_dat, 100000_ik):                 572.8344376542                573.0000000000
+      person_years(119_ik,  usss_f_qx_dat, 100000_ik):                   0.0000364697                  0.0000000000
+      person_years(119_ik,  usss_m_qx_dat, 100000_ik):                   0.0000057937                  0.0000000000
+      person_years(120_ik,  usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+      person_years(120_ik,  usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+      person_years(1000_ik, usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+      person_years(1000_ik, usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
 ===========================================================================================================================================================================================================================================
-probability_of_survival_1(-10,  usss_f_qx_dat, 100000):                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000
-probability_of_survival_1(-10,  usss_m_qx_dat, 100000):                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000
-probability_of_survival_1(-1,   usss_f_qx_dat, 100000):                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000
-probability_of_survival_1(-1,   usss_m_qx_dat, 100000):                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000
-probability_of_survival_1(0,    usss_f_qx_dat, 100000):                  0.9949369999                  0.9949369999                  0.9949369999                  0.9949400000                  0.9949400000                  0.9949400000
-probability_of_survival_1(0,    usss_m_qx_dat, 100000):                  0.9941400001                  0.9941400001                  0.9941400001                  0.9941400000                  0.9941400000                  0.9941400000
-probability_of_survival_1(1,    usss_f_qx_dat, 100000):                  0.9996070000                  0.9996070000                  0.9996070000                  0.9996080166                  0.9996080166                  0.9996080166
-probability_of_survival_1(1,    usss_m_qx_dat, 100000):                  0.9995800000                  0.9995800000                  0.9995800000                  0.9995775243                  0.9995775243                  0.9995775243
-probability_of_survival_1(10,   usss_f_qx_dat, 100000):                  0.9998970000                  0.9998970000                  0.9998970000                  0.9998993437                  0.9998993437                  0.9998993437
-probability_of_survival_1(10,   usss_m_qx_dat, 100000):                  0.9998710000                  0.9998710000                  0.9998710000                  0.9998690018                  0.9998690018                  0.9998690018
-probability_of_survival_1(100,  usss_f_qx_dat, 100000):                  0.6833379865                  0.6833379865                  0.6833379865                  0.6834239130                  0.6834239130                  0.6834239130
-probability_of_survival_1(100,  usss_m_qx_dat, 100000):                  0.6412540078                  0.6412540078                  0.6412540078                  0.6418338109                  0.6418338109                  0.6418338109
-probability_of_survival_1(119,  usss_f_qx_dat, 100000):                  0.0000000000                  0.0000000000                  0.0934680104                  0.0000000000                  0.0000000000                  0.0000000000
-probability_of_survival_1(119,  usss_m_qx_dat, 100000):                  0.0000000000                  0.0000000000                  0.0934680104                  0.0000000000                  0.0000000000                  0.0000000000
-probability_of_survival_1(120,  usss_f_qx_dat, 100000):                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000
-probability_of_survival_1(120,  usss_m_qx_dat, 100000):                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000
-probability_of_survival_1(1000, usss_f_qx_dat, 100000):                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000
-probability_of_survival_1(1000, usss_m_qx_dat, 100000):                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000
+probability_of_survival_1(-10_ik,  usss_f_qx_dat, 10000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000
+probability_of_survival_1(-10_ik,  usss_m_qx_dat, 10000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000
+probability_of_survival_1(-1_ik,   usss_f_qx_dat, 10000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000
+probability_of_survival_1(-1_ik,   usss_m_qx_dat, 10000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000                  1.0000000000
+probability_of_survival_1(0_ik,    usss_f_qx_dat, 10000                  0.9949370000                  0.9949370000                  0.9949370000                  0.9949400000                  0.9949400000                  0.9949400000
+probability_of_survival_1(0_ik,    usss_m_qx_dat, 10000                  0.9941400000                  0.9941400000                  0.9941400000                  0.9941400000                  0.9941400000                  0.9941400000
+probability_of_survival_1(1_ik,    usss_f_qx_dat, 10000                  0.9996070000                  0.9996070000                  0.9996070000                  0.9996080166                  0.9996080166                  0.9996080166
+probability_of_survival_1(1_ik,    usss_m_qx_dat, 10000                  0.9995800000                  0.9995800000                  0.9995800000                  0.9995775243                  0.9995775243                  0.9995775243
+probability_of_survival_1(10_ik,   usss_f_qx_dat, 10000                  0.9998970000                  0.9998970000                  0.9998970000                  0.9998993437                  0.9998993437                  0.9998993437
+probability_of_survival_1(10_ik,   usss_m_qx_dat, 10000                  0.9998710000                  0.9998710000                  0.9998710000                  0.9998690018                  0.9998690018                  0.9998690018
+probability_of_survival_1(100_ik,  usss_f_qx_dat, 10000                  0.6833380000                  0.6833380000                  0.6833380000                  0.6834239130                  0.6834239130                  0.6834239130
+probability_of_survival_1(100_ik,  usss_m_qx_dat, 10000                  0.6412540000                  0.6412540000                  0.6412540000                  0.6418338109                  0.6418338109                  0.6418338109
+probability_of_survival_1(119_ik,  usss_f_qx_dat, 10000                  0.0000000000                  0.0000000000                  0.0934680000                  0.0000000000                  0.0000000000                  0.0000000000
+probability_of_survival_1(119_ik,  usss_m_qx_dat, 10000                  0.0000000000                  0.0000000000                  0.0934680000                  0.0000000000                  0.0000000000                  0.0000000000
+probability_of_survival_1(120_ik,  usss_f_qx_dat, 10000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000
+probability_of_survival_1(120_ik,  usss_m_qx_dat, 10000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000
+probability_of_survival_1(1000_ik, usss_f_qx_dat, 10000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000
+probability_of_survival_1(1000_ik, usss_m_qx_dat, 10000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000                  0.0000000000
 ===========================================================================================================================================================================================================================================
-      total_person_years(-10,  usss_f_qx_dat, 100000):             8930396.9217506628            8930392.0000000000
-      total_person_years(-10,  usss_m_qx_dat, 100000):             8354285.7705277381            8354258.0000000000
-      total_person_years(-1,   usss_f_qx_dat, 100000):             8030396.9217506647            8030392.0000000000
-      total_person_years(-1,   usss_m_qx_dat, 100000):             7454285.7705277381            7454258.0000000000
-      total_person_years(0,    usss_f_qx_dat, 100000):             7930396.9217506647            7930392.0000000000
-      total_person_years(0,    usss_m_qx_dat, 100000):             7354285.7705277381            7354258.0000000000
-      total_person_years(1,    usss_f_qx_dat, 100000):             7830650.0717574209            7830645.0000000000
-      total_person_years(1,    usss_m_qx_dat, 100000):             7254578.7705236105            7254551.0000000000
-      total_person_years(10,   usss_f_qx_dat, 100000):             6936035.8566020746            6936031.0000000000
-      total_person_years(10,   usss_m_qx_dat, 100000):             6360831.0521741575            6360805.0000000000
-      total_person_years(100,  usss_f_qx_dat, 100000):                5196.9576986642               5197.0000000000
-      total_person_years(100,  usss_m_qx_dat, 100000):                1458.4272381676               1461.0000000000
-      total_person_years(119,  usss_f_qx_dat, 100000):                   0.0000364696                  0.0000000000
-      total_person_years(119,  usss_m_qx_dat, 100000):                   0.0000057937                  0.0000000000
-      total_person_years(120,  usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-      total_person_years(120,  usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
-      total_person_years(1000, usss_f_qx_dat, 100000):                   0.0000000000                  0.0000000000
-      total_person_years(1000, usss_m_qx_dat, 100000):                   0.0000000000                  0.0000000000
+total_person_years(-10_ik,  usss_f_qx_dat, 100000_ik):             8930396.9249434676            8930392.0000000000
+total_person_years(-10_ik,  usss_m_qx_dat, 100000_ik):             8354285.7658757130            8354258.0000000000
+total_person_years(-1_ik,   usss_f_qx_dat, 100000_ik):             8030396.9249434639            8030392.0000000000
+total_person_years(-1_ik,   usss_m_qx_dat, 100000_ik):             7454285.7658757139            7454258.0000000000
+total_person_years(0_ik,    usss_f_qx_dat, 100000_ik):             7930396.9249434639            7930392.0000000000
+total_person_years(0_ik,    usss_m_qx_dat, 100000_ik):             7354285.7658757139            7354258.0000000000
+total_person_years(1_ik,    usss_f_qx_dat, 100000_ik):             7830650.0749434624            7830645.0000000000
+total_person_years(1_ik,    usss_m_qx_dat, 100000_ik):             7254578.7658757148            7254551.0000000000
+total_person_years(10_ik,   usss_f_qx_dat, 100000_ik):             6936035.8596771928            6936031.0000000000
+total_person_years(10_ik,   usss_m_qx_dat, 100000_ik):             6360831.0475978842            6360805.0000000000
+total_person_years(100_ik,  usss_f_qx_dat, 100000_ik):                5196.9576085486               5197.0000000000
+total_person_years(100_ik,  usss_m_qx_dat, 100000_ik):                1458.4271149169               1461.0000000000
+total_person_years(119_ik,  usss_f_qx_dat, 100000_ik):                   0.0000364697                  0.0000000000
+total_person_years(119_ik,  usss_m_qx_dat, 100000_ik):                   0.0000057937                  0.0000000000
+total_person_years(120_ik,  usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+total_person_years(120_ik,  usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+total_person_years(1000_ik, usss_f_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
+total_person_years(1000_ik, usss_m_qx_dat, 100000_ik):                   0.0000000000                  0.0000000000
 ===================================================================================================================
-            age_all_dead(-10,  usss_f_qx_dat, 100000):                 120.0000000000                114.0000000000
-            age_all_dead(-10,  usss_m_qx_dat, 100000):                 120.0000000000                112.0000000000
+      age_all_dead(-10_ik,  usss_f_qx_dat, 100000_ik):                   0.0000000000                114.0000000000
+      age_all_dead(-10_ik,  usss_m_qx_dat, 100000_ik):                   0.0000000000                112.0000000000
 ===================================================================================================================
-life_expectancy_at_birth(-10,  usss_f_qx_dat, 100000):                  79.3039692175                 79.3039200000
-life_expectancy_at_birth(-10,  usss_m_qx_dat, 100000):                  73.5428577053                 73.5425800000
+life_expectancy_at_birth(-10_ik,  usss_f_qx_dat, 100000                 79.3039692494                 79.3039200000
+life_expectancy_at_birth(-10_ik,  usss_m_qx_dat, 100000                 73.5428576588                 73.5425800000
 ===================================================================================================================

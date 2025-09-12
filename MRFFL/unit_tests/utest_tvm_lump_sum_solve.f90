@@ -36,10 +36,11 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm_lump_sum_solve
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_tvm
-  use mrffl_var_sets
-  implicit none
+  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_tvm,      only: tvm_lump_sum_solve
+  use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n
+
+  implicit none (type, external)
 
   real(kind=rk)    :: i, fv, pv, n
   integer(kind=ik) :: status

@@ -41,21 +41,21 @@ module mrffl_us_inflation
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
   use mrffl_stats, only: resample_tail
   use mrffl_percentages, only: percentage_of, percentage_change, add_percentage
-  implicit none
+  implicit none (type, external)
   private
   real(kind=rk), parameter, public :: inf_dat(1914:2023)  = [ &
-                                 1.0,  1.0,  7.9, 17.4, 18.0, 14.6, & ! 1914-1919
-       15.6, -10.5, -6.1,  1.8,  0.0,  2.3,  1.1, -1.7, -1.7,  0.0, & ! 1920-1929
-       -2.3,  -9.0, -9.9, -5.1,  3.1,  2.2,  1.5,  3.6, -2.1, -1.4, & ! 1930-1939
-        0.7,   5.0, 10.9,  6.1,  1.7,  2.3,  8.3, 14.4,  8.1, -1.2, & ! 1940-1949
-        1.3,   7.9,  1.9,  0.8,  0.7, -0.4,  1.5,  3.3,  2.8,  0.7, & ! 1950-1959
-        1.7,   1.0,  1.0,  1.3,  1.3,  1.6,  2.9,  3.1,  4.2,  5.5, & ! 1960-1969
-        5.7,   4.4,  3.2,  6.2, 11.0,  9.1,  5.8,  6.5,  7.6, 11.3, & ! 1970-1979
-       13.5,  10.3,  6.2,  3.2,  4.3,  3.6,  1.9,  3.6,  4.1,  4.8, & ! 1980-1989
-        5.4,   4.2,  3.0,  3.0,  2.6,  2.8,  3.0,  2.3,  1.6,  2.2, & ! 1990-1999
-        3.4,   2.8,  1.6,  2.3,  2.7,  3.4,  3.2,  2.8,  3.8, -0.4, & ! 2000-2009
-        1.6,   3.2,  2.1,  1.5,  1.6,  0.1,  1.3,  2.1,  2.4,  1.8, & ! 2010-2019
-        1.2,   4.7,  8.0,  4.1]                                       ! 2020-2023
+       &                                       1.0_rk,  1.0_rk,  7.9_rk, 17.4_rk, 18.0_rk, 14.6_rk, & ! 1914-1919
+       & 15.6_rk, -10.5_rk, -6.1_rk,  1.8_rk,  0.0_rk,  2.3_rk,  1.1_rk, -1.7_rk, -1.7_rk,  0.0_rk, & ! 1920-1929
+       & -2.3_rk,  -9.0_rk, -9.9_rk, -5.1_rk,  3.1_rk,  2.2_rk,  1.5_rk,  3.6_rk, -2.1_rk, -1.4_rk, & ! 1930-1939
+       &  0.7_rk,   5.0_rk, 10.9_rk,  6.1_rk,  1.7_rk,  2.3_rk,  8.3_rk, 14.4_rk,  8.1_rk, -1.2_rk, & ! 1940-1949
+       &  1.3_rk,   7.9_rk,  1.9_rk,  0.8_rk,  0.7_rk, -0.4_rk,  1.5_rk,  3.3_rk,  2.8_rk,  0.7_rk, & ! 1950-1959
+       &  1.7_rk,   1.0_rk,  1.0_rk,  1.3_rk,  1.3_rk,  1.6_rk,  2.9_rk,  3.1_rk,  4.2_rk,  5.5_rk, & ! 1960-1969
+       &  5.7_rk,   4.4_rk,  3.2_rk,  6.2_rk, 11.0_rk,  9.1_rk,  5.8_rk,  6.5_rk,  7.6_rk, 11.3_rk, & ! 1970-1979
+       & 13.5_rk,  10.3_rk,  6.2_rk,  3.2_rk,  4.3_rk,  3.6_rk,  1.9_rk,  3.6_rk,  4.1_rk,  4.8_rk, & ! 1980-1989
+       &  5.4_rk,   4.2_rk,  3.0_rk,  3.0_rk,  2.6_rk,  2.8_rk,  3.0_rk,  2.3_rk,  1.6_rk,  2.2_rk, & ! 1990-1999
+       &  3.4_rk,   2.8_rk,  1.6_rk,  2.3_rk,  2.7_rk,  3.4_rk,  3.2_rk,  2.8_rk,  3.8_rk, -0.4_rk, & ! 2000-2009
+       &  1.6_rk,   3.2_rk,  2.1_rk,  1.5_rk,  1.6_rk,  0.1_rk,  1.3_rk,  2.1_rk,  2.4_rk,  1.8_rk, & ! 2010-2019
+       &  1.2_rk,   4.7_rk,  8.0_rk,  4.1_rk]                                                         ! 2020-2023
 
   public  :: inf_resample, inf_aggregate, inf_adj
 
@@ -66,7 +66,7 @@ contains
   !! Out of range years cause an ERROR STOP.
   !!
   real(kind=rk) pure function inf_aggregate(from_year, to_year)
-    implicit none
+    implicit none (type, external)
     integer(kind=ik), intent(in) :: from_year, to_year
     integer(kind=ik)             :: year
     if (from_year < lbound(inf_dat, 1)) error stop "ERROR(inf_aggregate): from_year too small"
@@ -89,7 +89,7 @@ contains
   !! Out of range years cause an ERROR STOP.
   !!
   real(kind=rk) pure function inf_adj(from_year, to_year, v)
-    implicit none
+    implicit none (type, external)
     integer(kind=ik), intent(in) :: from_year, to_year
     real(kind=rk),    intent(in) :: v
     inf_adj = add_percentage(v, inf_aggregate(from_year, to_year))
@@ -99,7 +99,7 @@ contains
   !> Return a random inflation value from the last history_years of US inflation data.
   !!
   real(kind=rk) function inf_resample(history_years)
-    implicit none
+    implicit none (type, external)
     integer(kind=ik), intent(in) :: history_years
     inf_resample = resample_tail(inf_dat, history_years)
   end function inf_resample

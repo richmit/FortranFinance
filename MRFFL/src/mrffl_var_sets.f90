@@ -38,7 +38,7 @@
 !> Constants to to identify TVM variables.
 module mrffl_var_sets
   use mrffl_config, only: ik=>mrfflik
-  implicit none
+  implicit none (type, external)
   private
 
   integer(kind=ik), parameter, public :: var_NONE = 0       !< No variables in set

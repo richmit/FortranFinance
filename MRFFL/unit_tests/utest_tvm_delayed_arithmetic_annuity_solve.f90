@@ -36,11 +36,11 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm_delayed_arithmetic_annuity_solve
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_tvm
-  use mrffl_var_sets
-  use mrffl_cashflows
-  implicit none
+  use mrffl_config,    only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_tvm,       only: tvm_delayed_arithmetic_annuity_solve
+  use mrffl_var_sets,  only: var_pv, var_fv, var_i, var_n, var_a, var_NONE, var_q
+  use mrffl_cashflows, only: cashflow_matrix_pv_fv_print
+  implicit none (type, external)
 
   real(kind=rk)    :: n, i, q, pv, fv, a
   integer(kind=ik) :: d, e, status
@@ -250,8 +250,8 @@ contains
        n        =   9
        i        =   10
        q        =   100
-       pv       =   7701.1690671979450
-       fv       =   18158.953820000024
+       pv       =   7701.1690671979450_rk
+       fv       =   18158.953820000024_rk
        a        =   1000
        d        =   1
        e        =   0
@@ -261,8 +261,8 @@ contains
        n        =   9
        i        =   10
        q        =   100
-       pv       =   8471.2859739177366
-       fv       =   19974.849202000038
+       pv       =   8471.2859739177366_rk
+       fv       =   19974.849202000038_rk
        a        =   1000
        d        =   0
        e        =   1

@@ -45,7 +45,7 @@ include $(MRFFL_PATH)/make_includes/include.mk
 
 ################################################################################################################################################################
 
-NDIF := ~/world/my_prog/utils/float_diff.rb
+NDIF := ~/core/codeBits/bin/float_diff.rb
 
 EXE_TARGETS := utest_percentages utest_tvm_lump_sum_solve utest_inflation utest_tvm_delayed_geometric_annuity_solve utest_tvm_delayed_lump_sum_solve utest_tvm_cashflows utest_tvm_delayed_arithmetic_annuity_solve utest_taxes utest_tvm12 utest_tvm_delayed_level_annuity_solve utest_life_table utest_life_table_print utest_stats_probit
 

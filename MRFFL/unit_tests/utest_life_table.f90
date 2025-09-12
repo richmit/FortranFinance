@@ -36,11 +36,13 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_life_table
-  use, intrinsic:: iso_c_binding
-  use mrffl_config, only: ik=>mrfflik
-  use mrffl_life_table
-  use mrffl_prt_sets
-  implicit none
+  use mrffl_config,      only: ik=>mrfflik
+  use mrffl_life_table,  only: life_table_print, probability_of_death, probability_of_survival_1, probability_of_survival_n, &
+       &                       survivors, died, person_years, age_all_dead, rand_age, total_person_years, mortality_rate,    &
+       &                       life_expectancy, life_expectancy_at_birth,                                                    &
+       &                       usss_m_lx_dat, usss_f_lx_dat, usss_m_qx_dat, usss_f_qx_dat
+
+  implicit none (type, external)
 
   print '(a)', repeat("=", 115)
 

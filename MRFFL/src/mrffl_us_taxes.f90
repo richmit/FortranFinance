@@ -42,7 +42,7 @@ module mrffl_us_taxes
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
   use mrffl_percentages, only: percentage_of, percentage_of_total
   use mrffl_tvm, only: fv_from_pv_n_i
-  implicit none
+  implicit none (type, external)
   private
 
   integer(kind=ik), parameter, public :: seed_tax_year                     = 2024 ! The year the following constants hold

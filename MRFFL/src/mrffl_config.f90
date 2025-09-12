@@ -39,17 +39,17 @@
 !> Configuration for MRFFL (MR Fortran Finance Library).
 !!
 module mrffl_config
-  use, intrinsic:: iso_c_binding, only: c_int32_t, c_double
-  implicit none
+  use, intrinsic :: iso_c_binding, only: c_int32_t, c_double
+  implicit none (type, external)
   private
 
-  integer,            parameter, public :: mrfflik       = c_int32_t !< Integer kinds used in interfaces
-  integer,            parameter, public :: mrfflrk       = c_double  !< Real kind used in interfaces
+  integer,            parameter, public :: mrfflik       = c_int32_t      !< Integer kinds used in interfaces
+  integer,            parameter, public :: mrfflrk       = c_double       !< Real kind used in interfaces
 
-  real(kind=mrfflrk), parameter, public :: zero_epsilon  = 1.0d-8    !< Used to test for zero
+  real(kind=mrfflrk), parameter, public :: zero_epsilon  = 1.0e-8_mrfflrk !< Used to test for zero
 
-  character(len=5),              public :: mrfflcnfmt    = "f15.4"   !< Used to print cash values
-  character(len=5),              public :: mrfflctfmt    = "a15"     !< Used to print cash titles
+  character(len=5),              public :: mrfflcnfmt    = "f15.4"        !< Used to print cash values
+  character(len=5),              public :: mrfflctfmt    = "a15"          !< Used to print cash titles
 
         !
         !                  Typical settings for mrfflcnfmt & mrfflctfmt:

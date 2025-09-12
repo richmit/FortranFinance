@@ -36,25 +36,27 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_inflation
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_us_inflation
+  use mrffl_config,       only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_us_inflation, only: inf_adj, inf_aggregate, inf_dat
 
-  print "(a50,f20.5,f20.5)", "inf_adj(1950_ik, 1920_ik, 1.0_rk)",        inf_adj(1950_ik, 1920_ik, 1.0_rk), 0.82908487540483555
+  implicit none (type, external)
 
-  print "(a50,f20.5,f20.5)", "inf_adj(1920_ik, 1950_ik, 1.0_rk)",        inf_adj(1920_ik, 1950_ik, 1.0_rk), 1.2061491285939909
+  print "(a50,f20.5,f20.5)", "inf_adj(1950_ik, 1920_ik, 1.0_rk)",        inf_adj(1950_ik, 1920_ik, 1.0_rk),   0.82908487540483555_rk
 
-  print "(a50,f20.5,f20.5)", "inf_adj(1950_ik, 1950_ik, 1.0_rk)",        inf_adj(1950_ik, 1950_ik, 1.0_rk), 1.0000000000000000
+  print "(a50,f20.5,f20.5)", "inf_adj(1920_ik, 1950_ik, 1.0_rk)",        inf_adj(1920_ik, 1950_ik, 1.0_rk),   1.20614912859399090_rk
 
-  print "(a50,f20.5,f20.5)", "inf_aggregate(1950_ik, 1920_ik, 1.0_rk)",  inf_aggregate(1950_ik, 1920_ik),   -17.091512459516441
+  print "(a50,f20.5,f20.5)", "inf_adj(1950_ik, 1950_ik, 1.0_rk)",        inf_adj(1950_ik, 1950_ik, 1.0_rk),   1.00000000000000000_rk
 
-  print "(a50,f20.5,f20.5)", "inf_aggregate(1920_ik, 1950_ik, 1.0_rk)",  inf_aggregate(1920_ik, 1950_ik),   20.614912859399091
+  print "(a50,f20.5,f20.5)", "inf_aggregate(1950_ik, 1920_ik, 1.0_rk)",  inf_aggregate(1950_ik, 1920_ik),   -17.09151245951644100_rk
 
-  print "(a50,f20.5,f20.5)", "inf_aggregate(1950_ik, 1950_ik, 1.0_rk)",  inf_aggregate(1950_ik, 1950_ik),   0.0000000000000000
+  print "(a50,f20.5,f20.5)", "inf_aggregate(1920_ik, 1950_ik, 1.0_rk)",  inf_aggregate(1920_ik, 1950_ik),    20.61491285939909100_rk
 
-  print "(a50,f20.5,f20.5)", "inf_dat(1921)",                            inf_dat(1921),                     -10.500000000000000
+  print "(a50,f20.5,f20.5)", "inf_aggregate(1950_ik, 1950_ik, 1.0_rk)",  inf_aggregate(1950_ik, 1950_ik),     0.00000000000000000_rk
 
-  print "(a50,f20.5,f20.5)", "inf_dat(1914)",                            inf_dat(1914),                     1.0000000000000000
+  print "(a50,f20.5,f20.5)", "inf_dat(1921_ik)",                         inf_dat(1921_ik),                   -10.5000000000000000_rk
 
-  print "(a50,f20.5,f20.5)", "inf_dat(2023)",                            inf_dat(2023),                     4.1000000000000000
+  print "(a50,f20.5,f20.5)", "inf_dat(1914_ik)",                         inf_dat(1914_ik),                     1.0000000000000000_rk
+
+  print "(a50,f20.5,f20.5)", "inf_dat(2023_ik)",                         inf_dat(2023_ik),                     4.1000000000000000_rk
 
 end program utest_inflation

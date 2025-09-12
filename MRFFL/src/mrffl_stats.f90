@@ -39,7 +39,7 @@
 !!
 module mrffl_stats
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
-  implicit none
+  implicit none (type, external)
   private
 
   public  :: mean_and_variance
@@ -60,11 +60,12 @@ contains
   !! @param optional_lower_bound Lower bound for random number
   !!
   integer(kind=ik) function rand_int(upper_bound, optional_lower_bound)
-    implicit none
+    implicit none (type, external)
     integer(kind=ik),           intent(in) :: upper_bound
     integer(kind=ik), optional, intent(in) :: optional_lower_bound
-    integer(kind=ik)                       :: lower_bound = 0
+    integer(kind=ik)                       :: lower_bound
     real(kind=rk)                          :: r
+    lower_bound = 0
     if (present(optional_lower_bound)) lower_bound = optional_lower_bound
     if (lower_bound > upper_bound) then
        error stop "ERROR(rand_int): lower_bound > upper_bound!"
@@ -80,11 +81,12 @@ contains
   !! @param optional_lower_bound Lower bound for random number
   !!
   real(kind=rk) function rand_real(upper_bound, optional_lower_bound)
-    implicit none
+    implicit none (type, external)
     real(kind=rk),           intent(in) :: upper_bound
     real(kind=rk), optional, intent(in) :: optional_lower_bound
-    real(kind=rk)                       :: lower_bound = 0
+    real(kind=rk)                       :: lower_bound
     real(kind=rk)                       :: r
+    lower_bound = 0
     if (present(optional_lower_bound)) lower_bound = optional_lower_bound
     if (lower_bound > upper_bound) then
        error stop "ERROR(rand_real): lower_bound > upper_bound!"
@@ -100,7 +102,7 @@ contains
   !! @param tail_length  Number of elements to consider for resample.
   !!
   real(kind=rk) function resample_tail(data, tail_length)
-    implicit none
+    implicit none (type, external)
     real(kind=rk), intent(in)    :: data(:)
     integer(kind=ik), intent(in) :: tail_length
     integer(kind=ik)             :: i
@@ -117,7 +119,7 @@ contains
   !! @param head_length  Number of elements to consider for resample.
   !!
   real(kind=rk) function resample_head(data, head_length)
-    implicit none
+    implicit none (type, external)
     real(kind=rk), intent(in)    :: data(:)
     integer(kind=ik), intent(in) :: head_length
     integer(kind=ik)             :: i
@@ -135,7 +137,7 @@ contains
   !! @param data      The data set -- a rank 1 array.
   !!
   subroutine mean_and_variance(mean, variance, data)
-    implicit none
+    implicit none (type, external)
     real(kind=rk), intent(in)  :: data(:)
     real(kind=rk), intent(out) :: mean, variance
     mean     = sum(data) / size(data)
@@ -148,7 +150,7 @@ contains
   !! This function simply calls the preferred rand_norm_std_* function.  Currently that's rand_norm_std_probit().
   !!
   real(kind=rk) function rand_norm_std()
-    implicit none
+    implicit none (type, external)
     rand_norm_std = rand_norm_std_probit()
   end function rand_norm_std
 
@@ -159,7 +161,7 @@ contains
   !!   Box, G. E. P., and Mervin E. Muller. 1958. "A Note on the Generation of Random Normal Deviates." The Annals of Mathematical Statistics 29 (2): 610-11.
   !!
   real(kind=rk) function rand_norm_std_box()
-    implicit none
+    implicit none (type, external)
     real(kind=rk), parameter :: pi = 4.0_rk * atan(1.0_rk)
     real(kind=rk)            :: u, v
     logical, save            :: cached_valid = .false.
@@ -180,7 +182,7 @@ contains
   !> Return random value from the standard normal distribution in [-5.612, 5.612] using the Probit function.
   !!
   real(kind=rk) function rand_norm_std_probit_clip()
-    implicit none
+    implicit none (type, external)
     real(kind=rk) :: u
     do
        call random_number(u)
@@ -195,7 +197,7 @@ contains
   !> Return random value from the standard normal distribution using the Probit function.
   !!
   real(kind=rk) function rand_norm_std_probit()
-    implicit none
+    implicit none (type, external)
     real(kind=rk) :: u
     do
        call random_number(u)
@@ -213,7 +215,7 @@ contains
   !! @param variance  Variance (standard deviation squared) of the distribution
   !!
   real(kind=rk) function rand_norm(mean, variance)
-    implicit none
+    implicit none (type, external)
     real(kind=rk), intent(in) :: mean, variance
     rand_norm = rand_norm_std() * variance + mean
   end function rand_norm
@@ -229,7 +231,7 @@ contains
   !! @param sigma Standard deviation of the distribution
   !!
   real(kind=rk) function rand_log_norm(mu, sigma)
-    implicit none
+    implicit none (type, external)
     real(kind=rk), intent(in) :: mu, sigma
     rand_log_norm = exp(rand_norm_std() * sigma + mu)
   end function rand_log_norm
@@ -244,7 +246,7 @@ contains
   !! @param p  Probablity in @f$ (0,1) @f$.
   !!
   real(kind=rk) function probit(p)
-    implicit none
+    implicit none (type, external)
     real(kind=rk), intent(in) :: p
     real(kind=rk)             :: q
     real(kind=rk)             :: r
@@ -313,10 +315,10 @@ contains
   !! @param x  The value at which to evaluate the polynomial
   !!
   real(kind=rk) function poly_eval(p, x)
-    implicit none
+    implicit none (type, external)
     real(kind=rk), intent(in) :: p(:)
     real(kind=rk), intent(in) :: x
-    integer i
+    integer                   :: i
     poly_eval = p(1)
     do i = 2,size(p)
        poly_eval = poly_eval * x + p(i)
@@ -338,7 +340,7 @@ contains
     integer                    :: i, num_steps
     num_steps = size(step_values)
     step_width = 1.0_rk / (num_steps-1)
-    m = (mu - 0.5 * sigma ** 2) * step_width
+    m = (mu - 0.5_rk * sigma ** 2) * step_width
     s = sigma * sqrt(step_width)
     sum = 0
     do i=1,num_steps

@@ -43,12 +43,13 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program cashflow_vs_tvm_solver
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_tvm
-  use mrffl_var_sets
-  use mrffl_prt_sets
-  use mrffl_cashflows
-  implicit none
+  use mrffl_config,    only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_cashflows, only: cashflow_vector_pv_fv_print
+  use mrffl_prt_sets,  only: prt_ALL
+  use mrffl_tvm,       only: tvm_delayed_lump_sum_solve
+  use mrffl_var_sets,  only: var_fv, var_pv
+
+  implicit none (type, external)
 
   integer(kind=ik), parameter :: years = 5
 

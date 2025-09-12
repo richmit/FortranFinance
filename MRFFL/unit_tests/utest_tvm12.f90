@@ -36,10 +36,12 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm12
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, mrfflcnfmt, mrfflctfmt
-  use mrffl_tvm12
-  use mrffl_var_sets
-  use mrffl_prt_sets
+  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik, mrfflcnfmt, mrfflctfmt
+  use mrffl_tvm12,    only: tvm12_solve, tvm12_print, pmt_at_beginning, pmt_at_end
+  use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n, var_pmt
+  use mrffl_prt_sets, only: prt_ALL
+
+  implicit none (type, external)
 
   integer(kind=ik) :: n, status
   real(kind=rk)    :: i, pv, fv, pmt
@@ -128,19 +130,19 @@ program utest_tvm12
 
 contains
   subroutine set_em_up_end()
-    i      = 0.04
-    pv     = 1000.0
-    pmt    =  -392.38339254851439
+    i      =    0.04_rk
+    pv     = 1000.0_rk
+    pmt    = -392.38339254851439_rk
     n      = 3
-    fv     = 100.0
+    fv     = 100.0_rk
     status = 0
   end subroutine set_em_up_end
   subroutine set_em_up_beg()
-    i      = 0.04
-    pv     = 1000.0
-    pmt    =   -377.29172392869191
+    i      =    0.04_rk
+    pv     = 1000.0_rk
+    pmt    = -377.29172392869191_rk
     n      = 3
-    fv     = 100.0
+    fv     = 100.0_rk
     status = 0
   end subroutine set_em_up_beg
 end program utest_tvm12

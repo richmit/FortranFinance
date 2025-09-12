@@ -38,7 +38,7 @@
 !> Constants to select what *_print subroutines will print.
 module mrffl_prt_sets
   use mrffl_config, only: ik=>mrfflik
-  implicit none
+  implicit none (type, external)
   private
 
   integer(kind=ik), parameter, public :: prt_NONE  = 0   !< Print nothing

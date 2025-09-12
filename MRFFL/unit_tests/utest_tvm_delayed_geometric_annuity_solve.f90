@@ -36,9 +36,11 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm_delayed_geometric_annuity_solve
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_tvm
-  use mrffl_var_sets
+  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_tvm,      only: tvm_delayed_geometric_annuity_solve
+  use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n, var_a, var_g, var_NONE, var_pmt
+
+  implicit none (type, external)
 
   real(kind=rk)    :: n, i, g, pv, fv, a
   integer(kind=ik) :: d, e, status
@@ -247,8 +249,8 @@ contains
        n        =  15
        i        =   4
        g        =   3
-       pv       =   13491.599717769010
-       fv       =   24297.608890615225
+       pv       =   13491.599717769010_rk
+       fv       =   24297.608890615225_rk
        a        =   1000
        d        =   1
        e        =   0
@@ -258,8 +260,8 @@ contains
        n        =  15
        i        =   -4
        g        =   3
-       pv       =   26771.722696416953
-       fv       =   14512.586239140792
+       pv       =   26771.722696416953_rk
+       fv       =   14512.586239140792_rk
        a        =   1000
        d        =   1
        e        =   0
@@ -269,8 +271,8 @@ contains
        n        =  15
        i        =   4
        g        =   4
-       pv       =   14423.076923076922
-       fv       =   25975.146714042068
+       pv       =   14423.076923076922_rk
+       fv       =   25975.146714042068_rk
        a        =   1000
        d        =   1
        e        =   0
@@ -280,8 +282,8 @@ contains
        n        =  15
        i        =   -4
        g        =   -4
-       pv       =   15625.000000000002
-       fv       =   8470.0996853267043
+       pv       =   15625.000000000002_rk
+       fv       =   8470.0996853267043_rk
        a        =   1000
        d        =   1
        e        =   0
@@ -292,8 +294,8 @@ contains
        n        =  5
        i        =   -110
        g        =   3
-       pv       =   -102591.51099999959
-       fv       =   1.0259151099999999
+       pv       =   -102591.51099999959_rk
+       fv       =   1.0259151099999999_rk
        a        =   1
        d        =   1
        e        =   0

@@ -8,22 +8,22 @@
 !! @keywords  finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market
 !! @std       F2023
 !! @see       https://github.com/richmit/FortranFinance
-!! @copyright 
+!! @copyright
 !!  @parblock
 !!  Copyright (c) 2025, Mitchell Jay Richling <http://www.mitchr.me/> All rights reserved.
-!!  
+!!
 !!  Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following
 !!  conditions are met:
-!!  
+!!
 !!  1. Redistributions of source code must retain the above copyright notice, this list of conditions, and the following
 !!     disclaimer.
-!!  
+!!
 !!  2. Redistributions in binary form must reproduce the above copyright notice, this list of conditions, and the following
 !!     disclaimer in the documentation and/or other materials provided with the distribution.
-!!  
+!!
 !!  3. Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products
 !!     derived from this software without specific prior written permission.
-!!  
+!!
 !!  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
 !!  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
 !!  DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,
@@ -37,13 +37,15 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program ftest_random_walk
   use mrffl_config, only: rk=>mrfflrk
-  use mrffl_stats
+  use mrffl_stats,  only: geometric_brownian_motion, zero_clipped_brownian_motion
+
+  implicit none (type, external)
 
   integer, parameter :: num_runs  = 10000
   integer, parameter :: num_steps = 365
-  real(kind=rk)      :: s0 = 1, mu = 0.04, sigma = 0.18
+  real(kind=rk)      :: s0 = 1.0_rk, mu = 0.04_rk, sigma = 0.18_rk
   real(kind=rk)      :: walk1(num_steps), walk2(num_steps)
-  integer            :: i
+  integer            :: i, j
   integer            :: out_io_unit
 
   open(newunit=out_io_unit, file='ftest_random_walk.txt', form='formatted', action='write')

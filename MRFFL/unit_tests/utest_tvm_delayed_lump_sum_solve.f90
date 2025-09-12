@@ -36,9 +36,11 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm_delayed_lump_sum_solve
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_tvm
-  use mrffl_var_sets
+  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_tvm,      only: tvm_delayed_lump_sum_solve
+  use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n, var_a, var_g, var_NONE
+
+  implicit none (type, external)
 
   real(kind=rk)    :: i, fv, pv, a, n
   integer(kind=ik) :: d, status
@@ -201,8 +203,8 @@ contains
     if (k==1) then
        ! Case: d=0, i>0
        i = 10
-       pv = 1100.0000000000000
-       fv = 1610.5100000000004
+       pv = 1100.0000000000000_rk
+       fv = 1610.5100000000004_rk
        a  = 1100
        n = 4
        d = 0
@@ -210,8 +212,8 @@ contains
     else if (k==2) then
        ! Case: d=1, i>0
        i = 10
-       pv = 1000.0000000000000
-       fv = 1464.1000000000004
+       pv = 1000.0000000000000_rk
+       fv = 1464.1000000000004_rk
        a = 1100
        n = 4
        d = 1
@@ -219,8 +221,8 @@ contains
     else if (k==3) then
        ! Case: 1<d<n-1, i>0
        i = 10
-       pv = 909.09090909090901
-       fv = 1331.0000000000002
+       pv = 909.09090909090901_rk
+       fv = 1331.0000000000002_rk
        a = 1100
        n = 4
        d = 2
@@ -228,8 +230,8 @@ contains
     else if (k==4) then
        ! Case: d=n-1, i>0
        i = 10
-       pv = 826.44628099173531
-       fv = 1210.0000000000000
+       pv = 826.44628099173531_rk
+       fv = 1210.0000000000000_rk
        a = 1100
        n = 4
        d = 3
@@ -237,8 +239,8 @@ contains
     else if (k==5) then
        ! Case: d=n, i>0
        i = 10
-       pv = 751.31480090157754
-       fv = 1100.0000000000000
+       pv = 751.31480090157754_rk
+       fv = 1100.0000000000000_rk
        a = 1100
        n = 4
        d = 4

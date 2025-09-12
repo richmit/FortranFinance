@@ -1,7 +1,9 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_stats_probit
   use mrffl_config, only: rk=>mrfflrk
-  use mrffl_stats
+  use mrffl_stats,  only: probit
+
+  implicit none (type, external)
 
   print '(a30,es20.8,a20)',   "probit(-1.0_rk)",          probit(-1.0_rk),           "Neg Inf"
   print '(a30,es20.8,a20)',   "probit( 2.0_rk)",          probit( 2.0_rk),           "Pos Inf"

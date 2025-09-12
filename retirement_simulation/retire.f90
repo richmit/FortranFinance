@@ -49,65 +49,65 @@ program retire
   use            :: mrffl_us_markets,   only: snp_resample, dgs10_resample, snp_dat, dgs10_dat
   use            :: mrffl_us_inflation, only: inf_resample, inf_dat
   use            :: mrffl_life_table,   only: life_expectancy, usss_f_lx_dat, usss_m_lx_dat, rand_age
-  implicit none
+  implicit none (type, external)
 
   ! Configuration File Parameters
   integer(kind=ik)  :: monte_carlo_years                   = 40
   integer(kind=ik)  :: monte_carlo_runs                    = 10000
 
-  real(kind=rk)     :: initial_brokerage_balance           = 0.0
-  real(kind=rk)     :: initial_ira_balance_p1              = 0.0
-  real(kind=rk)     :: initial_ira_balance_p2              = 0.0
-  real(kind=rk)     :: initial_roth_balance_p1             = 0.0
-  real(kind=rk)     :: initial_roth_balance_p2             = 0.0
+  real(kind=rk)     :: initial_brokerage_balance           = 0.0_rk
+  real(kind=rk)     :: initial_ira_balance_p1              = 0.0_rk
+  real(kind=rk)     :: initial_ira_balance_p2              = 0.0_rk
+  real(kind=rk)     :: initial_roth_balance_p1             = 0.0_rk
+  real(kind=rk)     :: initial_roth_balance_p2             = 0.0_rk
 
-  real(kind=rk)     :: high_investment_p                   = 100.0
-  real(kind=rk)     :: mid_investment_p                    = 0.0
-  real(kind=rk)     :: low_investment_p                    = 0.0
+  real(kind=rk)     :: high_investment_p                   = 100.0_rk
+  real(kind=rk)     :: mid_investment_p                    = 0.0_rk
+  real(kind=rk)     :: low_investment_p                    = 0.0_rk
 
-  real(kind=rk)     :: high_investment_apr                 = 5.0
-  real(kind=rk)     :: mid_investment_apr                  = 4.0
-  real(kind=rk)     :: low_investment_apr                  = 3.0
-  real(kind=rk)     :: cash_position_growth                = 2.5
+  real(kind=rk)     :: high_investment_apr                 = 5.0_rk
+  real(kind=rk)     :: mid_investment_apr                  = 4.0_rk
+  real(kind=rk)     :: low_investment_apr                  = 3.0_rk
+  real(kind=rk)     :: cash_position_growth                = 2.5_rk
 
-  real(kind=rk)     :: initial_cash_reserves               = 0.0
-  real(kind=rk)     :: cash_reserves_growth                = 0.01
+  real(kind=rk)     :: initial_cash_reserves               = 0.0_rk
+  real(kind=rk)     :: cash_reserves_growth                = 0.01_rk
 
-  real(kind=rk)     :: initial_emergency_fund              = 0.0
-  real(kind=rk)     :: emergency_fund_growth               = 3.0
+  real(kind=rk)     :: initial_emergency_fund              = 0.0_rk
+  real(kind=rk)     :: emergency_fund_growth               = 3.0_rk
 
-  real(kind=rk)     :: first_year_tax                      = 0.0
+  real(kind=rk)     :: first_year_tax                      = 0.0_rk
 
-  real(kind=rk)     :: worst_case_inflation_rate           = 5.0
-  real(kind=rk)     :: fixed_inflation_rate                = 3.0
+  real(kind=rk)     :: worst_case_inflation_rate           = 5.0_rk
+  real(kind=rk)     :: fixed_inflation_rate                = 3.0_rk
 
-  real(kind=rk)     :: initial_expected_expenses_shr       = 0.0
-  real(kind=rk)     :: initial_expected_expenses_p1        = 0.0
-  real(kind=rk)     :: initial_expected_expenses_p2        = 0.0
+  real(kind=rk)     :: initial_expected_expenses_shr       = 0.0_rk
+  real(kind=rk)     :: initial_expected_expenses_p1        = 0.0_rk
+  real(kind=rk)     :: initial_expected_expenses_p2        = 0.0_rk
 
   integer(kind=ik)  :: social_security_start_age_p1        = 67
   integer(kind=ik)  :: social_security_start_age_p2        = 67
-  real(kind=rk)     :: initial_social_security_monthly_p1  = 1000.0
-  real(kind=rk)     :: initial_social_security_monthly_p2  = 1000.0
-  real(kind=rk)     :: social_security_growth              = -1.0
+  real(kind=rk)     :: initial_social_security_monthly_p1  = 1000.0_rk
+  real(kind=rk)     :: initial_social_security_monthly_p2  = 1000.0_rk
+  real(kind=rk)     :: social_security_growth              = -1.0_rk
 
-  real(kind=rk)     :: initial_gross_work_salary_p1        = 0.0
-  real(kind=rk)     :: initial_gross_work_salary_p2        = 0.0
-  real(kind=rk)     :: work_salary_growth                  = 2.0
+  real(kind=rk)     :: initial_gross_work_salary_p1        = 0.0_rk
+  real(kind=rk)     :: initial_gross_work_salary_p2        = 0.0_rk
+  real(kind=rk)     :: work_salary_growth                  = 2.0_rk
 
-  real(kind=rk)     :: initial_annual_ira_contrib_base     = 23000.0
-  real(kind=rk)     :: initial_annual_ira_contrib_catchup  = 7000.0
-  real(kind=rk)     :: annual_ira_contrib_growth           = 0.0
+  real(kind=rk)     :: initial_annual_ira_contrib_base     = 23000.0_rk
+  real(kind=rk)     :: initial_annual_ira_contrib_catchup  = 7000.0_rk
+  real(kind=rk)     :: annual_ira_contrib_growth           = 0.0_rk
 
-  real(kind=rk)     :: initial_annual_roth_contrib_base    = 23000.0
-  real(kind=rk)     :: initial_annual_roth_contrib_catchup = 7000.0
-  real(kind=rk)     :: annual_roth_contrib_growth          = 0.0
+  real(kind=rk)     :: initial_annual_roth_contrib_base    = 23000.0_rk
+  real(kind=rk)     :: initial_annual_roth_contrib_catchup = 7000.0_rk
+  real(kind=rk)     :: annual_roth_contrib_growth          = 0.0_rk
 
-  real(kind=rk)     :: target_taxable_income               = 0
-  real(kind=rk)     :: minimum_roth_conversion             = 15000
+  real(kind=rk)     :: target_taxable_income               = 0_rk
+  real(kind=rk)     :: minimum_roth_conversion             = 15000_rk
   integer(kind=ik)  :: maximum_roth_conversion_year        = 0
 
-  real(kind=rk)     :: surplus_reinvest                    = 0.0
+  real(kind=rk)     :: surplus_reinvest                    = 0.0_rk
 
   integer(kind=ik)  :: retirement_year_p1                  = 2035
   integer(kind=ik)  :: retirement_year_p2                  = 2035
@@ -137,7 +137,7 @@ program retire
   call cpu_time(cpu_time_start)
 
   if (verbosity >= 10)write (output_unit, '(a40)') "Reading Config"
-  call read_config();
+  call read_config()
 
   if ((sex_p1 /= 'F') .and. (sex_p1 /= 'M')) then
      error stop "Sex for p1 must be 'M' or 'F'."
@@ -231,7 +231,7 @@ contains
 
   !------------------------------------------------------------------------------------------------------------------------------
   subroutine main_sim(sim)
-    implicit none
+    implicit none (type, external)
     integer(kind=ik), intent(in) :: sim
 
      real(kind=rk)     :: cur_std_tax_deduction_single, cur_std_tax_deduction_joint, social_security_monthly_p1
@@ -599,7 +599,7 @@ contains
 
    !------------------------------------------------------------------------------------------------------------------------------
    subroutine pay_stuff(bill, paid_from_cash, paid_from_savings, paid_from_ira, paid_from_roth, cash_reserves_eligible)
-     implicit none
+     implicit none (type, external)
      real(kind=rk),    intent(in)  :: bill
      real(kind=rk),    intent(out) :: paid_from_cash, paid_from_savings, paid_from_ira, paid_from_roth
      logical,          intent(in)  :: cash_reserves_eligible
@@ -664,7 +664,7 @@ contains
 
    !------------------------------------------------------------------------------------------------------------------------------
    subroutine read_config()
-     implicit none
+     implicit none (type, external)
 
      namelist /SIMPARM/ monte_carlo_years, monte_carlo_runs
      namelist /SIMPARM/ initial_annual_roth_contrib_base, initial_annual_roth_contrib_catchup,annual_roth_contrib_growth, cash_position_growth

@@ -36,13 +36,14 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_taxes
-  use, intrinsic:: iso_c_binding
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_us_taxes
-  use mrffl_tvm
-  implicit none
-  integer(kind=ik) i
-  real(kind=rk)   r
+  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_us_taxes, only: tax_bracket_breaks_single, tax_bracket_rates, projected_tax, max_bracket, effective_tax_rate
+  use mrffl_tvm,      only: tvm_delayed_arithmetic_annuity_solve
+
+  implicit none (type, external)
+
+  integer(kind=ik) :: i
+  real(kind=rk)    :: r
 
   print *, "tax bracket: ", 0, max_bracket(0.0_rk-1.0_rk, tax_bracket_breaks_single)
   print *, "tax bracket: ", 0, max_bracket(0.0_rk+0.0_rk, tax_bracket_breaks_single)
@@ -57,9 +58,9 @@ program utest_taxes
 
   print *
 
-  print "(a10,i4,i5,f30.10,f30.10)", "tax rate: ", 0, -1, effective_tax_rate(-1.0_rk, tax_bracket_breaks_single, tax_bracket_rates),   0.000000000000000
-  print "(a10,i4,i5,f30.10,f30.10)", "tax rate: ", 0, +0, effective_tax_rate( 0.0_rk, tax_bracket_breaks_single, tax_bracket_rates),   0.000000000000000
-  print "(a10,i4,i5,f30.10,f30.10)", "tax rate: ", 0, +1, effective_tax_rate( 1.0_rk, tax_bracket_breaks_single, tax_bracket_rates),  10.000000000000000
+  print "(a10,i4,i5,f30.10,f30.10)", "tax rate: ", 0, -1, effective_tax_rate(-1.0_rk, tax_bracket_breaks_single, tax_bracket_rates),   0.000000000000000_rk
+  print "(a10,i4,i5,f30.10,f30.10)", "tax rate: ", 0, +0, effective_tax_rate( 0.0_rk, tax_bracket_breaks_single, tax_bracket_rates),   0.000000000000000_rk
+  print "(a10,i4,i5,f30.10,f30.10)", "tax rate: ", 0, +1, effective_tax_rate( 1.0_rk, tax_bracket_breaks_single, tax_bracket_rates),  10.000000000000000_rk
 
   print *
   i = 1
@@ -90,14 +91,14 @@ program utest_taxes
 
   print *
 
-  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax(    0.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 12.0_rk), 0.0000000000
+  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax(    0.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 12.0_rk), 0.0000000000_rk
 
   print *
 
-  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax(    1.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 10.0_rk), 0.000000000
-  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax(  100.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 10.0_rk), 0.000000000
-  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax( 1000.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 10.0_rk), 0.000000000
-  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax(10000.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 10.0_rk), 0.000000000
+  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax(    1.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 10.0_rk), 0.000000000_rk
+  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax(  100.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 10.0_rk), 0.000000000_rk
+  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax( 1000.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 10.0_rk), 0.000000000_rk
+  print "(a10,f30.10,f30.10)", "tax rate: ", projected_tax(10000.0_rk, tax_bracket_breaks_single, tax_bracket_rates, 2025_ik, 10.0_rk), 0.000000000_rk
 
   print *
 

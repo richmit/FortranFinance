@@ -37,9 +37,14 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_cashflows
   use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_cashflows
-  use mrffl_prt_sets
-  implicit none
+  use mrffl_cashflows, only: cashflow_vector_pv_fv_print, cashflow_matrix_pv_fv_print, &
+       &                     cashflow_matrix_total_pv, cashflow_vector_total_pv, &
+       &                     make_cashflow_vector_delayed_arithmetic_annuity, make_cashflow_vector_delayed_geometric_annuity, &
+       &                     make_cashflow_vector_delayed_level_annuity, make_cashflow_vector_delayed_lump
+  use mrffl_prt_sets, only: prt_ALL
+
+  implicit none (type, external)
+
   real(kind=rk)    :: i = 4.0
   real(kind=rk)    :: cfm(6,7), cf(6), fv(6), pv(6)
   integer(kind=ik) :: status

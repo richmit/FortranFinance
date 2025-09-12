@@ -73,10 +73,10 @@
 module mrffl_cashflows
   use mrffl_config,      only: rk=>mrfflrk, ik=>mrfflik, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
   use mrffl_bitset,      only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp
-  use mrffl_prt_sets
+  use mrffl_prt_sets,    only: prt_NONE, prt_param, prt_title, prt_table, prt_total, prt_space
   use mrffl_percentages, only: percentage_to_fraction
   use mrffl_solver,      only: multi_bisection
-  implicit none
+  implicit none (type, external)
   private
 
   ! Work with one or more cashflow series in the columns of a matrix
@@ -150,8 +150,8 @@ contains
     real(kind=rk),    intent(in)    :: cf_vec(:)
     real(kind=rk),    intent(inout) :: irr
     integer(kind=ik), intent(out)   :: status
-    real(kind=rk)                   :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
-    real(kind=rk)                   :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
+    real(kind=rk), parameter        :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
+    real(kind=rk), parameter        :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
     call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
     if (status /= 0) then
        status = 4161 ! "ERROR(cashflow_vector_irr): irr solver failed!"
@@ -175,8 +175,8 @@ contains
     real(kind=rk),    intent(in)    :: cf_mat(:,:)
     real(kind=rk),    intent(inout) :: irr
     integer(kind=ik), intent(out)   :: status
-    real(kind=rk)                   :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
-    real(kind=rk)                   :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
+    real(kind=rk), parameter        :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
+    real(kind=rk), parameter        :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
     call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
     if (status /= 0) then
        status = 4193 ! "ERROR(cashflow_matrix_irr): irr solver failed!"
@@ -193,7 +193,7 @@ contains
   !> Convert a cashflow number into a padded string for titles
   !!
   character(len=5) function i2s(n)
-    implicit none
+    implicit none (type, external)
     integer(kind=ik), intent(in) :: n
     write(i2s,'(i5.5)') n
   end function i2s
@@ -357,7 +357,7 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2097-2128.
   !!
   subroutine make_cashflow_vector_delayed_lump(cf_vec, a, d, status)
-    implicit none
+    implicit none (type, external)
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: a
     integer(kind=ik), intent(in)  :: d
@@ -501,7 +501,7 @@ contains
   !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 4033-4064.
   !!
   subroutine add_intrest_to_cashflow_vector(cf_vec, rate, status)
-    implicit none
+    implicit none (type, external)
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: rate
     integer(kind=ik), intent(out) :: status
@@ -526,7 +526,7 @@ contains
   !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 4065-4096.
   !!
   subroutine add_multi_intrest_to_cashflow_vector(cf_vec, vrate, status)
-    implicit none
+    implicit none (type, external)
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: vrate(:)
     integer(kind=ik), intent(out) :: status

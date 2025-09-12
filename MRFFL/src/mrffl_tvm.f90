@@ -212,7 +212,7 @@ module mrffl_tvm
   use mrffl_var_sets, only: var_NONE, var_a, var_p, var_i, var_g, var_n, var_pv, var_fv, var_q
   use mrffl_percentages, only: p2f => percentage_to_fraction, f2p => fraction_to_percentage
   use mrffl_solver, only: multi_bisection
-  implicit none
+  implicit none (type, external)
   private
 
   real(kind=rk),    parameter         :: consistent_epsilon = 1.0e-3_rk !< Used to check equation consistency
@@ -314,7 +314,7 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1193-1224.
   !!
   subroutine tvm_lump_sum_solve(n, i, pv, fv, unknowns, status)
-    implicit none
+    implicit none (type, external)
     real(kind=rk),    intent(inout) :: n, i, pv, fv
     integer(kind=ik), intent(in)    :: unknowns
     integer(kind=ik), intent(out)   :: status
@@ -650,21 +650,21 @@ contains
     end if
   contains
     real(kind=rk) function sf_i_no_n(i)
-      implicit none
+      implicit none (type, external)
       real(kind=rk), intent(in) :: i
       real(kind=rk)             :: iq
       iq = p2f(i)
       sf_i_no_n = (a * (1 + iq) ** e + fv * iq) * pv - (1 + iq) ** (1 - d) * a * fv
     end function sf_i_no_n
     real(kind=rk) function sf_i_no_fv(i)
-      implicit none
+      implicit none (type, external)
       real(kind=rk), intent(in) :: i
       real(kind=rk)             :: iq
       iq = p2f(i)
       sf_i_no_fv = (-(1 / (1 + iq)) ** (n - e + 1) * (1 + iq) / iq + (1 / (1 + iq)) ** d * (1 + iq) / iq) * a - pv
     end function sf_i_no_fv
     real(kind=rk) function sf_i_no_pv(i)
-      implicit none
+      implicit none (type, external)
       real(kind=rk), intent(in) :: i
       real(kind=rk)             :: iq
       iq = p2f(i)
