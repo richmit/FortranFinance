@@ -190,8 +190,8 @@ I did a ton of research before I wrote this simulator.  I looked at dozens of we
 expensive.  Some super simple and some quite sophisticated.  Some utterly terrible and some pretty good.  In the end I have found myself using a couple online
 tools in combination with this simulator.
 
-One thing I realized is that there is no universal measure of quality or fitness for these kinds of tools.  At the end of the day it's all about your
-situation and goals that determine if a tool will help you or not. So, it is important that you do your research.
+There is no universal measure of quality or fitness for these kinds of tools.  At the end of the day it's all about your situation and goals that determine if
+a tool will help you or not. So, it is important that you do your research.
 
 In this section I have documented some of the common issues I found with various tools without naming any names.  My hope is that this list might help others
 in doing the same kind of research.
@@ -200,7 +200,7 @@ in doing the same kind of research.
    - Not using historical data for simulation parameters.
      - Seriously.  I came across a couple client side JavaScript retirement calculators that were just doing uniform random numbers between -7 and 7 for
        market returns.  That's pure trash.
-   - GBM models dubious parameter values.
+   - GBM (Geometric Brownian Motion) models with dubious parameter values.
      - It's impossible to tell the difference between the result of an incorrect analysis of historical data and a made up number.
      - It is impossible to trust this kind of simulation unless they disclose the source for parameters.  My policy on this one is that if they won't share,
        then I can't trust them.  It's that simple.
@@ -249,16 +249,18 @@ in doing the same kind of research.
 :CUSTOM_ID: case_20_intro
 :END:
 
-#+begin_src sh :results output raw :exports results
+#+begin_src sh :results output verbatum :exports results :wrap "org"
 grep -v '^ *$' ~/world/my_prog/finance/FortranFinance/retirement_simulation/config_20.nml | grep -B 10 '^!---' | grep -A 10 '^!---' | grep -v '^!---' | sed 's/^! *//'
 #+end_src
 
 #+RESULTS:
+#+begin_org
 Here we have a couple starting to save for retirement at age 25.  They both have good jobs earning 100K, and they
 spend 100K per year on expenses.  Work income is growing at 2.5%. They currently have no retirement savings, but wish
 to start saving aggressively.  They believe they can earn 4% on investments, and inflation will be about 3%.  Note work
 income is not keeping up with inflation. They have 10K in checking and 10K in an emergency fund.  The checking account
 earns 0.01% interest, and the emergency fund is in CDs earning 3%.
+#+end_org
 
 *** Fixed
 :PROPERTIES:
@@ -270,16 +272,16 @@ generate.
 
 This first graph simply shows total savings balance by account type.
 
-  [[file:pics/savings_by_type_20_fix_full.png][file:pics/savings_by_type_20_fix_800x.png]]
+  [[file:pics/savings_by_type_20_fix.png][file:pics/savings_by_type_20_fix-pvue.png]]
 
 This graph shows us paid vs unpaid expenses.  Expenses are broken into two categories (taxes & living expenses).
 
-  [[file:pics/paid_and_unpaid_20_fix_full.png][file:pics/paid_and_unpaid_20_fix_800x.png]]
+  [[file:pics/paid_and_unpaid_20_fix.png][file:pics/paid_and_unpaid_20_fix-pvue.png]]
 
 This graph also deals with expenses, but shows how the expenses are paid.  Note the pink bit starting 2050 showing the couple using savings for expenses well
 before retirement.  This is what happens when salary doesn't keep up with inflation!
 
-  [[file:pics/paid_by_source_20_fix_full.png][file:pics/paid_by_source_20_fix_800x.png]]
+  [[file:pics/paid_by_source_20_fix.png][file:pics/paid_by_source_20_fix-pvue.png]]
 
 *** MC
 :PROPERTIES:
@@ -292,25 +294,25 @@ This first graph shows the probability the savings balance trajectory will be wi
 simulation runs.  The yellow band, which includes the green band, contains 80% of all simulation runs.  You can change the number and bounds for the bands in
 the ~retire.R~ script.
 
-  [[file:pics/savings_by_year_probability_bands_20_mc_full.png][file:pics/savings_by_year_probability_bands_20_mc_800x.png]]
+  [[file:pics/savings_by_year_probability_bands_20_mc.png][file:pics/savings_by_year_probability_bands_20_mc-pvue.png]]
 
 This graph shows 2000 savings trajectories, all the failure trajectories (when we went broke), and an envelope for the highest balance for trajectories that
 failed.  In essence the green line shows a "safe" balance at which we are unlikely to see failure.  The little blue dots show the ends of trajectories where
 both people have died.
 
-  [[file:pics/composite_trajectories_20_mc_full.png][file:pics/composite_trajectories_20_mc_800x.png]]
+  [[file:pics/composite_trajectories_20_mc.png][file:pics/composite_trajectories_20_mc-pvue.png]]
 
 This graph is similar to the probability band graph, but is a more traditional presentation for people accustomed to box plots.
 
-  [[file:pics/savings_by_year_boxplot_20_mc_full.png][file:pics/savings_by_year_boxplot_20_mc_800x.png]]
+  [[file:pics/savings_by_year_boxplot_20_mc.png][file:pics/savings_by_year_boxplot_20_mc-pvue.png]]
 
 This graph shows us the ages at which simulations went broke, and how frequently it occurred for each age group.  Each bar spans three years.
 
-  [[file:pics/probability_of_failure_by_year_20_mc_full.png][file:pics/probability_of_failure_by_year_20_mc_800x.png]]
+  [[file:pics/probability_of_failure_by_year_20_mc.png][file:pics/probability_of_failure_by_year_20_mc-pvue.png]]
 
 Lastly we have a graph that shows us the probability distribution of final savings balance at the end of the simulation.
 
-  [[file:pics/final_savings_20_mc_full.png][file:pics/final_savings_20_mc_800x.png]]
+  [[file:pics/final_savings_20_mc.png][file:pics/final_savings_20_mc-pvue.png]]
 
 *** Config File
 :PROPERTIES:
@@ -416,24 +418,24 @@ verbosity                           = 10         !! How much to print when runni
 /
 #+end_src
 
-
-
 ** Approaching Retirement
 :PROPERTIES:
 :CUSTOM_ID: case_60_intro
 :END:
 
-#+begin_src sh :results output raw :exports results
+#+begin_src sh :results output verbatum :exports results :wrap "org"
 grep -v '^ *$' ~/world/my_prog/finance/FortranFinance/retirement_simulation/config_60.nml | grep -B 10 '^!---' | grep -A 10 '^!---' | grep -v '^!---' | sed 's/^! *//'
 #+end_src
 
 #+RESULTS:
-Here we have a couple (47 & 55 years old).  Each have 500k in a 401k.  They plan on putting 50% in the S&P, and 50% in
-low risk 5% funds. They also have 100k balances in both an emergency fund and checking account.  The checking account
-earns 0.01% interest, and the emergency fund is in CDs earning 3%. They are both employed, and are have aggressively
-saving at the maximum rate into a 401k.  They spend 110K per year on expenses.  They believe inflation will be about
-3%.  They both wish to stop working when they are 60. The younger person will start taking SS at 63 while the older
-one will start at age 70.
+#+begin_org
+Here we have a couple (47 & 55 years old).  Each have 500k in a 401k.  They plan on putting it all in the S&P, and 20%
+in low risk 5% funds. They also have 100k balances in both an emergency fund and checking account.  The checking
+account earns 0.01% interest, and the emergency fund is in CDs earning 2.9%. They are both employed, and are have
+aggressively saving at the maximum rate into a 401k.  They spend 110K per year on expenses.  They believe inflation
+will be about 3%.  They both wish to stop working when they are 60. The younger person will start taking SS at 63
+while the older one will start at age 70.
+#+end_org
 
 *** A Risky Plan
 :PROPERTIES:
@@ -445,20 +447,20 @@ too risky.  This is especially true with only 1M in total savings.
 
 Things look just fine if we consider a simulation using ideal, fixed growth and inflation.  Here is what the overall savings balance looks:
 
-  [[file:pics/savings_by_type_60o_fix_full.png][file:pics/savings_by_type_60o_fix_800x.png]]
+  [[file:pics/savings_by_type_60o_fix.png][file:pics/savings_by_type_60o_fix-pvue.png]]
 
 If we take a look at the savings probability bands, we see a very different picture:
 
-  [[file:pics/savings_by_year_probability_bands_60o_mc_full.png][file:pics/savings_by_year_probability_bands_60o_mc_800x.png]]
+  [[file:pics/savings_by_year_probability_bands_60o_mc.png][file:pics/savings_by_year_probability_bands_60o_mc-pvue.png]]
 
 And if we look at a few paths and the account collapse cases, things look pretty scary:
 
-  [[file:pics/composite_trajectories_60o_mc_full.png][file:pics/composite_trajectories_60o_mc_800x.png]]
+  [[file:pics/composite_trajectories_60o_mc.png][file:pics/composite_trajectories_60o_mc-pvue.png]]
 
 Another way to look at this is the distribution of final savings.  That huge bar on the left tells us that running out of money is the single most probable
 outcome from this plan.
 
-  [[file:pics/final_savings_60o_mc_full.png][file:pics/final_savings_60o_mc_800x.png]]
+  [[file:pics/final_savings_60o_mc.png][file:pics/final_savings_60o_mc-pvue.png]]
 
 *** An Alternate Plan
 :PROPERTIES:
@@ -469,15 +471,15 @@ They can dramatically improve the chances of success by saving more (bumping up 
 
 The new savings probability bands are much more positive:
 
-  [[file:pics/savings_by_year_probability_bands_60ml_mc_full.png][file:pics/savings_by_year_probability_bands_60ml_mc_800x.png]]
+  [[file:pics/savings_by_year_probability_bands_60ml_mc.png][file:pics/savings_by_year_probability_bands_60ml_mc-pvue.png]]
 
 And the overall path picture is much more positive:
 
-  [[file:pics/composite_trajectories_60ml_mc_full.png][file:pics/composite_trajectories_60ml_mc_800x.png]]
+  [[file:pics/composite_trajectories_60ml_mc.png][file:pics/composite_trajectories_60ml_mc-pvue.png]]
 
 Lastly, the distribution of final savings no longer shows dying broke as the highest probability outcome.
 
-  [[file:pics/final_savings_60ml_mc_full.png][file:pics/final_savings_60ml_mc_800x.png]]
+  [[file:pics/final_savings_60ml_mc.png][file:pics/final_savings_60ml_mc-pvue.png]]
 
 *** Config Files
 :PROPERTIES:
@@ -587,12 +589,12 @@ verbosity                           = 10         !! How much to print when runni
 
 The updated plan changes these lines
 
-#+begin_src f90
-initial_ira_balance_p1              = 625000.0,  !! Sum of all tax deferred accounts for p1
-initial_ira_balance_p2              = 625000.0,  !! Sum of all tax deferred accounts for p2
-high_investment_p                   = 50.0,      !! percentage of investments at high growth
-low_investment_p                    = 20.0,      !! percentage of investments at low growth
-initial_expected_expenses_shr       = 100000.0,  !! First year expenses.
+#+begin_src f90 :eval never :tangle no :results none :exports code
+  initial_ira_balance_p1              = 625000.0,  !! Sum of all tax deferred accounts for p1
+  initial_ira_balance_p2              = 625000.0,  !! Sum of all tax deferred accounts for p2
+  high_investment_p                   = 50.0,      !! percentage of investments at high growth
+  low_investment_p                    = 20.0,      !! percentage of investments at low growth
+  initial_expected_expenses_shr       = 100000.0,  !! First year expenses.
 #+end_src
 
 * Operation
@@ -621,7 +623,7 @@ The simulator is designed to run in a command line environment (MSYS2 on Windows
 
 The easiest way to download everything is to clone with git:
 
-#+begin_src sh
+#+begin_src sh :eval never :tangle no :results none :exports code
 git clone 'https://github.com/richmit/FortranFinance.git'
 #+end_src
 
@@ -634,9 +636,11 @@ The simulator is in the ~retirement_simulation~ directory.  That directory conta
 to edit that makefile for your system configuration -- follow the instructions  [[file:../MRFFL/index.html#examples][here]].  Once you have the
 ~makefile~ working, you can build with the following command:
 
-#+begin_src sh
+#+begin_src sh :eval never :tangle no :results none :exports code
 make retire
 #+end_src
+
+#+RESULTS:
 
 This will result in a executable (named "~retire~" on most UNIX-like platforms, and "~retire.exe~" on Windows).
 
@@ -653,10 +657,12 @@ When run, the ~retire~ command will place its results in a file called "~retire.
 to analyze.  I use an [[https://www.mitchr.me/SS/tools/index.html#stats][R]] script for the analysis called "~retire.R~".  If you run this script, you will
 get lots of graphics (see the [[#examples][Examples]] section below).  In summary, you might do the following:
 
-#+begin_src sh
+#+begin_src sh :eval never :tangle no :results none :exports code
 ./retire.exe my_config.nml
 R -q -f retire.R
 #+end_src
+
+#+RESULTS:
 
 * Platform Notes & Testing
 :PROPERTIES:
@@ -683,3 +689,54 @@ use those parts of the TVM modules, and thus is free from those limitations.
    - Intel ifx 2025.0.4 20241205 : Everything works
    - nvfortran 24.11-0 64-bit target on x86-64 Linux : Everything works.
    - flang-new version 19.1.6 : Everything works.
+
+* Image processing :noexport:
+
+#+BEGIN_SRC bash :exports both :results output verbatim
+for f in pics/*.png; do 
+  if [[ ! "$f" =~ '-pvue.png' ]]; then
+    nf=${f/.png/-pvue.png}
+    if [ $f -nt $nf ]; then
+      echo "GEN: $f -> $nf"
+      magick $f -resize 800x $nf
+    else
+      echo "NOP: $f -> $nf"
+    fi
+  fi
+done
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+GEN: pics/composite_trajectories_20_mc.png -> pics/composite_trajectories_20_mc-pvue.png
+GEN: pics/composite_trajectories_60ml_mc.png -> pics/composite_trajectories_60ml_mc-pvue.png
+GEN: pics/composite_trajectories_60o_mc.png -> pics/composite_trajectories_60o_mc-pvue.png
+GEN: pics/composite_trajectories_y10_20_mc.png -> pics/composite_trajectories_y10_20_mc-pvue.png
+GEN: pics/composite_trajectories_y10_60ml_mc.png -> pics/composite_trajectories_y10_60ml_mc-pvue.png
+GEN: pics/composite_trajectories_y10_60o_mc.png -> pics/composite_trajectories_y10_60o_mc-pvue.png
+GEN: pics/death_distribution_20_mc.png -> pics/death_distribution_20_mc-pvue.png
+GEN: pics/final_savings_20_mc.png -> pics/final_savings_20_mc-pvue.png
+GEN: pics/final_savings_60ml_mc.png -> pics/final_savings_60ml_mc-pvue.png
+GEN: pics/final_savings_60o_mc.png -> pics/final_savings_60o_mc-pvue.png
+GEN: pics/paid_and_unpaid_20_fix.png -> pics/paid_and_unpaid_20_fix-pvue.png
+GEN: pics/paid_and_unpaid_60o_fix.png -> pics/paid_and_unpaid_60o_fix-pvue.png
+GEN: pics/paid_by_source_20_fix.png -> pics/paid_by_source_20_fix-pvue.png
+GEN: pics/paid_by_source_60o_fix.png -> pics/paid_by_source_60o_fix-pvue.png
+GEN: pics/probability_of_failure_by_year_20_mc.png -> pics/probability_of_failure_by_year_20_mc-pvue.png
+GEN: pics/probability_of_failure_by_year_60ml_mc.png -> pics/probability_of_failure_by_year_60ml_mc-pvue.png
+GEN: pics/probability_of_failure_by_year_60o_mc.png -> pics/probability_of_failure_by_year_60o_mc-pvue.png
+GEN: pics/probability_of_success_by_year_20_mc.png -> pics/probability_of_success_by_year_20_mc-pvue.png
+GEN: pics/probability_of_success_by_year_60ml_mc.png -> pics/probability_of_success_by_year_60ml_mc-pvue.png
+GEN: pics/probability_of_success_by_year_60o_mc.png -> pics/probability_of_success_by_year_60o_mc-pvue.png
+GEN: pics/savings_by_type_20_fix.png -> pics/savings_by_type_20_fix-pvue.png
+GEN: pics/savings_by_type_60o_fix.png -> pics/savings_by_type_60o_fix-pvue.png
+GEN: pics/savings_by_year_boxplot_20_mc.png -> pics/savings_by_year_boxplot_20_mc-pvue.png
+GEN: pics/savings_by_year_boxplot_60ml_mc.png -> pics/savings_by_year_boxplot_60ml_mc-pvue.png
+GEN: pics/savings_by_year_boxplot_60o_mc.png -> pics/savings_by_year_boxplot_60o_mc-pvue.png
+GEN: pics/savings_by_year_probability_bands_20_mc.png -> pics/savings_by_year_probability_bands_20_mc-pvue.png
+GEN: pics/savings_by_year_probability_bands_60ml_mc.png -> pics/savings_by_year_probability_bands_60ml_mc-pvue.png
+GEN: pics/savings_by_year_probability_bands_60o_mc.png -> pics/savings_by_year_probability_bands_60o_mc-pvue.png
+GEN: pics/y10_savings_20_mc.png -> pics/y10_savings_20_mc-pvue.png
+GEN: pics/y10_savings_60ml_mc.png -> pics/y10_savings_60ml_mc-pvue.png
+GEN: pics/y10_savings_60o_mc.png -> pics/y10_savings_60o_mc-pvue.png
+#+end_example

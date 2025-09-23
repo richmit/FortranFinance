@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-01-21 Tue 13:41 -->
+<!-- 2025-09-23 Tue 12:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance: Retirement Simulation</title>
@@ -11,7 +11,7 @@
 <meta name="description" content="Documentation for monte carlo examples in the Fortran Finance repository." />
 <meta name="keywords" content="finance fortran monte carlo inflation cashflow time value of money tvm percentages taxes stock market" />
 <meta name="generator" content="Org Mode" />
-<style>
+<style type="text/css">
   #content { max-width: 60em; margin: auto; }
   .title  { text-align: center;
              margin-bottom: .2em; }
@@ -232,12 +232,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-01-21 13:41:47</i></td>
+<td class="org-left"><i>2025-09-23 10:57:54</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-01-21 13:41:48</i></td>
+<td class="org-left"><i>2025-09-23 12:34:01</i></td>
 </tr>
 </tbody>
 </table>
@@ -297,7 +297,6 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 </ul>
 </div>
 </div>
-
 <div id="outline-container-intro" class="outline-2">
 <h2 id="intro"><span class="section-number-2">1.</span> Introduction</h2>
 <div class="outline-text-2" id="text-intro">
@@ -307,7 +306,6 @@ growth, and inflation.  As retirement became more of a reality, I found myself a
 wrote this little tool &#x2013; it essentially simulates the annual financial transactions for a retired couple.
 </p>
 </div>
-
 <div id="outline-container-model" class="outline-3">
 <h3 id="model"><span class="section-number-3">1.1.</span> The Model</h3>
 <div class="outline-text-3" id="text-model">
@@ -383,7 +381,6 @@ wrote this little tool &#x2013; it essentially simulates the annual financial tr
 </ul>
 </div>
 </div>
-
 <div id="outline-container-graphsR" class="outline-3">
 <h3 id="graphsR"><span class="section-number-3">1.2.</span> Model Analysis</h3>
 <div class="outline-text-3" id="text-graphsR">
@@ -394,7 +391,6 @@ account conversions, etc&#x2026;  You can analyze the data however you wish. I k
 number of image files.  I'll describe them here, but I think it's easier to just take a look at some <a href="#examples">examples</a>.
 </p>
 </div>
-
 <div id="outline-container-graphsR-fixed" class="outline-4">
 <h4 id="graphsR-fixed"><span class="section-number-4">1.2.1.</span> When retire.out contains a single simulation (no monte carlo), then three visualizations will be produced:</h4>
 <div class="outline-text-4" id="text-graphsR-fixed">
@@ -405,7 +401,6 @@ number of image files.  I'll describe them here, but I think it's easier to just
 </ul>
 </div>
 </div>
-
 <div id="outline-container-graphsR-mc" class="outline-4">
 <h4 id="graphsR-mc"><span class="section-number-4">1.2.2.</span> When retire.out contains multiple simulations (monte carlo), then eight visualizations are produced:</h4>
 <div class="outline-text-4" id="text-graphsR-mc">
@@ -423,7 +418,6 @@ number of image files.  I'll describe them here, but I think it's easier to just
 </div>
 </div>
 </div>
-
 <div id="outline-container-obs" class="outline-3">
 <h3 id="obs"><span class="section-number-3">1.3.</span> Some Observations</h3>
 <div class="outline-text-3" id="text-obs">
@@ -437,7 +431,6 @@ number of image files.  I'll describe them here, but I think it's easier to just
 </ul>
 </div>
 </div>
-
 <div id="outline-container-future" class="outline-3">
 <h3 id="future"><span class="section-number-3">1.4.</span> Future Plans</h3>
 <div class="outline-text-3" id="text-future">
@@ -487,7 +480,6 @@ number of image files.  I'll describe them here, but I think it's easier to just
 </ul>
 </div>
 </div>
-
 <div id="outline-container-commonprob" class="outline-3">
 <h3 id="commonprob"><span class="section-number-3">1.5.</span> Evaluating retirement planning software</h3>
 <div class="outline-text-3" id="text-commonprob">
@@ -498,8 +490,8 @@ tools in combination with this simulator.
 </p>
 
 <p>
-One thing I realized is that there is no universal measure of quality or fitness for these kinds of tools.  At the end of the day it's all about your
-situation and goals that determine if a tool will help you or not. So, it is important that you do your research.
+There is no universal measure of quality or fitness for these kinds of tools.  At the end of the day it's all about your situation and goals that determine if
+a tool will help you or not. So, it is important that you do your research.
 </p>
 
 <p>
@@ -515,7 +507,7 @@ in doing the same kind of research.
 <li>Seriously.  I came across a couple client side JavaScript retirement calculators that were just doing uniform random numbers between -7 and 7 for
 market returns.  That's pure trash.</li>
 </ul></li>
-<li>GBM models dubious parameter values.
+<li>GBM (Geometric Brownian Motion) models with dubious parameter values.
 <ul class="org-ul">
 <li>It's impossible to tell the difference between the result of an incorrect analysis of historical data and a made up number.</li>
 <li>It is impossible to trust this kind of simulation unless they disclose the source for parameters.  My policy on this one is that if they won't share,
@@ -576,15 +568,14 @@ make sure the tool is being intelligent and not just "blindly picking a number".
 </div>
 </div>
 </div>
-
 <div id="outline-container-examples" class="outline-2">
 <h2 id="examples"><span class="section-number-2">2.</span> Examples</h2>
 <div class="outline-text-2" id="text-examples">
 </div>
-
 <div id="outline-container-case_20_intro" class="outline-3">
 <h3 id="case_20_intro"><span class="section-number-3">2.1.</span> Just Starting Out</h3>
 <div class="outline-text-3" id="text-case_20_intro">
+<div class="org" id="org5518533">
 <p>
 Here we have a couple starting to save for retirement at age 25.  They both have good jobs earning 100K, and they
 spend 100K per year on expenses.  Work income is growing at 2.5%. They currently have no retirement savings, but wish
@@ -592,8 +583,9 @@ to start saving aggressively.  They believe they can earn 4% on investments, and
 income is not keeping up with inflation. They have 10K in checking and 10K in an emergency fund.  The checking account
 earns 0.01% interest, and the emergency fund is in CDs earning 3%.
 </p>
-</div>
 
+</div>
+</div>
 <div id="outline-container-case_20_fixed" class="outline-4">
 <h4 id="case_20_fixed"><span class="section-number-4">2.1.1.</span> Fixed</h4>
 <div class="outline-text-4" id="text-case_20_fixed">
@@ -607,8 +599,8 @@ This first graph simply shows total savings balance by account type.
 </p>
 
 
-<div id="org7bec194" class="figure">
-<p><a href="pics/savings_by_type_20_fix_full.png"><img src="pics/savings_by_type_20_fix_800x.png" alt="savings_by_type_20_fix_800x.png" /></a>
+<div id="orgc6fea58" class="figure">
+<p><a href="pics/savings_by_type_20_fix.png"><img src="pics/savings_by_type_20_fix-pvue.png" alt="savings_by_type_20_fix-pvue.png" /></a>
 </p>
 </div>
 
@@ -617,8 +609,8 @@ This graph shows us paid vs unpaid expenses.  Expenses are broken into two categ
 </p>
 
 
-<div id="org083a5b2" class="figure">
-<p><a href="pics/paid_and_unpaid_20_fix_full.png"><img src="pics/paid_and_unpaid_20_fix_800x.png" alt="paid_and_unpaid_20_fix_800x.png" /></a>
+<div id="org48e741d" class="figure">
+<p><a href="pics/paid_and_unpaid_20_fix.png"><img src="pics/paid_and_unpaid_20_fix-pvue.png" alt="paid_and_unpaid_20_fix-pvue.png" /></a>
 </p>
 </div>
 
@@ -628,13 +620,12 @@ before retirement.  This is what happens when salary doesn't keep up with inflat
 </p>
 
 
-<div id="org64ba52c" class="figure">
-<p><a href="pics/paid_by_source_20_fix_full.png"><img src="pics/paid_by_source_20_fix_800x.png" alt="paid_by_source_20_fix_800x.png" /></a>
+<div id="orgf1e68f9" class="figure">
+<p><a href="pics/paid_by_source_20_fix.png"><img src="pics/paid_by_source_20_fix-pvue.png" alt="paid_by_source_20_fix-pvue.png" /></a>
 </p>
 </div>
 </div>
 </div>
-
 <div id="outline-container-case_20_mc" class="outline-4">
 <h4 id="case_20_mc"><span class="section-number-4">2.1.2.</span> MC</h4>
 <div class="outline-text-4" id="text-case_20_mc">
@@ -649,8 +640,8 @@ the <code>retire.R</code> script.
 </p>
 
 
-<div id="orge7e8fdf" class="figure">
-<p><a href="pics/savings_by_year_probability_bands_20_mc_full.png"><img src="pics/savings_by_year_probability_bands_20_mc_800x.png" alt="savings_by_year_probability_bands_20_mc_800x.png" /></a>
+<div id="org4cccda7" class="figure">
+<p><a href="pics/savings_by_year_probability_bands_20_mc.png"><img src="pics/savings_by_year_probability_bands_20_mc-pvue.png" alt="savings_by_year_probability_bands_20_mc-pvue.png" /></a>
 </p>
 </div>
 
@@ -661,8 +652,8 @@ both people have died.
 </p>
 
 
-<div id="org5f8cc39" class="figure">
-<p><a href="pics/composite_trajectories_20_mc_full.png"><img src="pics/composite_trajectories_20_mc_800x.png" alt="composite_trajectories_20_mc_800x.png" /></a>
+<div id="org1930540" class="figure">
+<p><a href="pics/composite_trajectories_20_mc.png"><img src="pics/composite_trajectories_20_mc-pvue.png" alt="composite_trajectories_20_mc-pvue.png" /></a>
 </p>
 </div>
 
@@ -671,8 +662,8 @@ This graph is similar to the probability band graph, but is a more traditional p
 </p>
 
 
-<div id="orga68bb9a" class="figure">
-<p><a href="pics/savings_by_year_boxplot_20_mc_full.png"><img src="pics/savings_by_year_boxplot_20_mc_800x.png" alt="savings_by_year_boxplot_20_mc_800x.png" /></a>
+<div id="orge4241f1" class="figure">
+<p><a href="pics/savings_by_year_boxplot_20_mc.png"><img src="pics/savings_by_year_boxplot_20_mc-pvue.png" alt="savings_by_year_boxplot_20_mc-pvue.png" /></a>
 </p>
 </div>
 
@@ -681,8 +672,8 @@ This graph shows us the ages at which simulations went broke, and how frequently
 </p>
 
 
-<div id="org7eebedc" class="figure">
-<p><a href="pics/probability_of_failure_by_year_20_mc_full.png"><img src="pics/probability_of_failure_by_year_20_mc_800x.png" alt="probability_of_failure_by_year_20_mc_800x.png" /></a>
+<div id="orgd3e6cfe" class="figure">
+<p><a href="pics/probability_of_failure_by_year_20_mc.png"><img src="pics/probability_of_failure_by_year_20_mc-pvue.png" alt="probability_of_failure_by_year_20_mc-pvue.png" /></a>
 </p>
 </div>
 
@@ -691,13 +682,12 @@ Lastly we have a graph that shows us the probability distribution of final savin
 </p>
 
 
-<div id="org4cd788a" class="figure">
-<p><a href="pics/final_savings_20_mc_full.png"><img src="pics/final_savings_20_mc_800x.png" alt="final_savings_20_mc_800x.png" /></a>
+<div id="org105bde6" class="figure">
+<p><a href="pics/final_savings_20_mc.png"><img src="pics/final_savings_20_mc-pvue.png" alt="final_savings_20_mc-pvue.png" /></a>
 </p>
 </div>
 </div>
 </div>
-
 <div id="outline-container-case_20_config" class="outline-4">
 <h4 id="case_20_config"><span class="section-number-4">2.1.3.</span> Config File</h4>
 <div class="outline-text-4" id="text-case_20_config">
@@ -798,22 +788,21 @@ verbosity                           = 10         <span style="color: #ffa500;">!
 </div>
 </div>
 </div>
-
-
-
 <div id="outline-container-case_60_intro" class="outline-3">
 <h3 id="case_60_intro"><span class="section-number-3">2.2.</span> Approaching Retirement</h3>
 <div class="outline-text-3" id="text-case_60_intro">
+<div class="org" id="orge4cc42a">
 <p>
-Here we have a couple (47 &amp; 55 years old).  Each have 500k in a 401k.  They plan on putting 50% in the S&amp;P, and 50% in
-low risk 5% funds. They also have 100k balances in both an emergency fund and checking account.  The checking account
-earns 0.01% interest, and the emergency fund is in CDs earning 3%. They are both employed, and are have aggressively
-saving at the maximum rate into a 401k.  They spend 110K per year on expenses.  They believe inflation will be about
-3%.  They both wish to stop working when they are 60. The younger person will start taking SS at 63 while the older
-one will start at age 70.
+Here we have a couple (47 &amp; 55 years old).  Each have 500k in a 401k.  They plan on putting it all in the S&amp;P, and 20%
+in low risk 5% funds. They also have 100k balances in both an emergency fund and checking account.  The checking
+account earns 0.01% interest, and the emergency fund is in CDs earning 2.9%. They are both employed, and are have
+aggressively saving at the maximum rate into a 401k.  They spend 110K per year on expenses.  They believe inflation
+will be about 3%.  They both wish to stop working when they are 60. The younger person will start taking SS at 63
+while the older one will start at age 70.
 </p>
-</div>
 
+</div>
+</div>
 <div id="outline-container-case_60_danger" class="outline-4">
 <h4 id="case_60_danger"><span class="section-number-4">2.2.1.</span> A Risky Plan</h4>
 <div class="outline-text-4" id="text-case_60_danger">
@@ -827,8 +816,8 @@ Things look just fine if we consider a simulation using ideal, fixed growth and 
 </p>
 
 
-<div id="org129c60b" class="figure">
-<p><a href="pics/savings_by_type_60o_fix_full.png"><img src="pics/savings_by_type_60o_fix_800x.png" alt="savings_by_type_60o_fix_800x.png" /></a>
+<div id="org72ded79" class="figure">
+<p><a href="pics/savings_by_type_60o_fix.png"><img src="pics/savings_by_type_60o_fix-pvue.png" alt="savings_by_type_60o_fix-pvue.png" /></a>
 </p>
 </div>
 
@@ -837,8 +826,8 @@ If we take a look at the savings probability bands, we see a very different pict
 </p>
 
 
-<div id="org88e461c" class="figure">
-<p><a href="pics/savings_by_year_probability_bands_60o_mc_full.png"><img src="pics/savings_by_year_probability_bands_60o_mc_800x.png" alt="savings_by_year_probability_bands_60o_mc_800x.png" /></a>
+<div id="orgfefb04d" class="figure">
+<p><a href="pics/savings_by_year_probability_bands_60o_mc.png"><img src="pics/savings_by_year_probability_bands_60o_mc-pvue.png" alt="savings_by_year_probability_bands_60o_mc-pvue.png" /></a>
 </p>
 </div>
 
@@ -847,8 +836,8 @@ And if we look at a few paths and the account collapse cases, things look pretty
 </p>
 
 
-<div id="org877187a" class="figure">
-<p><a href="pics/composite_trajectories_60o_mc_full.png"><img src="pics/composite_trajectories_60o_mc_800x.png" alt="composite_trajectories_60o_mc_800x.png" /></a>
+<div id="org2a81550" class="figure">
+<p><a href="pics/composite_trajectories_60o_mc.png"><img src="pics/composite_trajectories_60o_mc-pvue.png" alt="composite_trajectories_60o_mc-pvue.png" /></a>
 </p>
 </div>
 
@@ -858,13 +847,12 @@ outcome from this plan.
 </p>
 
 
-<div id="org9dabd07" class="figure">
-<p><a href="pics/final_savings_60o_mc_full.png"><img src="pics/final_savings_60o_mc_800x.png" alt="final_savings_60o_mc_800x.png" /></a>
+<div id="org37b6531" class="figure">
+<p><a href="pics/final_savings_60o_mc.png"><img src="pics/final_savings_60o_mc-pvue.png" alt="final_savings_60o_mc-pvue.png" /></a>
 </p>
 </div>
 </div>
 </div>
-
 <div id="outline-container-case_60o_ml" class="outline-4">
 <h4 id="case_60o_ml"><span class="section-number-4">2.2.2.</span> An Alternate Plan</h4>
 <div class="outline-text-4" id="text-case_60o_ml">
@@ -877,8 +865,8 @@ The new savings probability bands are much more positive:
 </p>
 
 
-<div id="org51cf20b" class="figure">
-<p><a href="pics/savings_by_year_probability_bands_60ml_mc_full.png"><img src="pics/savings_by_year_probability_bands_60ml_mc_800x.png" alt="savings_by_year_probability_bands_60ml_mc_800x.png" /></a>
+<div id="org19a960e" class="figure">
+<p><a href="pics/savings_by_year_probability_bands_60ml_mc.png"><img src="pics/savings_by_year_probability_bands_60ml_mc-pvue.png" alt="savings_by_year_probability_bands_60ml_mc-pvue.png" /></a>
 </p>
 </div>
 
@@ -887,8 +875,8 @@ And the overall path picture is much more positive:
 </p>
 
 
-<div id="orgc2db76c" class="figure">
-<p><a href="pics/composite_trajectories_60ml_mc_full.png"><img src="pics/composite_trajectories_60ml_mc_800x.png" alt="composite_trajectories_60ml_mc_800x.png" /></a>
+<div id="orgdcb250b" class="figure">
+<p><a href="pics/composite_trajectories_60ml_mc.png"><img src="pics/composite_trajectories_60ml_mc-pvue.png" alt="composite_trajectories_60ml_mc-pvue.png" /></a>
 </p>
 </div>
 
@@ -897,13 +885,12 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 </p>
 
 
-<div id="org1f5524c" class="figure">
-<p><a href="pics/final_savings_60ml_mc_full.png"><img src="pics/final_savings_60ml_mc_800x.png" alt="final_savings_60ml_mc_800x.png" /></a>
+<div id="org788a7d5" class="figure">
+<p><a href="pics/final_savings_60ml_mc.png"><img src="pics/final_savings_60ml_mc-pvue.png" alt="final_savings_60ml_mc-pvue.png" /></a>
 </p>
 </div>
 </div>
 </div>
-
 <div id="outline-container-case_60_config" class="outline-4">
 <h4 id="case_60_config"><span class="section-number-4">2.2.3.</span> Config Files</h4>
 <div class="outline-text-4" id="text-case_60_config">
@@ -1022,7 +1009,6 @@ initial_expected_expenses_shr       = 100000.0,  <span style="color: #ffa500;">!
 </div>
 </div>
 </div>
-
 <div id="outline-container-ops" class="outline-2">
 <h2 id="ops"><span class="section-number-2">3.</span> Operation</h2>
 <div class="outline-text-2" id="text-ops">
@@ -1031,7 +1017,6 @@ The simulator may be found in the <a href="https://github.com/richmit/FortranFin
 document forms the primary documentation, and its permanent home is <a href="https://richmit.github.io/FortranFinance/retirement_simulation/index.html">here</a>.
 </p>
 </div>
-
 <div id="outline-container-env" class="outline-3">
 <h3 id="env"><span class="section-number-3">3.1.</span> Environment</h3>
 <div class="outline-text-3" id="text-env">
@@ -1044,7 +1029,6 @@ The simulator is designed to run in a command line environment (MSYS2 on Windows
 </p>
 </div>
 </div>
-
 <div id="outline-container-down" class="outline-3">
 <h3 id="down"><span class="section-number-3">3.2.</span> Download</h3>
 <div class="outline-text-3" id="text-down">
@@ -1058,7 +1042,6 @@ The easiest way to download everything is to clone with git:
 </div>
 </div>
 </div>
-
 <div id="outline-container-build" class="outline-3">
 <h3 id="build"><span class="section-number-3">3.3.</span> Software Build</h3>
 <div class="outline-text-3" id="text-build">
@@ -1078,7 +1061,6 @@ This will result in a executable (named "<code>retire</code>" on most UNIX-like 
 </p>
 </div>
 </div>
-
 <div id="outline-container-dowrun" class="outline-3">
 <h3 id="dowrun"><span class="section-number-3">3.4.</span> Running The Simulator</h3>
 <div class="outline-text-3" id="text-dowrun">
@@ -1102,7 +1084,6 @@ R -q -f retire.R
 </div>
 </div>
 </div>
-
 <div id="outline-container-platforms" class="outline-2">
 <h2 id="platforms"><span class="section-number-2">4.</span> Platform Notes &amp; Testing</h2>
 <div class="outline-text-2" id="text-platforms">
@@ -1112,7 +1093,6 @@ support the TVM modules because they use nested functions for numerical solvers,
 use those parts of the TVM modules, and thus is free from those limitations.
 </p>
 </div>
-
 <div id="outline-container-testenv" class="outline-3">
 <h3 id="testenv"><span class="section-number-3">4.1.</span> Tested Environments</h3>
 <div class="outline-text-3" id="text-testenv">

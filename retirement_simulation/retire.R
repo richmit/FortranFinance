@@ -40,7 +40,7 @@
 #===============================================================================================================================================================
 # Displaying Images
 # Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images
-imageV <- TRUE
+imageV <- FALSE
 
 # Try and find an image viewer
 if (imageV == TRUE) {
@@ -52,6 +52,12 @@ if (imageV == TRUE) {
         imageV <- piv
   }
 }
+
+#===============================================================================================================================================================
+args <- commandArgs()
+tagArg = findMatches('^gd=', args)
+if (length(tagArg) != 1) tagArg <- 'gd=' 
+ftag <- substr(tagArg, 4, stop=nchar(tagArg))
 
 #===============================================================================================================================================================
 daDat<-
@@ -119,7 +125,7 @@ if (nSims > 1) {
                        sep='')) +
       xlab('') +
       ylab('Probability')
-    fname <- 'death_distribution.png'
+    fname <- paste('death_distribution', ftag, ".png", sep='')
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
   }
@@ -131,7 +137,7 @@ if (nSims > 1) {
     labs(title=paste('Savings Balance At Death Observed From ', nSims, ' Simulation Runs', sep='')) +
     xlab('Total Savings') +
     ylab('Probability')
-  fname <- 'final_savings.png'
+  fname <- paste('final_savings', ftag, ".png", sep='')
   ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
   if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
@@ -152,7 +158,7 @@ if (nSims > 1) {
       theme(legend.position = "bottom") +
       xlab('Total Savings') +
       ylab('Simulation Count')
-    fname <- 'y10_savings.png'
+    fname <- paste('y10_savings', ftag, ".png", sep='')
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
   }
@@ -173,7 +179,7 @@ if (nSims > 1) {
                        sep='')) +
       xlab('') +
       ylab('Probability')
-    fname <- "probability_of_failure_by_year.png"
+    fname <- paste("probability_of_failure_by_year", ftag, ".png", sep='')
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
   }
@@ -190,7 +196,7 @@ if (nSims > 1) {
     theme(legend.position = "bottom") +
     labs(title=paste('Composite of ', nSims, ' Simulation Runs', sep='')) +
     ylab('Total Savings')
-  fname <- "savings_by_year_boxplot.png"
+  fname <- paste("savings_by_year_boxplot", ftag, ".png", sep='')
   ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
   if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
@@ -207,7 +213,7 @@ if (nSims > 1) {
       ylab('Probability Of Success (%)') +
       geom_text(aes(x=last(Year), y=last(suc_prob), label=paste(last(suc_prob), '%', sep='')),
                 size=10, col='black', vjust="bottom", hjust="right")
-    fname <- "probability_of_success_by_year.png"
+    fname <- paste("probability_of_success_by_year", ftag, ".png", sep='')
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
@@ -241,7 +247,7 @@ if (nSims > 1) {
       theme(legend.position = "bottom") +
       labs(title=paste('Composite of ', n, ' Simulation Runs and ', nColps, ' failure Runs Of ', nSims, ' Total Runs', sep='')) +
       ylab('Total Savings')
-    fname <- "composite_trajectories.png"
+    fname <- paste("composite_trajectories", ftag, ".png", sep='')
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
@@ -264,7 +270,7 @@ if (nSims > 1) {
         theme(legend.position = "bottom") +
         labs(title=paste('Composite of ', nSims, ' Simulation Runs Over First 10 Years', sep='')) +
         ylab('Total Savings')
-      fname <- "composite_trajectories_y10.png"
+      fname <- paste("composite_trajectories_y10", ftag, ".png", sep='')
       ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
       if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
     }
@@ -279,7 +285,7 @@ if (nSims > 1) {
       theme(panel.grid.minor.x = element_blank()) +
       labs(title=paste('Composite of ', n, ' Simulation Runs Of ', nSims, ' Total Runs', sep='')) +
       ylab('Total Savings')
-    fname <- "composite_trajectories.png"
+    fname <- paste("composite_trajectories", ftag, ".png", sep='')
     ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
     if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
   }
@@ -305,7 +311,7 @@ if (nSims > 1) {
     xlab('Age2') +
     theme(legend.position = "bottom") +
     scale_fill_brewer(name='Probability', palette='RdYlGn', direction=1, labels=bandp)
-  fname <- 'savings_by_year_probability_bands.png'
+  fname <- paste('savings_by_year_probability_bands', ftag, ".png", sep='')
   ggsave(fname, width=15, height=10, dpi=100, units='in', plot=gp);
   if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
@@ -329,7 +335,7 @@ if (nSims > 1) {
     labs(title='Savings Account Balances') +
     theme(legend.position = "bottom") +
     scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()))
-  fname <- "savings_by_type.png"
+  fname <- paste("savings_by_type", ftag, ".png", sep='')
   ggsave(fname, width=12, height=7, dpi=100, units='in', plot=gp);
   if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
@@ -355,7 +361,7 @@ if (nSims > 1) {
     theme(legend.position = "bottom") +
     scale_x_continuous(name='', breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
     scale_y_continuous(labels = scales::label_dollar(scale_cut = cut_short_scale()))
-  fname <- "paid_and_unpaid.png"
+  fname <- paste("paid_and_unpaid", ftag, ".png", sep='')
   ggsave(fname, width=12, height=7, dpi=100, units='in', plot=gp);
   if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 
@@ -379,7 +385,7 @@ if (nSims > 1) {
     theme(legend.position = "bottom") +
     scale_x_continuous(name='', breaks=timeBrks, labels=timeLabs, minor_breaks=minYear:maxYear) +
     scale_y_continuous(labels = scales::label_dollar(scale=1/1000, suffix="K"))
-  fname <- "paid_by_source.png"
+  fname <- paste("paid_by_source", ftag, ".png", sep='')
   ggsave(fname, width=12, height=7, dpi=100, units='in', plot=gp);
   if (is.character(imageV)) system(paste(imageV, fname, sep=' '))
 }
