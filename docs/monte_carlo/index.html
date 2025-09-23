@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-08-22 Fri 09:56 -->
+<!-- 2025-09-21 Sun 13:12 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-08-22 09:56:30</i></td>
+<td class="org-left"><i>2025-09-21 13:02:12</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-08-22 09:56:31</i></td>
+<td class="org-left"><i>2025-09-21 13:12:15</i></td>
 </tr>
 </tbody>
 </table>
@@ -266,7 +266,7 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
 <div id="outline-container-inflation" class="outline-2">
 <h2 id="inflation"><span class="section-number-2">1.</span> <code>inflation.f90</code> &amp; <code>inflation.R</code></h2>
 <div class="outline-text-2" id="text-inflation">
-<div class="org" id="orgdb24f6d">
+<div class="org" id="org2431807">
 <p>
 This program runs 100000 (<code>tirals</code>) Monte Carlo simulations of inflation for $100 (<code>initial_value</code>) over 20 (<code>years</code>) years
 using the last 30 (<code>mc_history_years</code>) years of historical US inflation data.  This program prints the value after 20 years
@@ -277,7 +277,7 @@ showing the probability of the value after 100 years.
 </div>
 
 
-<div id="orgd610ea2" class="figure">
+<div id="org5a02913" class="figure">
 <p><a href="pics/inflation_full.png"><img src="pics/inflation_800x.png" alt="inflation_800x.png" /></a>
 </p>
 </div>
@@ -288,11 +288,13 @@ Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blo
 
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">inflation</span>
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>, <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk, ik=&gt;mrfflik
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_inflation</span>
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>,       <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_inflation</span>, <span style="color: #00ffff;">only</span>: inf_resample
+
+  <span style="color: #00ffff;">implicit</span> <span style="color: #63b8ff;">none</span> (type, <span style="color: #00ffff;">external</span>)
 
   <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> years            = 20      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years to project out our inflation adjusted value</span>
-  <span style="color: #63b8ff;">integer</span>(kind=ik), <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> mc_history_years = 30      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years of US inflation data for our random inflation values</span>
+  <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> mc_history_years = 30      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years of US inflation data for our random inflation values</span>
   <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> trials           = 100000  </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of trials to run</span>
   <span style="color: #63b8ff;">real</span>(kind=rk),    <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> initial_value    = 100     </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">This is the value we will inflation adjusted over the years</span>
 
@@ -350,7 +352,7 @@ ggsave(fname, width=12, height=10)
 <div id="outline-container-stocks" class="outline-2">
 <h2 id="stocks"><span class="section-number-2">2.</span> <code>stocks.f90</code> &amp; <code>stocks.R</code></h2>
 <div class="outline-text-2" id="text-stocks">
-<div class="org" id="orgd264e7d">
+<div class="org" id="orgf266e26">
 <p>
 This program runs 2000 (<code>trials</code>) stocks simulations on $100 (<code>initial_value</code>).  Each simulation is over 20 (<code>years</code>) years
 using the last 30 (<code>mc_history_years</code>) years of historical US stocks data.  This program prints the resulting value of each
@@ -361,13 +363,13 @@ probability of the value after 100 years.
 </div>
 
 
-<div id="org9bb6d08" class="figure">
+<div id="orgff2bc3b" class="figure">
 <p><a href="pics/stocks_paths_full.png"><img src="pics/stocks_paths_800x.png" alt="stocks_paths_800x.png" /></a>
 </p>
 </div>
 
 
-<div id="org786ec42" class="figure">
+<div id="org7344d07" class="figure">
 <p><a href="pics/stocks_ranges_full.png"><img src="pics/stocks_ranges_800x.png" alt="stocks_ranges_800x.png" /></a>
 </p>
 </div>
@@ -378,12 +380,14 @@ Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blo
 
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">stocks</span>
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>, <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk, ik=&gt;mrfflik
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_markets</span>, <span style="color: #00ffff;">only</span>: rut_resample
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>,      <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_markets</span>,  <span style="color: #00ffff;">only</span>: rut_resample
   <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_percentages</span>, <span style="color: #00ffff;">only</span>: add_percentage
 
+  <span style="color: #00ffff;">implicit</span> <span style="color: #63b8ff;">none</span> (type, <span style="color: #00ffff;">external</span>)
+
   <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> years            = 20      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years to project out our stocks adjusted value</span>
-  <span style="color: #63b8ff;">integer</span>(kind=ik), <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> mc_history_years = 30      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years of US stocks data for our random stocks values</span>
+  <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> mc_history_years = 30      </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years of US stocks data for our random stocks values</span>
   <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> trials           = 2000    </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of trials to run</span>
   <span style="color: #63b8ff;">real</span>(kind=rk),    <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> initial_value    = 100     </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">This is the value we will stocks adjusted over the years</span>
 
@@ -469,7 +473,7 @@ ggsave(fname, width=12, height=10, dpi=100, units=<span style="color: #fa8072;">
 <div id="outline-container-blend_risk" class="outline-2">
 <h2 id="blend_risk"><span class="section-number-2">3.</span> <code>blend_risk.f90</code> &amp; <code>blend_risk.R</code></h2>
 <div class="outline-text-2" id="text-blend_risk">
-<div class="org" id="orga7d3f58">
+<div class="org" id="orge52bbf9">
 <p>
 Scenario:
 </p>
@@ -495,7 +499,7 @@ used with low resolution data it can create bias in the results.  Note we can sw
 </div>
 
 
-<div id="orgcdbb616" class="figure">
+<div id="org44c7fc6" class="figure">
 <p><a href="pics/blend_risk_full.png"><img src="pics/blend_risk_800x.png" alt="blend_risk_800x.png" /></a>
 </p>
 </div>
@@ -506,7 +510,7 @@ particular scenario.
 </p>
 
 
-<div id="org4922d59" class="figure">
+<div id="orge681587" class="figure">
 <p><a href="pics/blend_risk_cvuc_full.png"><img src="pics/blend_risk_cvuc_800x.png" alt="blend_risk_cvuc_800x.png" /></a>
 </p>
 </div>
@@ -517,11 +521,13 @@ Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blo
 
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">blend_risk</span>
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>, <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk, ik=&gt;mrfflik
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_markets</span>, <span style="color: #00ffff;">only</span>: snp_dat, dgs10_dat
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_stats</span>, <span style="color: #00ffff;">only</span>: rand_int
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>,       <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_markets</span>,   <span style="color: #00ffff;">only</span>: snp_dat, dgs10_dat
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_stats</span>,        <span style="color: #00ffff;">only</span>: rand_int
   <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_inflation</span>, <span style="color: #00ffff;">only</span>: inf_dat
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_percentages</span>, <span style="color: #00ffff;">only</span>: p_add=&gt;add_percentage, p_of=&gt;percentage_of
+  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_percentages</span>,  <span style="color: #00ffff;">only</span>: p_add=&gt;add_percentage, p_of=&gt;percentage_of
+
+  <span style="color: #00ffff;">implicit</span> <span style="color: #63b8ff;">none</span> (type, <span style="color: #00ffff;">external</span>)
 
   <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> years              = 50       </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of years to project out our stocks adjusted value</span>
   <span style="color: #63b8ff;">integer</span>,          <span style="color: #00ffff;">parameter</span> ::<span style="color: #7fffd4;"> trials             = 100000   </span><span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Number of trials to run</span>
@@ -531,7 +537,7 @@ Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blo
 
   <span style="color: #63b8ff;">real</span>(kind=rk)               ::<span style="color: #7fffd4;"> balance, withdrawal, c_snp, c_dgs, c_inf</span>
   <span style="color: #63b8ff;">integer</span>                     ::<span style="color: #7fffd4;"> year, trial, hp</span>
-  <span style="color: #63b8ff;">integer</span>(kind=ik)            ::<span style="color: #7fffd4;"> rand_year</span>
+  <span style="color: #63b8ff;">integer</span>                     ::<span style="color: #7fffd4;"> rand_year</span>
 
   <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Run monte carlo simulations and dump the results to STDOUT</span>
   <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">'(a10,a10,a20)'</span>, <span style="color: #fa8072;">"trial"</span>, <span style="color: #fa8072;">"hp"</span>, <span style="color: #fa8072;">"balance"</span>

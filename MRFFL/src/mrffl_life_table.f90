@@ -120,7 +120,7 @@
 !!    survival function at age 0 - i.e. it is used as the cohort size.
 !!
 module mrffl_life_table
-  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
+  use mrffl_config,   only: rk=>mrfflrk, zero_epsilon
   use mrffl_prt_sets, only: prt_title, prt_table, prt_space
   use mrffl_bitset,   only: bitset_subsetp
   use mrffl_stats,    only: rand_int
@@ -279,9 +279,9 @@ contains
   !!
   real(kind=rk) pure function survivors(age, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, cohort_size
+    integer,          intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    integer(kind=ik)             :: i
+    integer                      :: i
     if (age > size(life_table)-1) then
        survivors = 0
     else
@@ -296,8 +296,8 @@ contains
              survivors = cohort_size
           else
              survivors = cohort_size
-             do i=2,min(age+1_ik, size(life_table, kind=ik))
-                survivors = (1_ik - life_table(i-1)) * survivors
+             do i=2,min(age+1, size(life_table))
+                survivors = (1 - life_table(i-1)) * survivors
              end do
           end if
        end if
@@ -313,7 +313,7 @@ contains
   !!
   real(kind=rk) pure function probability_of_death(age, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, cohort_size
+    integer,          intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
     real(kind=rk)                :: tmp1
     if (age < 0) then
@@ -347,7 +347,7 @@ contains
   !!
   real(kind=rk) pure function life_expectancy(age, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, cohort_size
+    integer,          intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
     real(kind=rk)                :: tmp1
     tmp1 = survivors(age, life_table, cohort_size)
@@ -366,9 +366,9 @@ contains
   !!
   real(kind=rk) pure function life_expectancy_at_birth(life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: cohort_size
+    integer,          intent(in) :: cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    life_expectancy_at_birth = life_expectancy(0_ik, life_table, cohort_size)
+    life_expectancy_at_birth = life_expectancy(0, life_table, cohort_size)
   end function life_expectancy_at_birth
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -381,7 +381,7 @@ contains
   !!
   real(kind=rk) pure function probability_of_survival_n(age, n, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, n, cohort_size
+    integer,          intent(in) :: age, n, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
     real(kind=rk)                :: tmp1
     tmp1 = survivors(age, life_table, cohort_size)
@@ -401,9 +401,9 @@ contains
   !!
   real(kind=rk) pure function probability_of_survival_1(age, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, cohort_size
+    integer,          intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    probability_of_survival_1 = probability_of_survival_n(age, 1_ik, life_table, cohort_size)
+    probability_of_survival_1 = probability_of_survival_n(age, 1, life_table, cohort_size)
   end function probability_of_survival_1
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -415,9 +415,9 @@ contains
   !!
   real(kind=rk) pure function died(age, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, cohort_size
+    integer,          intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    died = survivors(age, life_table, cohort_size) - survivors(age+1_ik, life_table, cohort_size)
+    died = survivors(age, life_table, cohort_size) - survivors(age+1, life_table, cohort_size)
   end function died
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -429,11 +429,11 @@ contains
   !!
   real(kind=rk) pure function person_years(age, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, cohort_size
+    integer,          intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
     real(kind=rk), parameter     :: ax = 0.5
     real(kind=rk)                :: tmp1
-    tmp1 = survivors(age+1_ik, life_table, cohort_size)
+    tmp1 = survivors(age+1, life_table, cohort_size)
     person_years = tmp1 + ax * (survivors(age, life_table, cohort_size) - tmp1)
   end function person_years
 
@@ -446,11 +446,11 @@ contains
   !!
   real(kind=rk) pure function total_person_years(age, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, cohort_size
+    integer,          intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    integer(kind=ik)             :: i
+    integer                      :: i
     total_person_years = 0
-    do i=age,size(life_table, kind=ik)-1_ik
+    do i=age,size(life_table)-1
        total_person_years = total_person_years + person_years(i, life_table, cohort_size)
     end do
   end function total_person_years
@@ -464,7 +464,7 @@ contains
   !!
   real(kind=rk) pure function mortality_rate(age, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, cohort_size
+    integer,          intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
     real(kind=rk)                :: tmp1
     tmp1 = person_years(age, life_table, cohort_size)
@@ -485,11 +485,11 @@ contains
   !!
   real(kind=rk) pure function age_all_dead(life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: cohort_size
+    integer,          intent(in) :: cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    integer(kind=ik)             :: i
+    integer                      :: i
     age_all_dead = 0
-    do i=0,size(life_table, kind=ik)-1_ik
+    do i=0,size(life_table)-1
        if (abs(survivors(i, life_table, cohort_size)) <= zero_epsilon) then
           age_all_dead = i
           return
@@ -506,19 +506,19 @@ contains
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
   !!
-  integer(kind=ik) function rand_age(age, life_table, cohort_size)
+  integer function rand_age(age, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: age, cohort_size
+    integer,          intent(in) :: age, cohort_size
     real(kind=rk),    intent(in) :: life_table(:)
-    integer(kind=ik)             :: i, r
-    r = rand_int(floor(survivors(age, life_table, cohort_size), kind=ik))
-    do i=age,size(life_table, kind=ik)-1_ik
+    integer                      :: i, r
+    r = rand_int(floor(survivors(age, life_table, cohort_size)))
+    do i=age,size(life_table)-1
        if (floor(survivors(i, life_table, cohort_size)) <= r) then
           rand_age = i
           return
        end if
     end do
-    rand_age = size(life_table, kind=ik)-1_ik
+    rand_age = size(life_table)-1
   end function rand_age
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -533,10 +533,10 @@ contains
   !!
   subroutine life_table_print(out_io_unit, print_out, life_table, cohort_size)
     implicit none (type, external)
-    integer(kind=ik), intent(in)  :: cohort_size, print_out
+    integer,          intent(in)  :: cohort_size, print_out
     real(kind=rk),    intent(in)  :: life_table(:)
     integer,          intent(in)  :: out_io_unit
-    integer(kind=ik)              :: age
+    integer                       :: age
     character(len=:), allocatable :: fmt_t, fmt_n
     integer                       :: out_io_stat
     fmt_t = '(a5,a11,  a11,  a10,  a11,  a12,  a8,  a11,  a11  )'
@@ -551,7 +551,7 @@ contains
        if (out_io_stat /= 0) error stop "ERROR(life_table_print): I/O Error!"
     end if
     if (bitset_subsetp(prt_table, print_out)) then
-       do age=0,size(life_table, kind=ik)-1_ik
+       do age=0,size(life_table)-1
           write (unit=out_io_unit, iostat=out_io_stat, fmt=fmt_n) &
                age, &
                probability_of_death(age, life_table, cohort_size), &

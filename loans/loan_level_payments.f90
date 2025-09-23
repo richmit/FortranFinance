@@ -51,7 +51,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program loan_level_payments
-  use mrffl_config,    only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config,    only: rk=>mrfflrk
   use mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, cashflow_matrix_pv_fv, cashflow_matrix_pv_fv_print
   use mrffl_prt_sets,  only: prt_ALL
   use mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
@@ -63,9 +63,9 @@ program loan_level_payments
   real(kind=rk)    :: i  = 7
 
   real(kind=rk)    :: a_pv, a_fv, a_a, p_pv, p_fv
-  integer(kind=ik) :: a_d, a_e, p_d
+  integer          :: a_d, a_e, p_d
 
-  integer(kind=ik) :: status
+  integer          :: status
 
   real(kind=rk)    :: cfm(11,2), fvv(11),  pvv(11)
 

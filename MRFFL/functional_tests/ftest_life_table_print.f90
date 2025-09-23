@@ -38,7 +38,7 @@
 program ftest_life_table_print
   use, intrinsic :: iso_fortran_env,   only: output_unit
 !  use, intrinsic :: iso_c_binding
-  use            :: mrffl_config,      only: rk=>mrfflrk, ik=>mrfflik
+  use            :: mrffl_config,      only: rk=>mrfflrk
   use            :: mrffl_life_table,  only: life_table_print, usss_f_qx_dat, uscdc_lx_dat, uscdc_w_f_lx_dat, uscdc_w_lx_dat, uscdc_w_m_lx_dat, usss_f_lx_dat, usss_m_lx_dat, usss_m_qx_dat
   use            :: mrffl_prt_sets,    only: prt_title, prt_table, prt_ALL
 
@@ -87,43 +87,43 @@ program ftest_life_table_print
 
   integer :: out_io_unit
   open(newunit=out_io_unit, file='ftest_life_table_print_usss_f_qx.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_title+prt_table, usss_f_qx_dat, 100000_ik)
+  call life_table_print(out_io_unit, prt_title+prt_table, usss_f_qx_dat, 100000)
   close(unit=out_io_unit, status='keep')
 
   open(newunit=out_io_unit, file='ftest_life_table_print_usss_f_lx.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_title+prt_table, usss_f_lx_dat,      0_ik)
+  call life_table_print(out_io_unit, prt_title+prt_table, usss_f_lx_dat,      0)
   close(unit=out_io_unit, status='keep')
 
   open(newunit=out_io_unit, file='ftest_life_table_print_usss_m_qx.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_title+prt_table, usss_m_qx_dat, 100000_ik)
+  call life_table_print(out_io_unit, prt_title+prt_table, usss_m_qx_dat, 100000)
   close(unit=out_io_unit, status='keep')
 
   open(newunit=out_io_unit, file='ftest_life_table_print_usss_m_lx.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_title+prt_table, usss_m_lx_dat, 0_ik)
+  call life_table_print(out_io_unit, prt_title+prt_table, usss_m_lx_dat, 0)
   close(unit=out_io_unit, status='keep')
 
   open(newunit=out_io_unit, file='ftest_life_table_print_cdc_wm_lx.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_ALL, uscdc_w_m_lx_dat, 0_ik)
+  call life_table_print(out_io_unit, prt_ALL, uscdc_w_m_lx_dat, 0)
   close(unit=out_io_unit, status='keep')
 
   open(newunit=out_io_unit, file='ftest_life_table_print_cdc_wf_lx.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_ALL, uscdc_w_f_lx_dat, 0_ik)
+  call life_table_print(out_io_unit, prt_ALL, uscdc_w_f_lx_dat, 0)
   close(unit=out_io_unit, status='keep')
 
   open(newunit=out_io_unit, file='ftest_life_table_print_cdc_w_lx.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_ALL, uscdc_w_lx_dat, 0_ik)
+  call life_table_print(out_io_unit, prt_ALL, uscdc_w_lx_dat, 0)
   close(unit=out_io_unit, status='keep')
 
   open(newunit=out_io_unit, file='ftest_life_table_print_cdc_lx.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_ALL, uscdc_lx_dat, 0_ik)
+  call life_table_print(out_io_unit, prt_ALL, uscdc_lx_dat, 0)
   close(unit=out_io_unit, status='keep')
 
   open(newunit=out_io_unit, file='ftest_life_table_print_cdc_qx.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_ALL, uscdc_qx_dat, 100000_ik)
+  call life_table_print(out_io_unit, prt_ALL, uscdc_qx_dat, 100000)
   close(unit=out_io_unit, status='keep')
 
   open(newunit=out_io_unit, file='ftest_life_table_print_cdc_qxlx_dat.txt', form='formatted', action='write')
-  call life_table_print(out_io_unit, prt_ALL, uscdc_qxlx_dat, 100000_ik)
+  call life_table_print(out_io_unit, prt_ALL, uscdc_qxlx_dat, 100000)
   close(unit=out_io_unit, status='keep')
 
 end program ftest_life_table_print

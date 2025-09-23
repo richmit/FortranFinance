@@ -37,21 +37,20 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 !> Constants to to identify TVM variables.
 module mrffl_var_sets
-  use mrffl_config, only: ik=>mrfflik
   implicit none (type, external)
   private
 
-  integer(kind=ik), parameter, public :: var_NONE = 0       !< No variables in set
-  integer(kind=ik), parameter, public :: var_a    = 1       !< First annuity payment
-  integer(kind=ik), parameter, public :: var_p    = 2       !< Principal
-  integer(kind=ik), parameter, public :: var_i    = 4       !< Interest/rate (First rate for geometric annuity)
-  integer(kind=ik), parameter, public :: var_g    = 8       !< Second Interest/rate (for geometric annuity)
-  integer(kind=ik), parameter, public :: var_n    = 16      !< Number of periods
-  integer(kind=ik), parameter, public :: var_pv   = 32      !< Present value
-  integer(kind=ik), parameter, public :: var_fv   = 64      !< Future value
-  integer(kind=ik), parameter, public :: var_d    = 128     !< Delayed start
-  integer(kind=ik), parameter, public :: var_e    = 256     !< Early end for annuities
-  integer(kind=ik), parameter, public :: var_q    = 512     !< Growth rate for arithmatic annuities
-  integer(kind=ik), parameter, public :: var_pmt  = 1024    !< Currently this is only used by the tvm12 module
+  integer,          parameter, public :: var_NONE = 0       !< No variables in set
+  integer,          parameter, public :: var_a    = 1       !< First annuity payment
+  integer,          parameter, public :: var_p    = 2       !< Principal
+  integer,          parameter, public :: var_i    = 4       !< Interest/rate (First rate for geometric annuity)
+  integer,          parameter, public :: var_g    = 8       !< Second Interest/rate (for geometric annuity)
+  integer,          parameter, public :: var_n    = 16      !< Number of periods
+  integer,          parameter, public :: var_pv   = 32      !< Present value
+  integer,          parameter, public :: var_fv   = 64      !< Future value
+  integer,          parameter, public :: var_d    = 128     !< Delayed start
+  integer,          parameter, public :: var_e    = 256     !< Early end for annuities
+  integer,          parameter, public :: var_q    = 512     !< Growth rate for arithmatic annuities
+  integer,          parameter, public :: var_pmt  = 1024    !< Currently this is only used by the tvm12 module
 
 end module mrffl_var_sets

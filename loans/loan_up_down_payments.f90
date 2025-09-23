@@ -47,7 +47,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program loan_level_payments
-  use mrffl_config,    only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config,    only: rk=>mrfflrk
   use mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
   use mrffl_var_sets,  only: var_fv, var_a, var_pv
   use mrffl_prt_sets,  only: prt_ALL
@@ -63,16 +63,16 @@ program loan_level_payments
   real(kind=rk)    :: a_pv = 1000000
   real(kind=rk)    :: a_fv
   real(kind=rk)    :: a_a
-  integer(kind=ik) :: a_d = 1
-  integer(kind=ik) :: a_e = 0
+  integer          :: a_d = 1
+  integer          :: a_e = 0
 
   real(kind=rk)    :: p_pv = -1000000
   real(kind=rk)    :: p_fv
-  integer(kind=ik) :: p_d = 0
+  integer          :: p_d = 0
 
   real(kind=rk)    :: a_final
 
-  integer(kind=ik) :: status
+  integer          :: status
 
   real(kind=rk)    :: cfm(years+1,2), fvv(years+1),  pvv(years+1)
 
@@ -103,7 +103,7 @@ program loan_level_payments
 
   ! Now we find PV & FV for an annuity with the rounded payment that ends one period early
   print "(a)", repeat("=", 111)
-  call tvm_delayed_level_annuity_solve(n, i, a_pv, a_fv, a_a, a_d, a_e+1_ik, var_fv+var_pv, status)
+  call tvm_delayed_level_annuity_solve(n, i, a_pv, a_fv, a_a, a_d, a_e+1, var_fv+var_pv, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
   print "(a60,f15.4)", "Rounded (n-1) Annuity PV: ", a_pv
   print "(a60,f15.4)", "Rounded (n-1) Annuity FV: ", a_fv
@@ -123,7 +123,7 @@ program loan_level_payments
 
   ! Next we add the rounded up
   print "(a)", repeat("=", 111)
-  call make_cashflow_vector_delayed_level_annuity(cfm(:,2), a_a, a_d, a_e+1_ik, status)
+  call make_cashflow_vector_delayed_level_annuity(cfm(:,2), a_a, a_d, a_e+1, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Finally we add the last payment

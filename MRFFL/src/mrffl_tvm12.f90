@@ -47,7 +47,7 @@
 !! however, the simplicity and familiarity of the classical calculator approach is sometimes more comfortable and direct.
 !!
 module mrffl_tvm12
-  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
+  use mrffl_config,   only: rk=>mrfflrk, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
   use mrffl_bitset,   only: bitset_intersectp, bitset_subsetp
   use mrffl_var_sets, only: var_i, var_n, var_pv, var_fv, var_pmt
   use mrffl_solver,   only: multi_bisection
@@ -57,8 +57,8 @@ module mrffl_tvm12
   private
 
   ! Quite a lot of code depends on the values being 1 & 0.  Do not change them!
-  integer(kind=ik), parameter, public  ::  pmt_at_beginning = 1
-  integer(kind=ik), parameter, public  ::  pmt_at_end       = 0
+  integer,          parameter, public  ::  pmt_at_beginning = 1
+  integer,          parameter, public  ::  pmt_at_end       = 0
 
   public :: tvm12_solve, tvm12_print
   public :: var_i, var_n, var_pv, var_fv, var_pmt
@@ -92,12 +92,12 @@ contains
   !! @param unknown   The unknown variable to solve for.  Allowed parameters: var_pmt var_i, var_n, var_pv, or var_fv.
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 3001-3032.
   subroutine tvm12_solve(n, i, pv, pmt, fv, pmt_time, unknown, status)
-    integer(kind=ik), intent(inout) :: n
+    integer,          intent(inout) :: n
     real(kind=rk),    intent(inout) :: i, pv, pmt, fv
-    integer(kind=ik), intent(in)    :: pmt_time, unknown
-    integer(kind=ik), intent(out)   :: status
+    integer,          intent(in)    :: pmt_time, unknown
+    integer,          intent(out)   :: status
     real (kind=rk)                  :: ip1tn, tmp1, tmp2, islvivl0(3), islvivl1(3), r_dat(4)
-    integer(kind=ik)                :: i_dat(2)
+    integer                         :: i_dat(2)
     if (unknown /= var_n) then
        if (n == 0) then
           status = 3001 ! "ERROR(tvm_solve): n==0!"
@@ -127,7 +127,7 @@ contains
           pmt = i * (fv + ip1tn * pv) / (i + 1 - (1+i) * ip1tn)
           status = 0
        else if (unknown == var_i) then
-          call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
+          call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
           !call multi_bisection(i, islvivl0, islvivl1, i_slv_func, r_dat, i_dat, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
           if (status /= 0) then
              status = 3005 ! "ERROR(tvm_solve): Unable to solve for i!"
@@ -138,7 +138,7 @@ contains
           if ((tmp1 < zero_epsilon) .or. (tmp2 < zero_epsilon)) then
              status = 3006 ! "ERROR(tvm_solve): Can not solve for n!"
           else
-             n = nint(-log(tmp1) / log(tmp2), kind=ik)
+             n = nint(-log(tmp1) / log(tmp2))
              status = 0
           end if
        else if (unknown == var_pv) then
@@ -153,7 +153,7 @@ contains
           pmt = -i / (ip1tn - 1) * (fv + ip1tn * pv)
           status = 0
        else if (unknown == var_i) then
-          call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
+          call multi_bisection(i, islvivl0, islvivl1, i_slv_func, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
           !call multi_bisection(i, islvivl0, islvivl1, i_slv_func, r_dat, i_dat, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
           if (status /= 0) then
              status = 3007 ! "ERROR(tvm_solve): Unable to solve for i!"
@@ -164,7 +164,7 @@ contains
           if ((tmp1 < zero_epsilon) .or. (tmp2 < zero_epsilon)) then
              status = 3008 ! "ERROR(tvm_solve): Can not solve for n!"
           else
-             n = nint(-log(tmp1) / log(tmp2), kind=ik)
+             n = nint(-log(tmp1) / log(tmp2))
              status = 0
           end if
        else if (unknown == var_pv) then
@@ -192,8 +192,8 @@ contains
   !   implicit none (type, external)
   !   real(kind=rk),    intent(in) :: x
   !   real(kind=rk),    intent(in) :: r_dat(:)
-  !   integer(kind=ik), intent(in) :: i_dat(:)
-  !   integer(kind=ik)             :: n, pmt_time
+  !   integer,          intent(in) :: i_dat(:)
+  !   integer                      :: n, pmt_time
   !   real(kind=rk)                :: i, pv, pmt, fv
   !   i        = r_dat(1)
   !   pv       = r_dat(2)
@@ -217,10 +217,10 @@ contains
   !! @param print_out    Set made from the following constants: prt_param, prt_table, prt_title
   subroutine tvm12_print(n, i, pv, pmt, fv, pmt_time, print_out)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: n, pmt_time, print_out
+    integer,          intent(in) :: n, pmt_time, print_out
     real(kind=rk),    intent(in) :: i, pv, fv, pmt
     real (kind=rk)               :: tot_pmt, cur_pv
-    integer(kind=ik)             :: k
+    integer                      :: k
 
     if ((pmt_time /= pmt_at_beginning) .and. (pmt_time /= pmt_at_end)) then
        stop "ERROR(tvm_solve): Unsupported value for pmt_time (must be one of pmt_at_beginning or pmt_at_end)"

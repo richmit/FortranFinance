@@ -36,7 +36,6 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program ftest_markets
-  use mrffl_config,     only: ik=>mrfflik
   use mrffl_us_markets, only: snp_resample
 
   implicit none (type, external)
@@ -44,7 +43,7 @@ program ftest_markets
   integer :: i
 
   do i=1,10
-     print "(a50,f20.5)", "snp_resample", snp_resample(10_ik)
+     print "(a50,f20.5)", "snp_resample", snp_resample(10)
   end do
 
 end program ftest_markets

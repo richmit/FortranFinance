@@ -35,19 +35,19 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program irr
-  use mrffl_config,    only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config,    only: rk=>mrfflrk
   use mrffl_cashflows, only: cashflow_vector_total_pv, cashflow_vector_irr, cashflow_matrix_total_pv, cashflow_matrix_irr, &
        &                     cashflow_vector_pv_fv_print, cashflow_matrix_pv_fv_print
   use mrffl_prt_sets,  only: prt_ALL
 
   implicit none (type, external)
 
-  integer(kind=ik), parameter :: years = 3
+  integer,          parameter :: years = 3
   real(kind=rk)               :: cfv(years+1) = [-125, 50, 60, 70]
   real(kind=rk)               :: cfm(years+1, 2) = reshape([-125, 0, 0, 0, 0, 50, 60, 70], [years+1, 2])
   real(kind=rk)               :: fvv(years+1),  pvv(years+1)
   real(kind=rk)               :: i
-  integer(kind=ik)            :: status
+  integer                     :: status
 
   print "(a)", repeat("=", 111)
   i = 4

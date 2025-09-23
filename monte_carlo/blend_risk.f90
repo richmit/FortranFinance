@@ -52,7 +52,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program blend_risk
-  use mrffl_config,       only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config,       only: rk=>mrfflrk
   use mrffl_us_markets,   only: snp_dat, dgs10_dat
   use mrffl_stats,        only: rand_int
   use mrffl_us_inflation, only: inf_dat
@@ -68,7 +68,7 @@ program blend_risk
 
   real(kind=rk)               :: balance, withdrawal, c_snp, c_dgs, c_inf
   integer                     :: year, trial, hp
-  integer(kind=ik)            :: rand_year
+  integer                     :: rand_year
 
   ! Run monte carlo simulations and dump the results to STDOUT
   print '(a10,a10,a20)', "trial", "hp", "balance"

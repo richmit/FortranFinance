@@ -46,7 +46,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program cashflow_retire
-  use mrffl_config,    only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config,    only: rk=>mrfflrk
   use mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, &
        &                     make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_pv_fv_print
   use mrffl_prt_sets,  only: prt_ALL
@@ -56,19 +56,19 @@ program cashflow_retire
   integer, parameter :: years = 25
   real(kind=rk)      :: cfi = 4.0
   real(kind=rk)      :: cfm(years+1,3),  fv(years+1),  pv(years+1)
-  integer(kind=ik)   :: status
+  integer            :: status
 
   ! First we add a cashflow for our savings
   print "(a)", repeat("=", 126)
-  call make_cashflow_vector_delayed_lump(cfm(:,1), 2.0e6_rk, 0_ik, status)
+  call make_cashflow_vector_delayed_lump(cfm(:,1), 2.0e6_rk, 0, status)
   print "(a30,i15)", "make_cashflow_vector_delayed_lump status: ", status
 
   ! Now we add cashflows for the pension (growing with inflation)
-  call make_cashflow_vector_delayed_level_annuity(cfm(:,2), 2.4e4_rk, 5_ik, 0_ik, status)
+  call make_cashflow_vector_delayed_level_annuity(cfm(:,2), 2.4e4_rk, 5, 0, status)
   print "(a30,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Last we add cashflows for our expenses (growing with inflation)
-  call make_cashflow_vector_delayed_geometric_annuity(cfm(:,3), 3.0_rk, -9e4_rk, 1_ik, 0_ik, status)
+  call make_cashflow_vector_delayed_geometric_annuity(cfm(:,3), 3.0_rk, -9e4_rk, 1, 0, status)
   print "(a30,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Finally we print it all out.

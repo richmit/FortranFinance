@@ -39,13 +39,13 @@
 !> Compute Taxes for USA.
 !!
 module mrffl_us_taxes
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
+  use mrffl_config, only: rk=>mrfflrk, zero_epsilon
   use mrffl_percentages, only: percentage_of, percentage_of_total
   use mrffl_tvm, only: fv_from_pv_n_i
   implicit none (type, external)
   private
 
-  integer(kind=ik), parameter, public :: seed_tax_year                     = 2024 ! The year the following constants hold
+  integer,          parameter, public :: seed_tax_year                     = 2024 ! The year the following constants hold
   real(kind=rk), parameter, public    :: std_tax_deduction_single          = 14600
   real(kind=rk), parameter, public    :: std_tax_deduction_joint           = 29200
   real(kind=rk), parameter, public    :: std_tax_deduction_separately      = 14600
@@ -86,19 +86,19 @@ contains
   !!
   !! This function returns the index for the interval containing val.
   !!
-  integer(kind=ik) function max_bracket(val, brackets)
+  integer function max_bracket(val, brackets)
     real(kind=rk), intent(in) :: val
     real(kind=rk), intent(in) :: brackets(:)
-    integer(kind=ik)          :: i
+    integer                   :: i
     if (val <= brackets(1)) then
-       max_bracket = 1_ik
+       max_bracket = 1
     else if (val >= brackets(size(brackets))) then
-       max_bracket = size(brackets, kind=ik)
+       max_bracket = size(brackets)
     else
-       max_bracket = 0_ik
-       do i=size(brackets, kind=ik)-1_ik,1_ik,-1_ik
+       max_bracket = 0
+       do i=size(brackets)-1,1,-1
           if (val > brackets(i)) then
-             max_bracket = i+1_ik
+             max_bracket = i+1
              exit
           end if
        end do
@@ -156,7 +156,7 @@ contains
   !!
   real(kind=rk) function projected_tax(val, breaks, rates, year, inflation)
     real(kind=rk),    intent(in) :: val, inflation
-    integer(kind=ik), intent(in) :: year
+    integer,          intent(in) :: year
     real(kind=rk),    intent(in) :: breaks(:), rates(:)
     if (year < seed_tax_year) then
        projected_tax = -1

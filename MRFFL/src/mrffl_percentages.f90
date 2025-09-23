@@ -39,7 +39,7 @@
 !> Simple functions for working with percentages.
 !!
 module mrffl_percentages
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
+  use mrffl_config, only: rk=>mrfflrk, zero_epsilon
   implicit none (type, external)
   private
 

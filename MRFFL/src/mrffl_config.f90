@@ -43,7 +43,6 @@ module mrffl_config
   implicit none (type, external)
   private
 
-  integer,            parameter, public :: mrfflik       = c_int32_t      !< Integer kinds used in interfaces
   integer,            parameter, public :: mrfflrk       = c_double       !< Real kind used in interfaces
 
   real(kind=mrfflrk), parameter, public :: zero_epsilon  = 1.0e-8_mrfflrk !< Used to test for zero

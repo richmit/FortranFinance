@@ -38,7 +38,7 @@
 !> Annual us stock market return data and monte carlo
 !!
 module mrffl_us_markets
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config, only: rk=>mrfflrk
   use mrffl_stats, only: resample_tail
   implicit none (type, external)
   private
@@ -107,7 +107,7 @@ contains
   !!
   real(kind=rk) function snp_resample(history_years)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: history_years
+    integer,          intent(in) :: history_years
     snp_resample = resample_tail(snp_dat, history_years)
   end function snp_resample
 
@@ -116,7 +116,7 @@ contains
   !!
   real(kind=rk) function rut_resample(history_years)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: history_years
+    integer,          intent(in) :: history_years
     rut_resample = resample_tail(rut_dat, history_years)
   end function rut_resample
 
@@ -125,7 +125,7 @@ contains
   !!
   real(kind=rk) function nas_resample(history_years)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: history_years
+    integer,          intent(in) :: history_years
     nas_resample = resample_tail(nas_dat, history_years)
   end function nas_resample
 
@@ -134,7 +134,7 @@ contains
   !!
   real(kind=rk) function dow_resample(history_years)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: history_years
+    integer,          intent(in) :: history_years
     dow_resample = resample_tail(dow_dat, history_years)
   end function dow_resample
 
@@ -143,7 +143,7 @@ contains
   !!
   real(kind=rk) function dgs10_resample(history_years)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: history_years
+    integer,          intent(in) :: history_years
     dgs10_resample = resample_tail(dgs10_dat, history_years)
   end function dgs10_resample
 

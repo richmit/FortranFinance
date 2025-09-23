@@ -72,11 +72,13 @@ Here is the Fortran code ([[https://github.com/richmit/FortranFinance/blob/main/
 #+RESULTS:
 #+begin_src f90 :eval never :tangle no
 program inflation
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_us_inflation
+  use mrffl_config,       only: rk=>mrfflrk
+  use mrffl_us_inflation, only: inf_resample
+
+  implicit none (type, external)
 
   integer,          parameter :: years            = 20      ! Number of years to project out our inflation adjusted value
-  integer(kind=ik), parameter :: mc_history_years = 30      ! Number of years of US inflation data for our random inflation values
+  integer,          parameter :: mc_history_years = 30      ! Number of years of US inflation data for our random inflation values
   integer,          parameter :: trials           = 100000  ! Number of trials to run
   real(kind=rk),    parameter :: initial_value    = 100     ! This is the value we will inflation adjusted over the years
 
@@ -161,12 +163,14 @@ Here is the Fortran code ([[https://github.com/richmit/FortranFinance/blob/main/
 #+RESULTS:
 #+begin_src f90 :eval never :tangle no
 program stocks
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_us_markets, only: rut_resample
+  use mrffl_config,      only: rk=>mrfflrk
+  use mrffl_us_markets,  only: rut_resample
   use mrffl_percentages, only: add_percentage
 
+  implicit none (type, external)
+
   integer,          parameter :: years            = 20      ! Number of years to project out our stocks adjusted value
-  integer(kind=ik), parameter :: mc_history_years = 30      ! Number of years of US stocks data for our random stocks values
+  integer,          parameter :: mc_history_years = 30      ! Number of years of US stocks data for our random stocks values
   integer,          parameter :: trials           = 2000    ! Number of trials to run
   real(kind=rk),    parameter :: initial_value    = 100     ! This is the value we will stocks adjusted over the years
 
@@ -291,11 +295,13 @@ Here is the Fortran code ([[https://github.com/richmit/FortranFinance/blob/main/
 #+RESULTS:
 #+begin_src f90 :eval never :tangle no
 program blend_risk
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
-  use mrffl_us_markets, only: snp_dat, dgs10_dat
-  use mrffl_stats, only: rand_int
+  use mrffl_config,       only: rk=>mrfflrk
+  use mrffl_us_markets,   only: snp_dat, dgs10_dat
+  use mrffl_stats,        only: rand_int
   use mrffl_us_inflation, only: inf_dat
-  use mrffl_percentages, only: p_add=>add_percentage, p_of=>percentage_of
+  use mrffl_percentages,  only: p_add=>add_percentage, p_of=>percentage_of
+
+  implicit none (type, external)
 
   integer,          parameter :: years              = 50       ! Number of years to project out our stocks adjusted value
   integer,          parameter :: trials             = 100000   ! Number of trials to run
@@ -305,7 +311,7 @@ program blend_risk
 
   real(kind=rk)               :: balance, withdrawal, c_snp, c_dgs, c_inf
   integer                     :: year, trial, hp
-  integer(kind=ik)            :: rand_year
+  integer                     :: rand_year
 
   ! Run monte carlo simulations and dump the results to STDOUT
   print '(a10,a10,a20)', "trial", "hp", "balance"

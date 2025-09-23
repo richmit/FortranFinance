@@ -38,7 +38,7 @@
 !> US inflation data and monte carlo.
 !!
 module mrffl_us_inflation
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config, only: rk=>mrfflrk
   use mrffl_stats, only: resample_tail
   use mrffl_percentages, only: percentage_of, percentage_change, add_percentage
   implicit none (type, external)
@@ -67,14 +67,14 @@ contains
   !!
   real(kind=rk) pure function inf_aggregate(from_year, to_year)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: from_year, to_year
-    integer(kind=ik)             :: year
+    integer,          intent(in) :: from_year, to_year
+    integer                      :: year
     if (from_year < lbound(inf_dat, 1)) error stop "ERROR(inf_aggregate): from_year too small"
     if (from_year > ubound(inf_dat, 1)) error stop "ERROR(inf_aggregate): from_year too large"
     if (to_year   < lbound(inf_dat, 1)) error stop "ERROR(inf_aggregate): to_year too small"
     if (to_year   > ubound(inf_dat, 1)) error stop "ERROR(inf_aggregate): to_year too large"
     inf_aggregate = 1.0
-    do year=(min(from_year, to_year)+1_ik),max(from_year, to_year)
+    do year=(min(from_year, to_year)+1),max(from_year, to_year)
        inf_aggregate = inf_aggregate + percentage_of(inf_aggregate, inf_dat(year))
     end do
     if (from_year > to_year) then
@@ -90,7 +90,7 @@ contains
   !!
   real(kind=rk) pure function inf_adj(from_year, to_year, v)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: from_year, to_year
+    integer,          intent(in) :: from_year, to_year
     real(kind=rk),    intent(in) :: v
     inf_adj = add_percentage(v, inf_aggregate(from_year, to_year))
   end function inf_adj
@@ -100,7 +100,7 @@ contains
   !!
   real(kind=rk) function inf_resample(history_years)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: history_years
+    integer,          intent(in) :: history_years
     inf_resample = resample_tail(inf_dat, history_years)
   end function inf_resample
 

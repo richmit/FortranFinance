@@ -49,7 +49,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program roth_conversion
-  use mrffl_config     , only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config     , only: rk=>mrfflrk
   use mrffl_percentages, only: percentage_of, add_percentage, percentage_to_fraction
 
   use mrffl_cashflows, only: make_cashflow_vector_delayed_lump, add_intrest_to_cashflow_vector, &
@@ -58,8 +58,8 @@ program roth_conversion
 
   implicit none (type, external)
 
-  integer(kind=ik), parameter :: years              = 10
-  integer(kind=ik), parameter :: conversion_years   = 5
+  integer,          parameter :: years              = 10
+  integer,          parameter :: conversion_years   = 5
   real(kind=rk)               :: apr                = 4.0_rk
 
   real(kind=rk)               :: retirement_tax     = 17.0_rk
@@ -68,20 +68,20 @@ program roth_conversion
   real(kind=rk)               :: initial_ira        = 200000.0_rk
   real(kind=rk)               :: initial_brokerage  = 100000.0_rk
   real(kind=rk)               :: cf(years+1,3),  fv(years+1),  pv(years+1), vapr(years)
-  integer(kind=ik)            :: status
+  integer                     :: status
   real(kind=rk)               :: rate               = 0.0_rk
   real(kind=rk)               :: ncv, wcv
 
   print "(a)", repeat("=", 126)
   cf = 0
 
-  call make_cashflow_vector_delayed_lump(cf(:,1), initial_ira, 0_ik, status)
+  call make_cashflow_vector_delayed_lump(cf(:,1), initial_ira, 0, status)
   call add_intrest_to_cashflow_vector(cf(:,1), apr, status)
   cf(size(cf,1),1) = cf(size(cf,1),1) - percentage_of(sum(cf(:,1)), retirement_tax)
 
   cf(:,2) = 0
 
-  call make_cashflow_vector_delayed_lump(cf(:,3), initial_brokerage, 0_ik, status)
+  call make_cashflow_vector_delayed_lump(cf(:,3), initial_brokerage, 0, status)
   vapr(1:conversion_years)  = add_percentage(apr, -conversion_tax)
   vapr(conversion_years+1:) = add_percentage(apr, -retirement_tax)
   call add_multi_intrest_to_cashflow_vector(cf(:,3), vapr, status)
@@ -93,14 +93,14 @@ program roth_conversion
   print "(a)", repeat("=", 126)
   cf = 0
 
-  call make_cashflow_vector_delayed_lump(cf(:,1), initial_ira-conv_size, 0_ik, status)
+  call make_cashflow_vector_delayed_lump(cf(:,1), initial_ira-conv_size, 0, status)
   call add_intrest_to_cashflow_vector(cf(:,1), apr, status)
   cf(size(cf,1),1) = cf(size(cf,1),1) - percentage_of(sum(cf(:,1)), retirement_tax)
 
-  call make_cashflow_vector_delayed_lump(cf(:,2), conv_size, 0_ik, status)
+  call make_cashflow_vector_delayed_lump(cf(:,2), conv_size, 0, status)
   call add_intrest_to_cashflow_vector(cf(:,2), apr, status)
 
-  call make_cashflow_vector_delayed_lump(cf(:,3), initial_brokerage, 0_ik, status)
+  call make_cashflow_vector_delayed_lump(cf(:,3), initial_brokerage, 0, status)
   vapr(1:conversion_years)  = add_percentage(apr, -conversion_tax)
   vapr(conversion_years+1:) = add_percentage(apr, -retirement_tax)
   call add_multi_intrest_to_cashflow_vector(cf(:,3), vapr, status)

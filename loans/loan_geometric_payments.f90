@@ -48,7 +48,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program loan_geometric_payments
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config, only: rk=>mrfflrk
   use mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_pv_fv, cashflow_matrix_pv_fv_print
   use mrffl_prt_sets,  only: prt_ALL
   use mrffl_tvm,       only: tvm_delayed_geometric_annuity_solve, tvm_lump_sum_solve
@@ -63,13 +63,13 @@ program loan_geometric_payments
   real(kind=rk)    :: a_fv
   real(kind=rk)    :: a_g = 10
   real(kind=rk)    :: a_a = 95000
-  integer(kind=ik) :: a_d = 1
-  integer(kind=ik) :: a_e = 0
+  integer          :: a_d = 1
+  integer          :: a_e = 0
 
   real(kind=rk)    :: p_pv = -1000000
   real(kind=rk)    :: p_fv
 
-  integer(kind=ik) :: status
+  integer          :: status
 
   real(kind=rk), allocatable    :: cfm(:,:), fvv(:),  pvv(:)
 
@@ -103,7 +103,7 @@ program loan_geometric_payments
 
   ! Now we populate a cashflow matrix with our two cashflows.
   print "(a)", repeat("=", 111)
-  call make_cashflow_vector_delayed_lump(cfm(:,1), p_pv, 0_ik, status)
+  call make_cashflow_vector_delayed_lump(cfm(:,1), p_pv, 0, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_lump status: ", status
   call make_cashflow_vector_delayed_geometric_annuity(cfm(:,2), a_g, a_a, a_d, a_e, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status

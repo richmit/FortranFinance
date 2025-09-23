@@ -41,7 +41,6 @@
 !! unknown variables for TVM solvers, and elements to print in output routines.
 !!
 module mrffl_bitset
-  use mrffl_config, only: ik=>mrfflik
   implicit none (type, external)
   private
 
@@ -52,16 +51,16 @@ contains
   !------------------------------------------------------------------------------------------------------------------------------
   !> Return the number of elements in bitset.
   !!
-  integer(kind=ik) pure function bitset_size(bitset)
-    integer(kind=ik), intent(in) :: bitset
-    bitset_size = int(popcnt(bitset), kind=ik)
+  integer          pure function bitset_size(bitset)
+    integer,          intent(in) :: bitset
+    bitset_size = int(popcnt(bitset))
   end function bitset_size
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Return the set diffrence between bitset1 and bitset2.
   !!
-  integer(kind=ik) pure function bitset_minus(bitset1, bitset2)
-    integer(kind=ik), intent(in) :: bitset1, bitset2
+  integer          pure function bitset_minus(bitset1, bitset2)
+    integer,          intent(in) :: bitset1, bitset2
     bitset_minus = iand(bitset1, not(bitset2))
   end function bitset_minus
 
@@ -69,7 +68,7 @@ contains
   !!> Return .true. if bitset1 is a subset of bitset2, and .false. otherwise.
   !!
   logical pure function bitset_subsetp(bitset1, bitset2)
-    integer(kind=ik), intent(in) :: bitset1, bitset2
+    integer,          intent(in) :: bitset1, bitset2
     bitset_subsetp = (iand(bitset1, bitset2) == bitset1)
   end function bitset_subsetp
 
@@ -77,7 +76,7 @@ contains
   !!> Return .true. if bitset1 is NOT a subset of bitset2, and .false. otherwise.
   !!
   logical pure function bitset_not_subsetp(bitset1, bitset2)
-    integer(kind=ik), intent(in) :: bitset1, bitset2
+    integer,          intent(in) :: bitset1, bitset2
     bitset_not_subsetp = (iand(bitset1, bitset2) /= bitset1)
   end function bitset_not_subsetp
 
@@ -85,16 +84,16 @@ contains
   !!> Return .true. if bitset1 and bitset2 have a non-empty intersection, and .false. otherwise.
   !!
   logical pure function bitset_intersectp(bitset1, bitset2)
-    integer(kind=ik), intent(in) :: bitset1, bitset2
-    bitset_intersectp = (iand(bitset1, bitset2) /= 0_ik)
+    integer,          intent(in) :: bitset1, bitset2
+    bitset_intersectp = (iand(bitset1, bitset2) /= 0)
   end function bitset_intersectp
 
   !------------------------------------------------------------------------------------------------------------------------------
   !!> Return .true. if bitset1 and bitset2 have an empty intersection, and .false. otherwise.
   !!
   logical pure function bitset_not_intersectp(bitset1, bitset2)
-    integer(kind=ik), intent(in) :: bitset1, bitset2
-    bitset_not_intersectp = (iand(bitset1, bitset2) == 0_ik)
+    integer,          intent(in) :: bitset1, bitset2
+    bitset_not_intersectp = (iand(bitset1, bitset2) == 0)
   end function bitset_not_intersectp
 
 end module mrffl_bitset

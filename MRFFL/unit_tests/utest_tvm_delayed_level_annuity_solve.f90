@@ -36,15 +36,15 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm_delayed_level_annuity_solve
-  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config,   only: rk=>mrfflrk
   use mrffl_tvm,      only: tvm_delayed_level_annuity_solve
   use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n, var_a, var_pmt, var_NONE
 
   implicit none (type, external)
 
   real(kind=rk)    :: n, i, pv, fv, a
-  integer(kind=ik) :: d, e
-  integer(kind=ik) :: status
+  integer          :: d, e
+  integer          :: status
   integer          :: k
 
   print "(a)", repeat("=", 98)

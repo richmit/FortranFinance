@@ -36,14 +36,14 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm_delayed_lump_sum_solve
-  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config,   only: rk=>mrfflrk
   use mrffl_tvm,      only: tvm_delayed_lump_sum_solve
   use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n, var_a, var_g, var_NONE
 
   implicit none (type, external)
 
   real(kind=rk)    :: i, fv, pv, a, n
-  integer(kind=ik) :: d, status
+  integer          :: d, status
   integer          :: k
 
   print "(a)", repeat("=", 121)

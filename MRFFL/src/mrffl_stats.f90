@@ -38,7 +38,7 @@
 !> Some statstical utilities supporting other MRFFL modules.
 !!
 module mrffl_stats
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
+  use mrffl_config, only: rk=>mrfflrk, zero_epsilon
   implicit none (type, external)
   private
 
@@ -59,11 +59,11 @@ contains
   !! @param upper_bound          Upper bound for random number
   !! @param optional_lower_bound Lower bound for random number
   !!
-  integer(kind=ik) function rand_int(upper_bound, optional_lower_bound)
+  integer function rand_int(upper_bound, optional_lower_bound)
     implicit none (type, external)
-    integer(kind=ik),           intent(in) :: upper_bound
-    integer(kind=ik), optional, intent(in) :: optional_lower_bound
-    integer(kind=ik)                       :: lower_bound
+    integer,                    intent(in) :: upper_bound
+    integer,          optional, intent(in) :: optional_lower_bound
+    integer                                :: lower_bound
     real(kind=rk)                          :: r
     lower_bound = 0
     if (present(optional_lower_bound)) lower_bound = optional_lower_bound
@@ -71,7 +71,7 @@ contains
        error stop "ERROR(rand_int): lower_bound > upper_bound!"
     end if
     call random_number(r) ! Random Number in [0, 1)
-    rand_int = lower_bound + int(r * (upper_bound - lower_bound), kind=ik)
+    rand_int = lower_bound + int(r * (upper_bound - lower_bound))
   end function rand_int
 
   !--------------------------------------------------------------------------------------------------------------------------------
@@ -104,11 +104,11 @@ contains
   real(kind=rk) function resample_tail(data, tail_length)
     implicit none (type, external)
     real(kind=rk), intent(in)    :: data(:)
-    integer(kind=ik), intent(in) :: tail_length
-    integer(kind=ik)             :: i
-    i = ubound(data, 1, kind=ik) - rand_int(min(tail_length, int(size(data), kind=ik)))
-    i = max(i, lbound(data, 1, kind=ik))
-    i = min(i, ubound(data, 1, kind=ik))
+    integer,          intent(in) :: tail_length
+    integer                      :: i
+    i = ubound(data, 1) - rand_int(min(tail_length, int(size(data))))
+    i = max(i, lbound(data, 1))
+    i = min(i, ubound(data, 1))
     resample_tail = data(i)
   end function resample_tail
 
@@ -121,11 +121,11 @@ contains
   real(kind=rk) function resample_head(data, head_length)
     implicit none (type, external)
     real(kind=rk), intent(in)    :: data(:)
-    integer(kind=ik), intent(in) :: head_length
-    integer(kind=ik)             :: i
-    i = lbound(data, 1, kind=ik) + rand_int(min(head_length, size(data, kind=ik)))
-    i = max(i, lbound(data, 1, kind=ik))
-    i = min(i, ubound(data, 1, kind=ik))
+    integer,          intent(in) :: head_length
+    integer                      :: i
+    i = lbound(data, 1) + rand_int(min(head_length, size(data)))
+    i = max(i, lbound(data, 1))
+    i = min(i, ubound(data, 1))
     resample_head = data(i)
   end function resample_head
 

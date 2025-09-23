@@ -43,13 +43,13 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program inflation
-  use mrffl_config,       only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config,       only: rk=>mrfflrk
   use mrffl_us_inflation, only: inf_resample
 
   implicit none (type, external)
 
   integer,          parameter :: years            = 20      ! Number of years to project out our inflation adjusted value
-  integer(kind=ik), parameter :: mc_history_years = 30      ! Number of years of US inflation data for our random inflation values
+  integer,          parameter :: mc_history_years = 30      ! Number of years of US inflation data for our random inflation values
   integer,          parameter :: trials           = 100000  ! Number of trials to run
   real(kind=rk),    parameter :: initial_value    = 100     ! This is the value we will inflation adjusted over the years
 

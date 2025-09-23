@@ -34,7 +34,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program ftest_stats
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config, only: rk=>mrfflrk
   use mrffl_stats,  only: rand_norm, rand_log_norm, rand_norm_std_box, rand_norm_std_probit, rand_norm_std_probit_clip, &
        &                  mean_and_variance, resample_tail, resample_head
 
@@ -44,7 +44,7 @@ program ftest_stats
   integer, parameter :: num_runs = 10000
   real(kind=rk)      :: a(7) = [1,2,3,4,5,6,7]
   real(kind=rk)      :: m, v
-  integer(kind=ik)   :: lim = 5
+  integer            :: lim = 5
   integer            :: i
   integer            :: out_io_unit
 

@@ -71,7 +71,7 @@
 !! column of a matrix.  The entire matrix may then be used for TVM calculations.
 !!
 module mrffl_cashflows
-  use mrffl_config,      only: rk=>mrfflrk, ik=>mrfflik, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
+  use mrffl_config,      only: rk=>mrfflrk, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
   use mrffl_bitset,      only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp
   use mrffl_prt_sets,    only: prt_NONE, prt_param, prt_title, prt_table, prt_total, prt_space
   use mrffl_percentages, only: percentage_to_fraction
@@ -107,7 +107,7 @@ contains
   real(kind=rk) pure function cashflow_vector_total_pv(cf_vec, i)
     real(kind=rk),    intent(in)  :: cf_vec(:)
     real(kind=rk),    intent(in)  :: i
-    integer(kind=ik)              :: j
+    integer                       :: j
     cashflow_vector_total_pv = 0
     do j=1,size(cf_vec)
        cashflow_vector_total_pv = cashflow_vector_total_pv + cf_vec(j) / (1+percentage_to_fraction(i))**(j-1)
@@ -128,7 +128,7 @@ contains
     real(kind=rk),    intent(in)  :: cf_mat(:,:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk)                 :: cf
-    integer(kind=ik)              :: j, k
+    integer                       :: j, k
     cashflow_matrix_total_pv = 0
     do j=1,size(cf_mat, 1)
        cf = cf_mat(j, 1)
@@ -149,10 +149,10 @@ contains
   subroutine cashflow_vector_irr(cf_vec, irr, status)
     real(kind=rk),    intent(in)    :: cf_vec(:)
     real(kind=rk),    intent(inout) :: irr
-    integer(kind=ik), intent(out)   :: status
+    integer,          intent(out)   :: status
     real(kind=rk), parameter        :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
     real(kind=rk), parameter        :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
-    call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
+    call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
     if (status /= 0) then
        status = 4161 ! "ERROR(cashflow_vector_irr): irr solver failed!"
     end if
@@ -174,10 +174,10 @@ contains
   subroutine cashflow_matrix_irr(cf_mat, irr, status)
     real(kind=rk),    intent(in)    :: cf_mat(:,:)
     real(kind=rk),    intent(inout) :: irr
-    integer(kind=ik), intent(out)   :: status
+    integer,          intent(out)   :: status
     real(kind=rk), parameter        :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
     real(kind=rk), parameter        :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
-    call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
+    call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
     if (status /= 0) then
        status = 4193 ! "ERROR(cashflow_matrix_irr): irr solver failed!"
     end if
@@ -194,7 +194,7 @@ contains
   !!
   character(len=5) function i2s(n)
     implicit none (type, external)
-    integer(kind=ik), intent(in) :: n
+    integer,          intent(in) :: n
     write(i2s,'(i5.5)') n
   end function i2s
 
@@ -207,7 +207,7 @@ contains
     real(kind=rk),    intent(in)  :: cf_vec(:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(out) :: status
     call cashflow_matrix_pv_fv_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, prt_NONE)
   end subroutine cashflow_vector_pv_fv
 
@@ -220,8 +220,8 @@ contains
     real(kind=rk),    intent(in)  :: cf_vec(:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
-    integer(kind=ik), intent(out) :: status
-    integer(kind=ik), intent(in)  :: print_out
+    integer,          intent(out) :: status
+    integer,          intent(in)  :: print_out
      call cashflow_matrix_pv_fv_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, print_out)
   end subroutine cashflow_vector_pv_fv_print
 
@@ -238,7 +238,7 @@ contains
     real(kind=rk),    intent(in)  :: cf_mat(:,:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(out) :: status
     call cashflow_matrix_pv_fv_print(cf_mat, i, pv_vec, fv_vec, status, prt_NONE)
   end subroutine cashflow_matrix_pv_fv
 
@@ -258,12 +258,12 @@ contains
     real(kind=rk),    intent(in)  :: cf_mat(:,:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
-    integer(kind=ik), intent(out) :: status
-    integer(kind=ik), intent(in)  :: print_out
-    integer(kind=ik)              :: num_bdrys, num_flows, j, flow
+    integer,          intent(out) :: status
+    integer,          intent(in)  :: print_out
+    integer                       :: num_bdrys, num_flows, j, flow
     real(kind=rk),allocatable     :: dfactors(:), cf_aggr(:), total_pv(:), total_fv(:)
-    num_bdrys = size(cf_mat, 1, kind=ik)
-    num_flows = size(cf_mat, 2, kind=ik)
+    num_bdrys = size(cf_mat, 1)
+    num_flows = size(cf_mat, 2)
     if (num_flows < 1) then
        status = 2130 ! "ERROR(cashflow_matrix_pv_fv): No flows found in matrix!"
        return
@@ -360,8 +360,8 @@ contains
     implicit none (type, external)
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: a
-    integer(kind=ik), intent(in)  :: d
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(in)  :: d
+    integer,          intent(out) :: status
     integer                       :: n
     n = size(cf_vec)-1
     if (n < 1) then
@@ -392,8 +392,8 @@ contains
   subroutine make_cashflow_vector_delayed_level_annuity(cf_vec, a, d, e, status)
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: a
-    integer(kind=ik), intent(in)  :: d, e
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(in)  :: d, e
+    integer,          intent(out) :: status
     integer                       :: n
     n = size(cf_vec)-1
     if (n < 1) then
@@ -431,8 +431,8 @@ contains
   subroutine make_cashflow_vector_delayed_geometric_annuity(cf_vec, g, a, d, e, status)
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: g, a
-    integer(kind=ik), intent(in)  :: d, e
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(in)  :: d, e
+    integer,          intent(out) :: status
     integer                       :: j, n
     n = size(cf_vec)-1
     if (n < 1) then
@@ -470,8 +470,8 @@ contains
   subroutine make_cashflow_vector_delayed_arithmetic_annuity(cf_vec, q, a, d, e, status)
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: q, a
-    integer(kind=ik), intent(in)  :: d, e
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(in)  :: d, e
+    integer,          intent(out) :: status
     integer                       :: j, n
     n = size(cf_vec)-1
     if (n < 1) then
@@ -504,7 +504,7 @@ contains
     implicit none (type, external)
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: rate
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(out) :: status
     integer                       :: nb, j
     real(kind=rk)                 :: rsum
     nb = size(cf_vec)
@@ -529,7 +529,7 @@ contains
     implicit none (type, external)
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: vrate(:)
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(out) :: status
     integer                       :: nb, j
     real(kind=rk)                 :: rsum
     nb = size(cf_vec)

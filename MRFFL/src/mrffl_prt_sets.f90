@@ -37,16 +37,15 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 !> Constants to select what *_print subroutines will print.
 module mrffl_prt_sets
-  use mrffl_config, only: ik=>mrfflik
   implicit none (type, external)
   private
 
-  integer(kind=ik), parameter, public :: prt_NONE  = 0   !< Print nothing
-  integer(kind=ik), parameter, public :: prt_param = 1   !< Print parameters before the table/titles
-  integer(kind=ik), parameter, public :: prt_title = 2   !< Print titles on the tables
-  integer(kind=ik), parameter, public :: prt_table = 4   !< Print a table
-  integer(kind=ik), parameter, public :: prt_total = 8   !< Print totals PV & FV after the table
-  integer(kind=ik), parameter, public :: prt_space = 16  !< Print vertical whitespace between parameters & table/titles & totals
-  integer(kind=ik), parameter, public :: prt_ALL   = 31  !< Print everything
+  integer,          parameter, public :: prt_NONE  = 0   !< Print nothing
+  integer,          parameter, public :: prt_param = 1   !< Print parameters before the table/titles
+  integer,          parameter, public :: prt_title = 2   !< Print titles on the tables
+  integer,          parameter, public :: prt_table = 4   !< Print a table
+  integer,          parameter, public :: prt_total = 8   !< Print totals PV & FV after the table
+  integer,          parameter, public :: prt_space = 16  !< Print vertical whitespace between parameters & table/titles & totals
+  integer,          parameter, public :: prt_ALL   = 31  !< Print everything
 
 end module mrffl_prt_sets

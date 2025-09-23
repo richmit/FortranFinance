@@ -36,14 +36,14 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm12
-  use mrffl_config,   only: rk=>mrfflrk, ik=>mrfflik, mrfflcnfmt, mrfflctfmt
+  use mrffl_config,   only: rk=>mrfflrk, mrfflcnfmt, mrfflctfmt
   use mrffl_tvm12,    only: tvm12_solve, tvm12_print, pmt_at_beginning, pmt_at_end
   use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n, var_pmt
   use mrffl_prt_sets, only: prt_ALL
 
   implicit none (type, external)
 
-  integer(kind=ik) :: n, status
+  integer          :: n, status
   real(kind=rk)    :: i, pv, fv, pmt
 
   mrfflcnfmt = "f10.4"

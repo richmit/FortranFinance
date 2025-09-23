@@ -43,14 +43,14 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program stocks
-  use mrffl_config,      only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config,      only: rk=>mrfflrk
   use mrffl_us_markets,  only: rut_resample
   use mrffl_percentages, only: add_percentage
 
   implicit none (type, external)
 
   integer,          parameter :: years            = 20      ! Number of years to project out our stocks adjusted value
-  integer(kind=ik), parameter :: mc_history_years = 30      ! Number of years of US stocks data for our random stocks values
+  integer,          parameter :: mc_history_years = 30      ! Number of years of US stocks data for our random stocks values
   integer,          parameter :: trials           = 2000    ! Number of trials to run
   real(kind=rk),    parameter :: initial_value    = 100     ! This is the value we will stocks adjusted over the years
 

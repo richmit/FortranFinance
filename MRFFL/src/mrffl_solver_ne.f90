@@ -42,7 +42,7 @@
 !! NVIDIA HPC compiler to core dump.  That's why this code is "experimental".
 !!
 module mrffl_solver_ne
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
+  use mrffl_config, only: rk=>mrfflrk
   implicit none (type, external)
   private
 
@@ -73,25 +73,25 @@ contains
 
     interface
        real(kind=rk) function func_to_solve_t(x, r_dat, i_dat)
-         use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
+         use mrffl_config, only: rk=>mrfflrk
          implicit none (type, external)
          real(kind=rk),    intent(in) :: x
          real(kind=rk),    intent(in) :: r_dat(:)
-         integer(kind=ik), intent(in) :: i_dat(:)
+         integer,          intent(in) :: i_dat(:)
        end function func_to_solve_t
     end interface
 
     procedure(func_to_solve_t)    :: f
     real(kind=rk),    intent(in)  :: r_dat(:)
-    integer(kind=ik), intent(in)  :: i_dat(:)
+    integer,          intent(in)  :: i_dat(:)
     real(kind=rk),    intent(out) :: xc
     real(kind=rk),    intent(in)  :: x0_init, x1_init
     real(kind=rk),    intent(in)  :: x_epsilon, y_epsilon
-    integer(kind=ik), intent(in)  :: max_itr
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(in)  :: max_itr
+    integer,          intent(out) :: status
     logical,          intent(in)  :: progress
     real(kind=rk)                 :: x0, x1, f0, f1, fc
-    integer(kind=ik)              :: itr
+    integer                       :: itr
 
     x0 = x0_init
     xc = x0
@@ -165,26 +165,26 @@ contains
 
     interface
        real(kind=rk) function func_to_solve_t(x, r_dat, i_dat)
-         use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik
+         use mrffl_config, only: rk=>mrfflrk
          implicit none (type, external)
          real(kind=rk),    intent(in) :: x
          real(kind=rk),    intent(in) :: r_dat(:)
-         integer(kind=ik), intent(in) :: i_dat(:)
+         integer,          intent(in) :: i_dat(:)
        end function func_to_solve_t
     end interface
 
     procedure(func_to_solve_t)    :: f
     real(kind=rk),    intent(in)  :: r_dat(:)
-    integer(kind=ik), intent(in)  :: i_dat(:)
+    integer,          intent(in)  :: i_dat(:)
     real(kind=rk),    intent(out) :: xc
     real(kind=rk),    intent(in)  :: x0_init(:), x1_init(:)
     real(kind=rk),    intent(in)  :: x_epsilon, y_epsilon
-    integer(kind=ik), intent(in)  :: max_itr
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(in)  :: max_itr
+    integer,          intent(out) :: status
     logical,          intent(in)  :: progress
-    integer(kind=ik)              :: interval, num_intervals
+    integer                       :: interval, num_intervals
 
-    num_intervals = size(x0_init, kind=ik)
+    num_intervals = size(x0_init)
     do interval=1,num_intervals
        if (progress) print *, "Bisection on [", x0_init(interval), ", ", x1_init(interval), "]"
        call bisection(xc, x0_init(interval), x1_init(interval), f, r_dat, i_dat, x_epsilon, y_epsilon, max_itr, &

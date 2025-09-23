@@ -207,7 +207,7 @@
 !!
 module mrffl_tvm
   use, intrinsic :: ieee_arithmetic, only: ieee_is_finite, ieee_is_nan
-  use mrffl_config, only: rk=>mrfflrk, ik=>mrfflik, zero_epsilon
+  use mrffl_config, only: rk=>mrfflrk, zero_epsilon
   use mrffl_bitset, only: bitset_size, bitset_minus, bitset_subsetp, bitset_not_subsetp, bitset_not_intersectp
   use mrffl_var_sets, only: var_NONE, var_a, var_p, var_i, var_g, var_n, var_pv, var_fv, var_q
   use mrffl_percentages, only: p2f => percentage_to_fraction, f2p => fraction_to_percentage
@@ -234,7 +234,7 @@ contains
   !----------------------------------------------------------------------------------------------------------------------------
   !> compute future value from present value (pv), number of periods (n), and an intrest rate (i).
   real(kind=rk) pure elemental function fv_from_pv_n_i(pv, n, i)
-    integer(kind=ik), intent(in) :: n
+    integer,          intent(in) :: n
     real(kind=rk),    intent(in) :: pv, i
     fv_from_pv_n_i = pv * (1+p2f(i)) ** n
   end function fv_from_pv_n_i
@@ -265,7 +265,7 @@ contains
   !! @param a         First payment (Annuity)
   !!
   real(kind=rk) pure function tvm_geometric_annuity_sum_a(n, g, a)
-    integer(kind=ik), intent(in) :: n
+    integer,          intent(in) :: n
     real(kind=rk),    intent(in) :: g, a
     real(kind=rk)                :: gq
     if (n < 1) then
@@ -296,9 +296,9 @@ contains
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
   !! @param e         Early end counted from time end (t=n). i.e. e=0 means the last payment is at end of period n.
   !!
-  integer(kind=ik) pure function tvm_delayed_annuity_num_payments(n, d, e)
-    integer(kind=ik), intent(in) :: n, d, e
-    tvm_delayed_annuity_num_payments = 1_ik + n - e - d
+  integer          pure function tvm_delayed_annuity_num_payments(n, d, e)
+    integer,          intent(in) :: n, d, e
+    tvm_delayed_annuity_num_payments = 1 + n - e - d
   end function tvm_delayed_annuity_num_payments
 
   !----------------------------------------------------------------------------------------------------------------------------
@@ -316,9 +316,9 @@ contains
   subroutine tvm_lump_sum_solve(n, i, pv, fv, unknowns, status)
     implicit none (type, external)
     real(kind=rk),    intent(inout) :: n, i, pv, fv
-    integer(kind=ik), intent(in)    :: unknowns
-    integer(kind=ik), intent(out)   :: status
-    integer(kind=ik), parameter     :: allowed_vars = var_n + var_i + var_pv + var_fv
+    integer,          intent(in)    :: unknowns
+    integer,          intent(out)   :: status
+    integer,          parameter     :: allowed_vars = var_n + var_i + var_pv + var_fv
     real(kind=rk)                   :: a
     if (bitset_not_subsetp(unknowns, allowed_vars)) then
        status = 1193 ! "ERROR(tvm_lump_sum_solve): Unknown unknowns!"
@@ -330,9 +330,9 @@ contains
     end if
     a = pv
     if (bitset_subsetp(var_pv, unknowns)) then
-       call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, 0_ik, var_pv+var_a, status)
+       call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, 0, var_pv+var_a, status)
     else
-       call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, 0_ik, unknowns, status)
+       call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, 0, unknowns, status)
     end if
   end subroutine tvm_lump_sum_solve
 
@@ -370,9 +370,9 @@ contains
   !!
   subroutine tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, unknowns, status)
     real(kind=rk),    intent(inout) :: n, i, pv, fv, a
-    integer(kind=ik), intent(in)    :: d, unknowns
-    integer(kind=ik), intent(out)   :: status
-    integer(kind=ik), parameter     :: allowed_vars = var_n + var_i + var_pv + var_fv + var_a
+    integer,          intent(in)    :: d, unknowns
+    integer,          intent(out)   :: status
+    integer,          parameter     :: allowed_vars = var_n + var_i + var_pv + var_fv + var_a
     integer                         :: num_unknowns
     real(kind=rk)                   :: iq
     num_unknowns = bitset_size(unknowns)
@@ -465,8 +465,8 @@ contains
   !!
   subroutine tvm_delayed_lump_sum_check(n, i, pv, fv, a, d, status)
     real(kind=rk),    intent(in)  :: n, i, pv, fv, a
-    integer(kind=ik), intent(in)  :: d
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(in)  :: d
+    integer,          intent(out) :: status
     real(kind=rk)                 :: iq
     if (d < 0) then
        status = 1129 ! "ERROR(tvm_delayed_lump_sum_check): Parameters inconsistent (d<0)!"
@@ -474,7 +474,7 @@ contains
        status = 1130 ! "ERROR(tvm_delayed_lump_sum_check): Parameters inconsistent (n is infinite)!"
     else if (ieee_is_nan(n)) then
        status = 1131 ! "ERROR(tvm_delayed_lump_sum_check): Parameters inconsistent (n is NaN)!"
-    else if (d > nint(n, ik)) then
+    else if (d > nint(n)) then
        status = 1132 ! "ERROR(tvm_delayed_lump_sum_check): Parameters inconsistent (d>n)!"
     else if (n < zero_epsilon) then
        status = 1133 ! "ERROR(tvm_delayed_lump_sum_check): Parameters inconsistent (n<0)!"
@@ -566,10 +566,10 @@ contains
   !!
   subroutine tvm_delayed_level_annuity_solve(n, i, pv, fv, a, d, e, unknowns, status)
     real(kind=rk),    intent(inout) :: n, i, pv, fv, a
-    integer(kind=ik), intent(in)    :: d, e
-    integer(kind=ik), intent(in)    :: unknowns
-    integer(kind=ik), intent(out)   :: status
-    integer(kind=ik), parameter     :: allowed_vars = var_n + var_i + var_pv + var_fv + var_a
+    integer,          intent(in)    :: d, e
+    integer,          intent(in)    :: unknowns
+    integer,          intent(out)   :: status
+    integer,          parameter     :: allowed_vars = var_n + var_i + var_pv + var_fv + var_a
     integer                         :: num_unknowns
     real(kind=rk)                   :: islvivl0(3), islvivl1(3), iq
     num_unknowns = bitset_size(unknowns)
@@ -605,7 +605,7 @@ contains
                 else if ((d==1) .and. (e==1)) then
                    i = f2p((fv - pv) * a / pv / (a + fv))
                 else
-                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_n, 1.0e-5_rk, 1.0e-5_rk, 1000_ik, status, .false.)
+                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_n, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
                    if (status /= 0) then
                       status = 1099 ! "ERROR(tvm_delayed_level_annuity_solve): i solver failed for unknown n case!"
                       return
@@ -622,13 +622,13 @@ contains
           else
              if (bitset_subsetp(var_i, unknowns)) then          ! a & n are known. i is unknown
                 if (bitset_subsetp(var_fv, unknowns)) then      ! a, n, & pv are known. i & fv are unknown
-                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_fv, 1.0e-7_rk, 1.0e-7_rk, 1000_ik, status, .false.)
+                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_fv, 1.0e-7_rk, 1.0e-7_rk, 1000, status, .false.)
                    if (status /= 0) then
                       status = 1100 ! "ERROR(tvm_delayed_level_annuity_solve): i solver failed for unknown fv case!"
                       return
                    end if
                 else if (bitset_subsetp(var_pv, unknowns)) then      ! a, n, & fv are known. i & pv are be unknown.
-                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_pv, 1.0e-7_rk, 1.0e-7_rk, 1000_ik, status, .false.)
+                   call multi_bisection(i, islvivl0, islvivl1, sf_i_no_pv, 1.0e-7_rk, 1.0e-7_rk, 1000, status, .false.)
                    if (status /= 0) then
                       status = 1101 ! "ERROR(tvm_delayed_level_annuity_solve): i solver failed for unknown pv case!"
                       return
@@ -685,8 +685,8 @@ contains
   !!
   subroutine tvm_delayed_level_annuity_check(n, i, pv, fv, a, d, e, status)
     real(kind=rk),    intent(in)  :: n, i, pv, fv, a
-    integer(kind=ik), intent(in)  :: d, e
-    integer(kind=ik), intent(out) :: status
+    integer,          intent(in)  :: d, e
+    integer,          intent(out) :: status
     real(kind=rk)                 :: iq
     if (d < 0) then
        status = 1065 ! "ERROR(tvm_delayed_level_annuity_check): Parameters inconsistent (d<0)!"
@@ -696,11 +696,11 @@ contains
        status = 1067 ! "ERROR(tvm_delayed_level_annuity_check): Parameters inconsistent (n is infinite)!"
     else if (ieee_is_nan(n)) then
        status = 1068 ! "ERROR(tvm_delayed_level_annuity_check): Parameters inconsistent (n is NaN)!"
-    else if (d > nint(n, ik)) then
+    else if (d > nint(n)) then
        status = 1069 ! "ERROR(tvm_delayed_level_annuity_check): Parameters inconsistent (d>n)!"
-    else if (e > nint(n, ik)) then
+    else if (e > nint(n)) then
        status = 1070 ! "ERROR(tvm_delayed_level_annuity_check): Parameters inconsistent (e>n)!"
-    else if ((d+e) > nint(n, ik)) then
+    else if ((d+e) > nint(n)) then
        status = 1071 ! "ERROR(tvm_delayed_level_annuity_check): Parameters inconsistent (d+e>n)!"
     else if (n < zero_epsilon) then
        status = 1072 ! "ERROR(tvm_delayed_level_annuity_check): Parameters inconsistent (n<0)!"
@@ -785,10 +785,10 @@ contains
   !!
   subroutine tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, unknowns, status)
     real(kind=rk),    intent(inout) :: n, i, g, pv, fv, a
-    integer(kind=ik), intent(in)    :: d, e
-    integer(kind=ik), intent(in)    :: unknowns
-    integer(kind=ik), intent(out)   :: status
-    integer(kind=ik), parameter     :: allowed_vars = var_n + var_pv + var_fv + var_a
+    integer,          intent(in)    :: d, e
+    integer,          intent(in)    :: unknowns
+    integer,          intent(out)   :: status
+    integer,          parameter     :: allowed_vars = var_n + var_pv + var_fv + var_a
     integer                         :: num_unknowns
     real(kind=rk)                   :: iq, gq, iq1, gq1, giq
     num_unknowns = bitset_size(unknowns)
@@ -876,8 +876,8 @@ contains
   !!
   subroutine tvm_delayed_geometric_annuity_check(n, i, g, pv, fv, a, d, e, status)
     real(kind=rk),    intent(in)    :: n, i, g, pv, fv, a
-    integer(kind=ik), intent(in)    :: d, e
-    integer(kind=ik), intent(out)   :: status
+    integer,          intent(in)    :: d, e
+    integer,          intent(out)   :: status
     real(kind=rk)                   :: iq, gq
     if (d < 0) then
        status = 1001 ! "ERROR(tvm_delayed_geometric_annuity_check): Parameters inconsistent (d<0)!"
@@ -887,11 +887,11 @@ contains
        status = 1003 ! "ERROR(tvm_delayed_geometric_annuity_check): Parameters inconsistent (n is infinite)!"
     else if (ieee_is_nan(n)) then
        status = 1004 ! "ERROR(tvm_delayed_geometric_annuity_check): Parameters inconsistent (n is NaN)!"
-    else if (d > nint(n, ik)) then
+    else if (d > nint(n)) then
        status = 1005 ! "ERROR(tvm_delayed_geometric_annuity_check): Parameters inconsistent (d>n)!"
-    else if (e > nint(n, ik)) then
+    else if (e > nint(n)) then
        status = 1006 ! "ERROR(tvm_delayed_geometric_annuity_check): Parameters inconsistent (e>n)!"
-    else if ((d+e) > nint(n, ik)) then
+    else if ((d+e) > nint(n)) then
        status = 1007 ! "ERROR(tvm_delayed_geometric_annuity_check): Parameters inconsistent (d+e>n)!"
     else if (n < zero_epsilon) then
        status = 1008 ! "ERROR(tvm_delayed_geometric_annuity_check): Parameters inconsistent (n<0)!"
@@ -992,10 +992,10 @@ contains
   !!
   subroutine tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, unknowns, status)
     real(kind=rk),    intent(inout) :: n, i, q, pv, fv, a
-    integer(kind=ik), intent(in)    :: d, e
-    integer(kind=ik), intent(in)    :: unknowns
-    integer(kind=ik), intent(out)   :: status
-    integer(kind=ik)                :: cur_unk, lst_unk
+    integer,          intent(in)    :: d, e
+    integer,          intent(in)    :: unknowns
+    integer,          intent(out)   :: status
+    integer                         :: cur_unk, lst_unk
     real(kind=rk)                   :: iq, iq1, epd, n1
     cur_unk = unknowns
     lst_unk = cur_unk
@@ -1066,8 +1066,8 @@ contains
   !!
   subroutine tvm_delayed_arithmetic_annuity_check(n, i, q, pv, fv, a, d, e, status)
     real(kind=rk),    intent(in)    :: n, i, q, pv, fv, a
-    integer(kind=ik), intent(in)    :: d, e
-    integer(kind=ik), intent(out)   :: status
+    integer,          intent(in)    :: d, e
+    integer,          intent(out)   :: status
     real(kind=rk)                   :: iq
     if (d < 0) then
        status = 4097 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d<0)!"
@@ -1077,11 +1077,11 @@ contains
        status = 4099 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n is infinite)!"
     else if (ieee_is_nan(n)) then
        status = 4100 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n is NaN)!"
-    else if (d > nint(n, ik)) then
+    else if (d > nint(n)) then
        status = 4101 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d>n)!"
-    else if (e > nint(n, ik)) then
+    else if (e > nint(n)) then
        status = 4102 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (e>n)!"
-    else if ((d+e) > nint(n, ik)) then
+    else if ((d+e) > nint(n)) then
        status = 4103 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d+e>n)!"
     else if (n < zero_epsilon) then
        status = 4104 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n<0)!"
