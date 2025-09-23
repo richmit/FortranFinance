@@ -54,19 +54,19 @@ module mrffl_stats
 contains
 
   !--------------------------------------------------------------------------------------------------------------------------------
-  !> Return random integer in U([optional_lower_bound,upper_bound)) -- optional_lower_bound is 0 if missing.
+  !> Return random integer in U([lower_bound_o,upper_bound)) -- lower_bound_o is 0 if missing.
   !!
   !! @param upper_bound          Upper bound for random number
-  !! @param optional_lower_bound Lower bound for random number
+  !! @param lower_bound_o Lower bound for random number
   !!
-  integer function rand_int(upper_bound, optional_lower_bound)
+  integer function rand_int(upper_bound, lower_bound_o)
     implicit none (type, external)
     integer,                    intent(in) :: upper_bound
-    integer,          optional, intent(in) :: optional_lower_bound
+    integer,          optional, intent(in) :: lower_bound_o
     integer                                :: lower_bound
     real(kind=rk)                          :: r
     lower_bound = 0
-    if (present(optional_lower_bound)) lower_bound = optional_lower_bound
+    if (present(lower_bound_o)) lower_bound = lower_bound_o
     if (lower_bound > upper_bound) then
        error stop "ERROR(rand_int): lower_bound > upper_bound!"
     end if
@@ -75,19 +75,19 @@ contains
   end function rand_int
 
   !--------------------------------------------------------------------------------------------------------------------------------
-  !> Return random real value in U([optional_lower_bound,upper_bound)) -- optional_lower_bound is 0 if missing.
+  !> Return random real value in U([lower_bound_o,upper_bound)) -- lower_bound_o is 0 if missing.
   !!
   !! @param upper_bound          Upper bound for random number
-  !! @param optional_lower_bound Lower bound for random number
+  !! @param lower_bound_o Lower bound for random number
   !!
-  real(kind=rk) function rand_real(upper_bound, optional_lower_bound)
+  real(kind=rk) function rand_real(upper_bound, lower_bound_o)
     implicit none (type, external)
     real(kind=rk),           intent(in) :: upper_bound
-    real(kind=rk), optional, intent(in) :: optional_lower_bound
+    real(kind=rk), optional, intent(in) :: lower_bound_o
     real(kind=rk)                       :: lower_bound
     real(kind=rk)                       :: r
     lower_bound = 0
-    if (present(optional_lower_bound)) lower_bound = optional_lower_bound
+    if (present(lower_bound_o)) lower_bound = lower_bound_o
     if (lower_bound > upper_bound) then
        error stop "ERROR(rand_real): lower_bound > upper_bound!"
     end if
