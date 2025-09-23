@@ -319,6 +319,8 @@ Lastly we have a graph that shows us the probability distribution of final savin
 :CUSTOM_ID: case_20_config
 :END:
 
+You can find this file in the GIT repository here: [[https://github.com/richmit/FortranFinance/blob/main/retirement_simulation/config_20.nml][=config_20.nml=]]
+
 #+begin_src sh :results output verbatum :exports results :wrap "src f90 :eval never :tangle no"
 grep -A 1000 '^&SIMPARM' ~/world/my_prog/finance/FortranFinance/retirement_simulation/config_20.nml
 #+end_src
@@ -418,6 +420,13 @@ verbosity                           = 10         !! How much to print when runni
 /
 #+end_src
 
+If you have make configured as described [[file:../MRFFL/index.html#examples][here]], then you can create all the images
+in this section by entering the =retirement_simulation/= directory, and running make like this:
+
+#+begin_src sh :eval never :tangle no :results none :exports code
+make 20
+#+end_src
+
 ** Approaching Retirement
 :PROPERTIES:
 :CUSTOM_ID: case_60_intro
@@ -486,7 +495,9 @@ Lastly, the distribution of final savings no longer shows dying broke as the hig
 :CUSTOM_ID: case_60_config
 :END:
 
-The original plan config file is here:
+You can find the configuration file in the GIT repository here: [[https://github.com/richmit/FortranFinance/blob/main/retirement_simulation/config_60.nml][=config_60.nml=]]
+
+The configuration file for the origional plan:
 
 #+begin_src sh :results output verbatum :exports results :wrap "src f90 :eval never :tangle no"
 grep -A 1000 '^&SIMPARM' ~/world/my_prog/finance/FortranFinance/retirement_simulation/config_60.nml
@@ -595,6 +606,14 @@ The updated plan changes these lines
   high_investment_p                   = 50.0,      !! percentage of investments at high growth
   low_investment_p                    = 20.0,      !! percentage of investments at low growth
   initial_expected_expenses_shr       = 100000.0,  !! First year expenses.
+#+end_src
+
+If you have make configured as described [[file:../MRFFL/index.html#examples][here]], then you can create all the images
+in this section by entering the =retirement_simulation/= directory, and running make like this:
+
+#+begin_src sh :eval never :tangle no :results none :exports code
+make 60o
+make 60ml
 #+end_src
 
 * Operation

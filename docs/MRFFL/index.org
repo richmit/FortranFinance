@@ -96,9 +96,9 @@ You will find several programs, most of which use MRFFL, in various directories 
   - [[https://github.com/richmit/FortranFinance/tree/main/loans][=loans=]]                                   :: Illustrates how to use MRFFL TVM solvers in combination with cashflow series.
   - [[https://github.com/richmit/FortranFinance/tree/main/monte_carlo][=monte_carlo=]]                       :: Illustrates basic resampling monte carlo for inflation and stock market returns.
   - [[https://github.com/richmit/FortranFinance/tree/main/retirement][=retirement=]]                         :: Some TVM based retirement computations.
-  - [[https://github.com/richmit/FortranFinance/tree/main/retirement_simulation][=retirement_simulation=]]   :: A comprehensive simulator for a married couple's retirement (not much MRFFL used here)
+  - [[https://github.com/richmit/FortranFinance/tree/main/retirement_simulation][=retirement_simulation=]]   :: A comprehensive simulator for a married couple's retirement
 
-In addiont, the unit & functional tests in the MRFFL directory can provide some insight into the useage ofMRFFL:
+In addition, the unit & functional tests in the MRFFL directory can provide some insight into the usage of MRFFL:
   - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/functional_tests][=MRFFL/functional_tests=]] :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
   - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/unit_tests][=MRFFL/unit_tests=]]             :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
 
@@ -236,7 +236,7 @@ add_executable(irr irr.f90)
 target_link_libraries(irr PRIVATE MRFFL)
 #+end_src
 
-That's really all we need to ake use of MRFFL.  Note this =CMakeLists.txt= uses =MRFFL.cmake=, but this is not strictly required. The paths can be set by
+That's really all we need to make use of MRFFL.  Note this =CMakeLists.txt= uses =MRFFL.cmake=, but this is not strictly required. The paths can be set by
 hand, and the following would work instead:
 
 #+begin_src cmake :eval never :tangle no

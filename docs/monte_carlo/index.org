@@ -40,7 +40,6 @@
 Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
 
 #+TOC: headlines 5
-
 These examples both use simple, resampling monte carlo on historical US financial data.  Both examples include both Fortran code to run the simulations, and R
 code to visualize them.  One of the examples illustrates endpoint distribution forecasting while the other illustrates trajectory forecasting.
 
