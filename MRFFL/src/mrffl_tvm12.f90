@@ -96,7 +96,7 @@ contains
     real(kind=rk),    intent(inout) :: i, pv, pmt, fv
     integer,          intent(in)    :: pmt_time, unknown
     integer,          intent(out)   :: status
-    real (kind=rk)                  :: ip1tn, tmp1, tmp2, islvivl0(3), islvivl1(3), r_dat(4)
+    real(kind=rk)                   :: ip1tn, tmp1, tmp2, islvivl0(3), islvivl1(3), r_dat(4)
     integer                         :: i_dat(2)
     if (unknown /= var_n) then
        if (n == 0) then
@@ -219,7 +219,7 @@ contains
     implicit none (type, external)
     integer,          intent(in) :: n, pmt_time, print_out
     real(kind=rk),    intent(in) :: i, pv, fv, pmt
-    real (kind=rk)               :: tot_pmt, cur_pv
+    real(kind=rk)                :: tot_pmt, cur_pv
     integer                      :: k
 
     if ((pmt_time /= pmt_at_beginning) .and. (pmt_time /= pmt_at_end)) then
