@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-09-23 Tue 13:38 -->
+<!-- 2025-09-24 Wed 14:16 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>MR Fortran Finance Library (MRFFL)</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-09-23 13:38:26</i></td>
+<td class="org-left"><i>2025-09-24 14:07:44</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-09-23 13:38:28</i></td>
+<td class="org-left"><i>2025-09-24 14:16:52</i></td>
 </tr>
 </tbody>
 </table>
@@ -254,31 +254,20 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <ul>
 <li><a href="#intro">1. Introduciton</a></li>
 <li><a href="#modlist">2. MRFFL (MR Fortran Finance Library) Modules</a></li>
-<li><a href="#examples">3. Example Programs</a>
-<ul>
-<li><a href="#examples-build-make">3.1. Building Example Programs With GNU Make</a></li>
-<li><a href="#examples-build-cmake">3.2. Building Example Programs With CMake</a></li>
-</ul>
-</li>
+<li><a href="#examples">3. Example Programs</a></li>
 <li><a href="#use">4. Using MRFFL (MR Fortran Finance Library) Modules</a>
 <ul>
-<li><a href="#use-cmake">4.1. Using CMake</a></li>
-<li><a href="#use-make">4.2. Using GNU Make</a>
+<li><a href="#use-makeinc">4.1. Notes about <code>include.mk</code></a>
 <ul>
-<li><a href="#use-makeinc">4.2.1. Notes about <code>include.mk</code></a>
-<ul>
-<li><a href="#makeinc-names">4.2.1.1. Names of files</a></li>
-<li><a href="#makeinc-vars">4.2.1.2. Useful Variables</a></li>
-<li><a href="#makeinc-target">4.2.1.3. Useful Targets</a></li>
-<li><a href="#makeinc-stlib">4.2.1.4. Static Library</a></li>
-<li><a href="#makeinc-dylib">4.2.1.5. Dynamic Library (<code>.so</code> and <code>.dll</code> files)</a></li>
+<li><a href="#makeinc-names">4.1.1. Names of files</a></li>
+<li><a href="#makeinc-vars">4.1.2. Useful Variables</a></li>
+<li><a href="#makeinc-target">4.1.3. Useful Targets</a></li>
+<li><a href="#makeinc-stlib">4.1.4. Static Library</a></li>
+<li><a href="#makeinc-dylib">4.1.5. Dynamic Library (<code>.so</code> and <code>.dll</code> files)</a></li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li><a href="#testenv">5. Tested Environments</a></li>
 </ul>
 </div>
 </div>
@@ -341,34 +330,27 @@ the same variables to populate a cashflow that can be further analyzed or printe
 <div class="outline-text-2" id="text-examples">
 <p>
 You will find several programs, most of which use MRFFL, in various directories at the base of the
-<a href="https://github.com/richmit/FortranFinance">FortranFinance</a> repository:
 </p>
+<ul class="org-ul">
+<li><a href="https://github.com/richmit/FortranFinance">FortranFinance</a> repository:
 <dl class="org-dl">
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/cashflows"><code>cashflows</code></a>                          </dt><dd>Some simple MRFFL cashflow examples.</dd>
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/loans"><code>loans</code></a>                                  </dt><dd>Illustrates how to use MRFFL TVM solvers in combination with cashflow series.</dd>
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/monte_carlo"><code>monte_carlo</code></a>                      </dt><dd>Illustrates basic resampling monte carlo for inflation and stock market returns.</dd>
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/retirement"><code>retirement</code></a>                        </dt><dd>Some TVM based retirement computations.</dd>
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/retirement_simulation"><code>retirement_simulation</code></a>  </dt><dd>A comprehensive simulator for a married couple's retirement</dd>
-</dl>
-
-<p>
-In addition, the unit &amp; functional tests in the MRFFL directory can provide some insight into the usage of MRFFL:
-</p>
+</dl></li>
+<li>In addition, the unit &amp; functional tests in the MRFFL directory can provide some insight into the usage of MRFFL:
 <dl class="org-dl">
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/MRFFL/functional_tests"><code>MRFFL/functional_tests</code></a></dt><dd>Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.</dd>
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/MRFFL/unit_tests"><code>MRFFL/unit_tests</code></a>            </dt><dd>Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.</dd>
-</dl>
-</div>
-<div id="outline-container-examples-build-make" class="outline-3">
-<h3 id="examples-build-make"><span class="section-number-3">3.1.</span> Building Example Programs With GNU Make</h3>
-<div class="outline-text-3" id="text-examples-build-make">
-<p>
-This section describes how to build using GNU Make.  A <a href="#examples-build-cmake">later section</a> describes how to build with CMake.
-</p>
+</dl></li>
+</ul>
+
 
 <p>
-The GNU Make based build is the one I use day to day, and thus gets more testing and is more complete.  In order to compile on your platform you may need to
-modify the <code>makefile</code> in each directory to use your favorite Fortran compiler.  At the top of each makefile you will find something like this:
+In order to compile on your platform you may need to modify the <code>makefile</code> in each directory to use your favorite Fortran compiler.  At the top of each
+makefile you will find something like this:
 </p>
 
 <div class="org-src-container">
@@ -408,127 +390,9 @@ completely unnecessary for making full use of the modules, so you you can safely
 </p>
 </div>
 </div>
-<div id="outline-container-examples-build-cmake" class="outline-3">
-<h3 id="examples-build-cmake"><span class="section-number-3">3.2.</span> Building Example Programs With CMake</h3>
-<div class="outline-text-3" id="text-examples-build-cmake">
-<p>
-This section describes how to build using CMake.  A <a href="#examples-build-make">previous section</a> describes how to build with GNU Make.
-</p>
-
-<p>
-Most of the programs in <a href="https://github.com/richmit/FortranFinance">FortranFinance</a> make use of MRFFL.  When using a CMake based workflow, MRFFL is accessed
-via a central include directory of compiled module files and a static library.  Before we can compile any examples, we must create these module files and
-library.
-</p>
-
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #b0c4de;">cd</span> MRFFL/build
-rm -rf *
-cmake .. -DCMAKE_Fortran_COMPILER=gfortran
-cmake --build .
-</pre>
-</div>
-
-<p>
-Now that MRFFL is compiled, we can make use of it.  As an example, we can build the <code>irr</code> executable in the <code>cashflows</code> directory like so:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-sh"><span style="color: #b0c4de;">cd</span> cashflows/build
-rm -rf *
-cmake .. -DCMAKE_Fortran_COMPILER=gfortran
-cmake --build .
-</pre>
-</div>
-</div>
-</div>
-</div>
 <div id="outline-container-use" class="outline-2">
 <h2 id="use"><span class="section-number-2">4.</span> Using MRFFL (MR Fortran Finance Library) Modules</h2>
 <div class="outline-text-2" id="text-use">
-</div>
-<div id="outline-container-use-cmake" class="outline-3">
-<h3 id="use-cmake"><span class="section-number-3">4.1.</span> Using CMake</h3>
-<div class="outline-text-3" id="text-use-cmake">
-<p>
-In the <a href="#examples-build-cmake">section on building examples</a> we build the MRFFL library using CMake.  This process will result in several new files and
-directories:
-</p>
-
-<ul class="org-ul">
-<li><code>MRFFL/build/lib/</code> will contain the compiled MRFFL library.</li>
-<li><code>MRFFL/build/modules/</code> will contain the generated module files.</li>
-<li><code>MRFFL/build/MRFFL.cmake/</code> a CMake include file that can be used to compile things with the MRFFL library.</li>
-</ul>
-
-<p>
-For the most part, the following compilers are well supported:
-</p>
-<ul class="org-ul">
-<li>GNU Fortran</li>
-<li>Intel ifx</li>
-<li>NVIDIA HPC Fortran</li>
-<li>Flang</li>
-</ul>
-
-<p>
-If you are using a compiler not on this list, then more configuration may be required (<code>-DCMAKE_Fortran_FLAGS</code> for example).
-</p>
-
-<p>
-With MRFFL compiled using CMake, we can use it from another project.  The <code>cashflows</code> directory contains an example <code>CMakeLists.txt</code> for the <code>irr</code> executable:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cmake"><span style="color: #00fa9a; font-weight: bold;">cmake_minimum_required</span>(VERSION 3.30)
-
-<span style="color: #00fa9a; font-weight: bold;">project</span>(MRFFL_cashflow_examples VERSION 0.1
-        DESCRIPTION <span style="color: #fa8072;">"Examples for MRFFL_cashflows module"</span>
-        LANGUAGES Fortran)
-
-<span style="color: #00fa9a; font-weight: bold;">set</span>(CMAKE_Fortran_PREPROCESS NO)
-
-<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Find and include the MRFFL.cmake file.  This will setup the MRFFL library -- it's include dirs and link dir.</span>
-<span style="color: #00ffff;">if</span>(EXISTS <span style="color: #fa8072;">"../../MRFFL/build/MRFFL.cmake"</span>)
-  <span style="color: #00fa9a; font-weight: bold;">message</span>(STATUS <span style="color: #fa8072;">" MRFFL Search: Found: Exported"</span>)
-  <span style="color: #00fa9a; font-weight: bold;">include</span>(<span style="color: #fa8072;">"../MRFFL/build/MRFFL.cmake"</span>)
-  <span style="color: #00ffff;">if</span>(<span style="color: #00fa9a; font-weight: bold;">NOT</span> (EXISTS <span style="color: #fa8072;">"../../MRFFL/build/modules/mrffl_config.mod"</span>) )
-    <span style="color: #00fa9a; font-weight: bold;">message</span>(ERROR <span style="color: #fa8072;">" MRFFL Search: Found exported cmake file, but MRFFL library has not been built!!!"</span>)
-  <span style="color: #00ffff;">endif</span>()
-<span style="color: #00ffff;">else</span>()
-  <span style="color: #00fa9a; font-weight: bold;">message</span>(ERROR <span style="color: #fa8072;">" MRFFL Search: Failed!!!"</span>)
-<span style="color: #00ffff;">endif</span>()
-
-<span style="color: #00fa9a; font-weight: bold;">add_executable</span>(irr irr.f90)
-<span style="color: #00fa9a; font-weight: bold;">target_link_libraries</span>(irr PRIVATE MRFFL)
-</pre>
-</div>
-
-<p>
-That's really all we need to make use of MRFFL.  Note this <code>CMakeLists.txt</code> uses <code>MRFFL.cmake</code>, but this is not strictly required. The paths can be set by
-hand, and the following would work instead:
-</p>
-
-<div class="org-src-container">
-<pre class="src src-cmake"><span style="color: #00fa9a; font-weight: bold;">cmake_minimum_required</span>(VERSION 3.30)
-
-<span style="color: #00fa9a; font-weight: bold;">project</span>(MRFFL_cashflow_examples VERSION 0.1
-        DESCRIPTION <span style="color: #fa8072;">"Examples for MRFFL_cashflows module"</span>
-        LANGUAGES Fortran)
-
-<span style="color: #00fa9a; font-weight: bold;">set</span>(CMAKE_Fortran_PREPROCESS NO)
-
-<span style="color: #00fa9a; font-weight: bold;">add_executable</span>(irr irr.f90)
-<span style="color: #00fa9a; font-weight: bold;">target_link_libraries</span>(irr PRIVATE MRFFL)
-<span style="color: #00fa9a; font-weight: bold;">target_include_directories</span>(irr AFTER PRIVATE ../MRFFL/build/modules)
-<span style="color: #00fa9a; font-weight: bold;">target_link_directories</span>(irr BEFORE PRIVATE ../MRFFL/build/lib)
-</pre>
-</div>
-</div>
-</div>
-<div id="outline-container-use-make" class="outline-3">
-<h3 id="use-make"><span class="section-number-3">4.2.</span> Using GNU Make</h3>
-<div class="outline-text-3" id="text-use-make">
 <p>
 All of the code is in the module source files with no external dependencies at all.  So you just need to call the modules from your code, and then
 compile/link everything together.
@@ -579,13 +443,13 @@ modules in the makefile if you wish.  Such a rule might look like the following:
 </pre>
 </div>
 </div>
-<div id="outline-container-use-makeinc" class="outline-4">
-<h4 id="use-makeinc"><span class="section-number-4">4.2.1.</span> Notes about <code>include.mk</code></h4>
-<div class="outline-text-4" id="text-use-makeinc">
+<div id="outline-container-use-makeinc" class="outline-3">
+<h3 id="use-makeinc"><span class="section-number-3">4.1.</span> Notes about <code>include.mk</code></h3>
+<div class="outline-text-3" id="text-use-makeinc">
 </div>
-<div id="outline-container-makeinc-names" class="outline-5">
-<h5 id="makeinc-names"><span class="section-number-5">4.2.1.1.</span> Names of files</h5>
-<div class="outline-text-5" id="text-makeinc-names">
+<div id="outline-container-makeinc-names" class="outline-4">
+<h4 id="makeinc-names"><span class="section-number-4">4.1.1.</span> Names of files</h4>
+<div class="outline-text-4" id="text-makeinc-names">
 <dl class="org-dl">
 <dt>File extensions on Windows (outside of WSL)</dt><dd><ul class="org-ul">
 <li>Executable files use <code>.exe</code></li>
@@ -600,9 +464,9 @@ modules in the makefile if you wish.  Such a rule might look like the following:
 </dl>
 </div>
 </div>
-<div id="outline-container-makeinc-vars" class="outline-5">
-<h5 id="makeinc-vars"><span class="section-number-5">4.2.1.2.</span> Useful Variables</h5>
-<div class="outline-text-5" id="text-makeinc-vars">
+<div id="outline-container-makeinc-vars" class="outline-4">
+<h4 id="makeinc-vars"><span class="section-number-4">4.1.2.</span> Useful Variables</h4>
+<div class="outline-text-4" id="text-makeinc-vars">
 <dl class="org-dl">
 <dt><code>MRFFL_MOD_FILES</code>      </dt><dd>All the module (<code>.mod</code>) files.  These will appear in your build directory.</dd>
 <dt><code>MRFFL_OBJ_FILES</code>      </dt><dd>All the object (<code>.obj</code> or <code>.o</code>) files.  These will appear in your build directory.</dd>
@@ -611,9 +475,9 @@ modules in the makefile if you wish.  Such a rule might look like the following:
 </dl>
 </div>
 </div>
-<div id="outline-container-makeinc-target" class="outline-5">
-<h5 id="makeinc-target"><span class="section-number-5">4.2.1.3.</span> Useful Targets</h5>
-<div class="outline-text-5" id="text-makeinc-target">
+<div id="outline-container-makeinc-target" class="outline-4">
+<h4 id="makeinc-target"><span class="section-number-4">4.1.3.</span> Useful Targets</h4>
+<div class="outline-text-4" id="text-makeinc-target">
 <dl class="org-dl">
 <dt><code>all_mrffl_lib</code>    </dt><dd>Builds the library files.</dd>
 <dt><code>all_mrffl_mod</code>    </dt><dd>Builds the module (<code>.mod</code>) files</dd>
@@ -628,9 +492,9 @@ build for all platforms, so I sometimes want to clean up the build products from
 </dl>
 </div>
 </div>
-<div id="outline-container-makeinc-stlib" class="outline-5">
-<h5 id="makeinc-stlib"><span class="section-number-5">4.2.1.4.</span> Static Library</h5>
-<div class="outline-text-5" id="text-makeinc-stlib">
+<div id="outline-container-makeinc-stlib" class="outline-4">
+<h4 id="makeinc-stlib"><span class="section-number-4">4.1.4.</span> Static Library</h4>
+<div class="outline-text-4" id="text-makeinc-stlib">
 <p>
 A rule to make a static library is included in <code>include.mk</code>.  A build rule like the following should build that library and link it to your executable.  Note
 I'm just including the library file on the command line instead of linker like options (i.e. <code>-L</code> and <code>-l</code> for GNU compilers).  That's because simply including
@@ -644,9 +508,9 @@ the library on the command line is broadly supported across more compilers &#x20
 </div>
 </div>
 </div>
-<div id="outline-container-makeinc-dylib" class="outline-5">
-<h5 id="makeinc-dylib"><span class="section-number-5">4.2.1.5.</span> Dynamic Library (<code>.so</code> and <code>.dll</code> files)</h5>
-<div class="outline-text-5" id="text-makeinc-dylib">
+<div id="outline-container-makeinc-dylib" class="outline-4">
+<h4 id="makeinc-dylib"><span class="section-number-4">4.1.5.</span> Dynamic Library (<code>.so</code> and <code>.dll</code> files)</h4>
+<div class="outline-text-4" id="text-makeinc-dylib">
 <p>
 A rule to make a static library is included in <code>include.mk</code>.  You can build it with the target <code>clean_mrffl_lib</code>, or by using <code>$(MRFFL_SHARED_LIB_FILE)</code> as a
 dependency in your build rule.  As the options to link to a shared library differ wildly across platforms and compilers/linkers, I don't provide an example of
@@ -654,27 +518,6 @@ how to do that.
 </p>
 </div>
 </div>
-</div>
-</div>
-</div>
-<div id="outline-container-testenv" class="outline-2">
-<h2 id="testenv"><span class="section-number-2">5.</span> Tested Environments</h2>
-<div class="outline-text-2" id="text-testenv">
-<dl class="org-dl">
-<dt>MSYS2 running on Windows 11</dt><dd><ul class="org-ul">
-<li>GNU Fortran (Rev2, Built by MSYS2 project) 14.2.0 : Everything works</li>
-<li>LFortran 0.42.0 LLVM 19.1.3 : Nothing works.  Compiler crashes during compile.</li>
-<li>Intel ifx 2024.1.0 Build 20240308 : Everything works</li>
-<li>flang 19.1.6 inside clang: Nested functions cause a seg fault, and I don't know how to get the linker to do the right thing.</li>
-</ul></dd>
-<dt>Debian 12.8 running in WSL on Windows 11</dt><dd><ul class="org-ul">
-<li>GNU Fortran (Debian 14.2.0-8) 14.2.0 from debian-testing: Everything works</li>
-<li>LFortran 0.42.0 LLVM 19.1.3 : Nothing works.  Compiler crashes during compile.</li>
-<li>Intel ifx 2025.0.4 20241205 : Everything works</li>
-<li>nvfortran 24.11-0 64-bit target on x86-64 Linux : Everything works.</li>
-<li>flang-new version 19.1.6 : Everything works.</li>
-</ul></dd>
-</dl>
 </div>
 </div>
 </div>
