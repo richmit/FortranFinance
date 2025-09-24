@@ -47,12 +47,7 @@
 !! however, the simplicity and familiarity of the classical calculator approach is sometimes more comfortable and direct.
 !!
 module mrffl_tvm12
-  use mrffl_config,   only: rk=>mrfflrk, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
-  use mrffl_bitset,   only: bitset_intersectp, bitset_subsetp
-  use mrffl_var_sets, only: var_i, var_n, var_pv, var_fv, var_pmt
-  use mrffl_solver,   only: multi_bisection
-  ! use mrffl_solver_ne, only: multi_bisection
-  use mrffl_prt_sets, only: prt_param, prt_table, prt_title
+  use mrffl_var_sets,    only: var_i, var_n, var_pv, var_fv, var_pmt
   implicit none (type, external)
   private
 
@@ -61,7 +56,7 @@ module mrffl_tvm12
   integer,          parameter, public  ::  pmt_at_end       = 0
 
   public :: tvm12_solve, tvm12_print
-  public :: var_i, var_n, var_pv, var_fv, var_pmt
+  public :: var_i, var_n, var_pv, var_fv, var_pmt ! Export var_* so user need not use mrffl_var_sets
 
 contains
 
@@ -92,12 +87,21 @@ contains
   !! @param unknown   The unknown variable to solve for.  Allowed parameters: var_pmt var_i, var_n, var_pv, or var_fv.
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 3001-3032.
   subroutine tvm12_solve(n, i, pv, pmt, fv, pmt_time, unknown, status)
+    use mrffl_config,      only: rk=>mrfflrk, zero_epsilon
+    use mrffl_solver,      only: multi_bisection
+    use mrffl_var_sets,    only: var_i, var_n, var_pv, var_fv, var_pmt
+    ! use mrffl_solver_ne, only: multi_bisection
+    !
+    implicit none (type, external)
+    ! Arguments
     integer,          intent(inout) :: n
     real(kind=rk),    intent(inout) :: i, pv, pmt, fv
     integer,          intent(in)    :: pmt_time, unknown
     integer,          intent(out)   :: status
-    real(kind=rk)                   :: ip1tn, tmp1, tmp2, islvivl0(3), islvivl1(3), r_dat(4)
-    integer                         :: i_dat(2)
+    ! Local Variables
+    real(kind=rk) :: ip1tn, tmp1, tmp2, islvivl0(3), islvivl1(3), r_dat(4)
+    integer       :: i_dat(2)
+    ! Process & Check Arguments
     if (unknown /= var_n) then
        if (n == 0) then
           status = 3001 ! "ERROR(tvm_solve): n==0!"
@@ -117,6 +121,7 @@ contains
           return
        end if
     end if
+    ! Solve
     r_dat = [ i, pv, pmt, fv ]
     i_dat = [ n, pmt_time ]
     islvivl0  = [ 0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
@@ -187,7 +192,6 @@ contains
     end  function i_slv_func
   end subroutine tvm12_solve
 
-
   ! real(kind=rk) function i_slv_func(x, r_dat, i_dat)
   !   implicit none (type, external)
   !   real(kind=rk),    intent(in) :: x
@@ -215,16 +219,30 @@ contains
   !! @param fv           Future Value
   !! @param pmt_time     Payments at beginning or end of period.  Allowed parameters: pmt_at_beginning or pmt_at_end
   !! @param print_out    Set made from the following constants: prt_param, prt_table, prt_title
-  subroutine tvm12_print(n, i, pv, pmt, fv, pmt_time, print_out)
+  subroutine tvm12_print(n, i, pv, pmt, fv, pmt_time, print_out, fvfmt_o, ftfmt_o)
+    use mrffl_config,      only: rk=>mrfflrk, fvfmt_ai, ftfmt_ai
+    use mrffl_prt_sets,    only: prt_param, prt_table, prt_title
+    use mrffl_bitset,      only: bitset_intersectp, bitset_subsetp
+    !
     implicit none (type, external)
-    integer,          intent(in) :: n, pmt_time, print_out
-    real(kind=rk),    intent(in) :: i, pv, fv, pmt
-    real(kind=rk)                :: tot_pmt, cur_pv
-    integer                      :: k
-
+    ! Arguments
+    integer,                    intent(in) :: n, pmt_time, print_out
+    real(kind=rk),              intent(in) :: i, pv, fv, pmt
+    character(len=*), optional, intent(in) :: fvfmt_o, ftfmt_o
+    ! Local Variables
+    real(kind=rk)                 :: tot_pmt, cur_pv
+    integer                       :: k
+    character(len=:), allocatable :: fvfmt, ftfmt
+    ! Process Optional Arguments
+    fvfmt = fvfmt_ai
+    if (present(fvfmt_o)) fvfmt = fvfmt_o
+    ftfmt = ftfmt_ai
+    if (present(ftfmt_o)) ftfmt = ftfmt_o
+    ! Process Optional Arguments
     if ((pmt_time /= pmt_at_beginning) .and. (pmt_time /= pmt_at_end)) then
        stop "ERROR(tvm_solve): Unsupported value for pmt_time (must be one of pmt_at_beginning or pmt_at_end)"
     end if
+    ! Print
     if (bitset_intersectp(prt_param+prt_table, print_out)) then
        print *, ""
     end if
@@ -244,17 +262,17 @@ contains
        print *
     end if
     if (bitset_subsetp(prt_table, print_out)) then
-       if (bitset_subsetp(prt_title, print_out)) print "(a8,2(1x,"//ctfmt//"))", "period", "cur_pv", "tot_pmt"
+       if (bitset_subsetp(prt_title, print_out)) print "(a8,2(1x,"//ftfmt//"))", "period", "cur_pv", "tot_pmt"
        cur_pv = pv
        tot_pmt = 0
        do k=0,n
           if (pmt_time == pmt_at_beginning) then
-             print "(i8,2(1x,"//cnfmt//"))", k, cur_pv, tot_pmt
+             print "(i8,2(1x,"//fvfmt//"))", k, cur_pv, tot_pmt
              tot_pmt = tot_pmt + pmt
              cur_pv = cur_pv + pmt
              cur_pv = cur_pv + cur_pv * i
           else if (pmt_time == pmt_at_end) then
-             print "(i8,2(1x,"//cnfmt//"))", k, cur_pv, tot_pmt
+             print "(i8,2(1x,"//fvfmt//"))", k, cur_pv, tot_pmt
              cur_pv = cur_pv + cur_pv * i
              tot_pmt = tot_pmt + pmt
              cur_pv = cur_pv + pmt

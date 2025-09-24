@@ -36,7 +36,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm12
-  use mrffl_config,   only: rk=>mrfflrk, mrfflcnfmt, mrfflctfmt
+  use mrffl_config,   only: rk=>mrfflrk
   use mrffl_tvm12,    only: tvm12_solve, tvm12_print, pmt_at_beginning, pmt_at_end
   use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n, var_pmt
   use mrffl_prt_sets, only: prt_ALL
@@ -45,9 +45,6 @@ program utest_tvm12
 
   integer          :: n, status
   real(kind=rk)    :: i, pv, fv, pmt
-
-  mrfflcnfmt = "f10.4"
-  mrfflctfmt = "a10"
 
   ! MJR TODO NOTE <2024-12-16T14:01:45-0600> retire: Add solve for i case where i<-100 (for both end & beginning)
   ! MJR TODO NOTE <2024-12-16T14:01:45-0600> retire: Add solve for i case where -100<i<0 (for both end & beginning)
@@ -126,7 +123,7 @@ program utest_tvm12
   print "(i7,4(f20.5),3(i7))", n, i, pv, pmt, fv, pmt_at_beginning, var_fv, status
   print "(a)", repeat("=", 108)
 
-  call tvm12_print(n, i, pv, pmt, fv, pmt_at_end, prt_ALL)
+  call tvm12_print(n, i, pv, pmt, fv, pmt_at_end, prt_ALL, fvfmt_o="f10.4", ftfmt_o="a10")
 
 contains
   subroutine set_em_up_end()

@@ -48,11 +48,11 @@ module mrffl_config
 
   real(kind=mrfflrk), parameter :: zero_epsilon  = 1.0e-8_mrfflrk                      !< Used to test for zero
                                                                                        
-  character(len=5)              :: mrfflcnfmt    = "f15.4"                             !< Used to print cash values
-  character(len=5)              :: mrfflctfmt    = "a15"                               !< Used to print cash titles
+  character(len=5), parameter   :: fvfmt_ai    = "f15.4"                             !< Used to print cash values
+  character(len=5), parameter   :: ftfmt_ai    = "a15"                               !< Used to print cash titles
 
         !
-        !                  Typical settings for mrfflcnfmt & mrfflctfmt:
+        !                  Typical settings for fvfmt_ai & ftfmt_ai:
         !
         ! 000000000011111111112222222222
         ! 123456789012345678901234567890

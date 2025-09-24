@@ -71,11 +71,6 @@
 !! column of a matrix.  The entire matrix may then be used for TVM calculations.
 !!
 module mrffl_cashflows
-  use mrffl_config,      only: rk=>mrfflrk, cnfmt=>mrfflcnfmt, ctfmt=>mrfflctfmt, zero_epsilon
-  use mrffl_bitset,      only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp
-  use mrffl_prt_sets,    only: prt_NONE, prt_param, prt_title, prt_table, prt_total, prt_space
-  use mrffl_percentages, only: percentage_to_fraction
-  use mrffl_solver,      only: multi_bisection
   implicit none (type, external)
   private
 
@@ -105,8 +100,14 @@ contains
   !! See: cashflow_matrix_total_pv()
   !!
   real(kind=rk) pure function cashflow_vector_total_pv(cf_vec, i)
+    use mrffl_config,      only: rk=>mrfflrk
+    use mrffl_percentages, only: percentage_to_fraction
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(in)  :: cf_vec(:)
     real(kind=rk),    intent(in)  :: i
+    ! Local Variables
     integer                       :: j
     cashflow_vector_total_pv = 0
     do j=1,size(cf_vec)
@@ -125,8 +126,14 @@ contains
   !! @param i         Interest/Rate/Growth
   !!
   real(kind=rk) pure function cashflow_matrix_total_pv(cf_mat, i)
+    use mrffl_config,      only: rk=>mrfflrk
+    use mrffl_percentages, only: percentage_to_fraction
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(in)  :: cf_mat(:,:)
     real(kind=rk),    intent(in)  :: i
+    ! Local Variables
     real(kind=rk)                 :: cf
     integer                       :: j, k
     cashflow_matrix_total_pv = 0
@@ -147,9 +154,15 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4193-4224
   !!
   subroutine cashflow_vector_irr(cf_vec, irr, status)
+    use mrffl_config,      only: rk=>mrfflrk, zero_epsilon  
+    use mrffl_solver,      only: multi_bisection
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(in)    :: cf_vec(:)
     real(kind=rk),    intent(inout) :: irr
     integer,          intent(out)   :: status
+    ! Local Variables
     real(kind=rk), parameter        :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
     real(kind=rk), parameter        :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
     call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
@@ -172,9 +185,15 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4193-4224
   !!
   subroutine cashflow_matrix_irr(cf_mat, irr, status)
+    use mrffl_config,      only: rk=>mrfflrk, zero_epsilon  
+    use mrffl_solver,      only: multi_bisection
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(in)    :: cf_mat(:,:)
     real(kind=rk),    intent(inout) :: irr
     integer,          intent(out)   :: status
+    ! Local Variables
     real(kind=rk), parameter        :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
     real(kind=rk), parameter        :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
     call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
@@ -193,8 +212,10 @@ contains
   !> Convert a cashflow number into a padded string for titles
   !!
   character(len=5) function i2s(n)
+    !
     implicit none (type, external)
-    integer,          intent(in) :: n
+    ! Local Variables
+    integer, intent(in) :: n
     write(i2s,'(i5.5)') n
   end function i2s
 
@@ -204,6 +225,11 @@ contains
   !! See: cashflow_matrix_pv_fv()
   !!
   subroutine cashflow_vector_pv_fv(cf_vec, i, pv_vec, fv_vec, status)
+    use mrffl_config,      only: rk=>mrfflrk
+    use mrffl_prt_sets,    only: prt_NONE
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(in)  :: cf_vec(:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
@@ -217,12 +243,16 @@ contains
   !! See: cashflow_matrix_pv_fv_print()
   !!
   subroutine cashflow_vector_pv_fv_print(cf_vec, i, pv_vec, fv_vec, status, print_out)
+    use mrffl_config,      only: rk=>mrfflrk
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(in)  :: cf_vec(:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
     integer,          intent(out) :: status
     integer,          intent(in)  :: print_out
-     call cashflow_matrix_pv_fv_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, print_out)
+    call cashflow_matrix_pv_fv_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, print_out)
   end subroutine cashflow_vector_pv_fv_print
 
   !------------------------------------------------------------------------------------------------------------------------------
@@ -235,6 +265,11 @@ contains
   !! @param status    Returns status of operation.  0 if everything worked. See: cashflow_matrix_pv_fv_print() for range.
   !!
   subroutine cashflow_matrix_pv_fv(cf_mat, i, pv_vec, fv_vec, status)
+    use mrffl_config,      only: rk=>mrfflrk
+    use mrffl_prt_sets,    only: prt_NONE
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(in)  :: cf_mat(:,:)
     real(kind=rk),    intent(in)  :: i
     real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
@@ -253,15 +288,33 @@ contains
   !! @param fv_vec    Returns the future value vector
   !! @param status    Returns status of operation.  0 if everything worked. Range: 0 & 2129-2160.
   !! @param print_out Bitset built from the following constants prt_param, prt_title, prt_table, prt_total, & prt_space
+  !! @param fvfmt_o   Floating point value output format.  Default: fvfmt_ai
+  !! @param ftfmt_o   Floating point tital output format.  Default: ftfmt_ai
   !!
-  subroutine cashflow_matrix_pv_fv_print(cf_mat, i, pv_vec, fv_vec, status, print_out)
-    real(kind=rk),    intent(in)  :: cf_mat(:,:)
-    real(kind=rk),    intent(in)  :: i
-    real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
-    integer,          intent(out) :: status
-    integer,          intent(in)  :: print_out
+  subroutine cashflow_matrix_pv_fv_print(cf_mat, i, pv_vec, fv_vec, status, print_out, fvfmt_o, ftfmt_o)
+    use mrffl_config,      only: rk=>mrfflrk, fvfmt_ai, ftfmt_ai, zero_epsilon
+    use mrffl_bitset,      only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp
+    use mrffl_prt_sets,    only: prt_param, prt_title, prt_table, prt_total, prt_space
+    use mrffl_percentages, only: percentage_to_fraction
+    !
+    implicit none (type, external)
+    ! Arguments
+    real(kind=rk),              intent(in)  :: cf_mat(:,:)
+    real(kind=rk),              intent(in)  :: i
+    real(kind=rk),              intent(out) :: pv_vec(:), fv_vec(:)
+    integer,                    intent(out) :: status
+    integer,                    intent(in)  :: print_out
+    character(len=*), optional, intent(in)  :: fvfmt_o, ftfmt_o
+    ! Local Variables
     integer                       :: num_bdrys, num_flows, j, flow
-    real(kind=rk),allocatable     :: dfactors(:), cf_aggr(:), total_pv(:), total_fv(:)
+    character(len=:), allocatable :: fvfmt, ftfmt
+    real(kind=rk), allocatable    :: dfactors(:), cf_aggr(:), total_pv(:), total_fv(:)
+    ! Process Optional Arguments
+    fvfmt = fvfmt_ai
+    if (present(fvfmt_o)) fvfmt = fvfmt_o
+    ftfmt = ftfmt_ai
+    if (present(ftfmt_o)) ftfmt = ftfmt_o
+    ! Process & Check Arguments
     num_bdrys = size(cf_mat, 1)
     num_flows = size(cf_mat, 2)
     if (num_flows < 1) then
@@ -303,19 +356,19 @@ contains
        end if
        if (bitset_subsetp(prt_title+prt_table, print_out)) then
           if (num_flows > 1) then
-             print "(a6,*("//ctfmt//"))",  "Time", ( "CF_"//i2s(flow), flow = 1_rk, num_flows ), &
+             print "(a6,*("//ftfmt//"))",  "Time", ( "CF_"//i2s(flow), flow = 1_rk, num_flows ), &
                   "CF_Aggregate", "PV", "FV", "PV_Total", "FV_Total"
           else
-             print "(a6,*("//ctfmt//"))",  "Time", "CF", "PV", "FV", "PV_Total", "FV_Total"
+             print "(a6,*("//ftfmt//"))",  "Time", "CF", "PV", "FV", "PV_Total", "FV_Total"
           end if
        end if
        if (bitset_subsetp(prt_table, print_out)) then
           do j = 1, num_bdrys
-          if (num_flows > 1) then
-             print "(i6,*("//cnfmt//"))", (j-1), cf_mat(j, :), cf_aggr(j), pv_vec(j), fv_vec(j), sum(pv_vec(1:j)), sum(fv_vec(1:j))
-          else
-             print "(i6,5("//cnfmt//"))", (j-1), cf_aggr(j), pv_vec(j), fv_vec(j), sum(pv_vec(1:j)), sum(fv_vec(1:j))
-          end if
+             if (num_flows > 1) then
+                print "(i6,*("//fvfmt//"))", (j-1), cf_mat(j, :), cf_aggr(j), pv_vec(j), fv_vec(j), sum(pv_vec(1:j)), sum(fv_vec(1:j))
+             else
+                print "(i6,5("//fvfmt//"))", (j-1), cf_aggr(j), pv_vec(j), fv_vec(j), sum(pv_vec(1:j)), sum(fv_vec(1:j))
+             end if
           end do
        end if
        if (bitset_subsetp(prt_space+prt_total+prt_table, print_out)) then
@@ -324,19 +377,19 @@ contains
        if (bitset_subsetp(prt_total, print_out)) then
           if (bitset_subsetp(prt_title, print_out) .and. bitset_not_subsetp(prt_table, print_out)) then
              if (num_flows > 1) then
-                print "(a6,*("//ctfmt//"))",  "", ( "CF_"//i2s(flow), flow = 1, num_flows ), "CF_Aggregate"
+                print "(a6,*("//ftfmt//"))",  "", ( "CF_"//i2s(flow), flow = 1, num_flows ), "CF_Aggregate"
              else
-                print "(a6,*("//ctfmt//"))",  "", "CF"
+                print "(a6,*("//ftfmt//"))",  "", "CF"
              end if
           end if
           total_pv = [(sum(cf_mat(:,flow) / dfactors), flow = 1, num_flows)]
           total_fv = [(sum(cf_mat(:,flow) * dfactors(num_bdrys:1:-1)), flow = 1, num_flows)]
           if (num_flows > 1) then
-             print "(a6,*("//cnfmt//"))", "PV", total_pv, sum(pv_vec)
-             print "(a6,*("//cnfmt//"))", "FV", total_fv, sum(fv_vec)
+             print "(a6,*("//fvfmt//"))", "PV", total_pv, sum(pv_vec)
+             print "(a6,*("//fvfmt//"))", "FV", total_fv, sum(fv_vec)
           else
-             print "(a6,*("//cnfmt//"))", "PV", total_pv
-             print "(a6,*("//cnfmt//"))", "FV", total_fv
+             print "(a6,*("//fvfmt//"))", "PV", total_pv
+             print "(a6,*("//fvfmt//"))", "FV", total_fv
           end if
        end if
        if (bitset_subsetp(prt_space, print_out) .and. bitset_intersectp(prt_param+prt_table+prt_total, print_out)) then
@@ -357,9 +410,13 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2097-2128.
   !!
   subroutine make_cashflow_vector_delayed_lump(cf_vec, a, d, status)
+    use mrffl_config,      only: rk=>mrfflrk
+    !
     implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: a
+    ! Local Variables
     integer,          intent(in)  :: d
     integer,          intent(out) :: status
     integer                       :: n
@@ -390,8 +447,13 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2065-2096.
   !!
   subroutine make_cashflow_vector_delayed_level_annuity(cf_vec, a, d, e, status)
+    use mrffl_config,      only: rk=>mrfflrk
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: a
+    ! Local Variables
     integer,          intent(in)  :: d, e
     integer,          intent(out) :: status
     integer                       :: n
@@ -429,8 +491,14 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2033-2064.
   !!
   subroutine make_cashflow_vector_delayed_geometric_annuity(cf_vec, g, a, d, e, status)
+    use mrffl_config,      only: rk=>mrfflrk
+    use mrffl_percentages, only: percentage_to_fraction
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: g, a
+    ! Local Variables
     integer,          intent(in)  :: d, e
     integer,          intent(out) :: status
     integer                       :: j, n
@@ -468,8 +536,13 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2001- 2032.
   !!
   subroutine make_cashflow_vector_delayed_arithmetic_annuity(cf_vec, q, a, d, e, status)
+    use mrffl_config,      only: rk=>mrfflrk
+    !
+    implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: q, a
+    ! Local Variables
     integer,          intent(in)  :: d, e
     integer,          intent(out) :: status
     integer                       :: j, n
@@ -501,9 +574,14 @@ contains
   !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 4033-4064.
   !!
   subroutine add_intrest_to_cashflow_vector(cf_vec, rate, status)
+    use mrffl_config,      only: rk=>mrfflrk
+    use mrffl_percentages, only: percentage_to_fraction
+    !
     implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: rate
+    ! Local Variables
     integer,          intent(out) :: status
     integer                       :: nb, j
     real(kind=rk)                 :: rsum
@@ -526,9 +604,14 @@ contains
   !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 4065-4096.
   !!
   subroutine add_multi_intrest_to_cashflow_vector(cf_vec, vrate, status)
+    use mrffl_config,      only: rk=>mrfflrk
+    use mrffl_percentages, only: percentage_to_fraction
+    !
     implicit none (type, external)
+    ! Arguments
     real(kind=rk),    intent(out) :: cf_vec(:)
     real(kind=rk),    intent(in)  :: vrate(:)
+    ! Local Variables
     integer,          intent(out) :: status
     integer                       :: nb, j
     real(kind=rk)                 :: rsum
