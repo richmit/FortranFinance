@@ -1,16 +1,19 @@
-################################################################################################################################################################################################################################################################
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Set Global Variables.  
+include ../setup.mk
 
-MRFFL_PATH = ../MRFFL
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Use FCOMP to set variables for fortran development.  
+include $(PROJECT_ROOT)/setup_fortran_gmake/setup_fortran.mk
 
-# include $(MRFFL_PATH)/make_includes/tools_gfortran.mk
-# include $(MRFFL_PATH)/make_includes/tools_flang.mk
-include $(MRFFL_PATH)/make_includes/tools_ifx.mk
-# include $(MRFFL_PATH)/make_includes/tools_lfortran.mk
-# include $(MRFFL_PATH)/make_includes/tools_nvfortran.mk
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# If you need to tweak the fortran variables set above, then this is the place.  Set AR, FC, FFLAGS, & FSHFLG here.
 
-include $(MRFFL_PATH)/make_includes/include.mk
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Create rules and targets for the MRFFL library
+include $(PROJECT_ROOT)/MRFFL/src/include.mk
 
-################################################################################################################################################################################################################################################################
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 CONFIG_FILE = config_20.nml
 
@@ -31,6 +34,8 @@ table : retire.out
 graphs : check_out retire.out retire.R
 	R -q -f retire.R > /dev/null
 
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 .PHONY: clean
 clean : clean_multi_mrffl
 	rm -f *~ retire retire.o retire.exe retire.obj retire.out paidunpaid.png savings.png
@@ -39,6 +44,7 @@ clean : clean_multi_mrffl
 
 all : graphs
 
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # These targets reproduce the graphics included in the online documentation
 
 .PHONY: 20
