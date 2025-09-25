@@ -4,14 +4,14 @@ include ../../setup.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Use FCOMP to set variables for fortran development.  
-include $(PROJECT_ROOT)/setup_fortran_gmake/setup_fortran.mk
+include $(FF_PROJ_ROOT)/setup_fortran_gmake/setup_fortran.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # If you need to tweak the fortran variables set above, then this is the place.  Set AR, FC, FFLAGS, & FSHFLG here.
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Create rules and targets for the MRFFL library
-include $(PROJECT_ROOT)/MRFFL/src/include.mk
+include $(FF_PROJ_ROOT)/MRFFL/src/include.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 

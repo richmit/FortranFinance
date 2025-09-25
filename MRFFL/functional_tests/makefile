@@ -5,14 +5,14 @@ include ../../setup.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Use FCOMP to set variables for fortran development.  
-include $(PROJECT_ROOT)/setup_fortran_gmake/setup_fortran.mk
+include $(FF_PROJ_ROOT)/setup_fortran_gmake/setup_fortran.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # If you need to tweak the fortran variables set above, then this is the place.  Set AR, FC, FFLAGS, & FSHFLG here.
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Create rules and targets for the MRFFL library
-include $(PROJECT_ROOT)/MRFFL/src/include.mk
+include $(FF_PROJ_ROOT)/MRFFL/src/include.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -66,6 +66,9 @@ clean : clean_mrffl
 	rm -f $(addsuffix .o, $(EXE_TARGETS)) 
 	rm -f ftest_life_table_print_*.txt
 	rm -f ftest_stats_rand_norm_std.txt
+	rm -f ftest_stats_rand_log_norm.txt
+	rm -f ftest_stats_rand_norm203.txt
+	rm -f ftest_random_walk.txt
 
 .PHONY: all
 all : $(EXE_TARGETS) 

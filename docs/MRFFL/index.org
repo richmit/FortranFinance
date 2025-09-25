@@ -101,41 +101,52 @@ You will find several programs, most of which use MRFFL, in various directories 
    - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/functional_tests][=MRFFL/functional_tests=]] :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
    - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/unit_tests][=MRFFL/unit_tests=]]             :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
 
+I keep my development environment is pretty standard.  On Linux & MSYS2 I use the native package manager to install development tools in the standard
+directories whenever possible.  For commercial compilers I use the vendor provided installer with the default settings.  I suspect the GNU Make build
+system provided with MRFFL may work out of the box for many users.
 
-In order to compile on your platform you may need to modify the ~makefile~ in each directory to use your favorite Fortran compiler.  At the top of each
-makefile you will find something like this:
+For someone on Linux or MSYS2 using GNU Fortran (=gfortran=), you may well be able to do something like this:
+
+#+begin_src sh :eval never :tangle no :results none :exports code
+cd cashflows/     # Change directory into one of the example directories (cashflows/ in this instance)
+make all          # Build everything
+#+end_src
+
+The compiler can be changed to one of =flang=, =gfortran=, =ifx=, =lfortran=, or =nvfortran= by setting the =FCOMP= variable.  For example, we can use the
+Intel compiler like this:
+
+#+begin_src sh :eval never :tangle no :results none :exports code
+cd FCOMP=ifx cashflows/     # Change directory into one of the example directories (cashflows/ in this instance)
+make all                    # Build everything
+#+end_src
+
+If the above doesn't work, then some manual configuration may be necessary.  The file ~setup.mk~ found in the project root directory is included by all make
+files in the repository and thus makes for a nice place to configure things globally.  The file is pretty short:
 
 #+begin_src sh :results output verbatum :exports results :wrap "src makefile :eval never :tangle no"
-head -n 20 ../../MRFFL_unit_tests/makefile | grep -B 20 '#####' | grep -A 20 '#####' | sed -E 's/^####*/################################################/'
+~/core/codeBits/bin/src2orgListing  ../../setup.mk 
 #+end_src
 
 #+RESULTS:
 #+begin_src makefile :eval never :tangle no
-################################################
+## The root directory for this project
+FF_PROJ_ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-MRFFL_PATH = ../MRFFL
+## Automatically configure the compiler.  Valid values: flang, gfortran, ifx, lfortran, & nvfortran
+#FCOMP = ifx
 
-include $(MRFFL_PATH)/tools_gfortran.mk
-# include $(MRFFL_PATH)/tools_flang.mk
-# include $(MRFFL_PATH)/tools_ifx.mk
-# include $(MRFFL_PATH)/tools_lfortran.mk
-# include $(MRFFL_PATH)/tools_nvfortran.mk
-
-include $(MRFFL_PATH)/include.mk
-
-################################################
+## Manually configure the compiler.
+#FCOMP  = NONE
+#AR     = --Command For Library Archive Tool--
+#FC     = --Command for Fortran compiler--
+#FFLAGS = --Compile flags/options for fortran compiler--
+#FSHFLG = --Shared library flags/options for fortran compiler--
 #+end_src
 
-If you are using ~gfortran~ on a UNIX'ish system, then you can probably just leave it as is.  If you want to use a different compiler, then you may be able to
-simply uncomment the appropriate line if your system is similarly configured to mine.  If you are unlucky, then you may need to set some variables.  In
-particular, you might need to comment out the ~gfortran~ include and add something like this:
+Here is an exmaple for =nvfortran=:
 
-#+begin_src sh :results output verbatum :exports results :wrap "src makefile :eval never :tangle no"
-~/core/codeBits/bin/src2orgListing ../../MRFFL/tools_nvfortran.mk
-#+end_src
-
-#+RESULTS:
 #+begin_src makefile :eval never :tangle no
+FCOMP := NONE
 AR := ar
 FC := nvfortran
 FFLAGS := -O3 -Wall  -W -Xlinker -z -Xlinker execstack
@@ -153,27 +164,25 @@ completely unnecessary for making full use of the modules, so you you can safely
 All of the code is in the module source files with no external dependencies at all.  So you just need to call the modules from your code, and then
 compile/link everything together.
 
-
-To help with that compile/link part, a makefile fragment has been provided
-([[https://github.com/richmit/FortranFinance/tree/main/MRFFL/include.mk][~include.mk~]]).  Note it works with GNU make and is designed for UNIX-like
-environments (Mac OS X, Linux, MSYS2 on Windows 11, WSL on Windows 11).  I mostly use MSYS2 on Windows 11 so that is where it gets the most testing.  The
-makefile in the [[https://github.com/richmit/FortranFinance/tree/main/MRFFL_functional_tests][functional tests directory]] is a good guide on how to use
-[[https://github.com/richmit/FortranFinance/tree/main/MRFFL/include.mk][~include.mk~]].  In essence you do the following in your makefile:
-
-  1) Set MRFFL_PATH in your makefile to the path of the MRFFL source directory -- that's the one with the ~include.mk~ file.
-  2) Set FC, FFLAGS, & AR if necessary -- most of the time you can use the defaults.
-  3) Include the "~include.mk~" file in the MRFFL source directory.
-  4) Add a build rule for your program.
-
-Your makefile will look something like this:
+To help with that compile/link part, you use the include files in the repository.  Your makefile will look something like this:
 
 #+begin_src makefile
-MRFFL_PATH = ../MRFFL
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Set Global Variables.  
+include /path/to/MRFFL/repository/setup.mk
 
-# Set FC, FFLAGS, & AR here.  The include below has the settings I use on my system.
-include $(MRFFL_PATH)/tools_gfortran.mk
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Use FCOMP to set variables for fortran development.  
+include $(FF_PROJ_ROOT)/setup_fortran_gmake/setup_fortran.mk
 
-include $(MRFFL_PATH)/include.mk
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# If you need to tweak the fortran variables set above, then this is the place.  Set AR, FC, FFLAGS, & FSHFLG here.
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Create rules and targets for the MRFFL library
+include $(FF_PROJ_ROOT)/MRFFL/src/include.mk
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 your_program : your_program.f90 $(MRFFL_OBJ_FILES)
     $(FC) $(FFLAGS) $^ -o $@
@@ -192,20 +201,6 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
 :PROPERTIES:
 :CUSTOM_ID: use-makeinc
 :END:
-
-*** Names of files
-:PROPERTIES:
-:CUSTOM_ID: makeinc-names
-:END:
-
-  - File extensions on Windows (outside of WSL) ::
-   - Executable files use ~.exe~
-   - Shared libraries use ~.dll~
-   - Object files will ~.obj~
-  - On UNIX systems (not including MSYS2) ::
-   - Executable files have no extension
-   - Shared libraries use ~.so~
-   - Object files will use ~.o~
 
 *** Useful Variables
 :PROPERTIES:
@@ -255,3 +250,23 @@ your_program : your_program.f90 $(MRFFL_STATIC_LIB_FILE)
 A rule to make a static library is included in ~include.mk~.  You can build it with the target ~clean_mrffl_lib~, or by using ~$(MRFFL_SHARED_LIB_FILE)~ as a
 dependency in your build rule.  As the options to link to a shared library differ wildly across platforms and compilers/linkers, I don't provide an example of
 how to do that.
+
+** Notes about ~setup_fortran.mk~
+:PROPERTIES:
+:CUSTOM_ID: use-setupfor
+:END:
+
+*** Names of files
+:PROPERTIES:
+:CUSTOM_ID: use-setupfor-names
+:END:
+
+  - File extensions on Windows (outside of WSL) ::
+   - Executable files use ~.exe~
+   - Shared libraries use ~.dll~
+   - Object files will ~.obj~
+  - On UNIX systems (not including MSYS2) ::
+   - Executable files have no extension
+   - Shared libraries use ~.so~
+   - Object files will use ~.o~
+

@@ -4,14 +4,14 @@ include ../setup.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Use FCOMP to set variables for fortran development.  
-include $(PROJECT_ROOT)/setup_fortran_gmake/setup_fortran.mk
+include $(FF_PROJ_ROOT)/setup_fortran_gmake/setup_fortran.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # If you need to tweak the fortran variables set above, then this is the place.  Set AR, FC, FFLAGS, & FSHFLG here.
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Create rules and targets for the MRFFL library
-include $(PROJECT_ROOT)/MRFFL/src/include.mk
+include $(FF_PROJ_ROOT)/MRFFL/src/include.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
@@ -38,7 +38,7 @@ graphs : check_out retire.out retire.R
 
 .PHONY: clean
 clean : clean_multi_mrffl
-	rm -f *~ retire retire.o retire.exe retire.obj retire.out paidunpaid.png savings.png
+	rm -f *~ retire retire.o retire.exe retire.obj retire.out paidunpaid.png savings.png *20_mc.png *60o_mc.png *60ml_mc.png *20_fix.png *60o_fix.png *60ml_fix.png
 	rm -f composite_trajectories.png composite_trajectories_y10.png final_savings.png paid_and_unpaid.png paid_by_source.png probability_of_failure_by_year.png probability_of_success_by_year.png savings_by_type.png savings_by_year_boxplot.png savings_by_year_probability_bands.png y10_savings.png
 	rm -f config.nml
 

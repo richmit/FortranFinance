@@ -40,7 +40,7 @@ LOC_DIR=autodocs/html
 PUB_DIR=~/MJR/WWW/site/SS/FortranFinance/MRFFL_API_Docs
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-$(LOC_DIR)/index.html: $(PROJECT_ROOT)/MRFFL/src/*.f90
+$(LOC_DIR)/index.html: $(FF_PROJ_ROOT)/MRFFL/src/*.f90
 	doxygen
 
 .PHONY: docs
