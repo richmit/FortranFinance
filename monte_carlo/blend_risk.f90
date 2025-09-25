@@ -52,11 +52,12 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program blend_risk
-  use mrffl_config,       only: rk=>mrfflrk
-  use mrffl_us_markets,   only: snp_dat, dgs10_dat
-  use mrffl_stats,        only: rand_int
-  use mrffl_us_inflation, only: inf_dat
-  use mrffl_percentages,  only: p_add=>add_percentage, p_of=>percentage_of
+  use, intrinsic :: iso_fortran_env,    only: output_unit, error_unit
+  use            :: mrffl_config,       only: rk
+  use            :: mrffl_us_markets,   only: snp_dat, dgs10_dat
+  use            :: mrffl_stats,        only: rand_int
+  use            :: mrffl_us_inflation, only: inf_dat
+  use            :: mrffl_percentages,  only: p_add=>add_percentage, p_of=>percentage_of
 
   implicit none (type, external)
 
@@ -71,8 +72,9 @@ program blend_risk
   integer                     :: rand_year
 
   ! Run monte carlo simulations and dump the results to STDOUT
-  print '(a10,a10,a20)', "trial", "hp", "balance"
+  write (output_unit, '(a10,a10,a20)') "trial", "hp", "balance"
   do hp=0,100
+     write (error_unit, '(a6,i0)') "hp=", hp
      do trial=1,trials
         balance = initial_balance
         withdrawal = initial_withdrawal
@@ -91,7 +93,7 @@ program blend_risk
            balance = balance - min(withdrawal, balance)
            withdrawal = p_add(withdrawal, max(0.0_rk, c_inf))
         end do
-        print '(i10,i10,f20.5)', trial, hp, balance
+        write (output_unit, '(i10,i10,f20.5)') trial, hp, balance
      end do
   end do
 

@@ -36,8 +36,8 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_inflation
-  use mrffl_config,       only: rk=>mrfflrk
-  use mrffl_us_inflation, only: inf_adj, inf_aggregate, inf_dat
+  use :: mrffl_config,       only: rk
+  use :: mrffl_us_inflation, only: inf_adj, inf_aggregate, inf_dat
 
   implicit none (type, external)
 

@@ -39,22 +39,22 @@
 !> Compute Taxes for USA.
 !!
 module mrffl_us_taxes
-  use mrffl_config, only: rk=>mrfflrk, zero_epsilon
-  use mrffl_percentages, only: percentage_of, percentage_of_total
-  use mrffl_tvm, only: fv_from_pv_n_i
+  use :: mrffl_config,      only: rk, zero_epsilon
+  use :: mrffl_percentages, only: percentage_of, percentage_of_total
+  use :: mrffl_tvm,         only: fv_from_pv_n_i
   implicit none (type, external)
   private
 
-  integer,          parameter, public :: seed_tax_year                     = 2024 ! The year the following constants hold
-  real(kind=rk), parameter, public    :: std_tax_deduction_single          = 14600
-  real(kind=rk), parameter, public    :: std_tax_deduction_joint           = 29200
-  real(kind=rk), parameter, public    :: std_tax_deduction_separately      = 14600
-  real(kind=rk), parameter, public    :: std_tax_deduction_head            = 21900
-  real(kind=rk), parameter, public    :: tax_bracket_rates(7)              = [   10,    12,     22,     24,     32,     35,     37]
-  real(kind=rk), parameter, public    :: tax_bracket_breaks_single(7)      = [11600, 47150, 100525, 191950, 243725, 609350, 609351]
-  real(kind=rk), parameter, public    :: tax_bracket_breaks_joint(7)       = [23200, 94300, 201050, 383900, 487450, 731200, 731201]
-  real(kind=rk), parameter, public    :: tax_bracket_breaks_head(7)        = [16550, 63100, 100500, 191950, 243700, 609350, 609350]
-  real(kind=rk), parameter, public    :: tax_bracket_breaks_separately(7)  = [11600, 47150, 100525, 191950, 243725, 365600, 365601]
+  integer,       parameter, public :: seed_tax_year                     = 2024 ! The year the following constants hold
+  real(kind=rk), parameter, public :: std_tax_deduction_single          = 14600
+  real(kind=rk), parameter, public :: std_tax_deduction_joint           = 29200
+  real(kind=rk), parameter, public :: std_tax_deduction_separately      = 14600
+  real(kind=rk), parameter, public :: std_tax_deduction_head            = 21900
+  real(kind=rk), parameter, public :: tax_bracket_rates(7)              = [   10,    12,     22,     24,     32,     35,     37]
+  real(kind=rk), parameter, public :: tax_bracket_breaks_single(7)      = [11600, 47150, 100525, 191950, 243725, 609350, 609351]
+  real(kind=rk), parameter, public :: tax_bracket_breaks_joint(7)       = [23200, 94300, 201050, 383900, 487450, 731200, 731201]
+  real(kind=rk), parameter, public :: tax_bracket_breaks_head(7)        = [16550, 63100, 100500, 191950, 243700, 609350, 609350]
+  real(kind=rk), parameter, public :: tax_bracket_breaks_separately(7)  = [11600, 47150, 100525, 191950, 243725, 365600, 365601]
 
       ! 2024 US Tax Brackets
       !
@@ -87,9 +87,12 @@ contains
   !! This function returns the index for the interval containing val.
   !!
   integer function max_bracket(val, brackets)
+    ! Arguments
     real(kind=rk), intent(in) :: val
     real(kind=rk), intent(in) :: brackets(:)
-    integer                   :: i
+    ! Local Variables
+    integer :: i
+    ! Perform Computation
     if (val <= brackets(1)) then
        max_bracket = 1
     else if (val >= brackets(size(brackets))) then
@@ -111,10 +114,13 @@ contains
   !! see max_bracket() for a description of breaks.  The rates array are the tax rates for each bracket.
   !!
   real(kind=rk) function tax(val, breaks, rates)
-    real(kind=rk),    intent(in) :: val
-    real(kind=rk),    intent(in) :: breaks(:), rates(:)
-    real(kind=rk)                :: val_in_bracket, last_break, cur_break
-    integer                      :: idx
+    ! Arguments
+    real(kind=rk), intent(in) :: val
+    real(kind=rk), intent(in) :: breaks(:), rates(:)
+    ! Local Variables
+    real(kind=rk) :: val_in_bracket, last_break, cur_break
+    integer       :: idx
+    ! Perform Computation
     if (val < zero_epsilon) then
        tax = 0
     else
@@ -140,8 +146,10 @@ contains
   !! see max_bracket() for a description of breaks.  The rates array are the tax rates for each bracket.
   !!
   real(kind=rk) function effective_tax_rate(val, breaks, rates)
-    real(kind=rk),    intent(in) :: val
-    real(kind=rk),    intent(in) :: breaks(:), rates(:)
+    ! Arguments
+    real(kind=rk), intent(in) :: val
+    real(kind=rk), intent(in) :: breaks(:), rates(:)
+    ! Perform Computation
     if (val < zero_epsilon) then
        effective_tax_rate = 0
     else
@@ -155,9 +163,11 @@ contains
   !! If year is in the past with respect to our tax information, then -1 is returned.
   !!
   real(kind=rk) function projected_tax(val, breaks, rates, year, inflation)
-    real(kind=rk),    intent(in) :: val, inflation
-    integer,          intent(in) :: year
-    real(kind=rk),    intent(in) :: breaks(:), rates(:)
+    ! Arguments
+    real(kind=rk), intent(in) :: val, inflation
+    integer,       intent(in) :: year
+    real(kind=rk), intent(in) :: breaks(:), rates(:)
+    ! Perform Computation
     if (year < seed_tax_year) then
        projected_tax = -1
     else if (year < seed_tax_year) then

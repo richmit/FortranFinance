@@ -38,7 +38,7 @@
 !> Some statstical utilities supporting other MRFFL modules.
 !!
 module mrffl_stats
-  use mrffl_config, only: rk=>mrfflrk, zero_epsilon
+  use :: mrffl_config, only: rk, zero_epsilon
   implicit none (type, external)
   private
 
@@ -60,11 +60,13 @@ contains
   !! @param lower_bound_o Lower bound for random number
   !!
   integer function rand_int(upper_bound, lower_bound_o)
-    implicit none (type, external)
-    integer,                    intent(in) :: upper_bound
-    integer,          optional, intent(in) :: lower_bound_o
-    integer                                :: lower_bound
-    real(kind=rk)                          :: r
+    ! Arguments
+    integer,           intent(in) :: upper_bound
+    integer, optional, intent(in) :: lower_bound_o
+    ! Local Variables
+    integer       :: lower_bound
+    real(kind=rk) :: r
+    ! Perform Computation
     lower_bound = 0
     if (present(lower_bound_o)) lower_bound = lower_bound_o
     if (lower_bound > upper_bound) then
@@ -81,11 +83,13 @@ contains
   !! @param lower_bound_o Lower bound for random number
   !!
   real(kind=rk) function rand_real(upper_bound, lower_bound_o)
-    implicit none (type, external)
+    ! Arguments
     real(kind=rk),           intent(in) :: upper_bound
     real(kind=rk), optional, intent(in) :: lower_bound_o
-    real(kind=rk)                       :: lower_bound
-    real(kind=rk)                       :: r
+    ! Local Variables
+    real(kind=rk) :: lower_bound
+    real(kind=rk) :: r
+    ! Perform Computation
     lower_bound = 0
     if (present(lower_bound_o)) lower_bound = lower_bound_o
     if (lower_bound > upper_bound) then
@@ -102,10 +106,12 @@ contains
   !! @param tail_length  Number of elements to consider for resample.
   !!
   real(kind=rk) function resample_tail(data, tail_length)
-    implicit none (type, external)
-    real(kind=rk), intent(in)    :: data(:)
-    integer,          intent(in) :: tail_length
-    integer                      :: i
+    ! Arguments
+    real(kind=rk), intent(in) :: data(:)
+    integer,       intent(in) :: tail_length
+    ! Local Variables
+    integer :: i
+    ! Perform Computation
     i = ubound(data, 1) - rand_int(min(tail_length, int(size(data))))
     i = max(i, lbound(data, 1))
     i = min(i, ubound(data, 1))
@@ -119,10 +125,12 @@ contains
   !! @param head_length  Number of elements to consider for resample.
   !!
   real(kind=rk) function resample_head(data, head_length)
-    implicit none (type, external)
-    real(kind=rk), intent(in)    :: data(:)
-    integer,          intent(in) :: head_length
-    integer                      :: i
+    ! Arguments
+    real(kind=rk), intent(in) :: data(:)
+    integer,       intent(in) :: head_length
+    ! Local Variables
+    integer :: i
+    ! Perform Computation
     i = lbound(data, 1) + rand_int(min(head_length, size(data)))
     i = max(i, lbound(data, 1))
     i = min(i, ubound(data, 1))
@@ -137,9 +145,10 @@ contains
   !! @param data      The data set -- a rank 1 array.
   !!
   subroutine mean_and_variance(mean, variance, data)
-    implicit none (type, external)
+    ! Arguments
     real(kind=rk), intent(in)  :: data(:)
     real(kind=rk), intent(out) :: mean, variance
+    ! Perform Computation
     mean     = sum(data) / size(data)
     variance = sum((data - mean) ** 2)
   end subroutine mean_and_variance
@@ -150,7 +159,6 @@ contains
   !! This function simply calls the preferred rand_norm_std_* function.  Currently that's rand_norm_std_probit().
   !!
   real(kind=rk) function rand_norm_std()
-    implicit none (type, external)
     rand_norm_std = rand_norm_std_probit()
   end function rand_norm_std
 
@@ -161,11 +169,12 @@ contains
   !!   Box, G. E. P., and Mervin E. Muller. 1958. "A Note on the Generation of Random Normal Deviates." The Annals of Mathematical Statistics 29 (2): 610-11.
   !!
   real(kind=rk) function rand_norm_std_box()
-    implicit none (type, external)
+    ! Local Variables
     real(kind=rk), parameter :: pi = 4.0_rk * atan(1.0_rk)
     real(kind=rk)            :: u, v
-    logical, save            :: cached_valid = .false.
+    logical,       save      :: cached_valid = .false.
     real(kind=rk), save      :: cached_value = 0.0_rk
+    ! Perform Computation
     if (cached_valid) then
        rand_norm_std_box = cached_value
        cached_valid      = .false.
@@ -182,8 +191,9 @@ contains
   !> Return random value from the standard normal distribution in [-5.612, 5.612] using the Probit function.
   !!
   real(kind=rk) function rand_norm_std_probit_clip()
-    implicit none (type, external)
+    ! Local Variables
     real(kind=rk) :: u
+    ! Perform Computation
     do
        call random_number(u)
        if ((u > zero_epsilon) .and. (u < (1.0_rk - zero_epsilon))) then
@@ -197,8 +207,9 @@ contains
   !> Return random value from the standard normal distribution using the Probit function.
   !!
   real(kind=rk) function rand_norm_std_probit()
-    implicit none (type, external)
+    ! Local Variables
     real(kind=rk) :: u
+    ! Perform Computation
     do
        call random_number(u)
        if (u < 1.0_rk) then
@@ -215,8 +226,9 @@ contains
   !! @param variance  Variance (standard deviation squared) of the distribution
   !!
   real(kind=rk) function rand_norm(mean, variance)
-    implicit none (type, external)
+    ! Arguments
     real(kind=rk), intent(in) :: mean, variance
+    ! Perform Computation
     rand_norm = rand_norm_std() * variance + mean
   end function rand_norm
 
@@ -231,8 +243,9 @@ contains
   !! @param sigma Standard deviation of the distribution
   !!
   real(kind=rk) function rand_log_norm(mu, sigma)
-    implicit none (type, external)
+    ! Arguments
     real(kind=rk), intent(in) :: mu, sigma
+    ! Perform Computation
     rand_log_norm = exp(rand_norm_std() * sigma + mu)
   end function rand_log_norm
 
@@ -246,8 +259,9 @@ contains
   !! @param p  Probablity in @f$ (0,1) @f$.
   !!
   real(kind=rk) function probit(p)
-    implicit none (type, external)
+    ! Arguments
     real(kind=rk), intent(in) :: p
+    ! Local Variables
     real(kind=rk)             :: q
     real(kind=rk)             :: r
     real(kind=rk), parameter  :: const1 = 0.180625_rk
@@ -255,23 +269,24 @@ contains
     real(kind=rk), parameter  :: split1 = 0.425000_rk
     real(kind=rk), parameter  :: split2 = 5.000000_rk
     real(kind=rk), parameter  :: r1_numr(8) = [ &  ! Coefficients for p close to 0.5
-         2.50908092873012267270e+03_rk, 3.34305755835881281050e+04_rk, 6.72657709270087008530e+04_rk, 4.59219539315498714570e+04_rk, &
-         1.37316937655094611250e+04_rk, 1.97159095030655144270e+03_rk, 1.33141667891784377450e+02_rk, 3.38713287279636660800e+00_rk  ]
+         &                                      2.50908092873012267270e+03_rk, 3.34305755835881281050e+04_rk, 6.72657709270087008530e+04_rk, 4.59219539315498714570e+04_rk, &
+         &                                      1.37316937655094611250e+04_rk, 1.97159095030655144270e+03_rk, 1.33141667891784377450e+02_rk, 3.38713287279636660800e+00_rk  ]
     real(kind=rk), parameter  :: r1_dnom(8) = [ &
-         5.22649527885285456100e+03_rk, 2.87290857357219426740e+04_rk, 3.93078958000927106100e+04_rk, 2.12137943015865958670e+04_rk, &
-         5.39419602142475110770e+03_rk, 6.87187007492057908300e+02_rk, 4.23133307016009112520e+01_rk, 1.00000000000000000000e+00_rk  ]
+         &                                      5.22649527885285456100e+03_rk, 2.87290857357219426740e+04_rk, 3.93078958000927106100e+04_rk, 2.12137943015865958670e+04_rk, &
+         &                                      5.39419602142475110770e+03_rk, 6.87187007492057908300e+02_rk, 4.23133307016009112520e+01_rk, 1.00000000000000000000e+00_rk  ]
     real(kind=rk), parameter  :: r2_numr(8) = [ & ! Coefficients for p not near 0.5, 0, or 1
-         7.74545014278341407640e-04_rk, 2.27238449892691845833e-02_rk, 2.41780725177450611770e-01_rk, 1.27045825245236838258e+00_rk, &
-         3.64784832476320460504e+00_rk, 5.76949722146069140550e+00_rk, 4.63033784615654529590e+00_rk, 1.42343711074968357734e+00_rk  ]
+         &                                      7.74545014278341407640e-04_rk, 2.27238449892691845833e-02_rk, 2.41780725177450611770e-01_rk, 1.27045825245236838258e+00_rk, &
+         &                                      3.64784832476320460504e+00_rk, 5.76949722146069140550e+00_rk, 4.63033784615654529590e+00_rk, 1.42343711074968357734e+00_rk  ]
     real(kind=rk), parameter  :: r2_dnom(8) = [ &
-         1.05075007164441684324e-09_rk, 5.47593808499534494600e-04_rk, 1.51986665636164571966e-02_rk, 1.48103976427480074590e-01_rk, &
-         6.89767334985100004550e-01_rk, 1.67638483018380384940e+00_rk, 2.05319162663775882187e+00_rk, 1.00000000000000000000e+00_rk  ]
+         &                                      1.05075007164441684324e-09_rk, 5.47593808499534494600e-04_rk, 1.51986665636164571966e-02_rk, 1.48103976427480074590e-01_rk, &
+         &                                      6.89767334985100004550e-01_rk, 1.67638483018380384940e+00_rk, 2.05319162663775882187e+00_rk, 1.00000000000000000000e+00_rk  ]
     real(kind=rk), parameter  :: r3_numr(8) = [ & ! Coefficients for p close 0 or 1
-         2.01033439929228813265e-07_rk, 2.71155556874348757815e-05_rk, 1.24266094738807843860e-03_rk, 2.65321895265761230930e-02_rk, &
-         2.96560571828504891230e-01_rk, 1.78482653991729133580e+00_rk, 5.46378491116411436990e+00_rk, 6.65790464350110377720e+00_rk  ]
+         &                                      2.01033439929228813265e-07_rk, 2.71155556874348757815e-05_rk, 1.24266094738807843860e-03_rk, 2.65321895265761230930e-02_rk, &
+         &                                      2.96560571828504891230e-01_rk, 1.78482653991729133580e+00_rk, 5.46378491116411436990e+00_rk, 6.65790464350110377720e+00_rk  ]
     real(kind=rk), parameter  :: r3_dnom(8) = [ &
-         2.04426310338993978564e-15_rk, 1.42151175831644588870e-07_rk, 1.84631831751005468180e-05_rk, 7.86869131145613259100e-04_rk, &
-         1.48753612908506148525e-02_rk, 1.36929880922735805310e-01_rk, 5.99832206555887937690e-01_rk, 1.00000000000000000000e+00_rk  ]
+         &                                      2.04426310338993978564e-15_rk, 1.42151175831644588870e-07_rk, 1.84631831751005468180e-05_rk, 7.86869131145613259100e-04_rk, &
+         &                                      1.48753612908506148525e-02_rk, 1.36929880922735805310e-01_rk, 5.99832206555887937690e-01_rk, 1.00000000000000000000e+00_rk  ]
+    ! Perform Computation
     if (p <= 0.0_rk) then             ! $ p\in(\infty, 0] $
        probit = -huge(p)
     else if (1.0_rk <= p) then        ! $ p\in[1, \infty) $
@@ -315,10 +330,12 @@ contains
   !! @param x  The value at which to evaluate the polynomial
   !!
   real(kind=rk) function poly_eval(p, x)
-    implicit none (type, external)
+    ! Arguments
     real(kind=rk), intent(in) :: p(:)
     real(kind=rk), intent(in) :: x
-    integer                   :: i
+    ! Local Variables
+    integer :: i
+    ! Perform Computation
     poly_eval = p(1)
     do i = 2,size(p)
        poly_eval = poly_eval * x + p(i)
@@ -334,10 +351,13 @@ contains
   !! @param step_values A rank 1 array which will hold the values of the asset over time
   !!
   subroutine geometric_brownian_motion(step_values, s0, mu, sigma)
+    ! Arguments
     real(kind=rk), intent(out) :: step_values(:)
     real(kind=rk), intent(in)  :: s0, mu, sigma
-    real(kind=rk)              :: step_width, m, s, sum
-    integer                    :: i, num_steps
+    ! Local Variables
+    real(kind=rk) :: step_width, m, s, sum
+    integer       :: i, num_steps
+    ! Perform Computation
     num_steps = size(step_values)
     step_width = 1.0_rk / (num_steps-1)
     m = (mu - 0.5_rk * sigma ** 2) * step_width
@@ -358,10 +378,13 @@ contains
   !! @param step_values A rank 1 array which will hold the values of the asset over time
   !!
   subroutine zero_clipped_brownian_motion(step_values, s0, mu, sigma)
+    ! Arguments
     real(kind=rk), intent(out) :: step_values(:)
     real(kind=rk), intent(in)  :: s0, mu, sigma
-    real(kind=rk)              :: step_width, m, s
-    integer                    :: i, num_steps
+    ! Local Variables
+    real(kind=rk) :: step_width, m, s
+    integer       :: i, num_steps
+    ! Perform Computation
     num_steps = size(step_values)
     step_width = 1.0_rk / (num_steps-1)
     m = mu * step_width

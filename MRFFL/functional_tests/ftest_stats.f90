@@ -34,9 +34,9 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program ftest_stats
-  use mrffl_config, only: rk=>mrfflrk
-  use mrffl_stats,  only: rand_norm, rand_log_norm, rand_norm_std_box, rand_norm_std_probit, rand_norm_std_probit_clip, &
-       &                  mean_and_variance, resample_tail, resample_head
+  use :: mrffl_config, only: rk
+  use :: mrffl_stats,  only: rand_norm, rand_log_norm, rand_norm_std_box, rand_norm_std_probit, rand_norm_std_probit_clip, &
+       &                     mean_and_variance, resample_tail, resample_head
 
   implicit none (type, external)
 

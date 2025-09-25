@@ -49,28 +49,27 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program roth_conversion
-  use mrffl_config     , only: rk=>mrfflrk
-  use mrffl_percentages, only: percentage_of, add_percentage, percentage_to_fraction
-
-  use mrffl_cashflows, only: make_cashflow_vector_delayed_lump, add_intrest_to_cashflow_vector, &
-       &                     add_multi_intrest_to_cashflow_vector, cashflow_matrix_pv_fv_print
-  use mrffl_prt_sets, only: prt_ALL
-
+  use :: mrffl_config,      only: rk
+  use :: mrffl_percentages, only: percentage_of, add_percentage, percentage_to_fraction
+  use :: mrffl_cashflows,   only: make_cashflow_vector_delayed_lump, add_intrest_to_cashflow_vector, &
+       &                          add_multi_intrest_to_cashflow_vector, cashflow_matrix_pv_fv_print
+  use :: mrffl_prt_sets,    only: prt_ALL
+  !
   implicit none (type, external)
-
-  integer,          parameter :: years              = 10
-  integer,          parameter :: conversion_years   = 5
-  real(kind=rk)               :: apr                = 4.0_rk
-
-  real(kind=rk)               :: retirement_tax     = 17.0_rk
-  real(kind=rk)               :: conversion_tax     = 15.0_rk
-  real(kind=rk)               :: conv_size          = 50000.0_rk
-  real(kind=rk)               :: initial_ira        = 200000.0_rk
-  real(kind=rk)               :: initial_brokerage  = 100000.0_rk
-  real(kind=rk)               :: cf(years+1,3),  fv(years+1),  pv(years+1), vapr(years)
-  integer                     :: status
-  real(kind=rk)               :: rate               = 0.0_rk
-  real(kind=rk)               :: ncv, wcv
+  ! Arguments
+  integer, parameter :: years            = 10
+  integer, parameter :: conversion_years = 5
+  ! Local Variables
+  real(kind=rk) :: apr                = 4.0_rk
+  real(kind=rk) :: retirement_tax     = 17.0_rk
+  real(kind=rk) :: conversion_tax     = 15.0_rk
+  real(kind=rk) :: conv_size          = 50000.0_rk
+  real(kind=rk) :: initial_ira        = 200000.0_rk
+  real(kind=rk) :: initial_brokerage  = 100000.0_rk
+  real(kind=rk) :: rate               = 0.0_rk
+  real(kind=rk) :: cf(years+1,3),  fv(years+1),  pv(years+1), vapr(years)
+  integer       :: status
+  real(kind=rk) :: ncv, wcv
 
   print "(a)", repeat("=", 126)
   cf = 0

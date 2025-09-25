@@ -38,7 +38,7 @@
 program ftest_life_table_print
   use, intrinsic :: iso_fortran_env,   only: output_unit
 !  use, intrinsic :: iso_c_binding
-  use            :: mrffl_config,      only: rk=>mrfflrk
+  use            :: mrffl_config,      only: rk
   use            :: mrffl_life_table,  only: life_table_print, usss_f_qx_dat, uscdc_lx_dat, uscdc_w_f_lx_dat, uscdc_w_lx_dat, uscdc_w_m_lx_dat, usss_f_lx_dat, usss_m_lx_dat, usss_m_qx_dat
   use            :: mrffl_prt_sets,    only: prt_title, prt_table, prt_ALL
 

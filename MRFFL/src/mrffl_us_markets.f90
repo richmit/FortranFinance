@@ -38,8 +38,8 @@
 !> Annual us stock market return data and monte carlo
 !!
 module mrffl_us_markets
-  use mrffl_config, only: rk=>mrfflrk
-  use mrffl_stats, only: resample_tail
+  use :: mrffl_config, only: rk
+  use :: mrffl_stats,  only: resample_tail
   implicit none (type, external)
   private
 

@@ -41,9 +41,10 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program retire
   use, intrinsic :: iso_fortran_env,    only: output_unit, error_unit
-  use            :: mrffl_config,       only: rk=>mrfflrk, zero_epsilon
+  use            :: mrffl_config,       only: rk, zero_epsilon
   use            :: mrffl_percentages,  only: p_of=>percentage_of, add_p=>add_percentage, percentage_of_total
-  use            :: mrffl_us_taxes,     only: seed_tax_year, tax, tax_bracket_rates, std_tax_deduction_single, tax_bracket_breaks_single, std_tax_deduction_joint, tax_bracket_breaks_joint
+  use            :: mrffl_us_taxes,     only: seed_tax_year, tax, tax_bracket_rates, std_tax_deduction_single, &
+       &                                      tax_bracket_breaks_single, std_tax_deduction_joint, tax_bracket_breaks_joint
   use            :: mrffl_tvm,          only: tvm_geometric_annuity_sum_a
   use            :: mrffl_stats,        only: rand_int
   use            :: mrffl_us_markets,   only: snp_resample, dgs10_resample, snp_dat, dgs10_dat

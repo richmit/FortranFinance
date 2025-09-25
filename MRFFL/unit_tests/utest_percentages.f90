@@ -36,8 +36,8 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_percentages
-  use mrffl_config,      only: rk=>mrfflrk
-  use mrffl_percentages, only: percentage_of, percentage_to_fraction, fraction_to_percentage, percentage_change, percentage_of_total
+  use :: mrffl_config,      only: rk
+  use :: mrffl_percentages, only: percentage_of, percentage_to_fraction, fraction_to_percentage, percentage_change, percentage_of_total
 
   implicit none (type, external)
 

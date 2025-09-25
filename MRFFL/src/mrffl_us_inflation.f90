@@ -38,11 +38,12 @@
 !> US inflation data and monte carlo.
 !!
 module mrffl_us_inflation
-  use mrffl_config, only: rk=>mrfflrk
-  use mrffl_stats, only: resample_tail
-  use mrffl_percentages, only: percentage_of, percentage_change, add_percentage
+  use :: mrffl_config, only: rk
+  use :: mrffl_percentages, only: percentage_of, percentage_change, add_percentage
+  use :: mrffl_stats,       only: resample_tail
   implicit none (type, external)
   private
+
   real(kind=rk), parameter, public :: inf_dat(1914:2023)  = [ &
        &                                       1.0_rk,  1.0_rk,  7.9_rk, 17.4_rk, 18.0_rk, 14.6_rk, & ! 1914-1919
        & 15.6_rk, -10.5_rk, -6.1_rk,  1.8_rk,  0.0_rk,  2.3_rk,  1.1_rk, -1.7_rk, -1.7_rk,  0.0_rk, & ! 1920-1929
@@ -66,9 +67,10 @@ contains
   !! Out of range years cause an ERROR STOP.
   !!
   real(kind=rk) pure function inf_aggregate(from_year, to_year)
-    implicit none (type, external)
-    integer,          intent(in) :: from_year, to_year
-    integer                      :: year
+    ! Arguments
+    integer, intent(in) :: from_year, to_year
+    integer             :: year
+    ! Perform Computation
     if (from_year < lbound(inf_dat, 1)) error stop "ERROR(inf_aggregate): from_year too small"
     if (from_year > ubound(inf_dat, 1)) error stop "ERROR(inf_aggregate): from_year too large"
     if (to_year   < lbound(inf_dat, 1)) error stop "ERROR(inf_aggregate): to_year too small"
@@ -89,9 +91,10 @@ contains
   !! Out of range years cause an ERROR STOP.
   !!
   real(kind=rk) pure function inf_adj(from_year, to_year, v)
-    implicit none (type, external)
-    integer,          intent(in) :: from_year, to_year
-    real(kind=rk),    intent(in) :: v
+    ! Arguments
+    integer,       intent(in) :: from_year, to_year
+    real(kind=rk), intent(in) :: v
+    ! Perform Computation
     inf_adj = add_percentage(v, inf_aggregate(from_year, to_year))
   end function inf_adj
 
@@ -99,8 +102,9 @@ contains
   !> Return a random inflation value from the last history_years of US inflation data.
   !!
   real(kind=rk) function inf_resample(history_years)
-    implicit none (type, external)
-    integer,          intent(in) :: history_years
+    ! Arguments
+    integer, intent(in) :: history_years
+    ! Perform Computation
     inf_resample = resample_tail(inf_dat, history_years)
   end function inf_resample
 

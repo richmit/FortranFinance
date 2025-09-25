@@ -38,9 +38,17 @@
 !> Root solvers.
 !!
 module mrffl_solver
-  use mrffl_config, only: rk=>mrfflrk
+  use :: mrffl_config, only: rk
   implicit none (type, external)
   private
+
+  interface
+     real(kind=rk) function func_to_solve_t(x)
+       use :: mrffl_config, only: rk
+       implicit none (type, external)
+       real(kind=rk), intent(in) :: x
+     end function func_to_solve_t
+  end interface
 
   public :: bisection, multi_bisection
 
@@ -63,25 +71,18 @@ contains
   !! @param progress   Print progress as solver searches for a solution
   !!
   subroutine bisection(xc, x0_init, x1_init, f, x_epsilon, y_epsilon, max_itr, status, progress)
-
-    interface
-       real(kind=rk) function func_to_solve_t(x)
-         use mrffl_config, only: rk=>mrfflrk
-         implicit none (type, external)
-         real(kind=rk), intent(in) :: x
-       end function func_to_solve_t
-    end interface
-
-    procedure(func_to_solve_t)    :: f
-    real(kind=rk),    intent(out) :: xc
-    real(kind=rk),    intent(in)  :: x0_init, x1_init
-    real(kind=rk),    intent(in)  :: x_epsilon, y_epsilon
-    integer,          intent(in)  :: max_itr
-    integer,          intent(out) :: status
-    logical,          intent(in)  :: progress
-    real(kind=rk)                 :: x0, x1, f0, f1, fc
-    integer                       :: itr
-
+    ! Arguments
+    procedure(func_to_solve_t) :: f
+    real(kind=rk), intent(out) :: xc
+    real(kind=rk), intent(in)  :: x0_init, x1_init
+    real(kind=rk), intent(in)  :: x_epsilon, y_epsilon
+    integer,       intent(in)  :: max_itr
+    integer,       intent(out) :: status
+    logical,       intent(in)  :: progress
+    ! Local Variables
+    real(kind=rk) :: x0, x1, f0, f1, fc
+    integer       :: itr
+    ! Perform Computation
     x0 = x0_init
     xc = x0
     f0 = f(xc)
@@ -148,16 +149,7 @@ contains
   !! @param progress   Print progress as solver searches for a solution
   !!
   subroutine multi_bisection(xc, x0_init, x1_init, f, x_epsilon, y_epsilon, max_itr, status, progress)
-    implicit none (type, external)
-
-    interface
-       real(kind=rk) function func_to_solve_t(x)
-         use mrffl_config, only: rk=>mrfflrk
-         implicit none (type, external)
-         real(kind=rk), intent(in) :: x
-       end function func_to_solve_t
-    end interface
-
+    ! Arguments
     procedure(func_to_solve_t)    :: f
     real(kind=rk),    intent(out) :: xc
     real(kind=rk),    intent(in)  :: x0_init(:), x1_init(:)
@@ -165,8 +157,9 @@ contains
     integer,          intent(in)  :: max_itr
     integer,          intent(out) :: status
     logical,          intent(in)  :: progress
+    ! Local Variables
     integer                       :: interval, num_intervals
-
+    ! Perform Computation
     num_intervals = size(x0_init)
     do interval=1,num_intervals
        if (progress) print *, "Bisection on [", x0_init(interval), ", ", x1_init(interval), "]"

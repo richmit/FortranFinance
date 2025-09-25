@@ -40,7 +40,7 @@
 #===============================================================================================================================================================
 # Displaying Images
 # Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images
-imageV <- FALSE
+imageV <- TRUE
 
 # Try and find an image viewer
 if (imageV == TRUE) {

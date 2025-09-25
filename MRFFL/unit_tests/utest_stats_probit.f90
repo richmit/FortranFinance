@@ -1,7 +1,7 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_stats_probit
-  use mrffl_config, only: rk=>mrfflrk
-  use mrffl_stats,  only: probit
+  use :: mrffl_config, only: rk
+  use :: mrffl_stats,  only: probit
 
   implicit none (type, external)
 

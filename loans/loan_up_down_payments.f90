@@ -47,11 +47,11 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program loan_level_payments
-  use mrffl_config,    only: rk=>mrfflrk
-  use mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
-  use mrffl_var_sets,  only: var_fv, var_a, var_pv
-  use mrffl_prt_sets,  only: prt_ALL
-  use mrffl_cashflows, only: cashflow_matrix_pv_fv_print, make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity
+  use :: mrffl_config,    only: rk
+  use :: mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
+  use :: mrffl_var_sets,  only: var_fv, var_a, var_pv
+  use :: mrffl_prt_sets,  only: prt_ALL
+  use :: mrffl_cashflows, only: cashflow_matrix_pv_fv_print, make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity
 
   implicit none (type, external)
 

@@ -39,7 +39,7 @@
 !> Simple functions for working with percentages.
 !!
 module mrffl_percentages
-  use mrffl_config, only: rk=>mrfflrk, zero_epsilon
+  use :: mrffl_config, only: rk, zero_epsilon
   implicit none (type, external)
   private
 
@@ -53,7 +53,7 @@ contains
   !!
   elemental real(kind=rk) function percentage_to_fraction(p)
     real(kind=rk), intent(in) :: p
-    percentage_to_fraction = (p/100)
+    percentage_to_fraction = (p/100.0_rk)
   end function percentage_to_fraction
 
   !------------------------------------------------------------------------------------------------------------------------------
@@ -61,7 +61,7 @@ contains
   !!
   elemental real(kind=rk) function fraction_to_percentage(f)
     real(kind=rk), intent(in) :: f
-    fraction_to_percentage = (f*100)
+    fraction_to_percentage = (f*100.0_rk)
   end function fraction_to_percentage
 
   !------------------------------------------------------------------------------------------------------------------------------
@@ -79,7 +79,7 @@ contains
   elemental real(kind=rk) function add_percentage(v, p)
     real(kind=rk), intent(in) :: v
     real(kind=rk), intent(in) :: p
-    add_percentage = v * (1 + percentage_to_fraction(p))
+    add_percentage = v * (1.0_rk + percentage_to_fraction(p))
   end function add_percentage
 
   !------------------------------------------------------------------------------------------------------------------------------
@@ -100,7 +100,7 @@ contains
     real(kind=rk), intent(in) :: v_total
     real(kind=rk), intent(in) :: v_part
     if ((abs(v_part) < zero_epsilon) .and. (abs(v_total) < zero_epsilon)) then
-       percentage_of_total = 0
+       percentage_of_total = 0.0_rk
     else
        percentage_of_total = fraction_to_percentage(v_part / v_total)
     end if

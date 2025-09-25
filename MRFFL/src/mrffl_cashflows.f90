@@ -71,6 +71,11 @@
 !! column of a matrix.  The entire matrix may then be used for TVM calculations.
 !!
 module mrffl_cashflows
+  use :: mrffl_config,      only: rk, fvfmt_ai, ftfmt_ai, zero_epsilon
+  use :: mrffl_bitset,      only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp
+  use :: mrffl_percentages, only: percentage_to_fraction
+  use :: mrffl_prt_sets,    only: prt_NONE, prt_param, prt_title, prt_table, prt_total, prt_space
+  use :: mrffl_solver,      only: multi_bisection
   implicit none (type, external)
   private
 
@@ -100,15 +105,11 @@ contains
   !! See: cashflow_matrix_total_pv()
   !!
   real(kind=rk) pure function cashflow_vector_total_pv(cf_vec, i)
-    use mrffl_config,      only: rk=>mrfflrk
-    use mrffl_percentages, only: percentage_to_fraction
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(in)  :: cf_vec(:)
-    real(kind=rk),    intent(in)  :: i
+    real(kind=rk), intent(in)  :: cf_vec(:)
+    real(kind=rk), intent(in)  :: i
     ! Local Variables
-    integer                       :: j
+    integer :: j
     cashflow_vector_total_pv = 0
     do j=1,size(cf_vec)
        cashflow_vector_total_pv = cashflow_vector_total_pv + cf_vec(j) / (1+percentage_to_fraction(i))**(j-1)
@@ -126,16 +127,13 @@ contains
   !! @param i         Interest/Rate/Growth
   !!
   real(kind=rk) pure function cashflow_matrix_total_pv(cf_mat, i)
-    use mrffl_config,      only: rk=>mrfflrk
-    use mrffl_percentages, only: percentage_to_fraction
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(in)  :: cf_mat(:,:)
-    real(kind=rk),    intent(in)  :: i
+    real(kind=rk), intent(in)  :: cf_mat(:,:)
+    real(kind=rk), intent(in)  :: i
     ! Local Variables
-    real(kind=rk)                 :: cf
-    integer                       :: j, k
+    real(kind=rk) :: cf
+    integer       :: j, k
+    ! Perform Computation
     cashflow_matrix_total_pv = 0
     do j=1,size(cf_mat, 1)
        cf = cf_mat(j, 1)
@@ -154,17 +152,14 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4193-4224
   !!
   subroutine cashflow_vector_irr(cf_vec, irr, status)
-    use mrffl_config,      only: rk=>mrfflrk, zero_epsilon  
-    use mrffl_solver,      only: multi_bisection
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(in)    :: cf_vec(:)
-    real(kind=rk),    intent(inout) :: irr
-    integer,          intent(out)   :: status
+    real(kind=rk), intent(in)    :: cf_vec(:)
+    real(kind=rk), intent(inout) :: irr
+    integer,       intent(out)   :: status
     ! Local Variables
-    real(kind=rk), parameter        :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
-    real(kind=rk), parameter        :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
+    real(kind=rk), parameter :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
+    real(kind=rk), parameter :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
+    ! Perform Computation
     call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
     if (status /= 0) then
        status = 4161 ! "ERROR(cashflow_vector_irr): irr solver failed!"
@@ -185,17 +180,14 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4193-4224
   !!
   subroutine cashflow_matrix_irr(cf_mat, irr, status)
-    use mrffl_config,      only: rk=>mrfflrk, zero_epsilon  
-    use mrffl_solver,      only: multi_bisection
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(in)    :: cf_mat(:,:)
-    real(kind=rk),    intent(inout) :: irr
-    integer,          intent(out)   :: status
+    real(kind=rk), intent(in)    :: cf_mat(:,:)
+    real(kind=rk), intent(inout) :: irr
+    integer,       intent(out)   :: status
     ! Local Variables
-    real(kind=rk), parameter        :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
-    real(kind=rk), parameter        :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
+    real(kind=rk), parameter :: islvivl0(3) = [0.0_rk+zero_epsilon, -100.0_rk+zero_epsilon,            -99999.0_rk]
+    real(kind=rk), parameter :: islvivl1(3) = [         99999.0_rk,    0.0_rk-zero_epsilon, -100.0_rk-zero_epsilon]
+    ! Perform Computation
     call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
     if (status /= 0) then
        status = 4193 ! "ERROR(cashflow_matrix_irr): irr solver failed!"
@@ -216,6 +208,7 @@ contains
     implicit none (type, external)
     ! Local Variables
     integer, intent(in) :: n
+    ! Perform Computation
     write(i2s,'(i5.5)') n
   end function i2s
 
@@ -225,15 +218,12 @@ contains
   !! See: cashflow_matrix_pv_fv()
   !!
   subroutine cashflow_vector_pv_fv(cf_vec, i, pv_vec, fv_vec, status)
-    use mrffl_config,      only: rk=>mrfflrk
-    use mrffl_prt_sets,    only: prt_NONE
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(in)  :: cf_vec(:)
-    real(kind=rk),    intent(in)  :: i
-    real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
-    integer,          intent(out) :: status
+    real(kind=rk), intent(in)  :: cf_vec(:)
+    real(kind=rk), intent(in)  :: i
+    real(kind=rk), intent(out) :: pv_vec(:), fv_vec(:)
+    integer,       intent(out) :: status
+    ! Perform Computation
     call cashflow_matrix_pv_fv_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, prt_NONE)
   end subroutine cashflow_vector_pv_fv
 
@@ -243,15 +233,13 @@ contains
   !! See: cashflow_matrix_pv_fv_print()
   !!
   subroutine cashflow_vector_pv_fv_print(cf_vec, i, pv_vec, fv_vec, status, print_out)
-    use mrffl_config,      only: rk=>mrfflrk
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(in)  :: cf_vec(:)
-    real(kind=rk),    intent(in)  :: i
-    real(kind=rk),    intent(out) :: pv_vec(:), fv_vec(:)
-    integer,          intent(out) :: status
-    integer,          intent(in)  :: print_out
+    real(kind=rk), intent(in)  :: cf_vec(:)
+    real(kind=rk), intent(in)  :: i
+    real(kind=rk), intent(out) :: pv_vec(:), fv_vec(:)
+    integer,       intent(out) :: status
+    integer,       intent(in)  :: print_out
+    ! Perform Computation
     call cashflow_matrix_pv_fv_print(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, print_out)
   end subroutine cashflow_vector_pv_fv_print
 
@@ -265,10 +253,6 @@ contains
   !! @param status    Returns status of operation.  0 if everything worked. See: cashflow_matrix_pv_fv_print() for range.
   !!
   subroutine cashflow_matrix_pv_fv(cf_mat, i, pv_vec, fv_vec, status)
-    use mrffl_config,      only: rk=>mrfflrk
-    use mrffl_prt_sets,    only: prt_NONE
-    !
-    implicit none (type, external)
     ! Arguments
     real(kind=rk),    intent(in)  :: cf_mat(:,:)
     real(kind=rk),    intent(in)  :: i
@@ -292,11 +276,6 @@ contains
   !! @param ftfmt_o   Floating point tital output format.  Default: ftfmt_ai
   !!
   subroutine cashflow_matrix_pv_fv_print(cf_mat, i, pv_vec, fv_vec, status, print_out, fvfmt_o, ftfmt_o)
-    use mrffl_config,      only: rk=>mrfflrk, fvfmt_ai, ftfmt_ai, zero_epsilon
-    use mrffl_bitset,      only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp
-    use mrffl_prt_sets,    only: prt_param, prt_title, prt_table, prt_total, prt_space
-    use mrffl_percentages, only: percentage_to_fraction
-    !
     implicit none (type, external)
     ! Arguments
     real(kind=rk),              intent(in)  :: cf_mat(:,:)
@@ -335,6 +314,7 @@ contains
     else
        status = 0
     end if
+    ! Perform Computation
     if (bitset_subsetp(prt_space, print_out) .and. bitset_intersectp(prt_param+prt_table+prt_total, print_out)) then
        print *, ""
     end if
@@ -410,16 +390,14 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2097-2128.
   !!
   subroutine make_cashflow_vector_delayed_lump(cf_vec, a, d, status)
-    use mrffl_config,      only: rk=>mrfflrk
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(out) :: cf_vec(:)
-    real(kind=rk),    intent(in)  :: a
+    real(kind=rk), intent(out) :: cf_vec(:)
+    real(kind=rk), intent(in)  :: a
+    integer,       intent(in)  :: d
+    integer,       intent(out) :: status
     ! Local Variables
-    integer,          intent(in)  :: d
-    integer,          intent(out) :: status
-    integer                       :: n
+    integer :: n
+    ! Perform Computation
     n = size(cf_vec)-1
     if (n < 1) then
        status = 2097 ! "ERROR(make_cashflow_vector_delayed_lump): n<1!"
@@ -447,16 +425,14 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2065-2096.
   !!
   subroutine make_cashflow_vector_delayed_level_annuity(cf_vec, a, d, e, status)
-    use mrffl_config,      only: rk=>mrfflrk
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(out) :: cf_vec(:)
-    real(kind=rk),    intent(in)  :: a
+    real(kind=rk), intent(out) :: cf_vec(:)
+    real(kind=rk), intent(in)  :: a
+    integer,       intent(in)  :: d, e
+    integer,       intent(out) :: status
     ! Local Variables
-    integer,          intent(in)  :: d, e
-    integer,          intent(out) :: status
-    integer                       :: n
+    integer :: n
+    ! Perform Computation
     n = size(cf_vec)-1
     if (n < 1) then
        status = 2065 ! "ERROR(make_cashflow_vector_delayed_level_annuity): n<1!"
@@ -491,17 +467,14 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2033-2064.
   !!
   subroutine make_cashflow_vector_delayed_geometric_annuity(cf_vec, g, a, d, e, status)
-    use mrffl_config,      only: rk=>mrfflrk
-    use mrffl_percentages, only: percentage_to_fraction
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(out) :: cf_vec(:)
-    real(kind=rk),    intent(in)  :: g, a
+    real(kind=rk), intent(out) :: cf_vec(:)
+    real(kind=rk), intent(in)  :: g, a
+    integer,       intent(in)  :: d, e
+    integer,       intent(out) :: status
     ! Local Variables
-    integer,          intent(in)  :: d, e
-    integer,          intent(out) :: status
-    integer                       :: j, n
+    integer :: j, n
+    ! Perform Computation
     n = size(cf_vec)-1
     if (n < 1) then
        status = 2033 ! "ERROR(make_cashflow_vector_delayed_geometric_annuity): n<1!"
@@ -536,16 +509,14 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2001- 2032.
   !!
   subroutine make_cashflow_vector_delayed_arithmetic_annuity(cf_vec, q, a, d, e, status)
-    use mrffl_config,      only: rk=>mrfflrk
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(out) :: cf_vec(:)
-    real(kind=rk),    intent(in)  :: q, a
+    real(kind=rk), intent(out) :: cf_vec(:)
+    real(kind=rk), intent(in)  :: q, a
+    integer,       intent(in)  :: d, e
+    integer,       intent(out) :: status
     ! Local Variables
-    integer,          intent(in)  :: d, e
-    integer,          intent(out) :: status
-    integer                       :: j, n
+    integer :: j, n
+    ! Perform Computation
     n = size(cf_vec)-1
     if (n < 1) then
        status = 2001 ! "ERROR(make_cashflow_vector_delayed_arithmetic_annuity): n<1!"
@@ -574,17 +545,14 @@ contains
   !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 4033-4064.
   !!
   subroutine add_intrest_to_cashflow_vector(cf_vec, rate, status)
-    use mrffl_config,      only: rk=>mrfflrk
-    use mrffl_percentages, only: percentage_to_fraction
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(out) :: cf_vec(:)
-    real(kind=rk),    intent(in)  :: rate
+    real(kind=rk), intent(out) :: cf_vec(:)
+    real(kind=rk), intent(in)  :: rate
+    integer,       intent(out) :: status
     ! Local Variables
-    integer,          intent(out) :: status
-    integer                       :: nb, j
-    real(kind=rk)                 :: rsum
+    integer       :: nb, j
+    real(kind=rk) :: rsum
+    ! Perform Computation
     nb = size(cf_vec)
     if (nb > 1) then
        rsum = cf_vec(1)
@@ -604,17 +572,14 @@ contains
   !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 4065-4096.
   !!
   subroutine add_multi_intrest_to_cashflow_vector(cf_vec, vrate, status)
-    use mrffl_config,      only: rk=>mrfflrk
-    use mrffl_percentages, only: percentage_to_fraction
-    !
-    implicit none (type, external)
     ! Arguments
-    real(kind=rk),    intent(out) :: cf_vec(:)
-    real(kind=rk),    intent(in)  :: vrate(:)
+    real(kind=rk), intent(out) :: cf_vec(:)
+    real(kind=rk), intent(in)  :: vrate(:)
+    integer,       intent(out) :: status
     ! Local Variables
-    integer,          intent(out) :: status
-    integer                       :: nb, j
-    real(kind=rk)                 :: rsum
+    integer       :: nb, j
+    real(kind=rk) :: rsum
+    ! Perform Computation
     nb = size(cf_vec)
     if (nb > 1) then
        if (size(vrate) < (nb-1)) then

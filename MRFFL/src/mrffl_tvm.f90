@@ -206,16 +206,14 @@
 !! cashflows module -- for things like amortization tables.
 !!
 module mrffl_tvm
-  use, intrinsic :: ieee_arithmetic, only: ieee_is_finite, ieee_is_nan
-  use mrffl_config, only: rk=>mrfflrk, zero_epsilon
-  use mrffl_bitset, only: bitset_size, bitset_minus, bitset_subsetp, bitset_not_subsetp, bitset_not_intersectp
-  use mrffl_var_sets, only: var_NONE, var_a, var_p, var_i, var_g, var_n, var_pv, var_fv, var_q
-  use mrffl_percentages, only: p2f => percentage_to_fraction, f2p => fraction_to_percentage
-  use mrffl_solver, only: multi_bisection
+  use, intrinsic :: ieee_arithmetic,   only: ieee_is_finite, ieee_is_nan
+  use            :: mrffl_config,      only: rk, zero_epsilon, consistent_epsilon
+  use            :: mrffl_bitset,      only: bitset_size, bitset_minus, bitset_subsetp, bitset_not_subsetp, bitset_not_intersectp
+  use            :: mrffl_percentages, only: p2f => percentage_to_fraction, f2p => fraction_to_percentage
+  use            :: mrffl_solver,      only: multi_bisection
+  use            :: mrffl_var_sets,    only: var_a, var_i, var_n, var_pv, var_fv, var_q
   implicit none (type, external)
   private
-
-  real(kind=rk),    parameter         :: consistent_epsilon = 1.0e-3_rk !< Used to check equation consistency
 
   ! Primary TVM equation solvers
   public :: tvm_delayed_lump_sum_solve, tvm_delayed_level_annuity_solve, tvm_delayed_geometric_annuity_solve, tvm_delayed_arithmetic_annuity_solve
@@ -234,8 +232,10 @@ contains
   !----------------------------------------------------------------------------------------------------------------------------
   !> compute future value from present value (pv), number of periods (n), and an intrest rate (i).
   real(kind=rk) pure elemental function fv_from_pv_n_i(pv, n, i)
-    integer,          intent(in) :: n
-    real(kind=rk),    intent(in) :: pv, i
+    ! Arguments
+    integer,       intent(in) :: n
+    real(kind=rk), intent(in) :: pv, i
+    ! Perform Computation
     fv_from_pv_n_i = pv * (1+p2f(i)) ** n
   end function fv_from_pv_n_i
 
@@ -265,9 +265,12 @@ contains
   !! @param a         First payment (Annuity)
   !!
   real(kind=rk) pure function tvm_geometric_annuity_sum_a(n, g, a)
-    integer,          intent(in) :: n
-    real(kind=rk),    intent(in) :: g, a
-    real(kind=rk)                :: gq
+    ! Arguments
+    integer,       intent(in) :: n
+    real(kind=rk), intent(in) :: g, a
+    ! Local Variables
+    real(kind=rk) :: gq
+    ! Perform Computation
     if (n < 1) then
        tvm_geometric_annuity_sum_a = 0
     else
@@ -297,7 +300,9 @@ contains
   !! @param e         Early end counted from time end (t=n). i.e. e=0 means the last payment is at end of period n.
   !!
   integer          pure function tvm_delayed_annuity_num_payments(n, d, e)
-    integer,          intent(in) :: n, d, e
+    ! Arguments
+    integer, intent(in) :: n, d, e
+    ! Perform Computation
     tvm_delayed_annuity_num_payments = 1 + n - e - d
   end function tvm_delayed_annuity_num_payments
 
@@ -314,12 +319,14 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1193-1224.
   !!
   subroutine tvm_lump_sum_solve(n, i, pv, fv, unknowns, status)
-    implicit none (type, external)
-    real(kind=rk),    intent(inout) :: n, i, pv, fv
-    integer,          intent(in)    :: unknowns
-    integer,          intent(out)   :: status
-    integer,          parameter     :: allowed_vars = var_n + var_i + var_pv + var_fv
-    real(kind=rk)                   :: a
+    ! Arguments
+    real(kind=rk), intent(inout) :: n, i, pv, fv
+    integer,       intent(in)    :: unknowns
+    integer,       intent(out)   :: status
+    ! Local Variables
+    integer, parameter :: allowed_vars = var_n + var_i + var_pv + var_fv
+    real(kind=rk)      :: a
+    ! Process & Check Arguments
     if (bitset_not_subsetp(unknowns, allowed_vars)) then
        status = 1193 ! "ERROR(tvm_lump_sum_solve): Unknown unknowns!"
        return
@@ -328,6 +335,7 @@ contains
        status = 1194 ! "ERROR(tvm_lump_sum_solve): Too many unknowns!"
        return
     end if
+    ! Perform Computation
     a = pv
     if (bitset_subsetp(var_pv, unknowns)) then
        call tvm_delayed_lump_sum_solve(n, i, pv, fv, a, 0, var_pv+var_a, status)
@@ -369,12 +377,15 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1161-1192.
   !!
   subroutine tvm_delayed_lump_sum_solve(n, i, pv, fv, a, d, unknowns, status)
-    real(kind=rk),    intent(inout) :: n, i, pv, fv, a
-    integer,          intent(in)    :: d, unknowns
-    integer,          intent(out)   :: status
-    integer,          parameter     :: allowed_vars = var_n + var_i + var_pv + var_fv + var_a
-    integer                         :: num_unknowns
-    real(kind=rk)                   :: iq
+    ! Arguments
+    real(kind=rk), intent(inout) :: n, i, pv, fv, a
+    integer,       intent(in)    :: d, unknowns
+    integer,       intent(out)   :: status
+    ! Local Variables
+    integer, parameter :: allowed_vars = var_n + var_i + var_pv + var_fv + var_a
+    integer            :: num_unknowns
+    real(kind=rk)      :: iq
+    ! Perform Computation
     num_unknowns = bitset_size(unknowns)
     if (num_unknowns > 2) then
        status = 1161 ! "ERROR(tvm_delayed_lump_sum_solve): Too many unknowns!"
@@ -464,10 +475,13 @@ contains
   !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 1129-1160.
   !!
   subroutine tvm_delayed_lump_sum_check(n, i, pv, fv, a, d, status)
-    real(kind=rk),    intent(in)  :: n, i, pv, fv, a
-    integer,          intent(in)  :: d
-    integer,          intent(out) :: status
-    real(kind=rk)                 :: iq
+    ! Arguments
+    real(kind=rk), intent(in)  :: n, i, pv, fv, a
+    integer,       intent(in)  :: d
+    integer,       intent(out) :: status
+    ! Local Variables
+    real(kind=rk) :: iq
+    ! Perform Computation
     if (d < 0) then
        status = 1129 ! "ERROR(tvm_delayed_lump_sum_check): Parameters inconsistent (d<0)!"
     else if (.not. ieee_is_finite(n)) then
@@ -684,10 +698,13 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1065-1096.
   !!
   subroutine tvm_delayed_level_annuity_check(n, i, pv, fv, a, d, e, status)
-    real(kind=rk),    intent(in)  :: n, i, pv, fv, a
-    integer,          intent(in)  :: d, e
-    integer,          intent(out) :: status
-    real(kind=rk)                 :: iq
+    ! Arguments
+    real(kind=rk), intent(in)  :: n, i, pv, fv, a
+    integer,       intent(in)  :: d, e
+    integer,       intent(out) :: status
+    ! Local Variables
+    real(kind=rk) :: iq
+    ! Perform Computation
     if (d < 0) then
        status = 1065 ! "ERROR(tvm_delayed_level_annuity_check): Parameters inconsistent (d<0)!"
     else if (e < 0) then
@@ -784,13 +801,16 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1033-1064.
   !!
   subroutine tvm_delayed_geometric_annuity_solve(n, i, g, pv, fv, a, d, e, unknowns, status)
-    real(kind=rk),    intent(inout) :: n, i, g, pv, fv, a
-    integer,          intent(in)    :: d, e
-    integer,          intent(in)    :: unknowns
-    integer,          intent(out)   :: status
-    integer,          parameter     :: allowed_vars = var_n + var_pv + var_fv + var_a
-    integer                         :: num_unknowns
-    real(kind=rk)                   :: iq, gq, iq1, gq1, giq
+    ! Arguments
+    real(kind=rk), intent(inout) :: n, i, g, pv, fv, a
+    integer,       intent(in)    :: d, e
+    integer,       intent(in)    :: unknowns
+    integer,       intent(out)   :: status
+    ! Local Variables
+    integer, parameter :: allowed_vars = var_n + var_pv + var_fv + var_a
+    real(kind=rk)      :: iq, gq, iq1, gq1, giq
+    integer            :: num_unknowns
+    ! Perform Computation
     num_unknowns = bitset_size(unknowns)
     if (num_unknowns > 2) then
        status = 1033 ! "ERROR(tvm_delayed_geometric_annuity_solve): Too many unknowns!"
@@ -875,10 +895,13 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1001-1032.
   !!
   subroutine tvm_delayed_geometric_annuity_check(n, i, g, pv, fv, a, d, e, status)
-    real(kind=rk),    intent(in)    :: n, i, g, pv, fv, a
-    integer,          intent(in)    :: d, e
-    integer,          intent(out)   :: status
-    real(kind=rk)                   :: iq, gq
+    ! Arguments
+    real(kind=rk), intent(in)  :: n, i, g, pv, fv, a
+    integer,       intent(in)  :: d, e
+    integer,       intent(out) :: status
+    ! Local Variables
+    real(kind=rk) :: iq, gq
+    ! Perform Computation
     if (d < 0) then
        status = 1001 ! "ERROR(tvm_delayed_geometric_annuity_check): Parameters inconsistent (d<0)!"
     else if (e < 0) then
@@ -991,12 +1014,15 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4129-4160.
   !!
   subroutine tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, unknowns, status)
-    real(kind=rk),    intent(inout) :: n, i, q, pv, fv, a
-    integer,          intent(in)    :: d, e
-    integer,          intent(in)    :: unknowns
-    integer,          intent(out)   :: status
-    integer                         :: cur_unk, lst_unk
-    real(kind=rk)                   :: iq, iq1, epd, n1
+    ! Arguments
+    real(kind=rk), intent(inout) :: n, i, q, pv, fv, a
+    integer,       intent(in)    :: d, e
+    integer,       intent(in)    :: unknowns
+    integer,       intent(out)   :: status
+    ! Local Variables
+    integer       :: cur_unk, lst_unk
+    real(kind=rk) :: iq, iq1, epd, n1
+    ! Perform Computation
     cur_unk = unknowns
     lst_unk = cur_unk
     iq  = p2f(i)
@@ -1065,10 +1091,13 @@ contains
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4097-4128.
   !!
   subroutine tvm_delayed_arithmetic_annuity_check(n, i, q, pv, fv, a, d, e, status)
-    real(kind=rk),    intent(in)    :: n, i, q, pv, fv, a
-    integer,          intent(in)    :: d, e
-    integer,          intent(out)   :: status
-    real(kind=rk)                   :: iq
+    ! Arguments
+    real(kind=rk), intent(in)  :: n, i, q, pv, fv, a
+    integer,       intent(in)  :: d, e
+    integer,       intent(out) :: status
+    ! Local Variables
+    real(kind=rk) :: iq
+    ! Perform Computation
     if (d < 0) then
        status = 4097 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d<0)!"
     else if (e < 0) then

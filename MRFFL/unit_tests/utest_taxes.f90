@@ -36,9 +36,9 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_taxes
-  use mrffl_config,   only: rk=>mrfflrk
-  use mrffl_us_taxes, only: tax_bracket_breaks_single, tax_bracket_rates, projected_tax, max_bracket, effective_tax_rate
-  use mrffl_tvm,      only: tvm_delayed_arithmetic_annuity_solve
+  use :: mrffl_config,   only: rk
+  use :: mrffl_us_taxes, only: tax_bracket_breaks_single, tax_bracket_rates, projected_tax, max_bracket, effective_tax_rate
+  use :: mrffl_tvm,      only: tvm_delayed_arithmetic_annuity_solve
 
   implicit none (type, external)
 

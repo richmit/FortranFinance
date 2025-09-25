@@ -36,7 +36,7 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program ftest_markets
-  use mrffl_us_markets, only: snp_resample
+  use :: mrffl_us_markets, only: snp_resample
 
   implicit none (type, external)
 

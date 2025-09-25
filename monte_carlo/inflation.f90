@@ -43,8 +43,8 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program inflation
-  use mrffl_config,       only: rk=>mrfflrk
-  use mrffl_us_inflation, only: inf_resample
+  use :: mrffl_config,       only: rk
+  use :: mrffl_us_inflation, only: inf_resample
 
   implicit none (type, external)
 

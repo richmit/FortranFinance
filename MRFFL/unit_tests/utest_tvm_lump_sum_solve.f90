@@ -36,9 +36,9 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm_lump_sum_solve
-  use mrffl_config,   only: rk=>mrfflrk
-  use mrffl_tvm,      only: tvm_lump_sum_solve
-  use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n
+  use :: mrffl_config,   only: rk
+  use :: mrffl_tvm,      only: tvm_lump_sum_solve
+  use :: mrffl_var_sets, only: var_pv, var_fv, var_i, var_n
 
   implicit none (type, external)
 

@@ -36,9 +36,9 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_tvm_delayed_level_annuity_solve
-  use mrffl_config,   only: rk=>mrfflrk
-  use mrffl_tvm,      only: tvm_delayed_level_annuity_solve
-  use mrffl_var_sets, only: var_pv, var_fv, var_i, var_n, var_a, var_pmt, var_NONE
+  use :: mrffl_config,   only: rk
+  use :: mrffl_tvm,      only: tvm_delayed_level_annuity_solve
+  use :: mrffl_var_sets, only: var_pv, var_fv, var_i, var_n, var_a, var_pmt, var_NONE
 
   implicit none (type, external)
 

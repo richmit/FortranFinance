@@ -44,12 +44,13 @@ module mrffl_config
   implicit none (type, external)
   public
 
-  integer,            parameter :: mrfflrk       = ieee_selected_real_kind(p=15,r=307) !< Real Kind
+  integer,          parameter :: rk                 = ieee_selected_real_kind(p=15, r=307) !< Real Kind
 
-  real(kind=mrfflrk), parameter :: zero_epsilon  = 1.0e-8_mrfflrk                      !< Used to test for zero
+  real(kind=rk),    parameter :: zero_epsilon       = 1.0e-8_rk                            !< Test for zero
+  real(kind=rk),    parameter :: consistent_epsilon = 1.0e-3_rk                            !< Check equation consistency
                                                                                        
-  character(len=5), parameter   :: fvfmt_ai    = "f15.4"                             !< Used to print cash values
-  character(len=5), parameter   :: ftfmt_ai    = "a15"                               !< Used to print cash titles
+  character(len=5), parameter :: fvfmt_ai           = "f15.4"                              !< Fmt for cash values
+  character(len=5), parameter :: ftfmt_ai           = "a15"                                !< Fmt for cash titles
 
         !
         !                  Typical settings for fvfmt_ai & ftfmt_ai:

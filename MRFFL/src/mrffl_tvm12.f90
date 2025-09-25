@@ -47,7 +47,12 @@
 !! however, the simplicity and familiarity of the classical calculator approach is sometimes more comfortable and direct.
 !!
 module mrffl_tvm12
-  use mrffl_var_sets,    only: var_i, var_n, var_pv, var_fv, var_pmt
+  use :: mrffl_config,      only: rk, fvfmt_ai, ftfmt_ai, zero_epsilon
+  use :: mrffl_bitset,      only: bitset_intersectp, bitset_subsetp
+  use :: mrffl_prt_sets,    only: prt_param, prt_table, prt_title
+  use :: mrffl_var_sets,    only: var_i, var_n, var_pv, var_fv, var_pmt
+  use :: mrffl_solver,      only: multi_bisection
+  !se :: mrffl_solver_ne, only: multi_bisection
   implicit none (type, external)
   private
 
@@ -56,7 +61,7 @@ module mrffl_tvm12
   integer,          parameter, public  ::  pmt_at_end       = 0
 
   public :: tvm12_solve, tvm12_print
-  public :: var_i, var_n, var_pv, var_fv, var_pmt ! Export var_* so user need not use mrffl_var_sets
+  public :: var_i, var_n, var_pv, var_fv, var_pmt ! Export var_* so user need not use :: mrffl_var_sets
 
 contains
 
@@ -87,12 +92,6 @@ contains
   !! @param unknown   The unknown variable to solve for.  Allowed parameters: var_pmt var_i, var_n, var_pv, or var_fv.
   !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 3001-3032.
   subroutine tvm12_solve(n, i, pv, pmt, fv, pmt_time, unknown, status)
-    use mrffl_config,      only: rk=>mrfflrk, zero_epsilon
-    use mrffl_solver,      only: multi_bisection
-    use mrffl_var_sets,    only: var_i, var_n, var_pv, var_fv, var_pmt
-    ! use mrffl_solver_ne, only: multi_bisection
-    !
-    implicit none (type, external)
     ! Arguments
     integer,          intent(inout) :: n
     real(kind=rk),    intent(inout) :: i, pv, pmt, fv
@@ -220,11 +219,6 @@ contains
   !! @param pmt_time     Payments at beginning or end of period.  Allowed parameters: pmt_at_beginning or pmt_at_end
   !! @param print_out    Set made from the following constants: prt_param, prt_table, prt_title
   subroutine tvm12_print(n, i, pv, pmt, fv, pmt_time, print_out, fvfmt_o, ftfmt_o)
-    use mrffl_config,      only: rk=>mrfflrk, fvfmt_ai, ftfmt_ai
-    use mrffl_prt_sets,    only: prt_param, prt_table, prt_title
-    use mrffl_bitset,      only: bitset_intersectp, bitset_subsetp
-    !
-    implicit none (type, external)
     ! Arguments
     integer,                    intent(in) :: n, pmt_time, print_out
     real(kind=rk),              intent(in) :: i, pv, fv, pmt

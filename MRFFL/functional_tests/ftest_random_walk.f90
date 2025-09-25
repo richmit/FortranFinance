@@ -36,8 +36,8 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program ftest_random_walk
-  use mrffl_config, only: rk=>mrfflrk
-  use mrffl_stats,  only: geometric_brownian_motion, zero_clipped_brownian_motion
+  use :: mrffl_config, only: rk
+  use :: mrffl_stats,  only: geometric_brownian_motion, zero_clipped_brownian_motion
 
   implicit none (type, external)
 

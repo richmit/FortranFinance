@@ -51,11 +51,11 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program loan_level_payments
-  use mrffl_config,    only: rk=>mrfflrk
-  use mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, cashflow_matrix_pv_fv, cashflow_matrix_pv_fv_print
-  use mrffl_prt_sets,  only: prt_ALL
-  use mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
-  use mrffl_var_sets,  only: var_fv, var_a
+  use :: mrffl_config,    only: rk
+  use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, cashflow_matrix_pv_fv, cashflow_matrix_pv_fv_print
+  use :: mrffl_prt_sets,  only: prt_ALL
+  use :: mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
+  use :: mrffl_var_sets,  only: var_fv, var_a
 
   implicit none (type, external)
 

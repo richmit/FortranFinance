@@ -46,10 +46,10 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program cashflow_retire
-  use mrffl_config,    only: rk=>mrfflrk
-  use mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, &
-       &                     make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_pv_fv_print
-  use mrffl_prt_sets,  only: prt_ALL
+  use :: mrffl_config,    only: rk
+  use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, &
+       &                        make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_pv_fv_print
+  use :: mrffl_prt_sets,  only: prt_ALL
 
   implicit none (type, external)
 

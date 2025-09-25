@@ -43,9 +43,9 @@
 
 !----------------------------------------------------------------------------------------------------------------------------------
 program stocks
-  use mrffl_config,      only: rk=>mrfflrk
-  use mrffl_us_markets,  only: rut_resample
-  use mrffl_percentages, only: add_percentage
+  use :: mrffl_config,      only: rk
+  use :: mrffl_us_markets,  only: rut_resample
+  use :: mrffl_percentages, only: add_percentage
 
   implicit none (type, external)
 
