@@ -38,6 +38,14 @@
 #########################################################################################################################################################.H.E.##
 
 #===============================================================================================================================================================
+# Load required packages
+
+suppressPackageStartupMessages(library('dplyr'))
+suppressPackageStartupMessages(library('ggplot2'))
+suppressPackageStartupMessages(library('scales'))
+suppressPackageStartupMessages(library('data.table'))
+
+#===============================================================================================================================================================
 # Displaying Images
 # Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images
 imageV <- TRUE
