@@ -53,4 +53,4 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
      - https://github.com/richmit/FortranFinance/tree/main/retirement: Some TVM-style retirement problems.
      - https://github.com/richmit/FortranFinance/tree/main/cashflows: Just a demo of the cashflow module.
 
-  [[file:retirement_simulation/index.html][file:retirement_simulation/pics/composite_trajectories_20_mc_800x.png]]
+  [[file:retirement_simulation/index.html][file:retirement_simulation/pics/composite_trajectories_20_mc-pvue.png]]
