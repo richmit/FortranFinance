@@ -31,9 +31,11 @@
 #  @endparblock
 #########################################################################################################################################################.H.E.##
 
+# TODO MJR <2025-09-26> tools_lfortran.mk: Add better support.
+
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 AR := ar
 FC :=lfortran
 # Note: On Debian, you have to tell the compiler where the standard module files are...
 # FC :=lfortran -I /usr/lib/x86_64-linux-gnu/fortran/lfortran-mod-0/
-FFLAGS := --std=f23
+FFLAGS := --std=f$(subst 20,,$(FCOMP_STD))

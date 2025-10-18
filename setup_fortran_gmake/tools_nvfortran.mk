@@ -32,7 +32,11 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-AR := ar
-FC := nvfortran
-FFLAGS := -O3 -Wall -W -Xlinker -z -Xlinker execstack
-FSHFLG = -o $(MRFFL_SHARED_LIB_FILE) -shared $(MRFFL_OBJ_FILES)
+ifeq ($(OS),Windows_NT)
+  $(error nvfortran is not supported on Windows)
+else
+  AR := ar
+  FC := nvfortran
+  FFLAGS := $(if $(FCOMP_OPT_OPT),-O3) $(if $(FCOMP_OPT_WARN),-Wall -W) $(if $(FCOMP_OPT_XSTACK),-Xlinker -z -Xlinker execstack)
+  FSHFLG = -o $(MRFFL_SHARED_LIB_FILE) -shared $(MRFFL_OBJ_FILES)
+endif

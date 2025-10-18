@@ -31,12 +31,9 @@
 #  @endparblock
 #########################################################################################################################################################.H.E.##
 
-
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Set MRFFL_SRC_DIR based on location of this file.
-ifndef MRFFL_SRC_DIR
-	MRFFL_SRC_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
-endif
+MRFFL_SRC_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 MRFFL_MODS := mrffl_config mrffl_stats mrffl_bitset mrffl_prt_sets mrffl_var_sets mrffl_percentages mrffl_us_inflation mrffl_solver mrffl_solver_ne mrffl_tvm mrffl_us_taxes mrffl_cashflows mrffl_tvm12 mrffl_us_markets mrffl_life_table

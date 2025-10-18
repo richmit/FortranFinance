@@ -38,13 +38,26 @@
 FF_PROJ_ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-## Automatically configure the compiler.  Valid values: flang, gfortran, ifx, lfortran, & nvfortran
-#FCOMP = ifx
+## Use 'setup_fortran.mk' to setup variables.  Set FCOMP=NONE to manually set AR, FC, FFLAGS, & FSHFLG below.
+FCOMP            = gfortran
+FCOMP_STD        = 2023
+FCOMP_OPT_XSTACK = 
+FCOMP_OPT_WARN   = T
+FCOMP_OPT_XWARN  = T
+FCOMP_OPT_OMP    = 
+FCOMP_OPT_OPT    = T
+
+include $(FF_PROJ_ROOT)/setup_fortran_gmake/setup_fortran.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 ## Manually configure the compiler.
-#FCOMP  = NONE
 #AR     = --Command For Library Archive Tool--
 #FC     = --Command for Fortran compiler--
 #FFLAGS = --Compile flags/options for fortran compiler--
 #FSHFLG = --Shared library flags/options for fortran compiler--
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+## Create rules and targets for the MRFFL library
+include $(FF_PROJ_ROOT)/MRFFL/src/include.mk
+
+

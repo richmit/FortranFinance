@@ -3,17 +3,6 @@
 include ../setup.mk
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Use FCOMP to set variables for fortran development.  
-include $(FF_PROJ_ROOT)/setup_fortran_gmake/setup_fortran.mk
-
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
-# If you need to tweak the fortran variables set above, then this is the place.  Set AR, FC, FFLAGS, & FSHFLG here.
-
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Create rules and targets for the MRFFL library
-include $(FF_PROJ_ROOT)/MRFFL/src/include.mk
-
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 CONFIG_FILE = config_20.nml
 
@@ -48,7 +37,7 @@ all : graphs
 # These targets reproduce the graphics included in the online documentation
 
 .PHONY: 20
-20 : retire$(EXE_SUFFIX) retire.R config_20.nml
+20 : retire retire.R config_20.nml
 	cp config_20.nml config.nml
 	rm -f retire.out
 	rm -f *_20_fix.png
@@ -62,7 +51,7 @@ all : graphs
 	R -q -f retire.R gd=_20_mc> /dev/null
 
 .PHONY: 60ml
-60ml : retire$(EXE_SUFFIX) retire.R config_60.nml
+60ml : retire retire.R config_60.nml
 	sed 's/500000/625000/; s/110000/100000/; s/ 80/ 50/; s/ 20\.0/ 50.0/; s/ 7\.0/ -7.0/; s/ 5\.0/ -5.0/; s/ 3\.0/ -3.0/;' config_60.nml > config.nml
 	rm -f retire.out
 	rm -f *_60ml_mc.png
@@ -71,7 +60,7 @@ all : graphs
 	R -q -f retire.R gd=_60ml_mc> /dev/null
 
 .PHONY: 60o
-60o : retire$(EXE_SUFFIX) retire.R config_60.nml
+60o : retire retire.R config_60.nml
 	rm -f retire.out
 	rm -f *_60o_fix.png
 	make CONFIG_FILE=config_60.nml retire.out

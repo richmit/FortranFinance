@@ -31,15 +31,23 @@
 #  @endparblock
 #########################################################################################################################################################.H.E.##
 
+# TODO MJR <2025-09-26> tools_flang.mk: Add support for FCOMP_OPT_WARN, FCOMP_OPT_XWARN, FCOMP_OPT_OMP, & FCOMP_OPT_OPT.
+
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 ifeq ($(OS),Windows_NT)
   AR := ar
   FC := flang
-  FFLAGS := -pedantic -std=f2018
+  FFLAGS := -pedantic -std=f$(FCOMP_STD)
   FSHFLG = -o $(MRFFL_SHARED_LIB_FILE) -shared $(MRFFL_OBJ_FILES)
 else
   AR := ar
   FC := flang
-  FFLAGS := -pedantic -std=f2018 -Wl,-z,execstack
+  FFLAGS := -pedantic -std=f$(FCOMP_STD)
+  ifneq ($(FCOMP_OPT_XSTACK),)
+    FFLAGS += -Wl,-z,execstack
+  endif
   FSHFLG = -o $(MRFFL_SHARED_LIB_FILE) -shared $(MRFFL_OBJ_FILES)
 endif
+
+
+

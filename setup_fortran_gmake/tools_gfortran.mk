@@ -32,9 +32,14 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-AR := ar
-FC := gfortran
-FFLAGS := -O3 -Wall -Wsurprising -W -std=f2023
-FSHFLG = -o $(MRFFL_SHARED_LIB_FILE) -shared $(MRFFL_OBJ_FILES)
-
-# Should work with: -fdefault-integer-8
+ifeq ($(OS),Windows_NT)
+    AR := ar	
+    FC := gfortran
+    FFLAGS := -std=f$(FCOMP_STD) $(if $(FCOMP_OPT_XWARN),-fcheck=all) $(if $(FCOMP_OPT_OMP),-fopenmp) $(if $(FCOMP_OPT_OPT),-O3) $(if $(FCOMP_OPT_WARN),-Wall -Wsurprising -W)
+    FSHFLG = -o $(MRKISS_SHARED_LIB_FILE) -shared $(MRKISS_OBJ_FILES)
+else
+    AR := ar	
+    FC := gfortran
+    FFLAGS := -std=f$(FCOMP_STD) $(if $(FCOMP_OPT_XWARN),-fcheck=all) $(if $(FCOMP_OPT_OMP),-fopenmp) $(if $(FCOMP_OPT_OPT),-O3) $(if $(FCOMP_OPT_WARN),-Wall -Wsurprising -W)   -fPIC
+    FSHFLG = -o $(MRKISS_SHARED_LIB_FILE) -shared $(MRKISS_OBJ_FILES) -fPIC
+endif

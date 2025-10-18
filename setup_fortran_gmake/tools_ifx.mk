@@ -31,13 +31,16 @@
 #  @endparblock
 #########################################################################################################################################################.H.E.##
 
+
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 ifeq ($(OS),Windows_NT)
 	FC := ifx
-	FFLAGS := -stand:f23 -Qdiag-disable:5268
-	FSHFLG = -dll -Fe:$(MRFFL_SHARED_LIB_FILE) $(MRFFL_OBJ_FILES)
+    FFLAGS := -stand:f$(subst 20,,$(FCOMP_STD)) $(if $(FCOMP_OPT_XWARN),-check:all) $(if $(FCOMP_OPT_WARN),-warn:all) $(if $(FCOMP_OPT_OPT),-fp:precise       -O3) -Qdiag-disable:7712 -Qdiag-disable:5268 $(if $(FCOMP_OPT_OMP),-Qopenmp)
+	FSHFLG = -dll -Fe:$(MRKISS_SHARED_LIB_FILE) $(MRKISS_OBJ_FILES)
 else
 	FC := ifx
-	FFLAGS := -stand f23 -Xlinker -z -Xlinker execstack
-	FSHFLG = -shared  -Fe:$(MRFFL_SHARED_LIB_FILE) $(MRFFL_OBJ_FILES)
+	FFLAGS := -stand f$(subst 20,,$(FCOMP_STD)) $(if $(FCOMP_OPT_XWARN),-check all) $(if $(FCOMP_OPT_WARN),-warn all) $(if $(FCOMP_OPT_OPT),-fp-model=precise -O3) -diag-disable=7712  -diag-disable=5268  $(if $(FCOMP_OPT_OMP),-qopenmp) $(if $(FCOMP_OPT_XSTACK),-Xlinker -z -Xlinker execstack) -fPIC
+	FSHFLG = -fPIC -shared  -Fe:$(MRKISS_SHARED_LIB_FILE) $(MRKISS_OBJ_FILES)
 endif
+
+
