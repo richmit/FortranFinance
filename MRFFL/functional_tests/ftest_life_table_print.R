@@ -40,6 +40,14 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Load required packages
+
+suppressPackageStartupMessages(library('dplyr'))
+suppressPackageStartupMessages(library('ggplot2'))
+suppressPackageStartupMessages(library('scales'))
+suppressPackageStartupMessages(library('data.table'))
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 cdc_lx    <- fread('ftest_life_table_print_cdc_lx.txt')
 cdc_qx    <- fread('ftest_life_table_print_cdc_qx.txt')
 cdc_wf_lx <- fread('ftest_life_table_print_cdc_wf_lx.txt')

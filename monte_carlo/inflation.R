@@ -33,6 +33,14 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Load required packages
+
+suppressPackageStartupMessages(library('dplyr'))
+suppressPackageStartupMessages(library('ggplot2'))
+suppressPackageStartupMessages(library('scales'))
+suppressPackageStartupMessages(library('data.table'))
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 # Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images
 imageV <- TRUE
 
@@ -41,7 +49,7 @@ if (imageV == TRUE) {
   if (.Platform$OS == "windows") {
     imageV <- "explorer"
   } else {
-    for(piv in c("/usr/bin/display", "/usr/bin/pqiv", "/usr/bin/nomacs"))
+    for(piv in c("/usr/bin/display", "/usr/bin/eog", "/usr/bin/pqiv", "/usr/bin/nomacs"))
       if(file.exists(piv))
         imageV <- piv
   }

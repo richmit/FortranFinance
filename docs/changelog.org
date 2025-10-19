@@ -72,7 +72,12 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
       - N/A
   - Miscellaneous
     - Removed cmake stuff
+    - Added 'eog' to image viewer list in R
+    - Fixed for #2.  Thank you kreutpet!  Added library includes in R code.
     - Updated build system
+      - New global config
+      - Added targets for image files in documentation
+
 * v2025-09-24: Initial Release
 :PROPERTIES:
 :CUSTOM_ID: v2025-08-04

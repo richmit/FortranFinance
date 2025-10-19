@@ -33,6 +33,14 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
+# Load required packages
+
+suppressPackageStartupMessages(library('dplyr'))
+suppressPackageStartupMessages(library('ggplot2'))
+suppressPackageStartupMessages(library('scales'))
+suppressPackageStartupMessages(library('data.table'))
+
+#---------------------------------------------------------------------------------------------------------------------------------------------------------------
 stdNrmDat <- fread('ftest_stats_rand_norm_std.txt')
 logNrmDat <- fread('ftest_stats_rand_log_norm.txt')
 norm203dat <- fread('ftest_stats_rand_norm203.txt')

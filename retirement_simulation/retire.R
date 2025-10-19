@@ -55,7 +55,7 @@ if (imageV == TRUE) {
   if (.Platform$OS == "windows") {
     imageV <- "explorer"
   } else {
-    for(piv in c("/usr/bin/display", "/usr/bin/pqiv", "/usr/bin/nomacs"))
+    for(piv in c("/usr/bin/display", "/usr/bin/eog", "/usr/bin/pqiv", "/usr/bin/nomacs"))
       if(file.exists(piv))
         imageV <- piv
   }
