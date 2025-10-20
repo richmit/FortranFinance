@@ -40,12 +40,7 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Load required packages
-
-suppressPackageStartupMessages(library('dplyr'))
-suppressPackageStartupMessages(library('ggplot2'))
-suppressPackageStartupMessages(library('scales'))
-suppressPackageStartupMessages(library('data.table'))
+source('../../setup.R')
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 cdc_lx    <- fread('ftest_life_table_print_cdc_lx.txt')

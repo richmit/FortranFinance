@@ -71,12 +71,20 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
     - Updated
       - N/A
   - Miscellaneous
+    - setup.R
+      - Included by all R code.  
+      - Loads libraries
+      - Configures image viewing.
+    - setup.mk
+      - Included by all makefiles
+      - Sets up FF_PROJ_ROOT
+      - Sets up "setup_fortran_gmake" and includes it
+      - Contains instructions to manually configure the compiler without setup_fortran_gmake
+      - Sets up MRFFL targets to make using MRFFL easy
     - Removed cmake stuff
     - Added 'eog' to image viewer list in R
     - Fixed for #2.  Thank you kreutpet!  Added library includes in R code.
-    - Updated build system
-      - New global config
-      - Added targets for image files in documentation
+    - Added make targets for image files in documentation
 
 * v2025-09-24: Initial Release
 :PROPERTIES:

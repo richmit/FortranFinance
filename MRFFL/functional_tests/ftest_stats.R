@@ -33,12 +33,7 @@
 #########################################################################################################################################################.H.E.##
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Load required packages
-
-suppressPackageStartupMessages(library('dplyr'))
-suppressPackageStartupMessages(library('ggplot2'))
-suppressPackageStartupMessages(library('scales'))
-suppressPackageStartupMessages(library('data.table'))
+source('../../setup.R')
 
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 stdNrmDat <- fread('ftest_stats_rand_norm_std.txt')
