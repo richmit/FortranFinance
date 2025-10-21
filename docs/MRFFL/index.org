@@ -90,37 +90,63 @@ the same variables to populate a cashflow that can be further analyzed or printe
 :CUSTOM_ID: examples
 :END:
 
-You will find several programs, most of which use MRFFL, in various directories at the base of the
- - [[https://github.com/richmit/FortranFinance][FortranFinance]] repository:
-   - [[https://github.com/richmit/FortranFinance/tree/main/cashflows][=cashflows=]]                           :: Some simple MRFFL cashflow examples.
-   - [[https://github.com/richmit/FortranFinance/tree/main/loans][=loans=]]                                   :: Illustrates how to use MRFFL TVM solvers in combination with cashflow series.
-   - [[https://github.com/richmit/FortranFinance/tree/main/monte_carlo][=monte_carlo=]]                       :: Illustrates basic resampling monte carlo for inflation and stock market returns.
-   - [[https://github.com/richmit/FortranFinance/tree/main/retirement][=retirement=]]                         :: Some TVM based retirement computations.
-   - [[https://github.com/richmit/FortranFinance/tree/main/retirement_simulation][=retirement_simulation=]]   :: A comprehensive simulator for a married couple's retirement
- - In addition, the unit & functional tests in the MRFFL directory can provide some insight into the usage of MRFFL:
-   - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/functional_tests][=MRFFL/functional_tests=]] :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
-   - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/unit_tests][=MRFFL/unit_tests=]]             :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
+You will find several programs, most of which use MRFFL, in various directories at the base of the [[https://github.com/richmit/FortranFinance][FortranFinance]] repository:
+  - Examples: \\ 
+    - [[https://github.com/richmit/FortranFinance/tree/main/cashflows][=cashflows=]]                           :: Some simple MRFFL cashflow examples.
+    - [[https://github.com/richmit/FortranFinance/tree/main/loans][=loans=]]                                   :: Illustrates how to use MRFFL TVM solvers in combination with cashflow series.
+    - [[https://github.com/richmit/FortranFinance/tree/main/monte_carlo][=monte_carlo=]]                       :: Illustrates basic resampling monte carlo for inflation and stock market returns.
+    - [[https://github.com/richmit/FortranFinance/tree/main/retirement][=retirement=]]                         :: Some TVM based retirement computations.
+    - [[https://github.com/richmit/FortranFinance/tree/main/retirement_simulation][=retirement_simulation=]]   :: A comprehensive simulator for a married couple's retirement
 
-I keep my development environment is pretty standard.  On Linux & MSYS2 I use the native package manager to install development tools in the standard
-directories whenever possible.  For commercial compilers I use the vendor provided installer with the default settings.  I suspect the GNU Make build
-system provided with MRFFL may work out of the box for many users.
+In addition, the unit & functional tests in the MRFFL directory can provide some insight into the usage of MRFFL:
+   - Tests: \\
+     - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/functional_tests][=MRFFL/functional_tests=]] :: Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.
+     - [[https://github.com/richmit/FortranFinance/tree/main/MRFFL/unit_tests][=MRFFL/unit_tests=]]             :: Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.
 
-For someone on Linux or MSYS2 using GNU Fortran (=gfortran=), you may well be able to do something like this:
+I keep my development environment pretty generic.  On Linux & MSYS2 I use the native package manager to install development tools in the standard directories
+whenever possible.  For commercial compilers I use the vendor provided installer with the default settings.  I suspect the GNU Make build system provided with
+MRFFL may work out of the box on many systems.  In particular, it may be entirely possible for someone on Linux or MSYS2 using GNU Fortran (=gfortran=), to
+build examples with something like this:
 
 #+begin_src sh :eval never :tangle no :results none :exports code
 cd cashflows/     # Change directory into one of the example directories (cashflows/ in this instance)
 make all          # Build everything
 #+end_src
 
+If the above doesn't work, then some [[#setup-make][manual configuration]] may be necessary.
+
 The compiler can be changed to one of =flang=, =gfortran=, =ifx=, =lfortran=, or =nvfortran= by setting the =FCOMP= variable.  For example, we can use the
 Intel compiler like this:
 
 #+begin_src sh :eval never :tangle no :results none :exports code
-cd FCOMP=ifx cashflows/     # Change directory into one of the example directories (cashflows/ in this instance)
-make all                    # Build everything
+cd cashflows/        # Change directory into one of the example directories (cashflows/ in this instance)
+make FCOMP=ifx all   # Build everything
 #+end_src
 
-If the above doesn't work, then some manual configuration may be necessary.  The file ~setup.mk~ found in the project root directory is included by all make
+See the section on [[#setup-make][setup configuration]] for a more persistent method of setting the compiler than providing it on the command line every time.
+
+* Build & R Setup
+:PROPERTIES:
+:CUSTOM_ID: setup
+:END:
+
+The project uses a couple of central configuration files to set some global behavior:
+  - Files: \\ 
+    - [[https://github.com/richmit/FortranFinance/tree/main/setup.R][=setup.R=]]   :: Configure R
+      - Load R packages
+      - Decide if generated images should be displayed in an image viewer
+      - Set preferred image viewer
+    - [[https://github.com/richmit/FortranFinance/tree/main/setup.mk][=setup.mk=]] :: Configure GNU Make (the build system)
+      - Configure the semi-automatic fortran compiler setup system and run it
+      - Manually configure the fortran compiler
+      - Configure MRFFL targets to make it easy to compile & link with MRFFL
+
+** GNU Make
+:PROPERTIES:
+:CUSTOM_ID: setup-make
+:END:
+
+The file ~setup.mk~ found in the project root directory is included by all make
 files in the repository and thus makes for a nice place to configure things globally.  The file is pretty short:
 
 #+begin_src sh :results output verbatum :exports results :wrap "src makefile :eval never :tangle no"
@@ -132,21 +158,32 @@ files in the repository and thus makes for a nice place to configure things glob
 ## The root directory for this project
 FF_PROJ_ROOT := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 
-## Automatically configure the compiler.  Valid values: flang, gfortran, ifx, lfortran, & nvfortran
-#FCOMP = ifx
+## Use 'setup_fortran.mk' to setup variables.  Set FCOMP=NONE to manually set AR, FC, FFLAGS, & FSHFLG below.
+FCOMP            = gfortran
+FCOMP_STD        = 2023
+FCOMP_OPT_XSTACK = 
+FCOMP_OPT_WARN   = T
+FCOMP_OPT_XWARN  = T
+FCOMP_OPT_OMP    = 
+FCOMP_OPT_OPT    = T
+
+include $(FF_PROJ_ROOT)/setup_fortran_gmake/setup_fortran.mk
 
 ## Manually configure the compiler.
-#FCOMP  = NONE
 #AR     = --Command For Library Archive Tool--
 #FC     = --Command for Fortran compiler--
 #FFLAGS = --Compile flags/options for fortran compiler--
 #FSHFLG = --Shared library flags/options for fortran compiler--
+
+## Create rules and targets for the MRFFL library
+include $(FF_PROJ_ROOT)/MRFFL/src/include.mk
+
 #+end_src
 
-Here is an exmaple for =nvfortran=:
+If the =setup_fortran.mk= include can't configure fortran on your system, then you may have to do that manually.  This involves setting =FCOMP= to =NONE=, and then
+setting =AR=, =FC=, =FFLAG=, and =FSHFLG= to something appropriate.  Here is an example for =nvfortran=:
 
 #+begin_src makefile :eval never :tangle no
-FCOMP := NONE
 AR := ar
 FC := nvfortran
 FFLAGS := -O3 -Wall  -W -Xlinker -z -Xlinker execstack
@@ -156,34 +193,70 @@ FSHFLG = -o $(MRFFL_SHARED_LIB_FILE) -shared $(MRFFL_OBJ_FILES)
 The only tricky one is the ~FSHFLG~ variable.  Luckily you only need the ~FSHFLG~ variable if you plan on building a shared library.  The shared library is
 completely unnecessary for making full use of the modules, so you you can safely ignore that one unless you really, really want to use a shared library. ~;)~
 
+** GNU R
+:PROPERTIES:
+:CUSTOM_ID: setup-r
+:END:
+
+The file ~setup.R~ found in the project root directory is included by all R code in the repository and thus makes for a nice place to configure things globally.  The file is pretty short:
+
+#+begin_src sh :results output verbatum :exports results :wrap "src R :eval never :tangle no"
+~/core/codeBits/bin/src2orgListing  ../../setup.R
+#+end_src
+
+#+RESULTS:
+#+begin_src R :eval never :tangle no
+# Load required packages
+
+suppressPackageStartupMessages(library('dplyr'))
+suppressPackageStartupMessages(library('ggplot2'))
+suppressPackageStartupMessages(library('scales'))
+suppressPackageStartupMessages(library('data.table'))
+
+# Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images
+imageV <- TRUE
+
+# Try and find an image viewer
+if (imageV == TRUE) {
+  if (.Platform$OS == "windows") {
+    imageV <- "explorer"
+  } else {
+    for(piv in c("/usr/bin/display", "/usr/bin/eog", "/usr/bin/pqiv", "/usr/bin/nomacs"))
+      if(file.exists(piv))
+        imageV <- piv
+  }
+}
+#+end_src
+
+
+
+
 * Using MRFFL (MR Fortran Finance Library) Modules
 :PROPERTIES:
 :CUSTOM_ID: use
 :END:
 
+** The Hard Way
+:PROPERTIES:
+:CUSTOM_ID: use-hard
+:END:
+
 All of the code is in the module source files with no external dependencies at all.  So you just need to call the modules from your code, and then
 compile/link everything together.
 
-To help with that compile/link part, you use the include files in the repository.  Your makefile will look something like this:
+** Reuse MRFFL's setup.mk file
+:PROPERTIES:
+:CUSTOM_ID: use-setup
+:END:
+
+To simplify matters, you can use the same global setup used in the example makefiles.  In this case your makefile will look something like this:
 
 #+begin_src makefile
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
+#------------------------------------------------------------------------------------------------------------
 # Set Global Variables.  
 include /path/to/MRFFL/repository/setup.mk
 
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Use FCOMP to set variables for fortran development.  
-include $(FF_PROJ_ROOT)/setup_fortran_gmake/setup_fortran.mk
-
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
-# If you need to tweak the fortran variables set above, then this is the place.  Set AR, FC, FFLAGS, & FSHFLG here.
-
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
-# Create rules and targets for the MRFFL library
-include $(FF_PROJ_ROOT)/MRFFL/src/include.mk
-
-#---------------------------------------------------------------------------------------------------------------------------------------------------------------
-
+#------------------------------------------------------------------------------------------------------------
 your_program : your_program.f90 $(MRFFL_OBJ_FILES)
     $(FC) $(FFLAGS) $^ -o $@
 #+end_src
@@ -197,12 +270,12 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
     $(FC) $(FFLAGS) $^ -o $@
 #+end_src
 
-** Notes about ~include.mk~
+* Details: ~include.mk~
 :PROPERTIES:
 :CUSTOM_ID: use-makeinc
 :END:
 
-*** Useful Variables
+** Useful Variables
 :PROPERTIES:
 :CUSTOM_ID: makeinc-vars
 :END:
@@ -212,7 +285,7 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
   - ~MRFFL_STATIC_LIB_FILE~ :: The name of the static library file.  It's not created by default.  It will appear in your build directory if it is listed as a dependency on one of your targets.
   - ~MRFFL_SHARED_LIB_FILE~ :: The name of the shared library file.  It's not created by default.  It will appear in your build directory if it is listed as a dependency on one of your targets.
 
-*** Useful Targets
+** Useful Targets
 :PROPERTIES:
 :CUSTOM_ID: makeinc-target
 :END:
@@ -228,7 +301,7 @@ your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX)
                            delete object files with an extension of ~.obj~ on windows and an extension of ~.o~ on UNIX'ish platforms.  I use the same directories to
                            build for all platforms, so I sometimes want to clean up the build products from all platforms at once.  That's what this target will do.
 
-*** Static Library
+** Static Library
 :PROPERTIES:
 :CUSTOM_ID: makeinc-stlib
 :END:
@@ -242,7 +315,7 @@ your_program : your_program.f90 $(MRFFL_STATIC_LIB_FILE)
     $(FC) $(FFLAGS) $^ $(MRFFL_STATIC_LIB_FILE) -o $@
 #+end_src
 
-*** Dynamic Library (~.so~ and ~.dll~ files)
+** Dynamic Library (~.so~ and ~.dll~ files)
 :PROPERTIES:
 :CUSTOM_ID: makeinc-dylib
 :END:
@@ -251,12 +324,12 @@ A rule to make a static library is included in ~include.mk~.  You can build it w
 dependency in your build rule.  As the options to link to a shared library differ wildly across platforms and compilers/linkers, I don't provide an example of
 how to do that.
 
-** Notes about ~setup_fortran.mk~
+* Details: ~setup_fortran.mk~
 :PROPERTIES:
 :CUSTOM_ID: use-setupfor
 :END:
 
-*** Names of files
+** Names of files
 :PROPERTIES:
 :CUSTOM_ID: use-setupfor-names
 :END:

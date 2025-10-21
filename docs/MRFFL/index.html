@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-09-25 Thu 14:22 -->
+<!-- 2025-10-20 Mon 13:34 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>MR Fortran Finance Library (MRFFL)</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-09-25 14:22:17</i></td>
+<td class="org-left"><i>2025-10-20 13:34:35</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-09-25 14:22:28</i></td>
+<td class="org-left"><i>2025-10-20 13:34:36</i></td>
 </tr>
 </tbody>
 </table>
@@ -255,21 +255,29 @@ Copyright &copy; 2025 Mitch Richling. All rights reserved.
 <li><a href="#intro">1. Introduciton</a></li>
 <li><a href="#modlist">2. MRFFL (MR Fortran Finance Library) Modules</a></li>
 <li><a href="#examples">3. Example Programs</a></li>
-<li><a href="#use">4. Using MRFFL (MR Fortran Finance Library) Modules</a>
+<li><a href="#setup">4. Build &amp; R Setup</a>
 <ul>
-<li><a href="#use-makeinc">4.1. Notes about <code>include.mk</code></a>
-<ul>
-<li><a href="#makeinc-vars">4.1.1. Useful Variables</a></li>
-<li><a href="#makeinc-target">4.1.2. Useful Targets</a></li>
-<li><a href="#makeinc-stlib">4.1.3. Static Library</a></li>
-<li><a href="#makeinc-dylib">4.1.4. Dynamic Library (<code>.so</code> and <code>.dll</code> files)</a></li>
+<li><a href="#setup-make">4.1. GNU Make</a></li>
+<li><a href="#setup-r">4.2. GNU R</a></li>
 </ul>
 </li>
-<li><a href="#use-setupfor">4.2. Notes about <code>setup_fortran.mk</code></a>
+<li><a href="#use">5. Using MRFFL (MR Fortran Finance Library) Modules</a>
 <ul>
-<li><a href="#use-setupfor-names">4.2.1. Names of files</a></li>
+<li><a href="#use-hard">5.1. The Hard Way</a></li>
+<li><a href="#use-setup">5.2. Reuse MRFFL's setup.mk file</a></li>
 </ul>
 </li>
+<li><a href="#use-makeinc">6. Details: <code>include.mk</code></a>
+<ul>
+<li><a href="#makeinc-vars">6.1. Useful Variables</a></li>
+<li><a href="#makeinc-target">6.2. Useful Targets</a></li>
+<li><a href="#makeinc-stlib">6.3. Static Library</a></li>
+<li><a href="#makeinc-dylib">6.4. Dynamic Library (<code>.so</code> and <code>.dll</code> files)</a></li>
+</ul>
+</li>
+<li><a href="#use-setupfor">7. Details: <code>setup_fortran.mk</code></a>
+<ul>
+<li><a href="#use-setupfor-names">7.1. Names of files</a></li>
 </ul>
 </li>
 </ul>
@@ -333,10 +341,10 @@ the same variables to populate a cashflow that can be further analyzed or printe
 <h2 id="examples"><span class="section-number-2">3.</span> Example Programs</h2>
 <div class="outline-text-2" id="text-examples">
 <p>
-You will find several programs, most of which use MRFFL, in various directories at the base of the
+You will find several programs, most of which use MRFFL, in various directories at the base of the <a href="https://github.com/richmit/FortranFinance">FortranFinance</a> repository:
 </p>
 <ul class="org-ul">
-<li><a href="https://github.com/richmit/FortranFinance">FortranFinance</a> repository:
+<li>Examples: <br />
 <dl class="org-dl">
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/cashflows"><code>cashflows</code></a>                          </dt><dd>Some simple MRFFL cashflow examples.</dd>
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/loans"><code>loans</code></a>                                  </dt><dd>Illustrates how to use MRFFL TVM solvers in combination with cashflow series.</dd>
@@ -344,7 +352,13 @@ You will find several programs, most of which use MRFFL, in various directories 
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/retirement"><code>retirement</code></a>                        </dt><dd>Some TVM based retirement computations.</dd>
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/retirement_simulation"><code>retirement_simulation</code></a>  </dt><dd>A comprehensive simulator for a married couple's retirement</dd>
 </dl></li>
-<li>In addition, the unit &amp; functional tests in the MRFFL directory can provide some insight into the usage of MRFFL:
+</ul>
+
+<p>
+In addition, the unit &amp; functional tests in the MRFFL directory can provide some insight into the usage of MRFFL:
+</p>
+<ul class="org-ul">
+<li>Tests: <br />
 <dl class="org-dl">
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/MRFFL/functional_tests"><code>MRFFL/functional_tests</code></a></dt><dd>Functional tests for MRFFL.  While these are basic MRFFL tests, they also demonstrate the API.</dd>
 <dt><a href="https://github.com/richmit/FortranFinance/tree/main/MRFFL/unit_tests"><code>MRFFL/unit_tests</code></a>            </dt><dd>Unit (well unit-like) tests for MRFFL.  These also demonstrate the API; however, they can be a bit complex.</dd>
@@ -352,13 +366,10 @@ You will find several programs, most of which use MRFFL, in various directories 
 </ul>
 
 <p>
-I keep my development environment is pretty standard.  On Linux &amp; MSYS2 I use the native package manager to install development tools in the standard
-directories whenever possible.  For commercial compilers I use the vendor provided installer with the default settings.  I suspect the GNU Make build
-system provided with MRFFL may work out of the box for many users.
-</p>
-
-<p>
-For someone on Linux or MSYS2 using GNU Fortran (<code>gfortran</code>), you may well be able to do something like this:
+I keep my development environment pretty generic.  On Linux &amp; MSYS2 I use the native package manager to install development tools in the standard directories
+whenever possible.  For commercial compilers I use the vendor provided installer with the default settings.  I suspect the GNU Make build system provided with
+MRFFL may work out of the box on many systems.  In particular, it may be entirely possible for someone on Linux or MSYS2 using GNU Fortran (<code>gfortran</code>), to
+build examples with something like this:
 </p>
 
 <div class="org-src-container">
@@ -368,18 +379,54 @@ make all          <span style="color: #ffa500;"># </span><span style="color: #ff
 </div>
 
 <p>
+If the above doesn't work, then some <a href="#setup-make">manual configuration</a> may be necessary.
+</p>
+
+<p>
 The compiler can be changed to one of <code>flang</code>, <code>gfortran</code>, <code>ifx</code>, <code>lfortran</code>, or <code>nvfortran</code> by setting the <code>FCOMP</code> variable.  For example, we can use the
 Intel compiler like this:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-sh"><span style="color: #b0c4de;">cd</span> <span style="color: #7fffd4;">FCOMP</span>=ifx cashflows/     <span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Change directory into one of the example directories (cashflows/ in this instance)</span>
-make all                    <span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Build everything</span>
+<pre class="src src-sh"><span style="color: #b0c4de;">cd</span> cashflows/        <span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Change directory into one of the example directories (cashflows/ in this instance)</span>
+make <span style="color: #7fffd4;">FCOMP</span>=ifx all   <span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Build everything</span>
 </pre>
 </div>
 
 <p>
-If the above doesn't work, then some manual configuration may be necessary.  The file <code>setup.mk</code> found in the project root directory is included by all make
+See the section on <a href="#setup-make">setup configuration</a> for a more persistent method of setting the compiler than providing it on the command line every time.
+</p>
+</div>
+</div>
+<div id="outline-container-setup" class="outline-2">
+<h2 id="setup"><span class="section-number-2">4.</span> Build &amp; R Setup</h2>
+<div class="outline-text-2" id="text-setup">
+<p>
+The project uses a couple of central configuration files to set some global behavior:
+</p>
+<ul class="org-ul">
+<li>Files: <br />
+<dl class="org-dl">
+<dt><a href="https://github.com/richmit/FortranFinance/tree/main/setup.R"><code>setup.R</code></a>  </dt><dd>Configure R
+<ul class="org-ul">
+<li>Load R packages</li>
+<li>Decide if generated images should be displayed in an image viewer</li>
+<li>Set preferred image viewer</li>
+</ul></dd>
+<dt><a href="https://github.com/richmit/FortranFinance/tree/main/setup.mk"><code>setup.mk</code></a></dt><dd>Configure GNU Make (the build system)
+<ul class="org-ul">
+<li>Configure the semi-automatic fortran compiler setup system and run it</li>
+<li>Manually configure the fortran compiler</li>
+<li>Configure MRFFL targets to make it easy to compile &amp; link with MRFFL</li>
+</ul></dd>
+</dl></li>
+</ul>
+</div>
+<div id="outline-container-setup-make" class="outline-3">
+<h3 id="setup-make"><span class="section-number-3">4.1.</span> GNU Make</h3>
+<div class="outline-text-3" id="text-setup-make">
+<p>
+The file <code>setup.mk</code> found in the project root directory is included by all make
 files in the repository and thus makes for a nice place to configure things globally.  The file is pretty short:
 </p>
 
@@ -387,25 +434,36 @@ files in the repository and thus makes for a nice place to configure things glob
 <pre class="src src-makefile"><span style="color: #ffa500;">## </span><span style="color: #ff7f24;">The root directory for this project</span>
 <span style="color: #7fffd4;">FF_PROJ_ROOT</span> := $(<span style="color: #7fffd4;">dir</span> $(<span style="color: #7fffd4;">abspath</span> $(<span style="color: #7fffd4;">lastword</span> $(<span style="color: #7fffd4;">MAKEFILE_LIST</span>))))
 
-<span style="color: #ffa500;">## </span><span style="color: #ff7f24;">Automatically configure the compiler.  Valid values: flang, gfortran, ifx, lfortran, &amp; nvfortran</span>
-<span style="color: #ffa500;">#</span><span style="color: #ff7f24;">FCOMP = ifx</span>
+<span style="color: #ffa500;">## </span><span style="color: #ff7f24;">Use 'setup_fortran.mk' to setup variables.  Set FCOMP=NONE to manually set AR, FC, FFLAGS, &amp; FSHFLG below.</span>
+<span style="color: #7fffd4;">FCOMP</span>            = gfortran
+<span style="color: #7fffd4;">FCOMP_STD</span>        = 2023
+<span style="color: #7fffd4;">FCOMP_OPT_XSTACK</span> = 
+<span style="color: #7fffd4;">FCOMP_OPT_WARN</span>   = T
+<span style="color: #7fffd4;">FCOMP_OPT_XWARN</span>  = T
+<span style="color: #7fffd4;">FCOMP_OPT_OMP</span>    = 
+<span style="color: #7fffd4;">FCOMP_OPT_OPT</span>    = T
+
+<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">FF_PROJ_ROOT</span>)/setup_fortran_gmake/setup_fortran.mk
 
 <span style="color: #ffa500;">## </span><span style="color: #ff7f24;">Manually configure the compiler.</span>
-<span style="color: #ffa500;">#</span><span style="color: #ff7f24;">FCOMP  = NONE</span>
 <span style="color: #ffa500;">#</span><span style="color: #ff7f24;">AR     = --Command For Library Archive Tool--</span>
 <span style="color: #ffa500;">#</span><span style="color: #ff7f24;">FC     = --Command for Fortran compiler--</span>
 <span style="color: #ffa500;">#</span><span style="color: #ff7f24;">FFLAGS = --Compile flags/options for fortran compiler--</span>
 <span style="color: #ffa500;">#</span><span style="color: #ff7f24;">FSHFLG = --Shared library flags/options for fortran compiler--</span>
+
+<span style="color: #ffa500;">## </span><span style="color: #ff7f24;">Create rules and targets for the MRFFL library</span>
+<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">FF_PROJ_ROOT</span>)/MRFFL/src/include.mk
+
 </pre>
 </div>
 
 <p>
-Here is an exmaple for <code>nvfortran</code>:
+If the <code>setup_fortran.mk</code> include can't configure fortran on your system, then you may have to do that manually.  This involves setting <code>FCOMP</code> to <code>NONE</code>, and then
+setting <code>AR</code>, <code>FC</code>, <code>FFLAG</code>, and <code>FSHFLG</code> to something appropriate.  Here is an example for <code>nvfortran</code>:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-makefile"><span style="color: #7fffd4;">FCOMP</span> := NONE
-<span style="color: #7fffd4;">AR</span> := ar
+<pre class="src src-makefile"><span style="color: #7fffd4;">AR</span> := ar
 <span style="color: #7fffd4;">FC</span> := nvfortran
 <span style="color: #7fffd4;">FFLAGS</span> := -O3 -Wall  -W -Xlinker -z -Xlinker execstack
 <span style="color: #7fffd4;">FSHFLG</span> = -o $(<span style="color: #7fffd4;">MRFFL_SHARED_LIB_FILE</span>) -shared $(<span style="color: #7fffd4;">MRFFL_OBJ_FILES</span>)
@@ -418,36 +476,65 @@ completely unnecessary for making full use of the modules, so you you can safely
 </p>
 </div>
 </div>
+<div id="outline-container-setup-r" class="outline-3">
+<h3 id="setup-r"><span class="section-number-3">4.2.</span> GNU R</h3>
+<div class="outline-text-3" id="text-setup-r">
+<p>
+The file <code>setup.R</code> found in the project root directory is included by all R code in the repository and thus makes for a nice place to configure things globally.  The file is pretty short:
+</p>
+
+<div class="org-src-container">
+<pre class="src src-R"><span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Load required packages</span>
+
+suppressPackageStartupMessages(<span style="color: #8470ff; font-weight: bold;">library</span>(<span style="color: #fa8072;">'dplyr'</span>))
+suppressPackageStartupMessages(<span style="color: #8470ff; font-weight: bold;">library</span>(<span style="color: #fa8072;">'ggplot2'</span>))
+suppressPackageStartupMessages(<span style="color: #8470ff; font-weight: bold;">library</span>(<span style="color: #fa8072;">'scales'</span>))
+suppressPackageStartupMessages(<span style="color: #8470ff; font-weight: bold;">library</span>(<span style="color: #fa8072;">'data.table'</span>))
+
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images</span>
+imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #63b8ff;">TRUE</span>
+
+<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Try and find an image viewer</span>
+<span style="color: #00ffff;">if</span> (imageV == <span style="color: #63b8ff;">TRUE</span>) {
+  <span style="color: #00ffff;">if</span> (.Platform$OS == <span style="color: #fa8072;">"windows"</span>) {
+    imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"explorer"</span>
+  } <span style="color: #00ffff;">else</span> {
+    <span style="color: #00ffff;">for</span>(piv <span style="color: #00ffff;">in</span> c(<span style="color: #fa8072;">"/usr/bin/display"</span>, <span style="color: #fa8072;">"/usr/bin/eog"</span>, <span style="color: #fa8072;">"/usr/bin/pqiv"</span>, <span style="color: #fa8072;">"/usr/bin/nomacs"</span>))
+      <span style="color: #00ffff;">if</span>(file.exists(piv))
+        imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> piv
+  }
+}
+</pre>
+</div>
+</div>
+</div>
+</div>
 <div id="outline-container-use" class="outline-2">
-<h2 id="use"><span class="section-number-2">4.</span> Using MRFFL (MR Fortran Finance Library) Modules</h2>
+<h2 id="use"><span class="section-number-2">5.</span> Using MRFFL (MR Fortran Finance Library) Modules</h2>
 <div class="outline-text-2" id="text-use">
+</div>
+<div id="outline-container-use-hard" class="outline-3">
+<h3 id="use-hard"><span class="section-number-3">5.1.</span> The Hard Way</h3>
+<div class="outline-text-3" id="text-use-hard">
 <p>
 All of the code is in the module source files with no external dependencies at all.  So you just need to call the modules from your code, and then
 compile/link everything together.
 </p>
-
+</div>
+</div>
+<div id="outline-container-use-setup" class="outline-3">
+<h3 id="use-setup"><span class="section-number-3">5.2.</span> Reuse MRFFL's setup.mk file</h3>
+<div class="outline-text-3" id="text-use-setup">
 <p>
-To help with that compile/link part, you use the include files in the repository.  Your makefile will look something like this:
+To simplify matters, you can use the same global setup used in the example makefiles.  In this case your makefile will look something like this:
 </p>
 
 <div class="org-src-container">
-<pre class="src src-makefile"><span style="color: #ffa500;">#</span><span style="color: #ff7f24;">---------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
+<pre class="src src-makefile"><span style="color: #ffa500;">#</span><span style="color: #ff7f24;">------------------------------------------------------------------------------------------------------------</span>
 <span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set Global Variables.  </span>
 <span style="color: #00ffff;">include</span> <span style="color: #7fffd4;">/path/to/MRFFL/repository/setup.mk</span>
 
-<span style="color: #ffa500;">#</span><span style="color: #ff7f24;">---------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
-<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Use FCOMP to set variables for fortran development.  </span>
-<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">FF_PROJ_ROOT</span>)/setup_fortran_gmake/setup_fortran.mk
-
-<span style="color: #ffa500;">#</span><span style="color: #ff7f24;">---------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
-<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">If you need to tweak the fortran variables set above, then this is the place.  Set AR, FC, FFLAGS, &amp; FSHFLG here.</span>
-
-<span style="color: #ffa500;">#</span><span style="color: #ff7f24;">---------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
-<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Create rules and targets for the MRFFL library</span>
-<span style="color: #00ffff;">include</span> $(<span style="color: #7fffd4;">FF_PROJ_ROOT</span>)/MRFFL/src/include.mk
-
-<span style="color: #ffa500;">#</span><span style="color: #ff7f24;">---------------------------------------------------------------------------------------------------------------------------------------------------------------</span>
-
+<span style="color: #ffa500;">#</span><span style="color: #ff7f24;">------------------------------------------------------------------------------------------------------------</span>
 <span style="color: #00fa9a; font-weight: bold;">your_program</span> : your_program.f90 $(<span style="color: #7fffd4;">MRFFL_OBJ_FILES</span>)
     $(<span style="color: #7fffd4;">FC</span>) $(<span style="color: #7fffd4;">FFLAGS</span>) $<span style="color: #8470ff; font-weight: bold;">^</span> -o <span style="color: #00fa9a; font-weight: bold;">$</span><span style="color: #8470ff; font-weight: bold;">@</span>
 </pre>
@@ -465,13 +552,15 @@ modules in the makefile if you wish.  Such a rule might look like the following:
 </pre>
 </div>
 </div>
-<div id="outline-container-use-makeinc" class="outline-3">
-<h3 id="use-makeinc"><span class="section-number-3">4.1.</span> Notes about <code>include.mk</code></h3>
-<div class="outline-text-3" id="text-use-makeinc">
 </div>
-<div id="outline-container-makeinc-vars" class="outline-4">
-<h4 id="makeinc-vars"><span class="section-number-4">4.1.1.</span> Useful Variables</h4>
-<div class="outline-text-4" id="text-makeinc-vars">
+</div>
+<div id="outline-container-use-makeinc" class="outline-2">
+<h2 id="use-makeinc"><span class="section-number-2">6.</span> Details: <code>include.mk</code></h2>
+<div class="outline-text-2" id="text-use-makeinc">
+</div>
+<div id="outline-container-makeinc-vars" class="outline-3">
+<h3 id="makeinc-vars"><span class="section-number-3">6.1.</span> Useful Variables</h3>
+<div class="outline-text-3" id="text-makeinc-vars">
 <dl class="org-dl">
 <dt><code>MRFFL_MOD_FILES</code>      </dt><dd>All the module (<code>.mod</code>) files.  These will appear in your build directory.</dd>
 <dt><code>MRFFL_OBJ_FILES</code>      </dt><dd>All the object (<code>.obj</code> or <code>.o</code>) files.  These will appear in your build directory.</dd>
@@ -480,9 +569,9 @@ modules in the makefile if you wish.  Such a rule might look like the following:
 </dl>
 </div>
 </div>
-<div id="outline-container-makeinc-target" class="outline-4">
-<h4 id="makeinc-target"><span class="section-number-4">4.1.2.</span> Useful Targets</h4>
-<div class="outline-text-4" id="text-makeinc-target">
+<div id="outline-container-makeinc-target" class="outline-3">
+<h3 id="makeinc-target"><span class="section-number-3">6.2.</span> Useful Targets</h3>
+<div class="outline-text-3" id="text-makeinc-target">
 <dl class="org-dl">
 <dt><code>all_mrffl_lib</code>    </dt><dd>Builds the library files.</dd>
 <dt><code>all_mrffl_mod</code>    </dt><dd>Builds the module (<code>.mod</code>) files</dd>
@@ -497,9 +586,9 @@ build for all platforms, so I sometimes want to clean up the build products from
 </dl>
 </div>
 </div>
-<div id="outline-container-makeinc-stlib" class="outline-4">
-<h4 id="makeinc-stlib"><span class="section-number-4">4.1.3.</span> Static Library</h4>
-<div class="outline-text-4" id="text-makeinc-stlib">
+<div id="outline-container-makeinc-stlib" class="outline-3">
+<h3 id="makeinc-stlib"><span class="section-number-3">6.3.</span> Static Library</h3>
+<div class="outline-text-3" id="text-makeinc-stlib">
 <p>
 A rule to make a static library is included in <code>include.mk</code>.  A build rule like the following should build that library and link it to your executable.  Note
 I'm just including the library file on the command line instead of linker like options (i.e. <code>-L</code> and <code>-l</code> for GNU compilers).  That's because simply including
@@ -513,9 +602,9 @@ the library on the command line is broadly supported across more compilers &#x20
 </div>
 </div>
 </div>
-<div id="outline-container-makeinc-dylib" class="outline-4">
-<h4 id="makeinc-dylib"><span class="section-number-4">4.1.4.</span> Dynamic Library (<code>.so</code> and <code>.dll</code> files)</h4>
-<div class="outline-text-4" id="text-makeinc-dylib">
+<div id="outline-container-makeinc-dylib" class="outline-3">
+<h3 id="makeinc-dylib"><span class="section-number-3">6.4.</span> Dynamic Library (<code>.so</code> and <code>.dll</code> files)</h3>
+<div class="outline-text-3" id="text-makeinc-dylib">
 <p>
 A rule to make a static library is included in <code>include.mk</code>.  You can build it with the target <code>clean_mrffl_lib</code>, or by using <code>$(MRFFL_SHARED_LIB_FILE)</code> as a
 dependency in your build rule.  As the options to link to a shared library differ wildly across platforms and compilers/linkers, I don't provide an example of
@@ -524,13 +613,13 @@ how to do that.
 </div>
 </div>
 </div>
-<div id="outline-container-use-setupfor" class="outline-3">
-<h3 id="use-setupfor"><span class="section-number-3">4.2.</span> Notes about <code>setup_fortran.mk</code></h3>
-<div class="outline-text-3" id="text-use-setupfor">
+<div id="outline-container-use-setupfor" class="outline-2">
+<h2 id="use-setupfor"><span class="section-number-2">7.</span> Details: <code>setup_fortran.mk</code></h2>
+<div class="outline-text-2" id="text-use-setupfor">
 </div>
-<div id="outline-container-use-setupfor-names" class="outline-4">
-<h4 id="use-setupfor-names"><span class="section-number-4">4.2.1.</span> Names of files</h4>
-<div class="outline-text-4" id="text-use-setupfor-names">
+<div id="outline-container-use-setupfor-names" class="outline-3">
+<h3 id="use-setupfor-names"><span class="section-number-3">7.1.</span> Names of files</h3>
+<div class="outline-text-3" id="text-use-setupfor-names">
 <dl class="org-dl">
 <dt>File extensions on Windows (outside of WSL)</dt><dd><ul class="org-ul">
 <li>Executable files use <code>.exe</code></li>
@@ -543,7 +632,6 @@ how to do that.
 <li>Object files will use <code>.o</code></li>
 </ul></dd>
 </dl>
-</div>
 </div>
 </div>
 </div>
