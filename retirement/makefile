@@ -56,6 +56,9 @@ ifdef RUNEM
 	./$@$(EXE_SUFFIX)
 endif
 
+retire_cashflow.tab : retire_cashflow
+	./retire_cashflow$(EXE_SUFFIX) | grep -A 26 'Time' > retire_cashflow.tab
+
 #---------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 .PHONY: clean

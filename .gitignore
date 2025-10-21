@@ -79,6 +79,7 @@ a.out
 
 /retirement/retire_cashflow
 /retirement/roth_conversion
+/retirement/retire_cashflow.tab
 
 /retirement_simulation/retire
 /retirement_simulation/retire.out
