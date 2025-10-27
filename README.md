@@ -2,11 +2,11 @@
 
 Theoretical Finance Computation Using Fortran
 
-Parts of this code have been with me for quite some time.  I
-originally started this in college to help with a mathematical
-modeling course.  Over the years it has collected more functionality
-as my needs have expanded -- mostly investment applications.  Most
-recently I've added quite a bit of stuff around retirement planning.
+Parts of this code have been with me for quite some time.  It started
+as a bit of code for a mathematical modeling course in college.  Over
+the years it has collected more functionality -- mostly investment and
+personal finance applications.  Most recently I've added quite a bit
+of stuff around retirement planning.
 
 Much of the functionality is contained in a set of modules I call [MR Fortran Finance Library](https://richmit.github.io/FortranFinance/MRFFL/index.html).
 
@@ -21,11 +21,11 @@ various computational finance topics:
 
 ### WARNING
 
-Lastly, a warning.  I'm not a finance expert -- just an amateur
-investor trying to plan my retirement.  So don't take anything you see
-here as expert advice -- or even assume it's correct.  In fact, expect
-errors!  Double check any results you get.  Keep an eye out for bugs,
-and report what you find!
+Lastly, a warning.  I'm not a finance expert -- just a retired amateur
+investor.  Don't take anything you see here as expert advice.  Don't
+assume everything you see here is correct.  In fact, expect errors!
+Double check any results you get.  Keep an eye out for bugs, and
+report what you find!
 
 -mitch
 

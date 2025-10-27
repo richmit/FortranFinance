@@ -35,7 +35,7 @@
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!.H.E.!!
 
 !------------------------------------------------------------------------------------------------------------------------------
-!> Solvers for TVM problems involving lump sums, level (fixed) annuities, and geometric (growing) annuities.
+!> Solvers for TVM problems involving lump sums, level annuities, arithmetic annuities, and geometric annuities.
 !!
 !! @par Definitions and Notation
 !!
@@ -43,9 +43,8 @@
 !!   - Ordinary annuity, annuity in arrears, annuity-immediate: Payment at the end of each period.  Ex: Mortgages and car loans.
 !!   - Annuity certain, guaranteed annuity: The number of payments is known in advance
 !!   - Deferred annuity: An annuity that begins payments only after a number of periods.
-!!   - Early end annuity: An annuity that that terminates before the number of periods.  This can be because the annuity
-!!     was contingent; however, it is more frequently an artificial condition used to base the PV/FV computation on a different
-!!     term than that for which the annuity was intended.
+!!   - Truncated, Early end annuity: An annuity that that terminates before the number of periods.  
+!!     These terms are normally only used for annuities certain, and not the case of a contingent annuity ending early.
 !!   - Annuity payment growth:
 !!     - fixed, level: all payments are the same
 !!     - growing, geometric: payments grow geometrically
@@ -71,10 +70,9 @@
 !! @par Approach
 !!
 !! It's common practice in financial problem solving to produce a single set of TVM equations for a particular scenario, and then
-!! solve the resulting equation(s).  For example a loan might be thought of as a single cashflow stream starting with a negative
-!! cashflow for the principal followed by sequence of negative, equal cash flows for the payments with the overall condition that
-!! the cashflow stream has a future value of zero.  As an aside, this is the fundamental "TVM Equation" used by modern financial
-!! calculators -- so this approach can lead to single equations that are broadly applicable to many problems.
+!! solve the resulting equation(s).  For example a loan might be thought of as a single cashflow stream starting with a positive
+!! cashflow for the principal followed by sequence of negative, equal cash flows for the payments under the overall condition
+!! that the cashflow stream has a future value of zero.
 !!
 !! Most TVM problems may be broken down into distinct components corresponding to well known, fundamental TVM problems.  It is
 !! frequently possible to solve the overall problem by solving these smaller, well known problems in isolation. For example a

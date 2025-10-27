@@ -39,27 +39,27 @@
 !> Tools for TVM computations with irregular/uneven cashflows.
 !!
 !! The traditional definition of a cashflow is money received (positive) or paid (negative).  A cashflow stream or series (or
-!! sequence) is one or more cashflows received over a period of time.  Time up into a series of discreet "periods" corresponding
-!! naturally to the problem at hand. Each cashflow occurs at the beginning or ending of one of these periods.  For example, we
-!! might break time up into months to model the cashflows related to a loan.  Software approaches vary with regard to how
-!! cashflows are entered, stored, and processed.
+!! sequence) is one or more cashflows received over a period of time.  Time is broken up into a series of discreet "periods"
+!! corresponding naturally to the problem at hand. Each cashflow occurs at the beginning or ending of one of these periods.  For
+!! example, we might break time up into months to model the cashflows related to a loan.  Software approaches vary with regard to
+!! how cashflows are entered, stored, and processed.
 !!
-!! In this library the time of a cashflow is specified by the period boundary on which it occurs -- i.e. we say "boundary 1"
-!! instead of the equivalent possibilities of "the end of period 1" or "the beginning of period 2".  An n period cashflow is
-!! stored in a simple array (or a column of a matrix) with capacity for n+1 elements (one for each boundary) -- note that is one
-!! more than the number of periods.  The first element of a cash flow array represents time *zero* and is the *beginning* of time
-!! period 1.  The second element of the array represents the *end* of time period 1 or the *beginning* of time period 2.  The
-!! last element represents the *end* of the final period -- i.e. period n.
+!! In this library the time of a cashflow is specified by the period boundary on which it occurs.  We measure time in units of
+!! periods with the beginning of the first period begin time 0.  An n period cashflow is stored in a simple array (or a column of
+!! a matrix) with capacity for n+1 elements (one for each boundary) -- note that is one more than the number of periods.  The
+!! first element of a cash flow array represents the first boundary at time *zero* and is the *beginning* of time period 1.  The
+!! second element of the array represents the *end* of time period 1 or the *beginning* of time period 2.  The last element
+!! represents the final boundary at time 6 at *end* of the final period (period n).
 !!
 !! Consider an example.  We get a loan for 1000 over 6 months with a monthly interest rate of 1%.  This is a 6 period cash flow
 !! with the principal received at the beginning of period 1.  Conventionally we think of the first payment occurring at the end
-!! of period 1; however, we could think of this payment as occurring at the beginning of period 2. For this example, th cashflow
+!! of period 1; however, we could think of this payment as occurring at the beginning of period 2. For this example, the cashflow
 !! array would be: [1000, -172.55, -172.55, -172.55, -172.55, -172.55, -172.55].  In tabular form:
 !!
 !! @verbatim
 !!                          Array Index   Cashflow
 !!                                    1    1000.00   ==> Time 0 (start of 1st period)
-!!                                    2    -172.55
+!!                                    2    -172.55   ==> Time 1 (end of 1st period/start of 2nd period)
 !!                                    3    -172.55
 !!                                    4    -172.55
 !!                                    5    -172.55
@@ -322,10 +322,16 @@ contains
     if (abs(i+100) < zero_epsilon) then
        dfactors = [(1,j=1,num_bdrys)]
     else
-       dfactors = (1+percentage_to_fraction(i))**[(j-1,j=1,num_bdrys)]
+       dfactors = (1.0_rk+percentage_to_fraction(i))**[(j-1,j=1,num_bdrys)]
     end if
     pv_vec = cf_aggr / dfactors
     fv_vec = cf_aggr * dfactors(num_bdrys:1:-1)
+    ! TODO: Add this to the API.
+    ! cp_vec is the 'cash position' vector
+    ! cp_vec(1) = cf_aggr(1)
+    ! do j=2, years
+    !    cp_vec(j) = cp_vec(j-1) * (1.0_rk+percentage_to_fraction(i)) + cf_aggr(j)
+    ! end do
     if (bitset_intersectp(prt_param+prt_title+prt_table+prt_total+prt_space, print_out)) then
        if (bitset_subsetp(prt_param, print_out)) then
           print "(a15, i25)",   "Period Count: ",  (num_bdrys-1)

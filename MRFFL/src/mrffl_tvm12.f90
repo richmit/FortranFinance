@@ -217,6 +217,8 @@ contains
   !! @param pmt          Payment
   !! @param fv           Future Value
   !! @param pmt_time     Payments at beginning or end of period.  Allowed parameters: pmt_at_beginning or pmt_at_end
+  !! @param fvfmt_o      Floating point value output format.  Default: fvfmt_ai
+  !! @param ftfmt_o      Floating point tital output format.  Default: ftfmt_ai
   !! @param print_out    Set made from the following constants: prt_param, prt_table, prt_title
   subroutine tvm12_print(n, i, pv, pmt, fv, pmt_time, print_out, fvfmt_o, ftfmt_o)
     ! Arguments
