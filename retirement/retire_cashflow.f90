@@ -48,7 +48,7 @@
 program cashflow_retire
   use :: mrffl_config,    only: rk
   use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, &
-       &                        make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_pv_fv_print
+       &                        make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_pv_fv
   use :: mrffl_prt_sets,  only: prt_ALL
 
   implicit none (type, external)
@@ -73,7 +73,7 @@ program cashflow_retire
 
   ! Finally we print it all out.
   print "(a)", repeat("=", 126)
-  call cashflow_matrix_pv_fv_print(cfm, cfi, pv, fv, status, prt_ALL)
+  call cashflow_matrix_pv_fv(cfm, cfi, pv, fv, status, prt_ALL)
   print "(a30,i15)", "cashflow_matrix_pv_fv status: ", status
   print "(a)", repeat("=", 126)
 

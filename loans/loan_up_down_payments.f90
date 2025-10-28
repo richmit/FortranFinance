@@ -51,7 +51,7 @@ program loan_level_payments
   use :: mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
   use :: mrffl_var_sets,  only: var_fv, var_a, var_pv
   use :: mrffl_prt_sets,  only: prt_ALL
-  use :: mrffl_cashflows, only: cashflow_matrix_pv_fv_print, make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity
+  use :: mrffl_cashflows, only: cashflow_matrix_pv_fv, make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity
 
   implicit none (type, external)
 
@@ -130,7 +130,7 @@ program loan_level_payments
   cfm(years+1, 2) = a_final
 
   ! Now we print the cashflow
-  call cashflow_matrix_pv_fv_print(cfm, i, pvv, fvv, status, prt_ALL)
+  call cashflow_matrix_pv_fv(cfm, i, pvv, fvv, status, prt_o=prt_ALL)
   print "(a)", repeat("=", 111)
 
 end program loan_level_payments

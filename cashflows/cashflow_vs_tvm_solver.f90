@@ -44,7 +44,7 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program cashflow_vs_tvm_solver
   use :: mrffl_config,    only: rk
-  use :: mrffl_cashflows, only: cashflow_vector_pv_fv_print
+  use :: mrffl_cashflows, only: cashflow_vector_pv_fv
   use :: mrffl_prt_sets,  only: prt_ALL
   use :: mrffl_tvm,       only: tvm_delayed_lump_sum_solve
   use :: mrffl_var_sets,  only: var_fv, var_pv
@@ -61,7 +61,7 @@ program cashflow_vs_tvm_solver
 
   print "(a)", repeat("=", 100)
   print *, "Here we use the manually constructed cashflow to compute PV/FV"
-  call cashflow_vector_pv_fv_print(cfv, i, pvv, fvv, status, prt_ALL)
+  call cashflow_vector_pv_fv(cfv, i, pvv, fvv, status, prt_o=prt_ALL)
   print "(a30,i15)", "cashflow_matrix_pv_fv status: ", status
   print *
   print "(a)", repeat("=", 100)

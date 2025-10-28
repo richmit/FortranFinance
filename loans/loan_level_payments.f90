@@ -52,7 +52,7 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program loan_level_payments
   use :: mrffl_config,    only: rk
-  use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, cashflow_matrix_pv_fv, cashflow_matrix_pv_fv_print
+  use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, cashflow_matrix_pv_fv
   use :: mrffl_prt_sets,  only: prt_ALL
   use :: mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
   use :: mrffl_var_sets,  only: var_fv, var_a
@@ -115,7 +115,7 @@ program loan_level_payments
   print "(a60,f15.4)", "cashflow_matrix_pv_fv FV Sum: ", sum(fvv)
   print "(a)", repeat("=", 111)
 
-  call cashflow_matrix_pv_fv_print(cfm, i, pvv, fvv, status, prt_ALL)
+  call cashflow_matrix_pv_fv(cfm, i, pvv, fvv, status, prt_o=prt_ALL)
   print "(a)", repeat("=", 111)
 
 end program loan_level_payments

@@ -37,7 +37,7 @@
 program irr
   use :: mrffl_config,    only: rk
   use :: mrffl_cashflows, only: cashflow_vector_total_pv, cashflow_vector_irr, cashflow_matrix_total_pv, cashflow_matrix_irr, &
-       &                        cashflow_vector_pv_fv_print, cashflow_matrix_pv_fv_print
+       &                        cashflow_vector_pv_fv, cashflow_matrix_pv_fv
   use :: mrffl_prt_sets,  only: prt_ALL
 
   implicit none (type, external)
@@ -51,7 +51,7 @@ program irr
 
   print "(a)", repeat("=", 111)
   i = 4
-  call cashflow_vector_pv_fv_print(cfv, i, pvv, fvv, status, prt_ALL)
+  call cashflow_vector_pv_fv(cfv, i, pvv, fvv, status, prt_o=prt_ALL)
   print "(a30,i15)", "cashflow_matrix_pv_fv status: ", status
   print *
   print '(a10,f20.5)', "total pv:", cashflow_vector_total_pv(cfv, i)
@@ -61,7 +61,7 @@ program irr
 
   print "(a)", repeat("=", 111)
   i = 4
-  call cashflow_matrix_pv_fv_print(cfm, i, pvv, fvv, status, prt_ALL)
+  call cashflow_matrix_pv_fv(cfm, i, pvv, fvv, status, prt_ALL)
   print "(a30,i15)", "cashflow_matrix_pv_fv status: ", status
   print *
   print '(a10,f20.5)', "total pv:", cashflow_matrix_total_pv(cfm, i)

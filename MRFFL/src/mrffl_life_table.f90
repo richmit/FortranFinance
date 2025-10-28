@@ -122,7 +122,7 @@
 module mrffl_life_table
   use :: mrffl_config,   only: rk, zero_epsilon
   use :: mrffl_stats,    only: rand_int
-  use :: mrffl_prt_sets, only: prt_title, prt_table, prt_space
+  use :: mrffl_prt_sets, only: prt_title, prt_table, prt_space, prt_ALL
   use :: mrffl_bitset,   only: bitset_subsetp
   implicit none (type, external)
   private
@@ -547,47 +547,50 @@ contains
   !! An ERROR STOP occures if a WRITE causes an I/O error
   !!
   !! @param out_io_unit Unit to which to print table
-  !! @param print_out   Bitset built from the following constants prt_title, prt_table, & prt_space
   !! @param life_table  Data for life table.  See module documentation for description.
   !! @param cohort_size Number of people in the cohort.  See module documentation for description.
+  !! @param prt_o       Bitset built from the following constants prt_title, prt_table, & prt_space.  Default: prt_ALL
   !!
-  subroutine life_table_print(out_io_unit, print_out, life_table, cohort_size)
+  subroutine life_table_print(out_io_unit, life_table, cohort_size, prt_o)
     ! Arguments
-    integer,       intent(in)  :: cohort_size, print_out
-    real(kind=rk), intent(in)  :: life_table(:)
-    integer,       intent(in)  :: out_io_unit
+    integer,           intent(in)  :: cohort_size
+    integer, optional, intent(in)  :: prt_o
+    real(kind=rk), intent(in)      :: life_table(:)
+    integer,       intent(in)      :: out_io_unit
     ! Local Variables
-    character(len=:), allocatable :: fmt_t, fmt_n
-    integer                       :: age
-    integer                       :: out_io_stat
+    character(len=:), allocatable  :: fmt_t, fmt_n
+    integer                        :: age, out_io_stat, prt
+    ! Process Optional Arguments
+    prt = prt_ALL
+    if (present(prt_o)) prt = prt_o
     ! Print
     fmt_t = '(a5,a11,  a11,  a10,  a11,  a12,  a8,  a11,  a11  )'
     fmt_n = '(i5,f11.7,f11.2,f10.2,f11.2,f12.2,f8.2,f11.7,f11.7)'
-    if (bitset_subsetp(prt_space, print_out)) then
+    if (bitset_subsetp(prt_space, prt)) then
        write (unit=out_io_unit, iostat=out_io_stat, fmt='(a)') ""
        if (out_io_stat /= 0) error stop "ERROR(life_table_print): I/O Error!"
     end if
-    if (bitset_subsetp(prt_title, print_out)) then
+    if (bitset_subsetp(prt_title, prt)) then
        write (unit=out_io_unit, iostat=out_io_stat, fmt=fmt_t) &
             "age", "qx", "lx", "dx", "Lx", "Tx", "ex", "mx", "px"
        if (out_io_stat /= 0) error stop "ERROR(life_table_print): I/O Error!"
     end if
-    if (bitset_subsetp(prt_table, print_out)) then
+    if (bitset_subsetp(prt_table, prt)) then
        do age=0,size(life_table)-1
-          write (unit=out_io_unit, iostat=out_io_stat, fmt=fmt_n) &
-               age, &
+          write (unit=out_io_unit, iostat=out_io_stat, fmt=fmt_n)  &
+               age,                                                &
                probability_of_death(age, life_table, cohort_size), &
-               survivors(age, life_table, cohort_size), &
-               died(age, life_table, cohort_size), &
-               person_years(age, life_table, cohort_size), &
-               total_person_years(age, life_table, cohort_size), &
-               life_expectancy(age, life_table, cohort_size), &
-               mortality_rate(age, life_table, cohort_size), &
+               survivors(age, life_table, cohort_size),            &
+               died(age, life_table, cohort_size),                 &
+               person_years(age, life_table, cohort_size),         &
+               total_person_years(age, life_table, cohort_size),   &
+               life_expectancy(age, life_table, cohort_size),      &
+               mortality_rate(age, life_table, cohort_size),       &
                probability_of_survival_1(age, life_table, cohort_size)
           if (out_io_stat /= 0) error stop "ERROR(life_table_print): I/O Error!"
        end do
     end if
-    if (bitset_subsetp(prt_space, print_out)) then
+    if (bitset_subsetp(prt_space, prt)) then
        write (unit=out_io_unit, iostat=out_io_stat, fmt='(a)') ""
        if (out_io_stat /= 0) error stop "ERROR(life_table_print): I/O Error!"
     end if

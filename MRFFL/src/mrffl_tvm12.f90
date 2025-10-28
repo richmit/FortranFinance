@@ -49,7 +49,7 @@
 module mrffl_tvm12
   use :: mrffl_config,      only: rk, fvfmt_ai, ftfmt_ai, zero_epsilon
   use :: mrffl_bitset,      only: bitset_intersectp, bitset_subsetp
-  use :: mrffl_prt_sets,    only: prt_param, prt_table, prt_title
+  use :: mrffl_prt_sets,    only: prt_param, prt_table, prt_title, prt_ALL
   use :: mrffl_var_sets,    only: var_i, var_n, var_pv, var_fv, var_pmt
   use :: mrffl_solver,      only: multi_bisection
   !se :: mrffl_solver_ne, only: multi_bisection
@@ -217,19 +217,22 @@ contains
   !! @param pmt          Payment
   !! @param fv           Future Value
   !! @param pmt_time     Payments at beginning or end of period.  Allowed parameters: pmt_at_beginning or pmt_at_end
+  !! @param prt_o        Set made from the following constants: prt_param, prt_table, prt_title.  Default: prt_ALL
   !! @param fvfmt_o      Floating point value output format.  Default: fvfmt_ai
   !! @param ftfmt_o      Floating point tital output format.  Default: ftfmt_ai
-  !! @param print_out    Set made from the following constants: prt_param, prt_table, prt_title
-  subroutine tvm12_print(n, i, pv, pmt, fv, pmt_time, print_out, fvfmt_o, ftfmt_o)
+  subroutine tvm12_print(n, i, pv, pmt, fv, pmt_time, prt_o, fvfmt_o, ftfmt_o)
     ! Arguments
-    integer,                    intent(in) :: n, pmt_time, print_out
+    integer,                    intent(in) :: n, pmt_time
     real(kind=rk),              intent(in) :: i, pv, fv, pmt
+    integer, optional,          intent(in) :: prt_o
     character(len=*), optional, intent(in) :: fvfmt_o, ftfmt_o
     ! Local Variables
     real(kind=rk)                 :: tot_pmt, cur_pv
-    integer                       :: k
+    integer                       :: k, prt
     character(len=:), allocatable :: fvfmt, ftfmt
     ! Process Optional Arguments
+    prt = prt_ALL
+    if (present(prt_o)) prt = prt_o
     fvfmt = fvfmt_ai
     if (present(fvfmt_o)) fvfmt = fvfmt_o
     ftfmt = ftfmt_ai
@@ -239,10 +242,10 @@ contains
        stop "ERROR(tvm_solve): Unsupported value for pmt_time (must be one of pmt_at_beginning or pmt_at_end)"
     end if
     ! Print
-    if (bitset_intersectp(prt_param+prt_table, print_out)) then
+    if (bitset_intersectp(prt_param+prt_table, prt)) then
        print *, ""
     end if
-    if (bitset_subsetp(prt_param, print_out)) then
+    if (bitset_subsetp(prt_param, prt)) then
        print "(a20,i30)",   "n:", n
        print "(a20,f30.8)", "i:", i
        print "(a20,f30.8)", "pv:", pv
@@ -254,11 +257,11 @@ contains
           print "(a20,a30)", "pmt_time:", "END"
        end if
     end if
-    if (bitset_intersectp(prt_param+prt_table, print_out)) then
+    if (bitset_intersectp(prt_param+prt_table, prt)) then
        print *
     end if
-    if (bitset_subsetp(prt_table, print_out)) then
-       if (bitset_subsetp(prt_title, print_out)) print "(a8,2(1x,"//ftfmt//"))", "period", "cur_pv", "tot_pmt"
+    if (bitset_subsetp(prt_table, prt)) then
+       if (bitset_subsetp(prt_title, prt)) print "(a8,2(1x,"//ftfmt//"))", "period", "cur_pv", "tot_pmt"
        cur_pv = pv
        tot_pmt = 0
        do k=0,n
@@ -275,7 +278,7 @@ contains
           end if
        end do
     end if
-    if (bitset_intersectp(prt_param+prt_table, print_out)) then
+    if (bitset_intersectp(prt_param+prt_table, prt)) then
        print *, ""
     end if
   end subroutine tvm12_print
