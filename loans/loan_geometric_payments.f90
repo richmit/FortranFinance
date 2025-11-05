@@ -49,7 +49,7 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program loan_geometric_payments
   use :: mrffl_config, only: rk
-  use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_pv_fv
+  use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_cmp
   use :: mrffl_prt_sets,  only: prt_ALL
   use :: mrffl_tvm,       only: tvm_delayed_geometric_annuity_solve, tvm_lump_sum_solve
   use :: mrffl_var_sets,  only: var_fv, var_a, var_n
@@ -71,10 +71,10 @@ program loan_geometric_payments
 
   integer          :: status
 
-  real(kind=rk), allocatable    :: cfm(:,:), fvv(:),  pvv(:)
+  real(kind=rk), allocatable    :: cfm(:,:), afv(:),  apv(:)
 
   ! First we solve for the number of years and future value of our loan.
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   call tvm_delayed_geometric_annuity_solve(n, i, a_g, a_pv, a_fv, a_a, a_d, a_e, var_n+var_fv, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
   print "(a60,f15.4)", "Annuity n: ", n
@@ -83,7 +83,7 @@ program loan_geometric_payments
 
   ! Instead of using an odd term, we decide on an even 10 year term.
   ! So we must copute the initial loan payment, and loan FV
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   n = ceiling(n)
   call tvm_delayed_geometric_annuity_solve(n, i, a_g, a_pv, a_fv, a_a, a_d, a_e, var_a+var_fv, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
@@ -91,34 +91,34 @@ program loan_geometric_payments
   print "(a60,f15.4)", "Annuity FV: ", a_fv
 
   ! Next we check our work by solving for the FV of the lump sum.
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   call tvm_lump_sum_solve(n, i, p_pv, p_fv, var_fv, status)
   print "(a60,i15)", "tvm_lump_sum_solve status: ", status
   print "(a60,f15.4)", "Loan FV: ", p_fv
 
   ! Allocate space for our cashflow matrix and the PV/FV vectors.  We don't check for allocation errors. ;)
   allocate(cfm(nint(n)+1,2))
-  allocate(fvv(nint(n)+1))
-  allocate(pvv(nint(n)+1))
+  allocate(afv(nint(n)+1))
+  allocate(apv(nint(n)+1))
 
   ! Now we populate a cashflow matrix with our two cashflows.
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   call make_cashflow_vector_delayed_lump(cfm(:,1), p_pv, 0, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_lump status: ", status
   call make_cashflow_vector_delayed_geometric_annuity(cfm(:,2), a_g, a_a, a_d, a_e, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! We can check our work by making sure our cashflows sum to zero.
-  print "(a)", repeat("=", 111)
-  call cashflow_matrix_pv_fv(cfm, i, pvv, fvv, status)
-  print "(a60,i15)", "cashflow_matrix_pv_fv status: ", status
-  print "(a60,f15.4)", "cashflow_matrix_pv_fv PV Sum: ", sum(pvv)
-  print "(a60,f15.4)", "cashflow_matrix_pv_fv FV Sum: ", sum(fvv)
+  print "(a)", repeat("=", 127)
+  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv)
+  print "(a60,i15)", "cashflow_matrix_cmp status: ", status
+  print "(a60,f15.4)", "cashflow_matrix_cmp PV Sum: ", sum(apv)
+  print "(a60,f15.4)", "cashflow_matrix_cmp FV Sum: ", sum(afv)
 
   ! Finally we an print out our cashflows.
-  print "(a)", repeat("=", 111)
-  call cashflow_matrix_pv_fv(cfm, i, pvv, fvv, status, prt_o=prt_ALL)
+  print "(a)", repeat("=", 127)
+  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL)
 
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
 
 end program loan_geometric_payments

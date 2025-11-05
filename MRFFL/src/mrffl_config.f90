@@ -50,7 +50,7 @@ module mrffl_config
   real(kind=rk),    parameter :: consistent_epsilon = 1.0e-3_rk                            !< Check equation consistency
                                                                                        
   character(len=5), parameter :: fvfmt_ai           = "f15.4"                              !< Fmt for cash values
-  character(len=5), parameter :: ftfmt_ai           = "a15"                                !< Fmt for cash titles
+  character(len=5), parameter :: ftfmt_ai           = "a15"                                !< Fmt for cash titles (width > 12)
 
         !
         !                  Typical settings for fvfmt_ai & ftfmt_ai:

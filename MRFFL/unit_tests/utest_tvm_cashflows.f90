@@ -37,70 +37,70 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program utest_cashflows
   use :: mrffl_config, only: rk
-  use :: mrffl_cashflows, only: cashflow_vector_pv_fv, cashflow_matrix_pv_fv, &
+  use :: mrffl_cashflows, only: cashflow_vector_cmp, cashflow_matrix_cmp, &
        &                        cashflow_matrix_total_pv, cashflow_vector_total_pv, &
        &                        make_cashflow_vector_delayed_arithmetic_annuity, make_cashflow_vector_delayed_geometric_annuity, &
        &                        make_cashflow_vector_delayed_level_annuity, make_cashflow_vector_delayed_lump
-  use :: mrffl_prt_sets, only: prt_ALL
+  use :: mrffl_prt_sets
 
   implicit none (type, external)
 
   real(kind=rk)    :: i = 4.0
-  real(kind=rk)    :: cfm(6,7), cf(6), fv(6), pv(6)
+  real(kind=rk)    :: cfm(6,7), cfv(6), afv(6), apv(6), fv(6,7), pv(6,7)
   integer          :: status
 
-  print "(a)", repeat("=", 186)
-  cf = [-80000,-500,4500,5500,4500,130000]
-  call cashflow_vector_pv_fv(cf, i, pv, fv, status, prt_o=prt_ALL)
-  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cf, i)
+  print "(a)", repeat("=", 111)
+  cfv = [-80000,-500,4500,5500,4500,130000]
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cfv, i)
 
-  print "(a)", repeat("=", 186)
-  cf = [ 0, 100, 200, 300, 400, 500]
-  call cashflow_vector_pv_fv(cf, i, pv, fv, status, prt_o=prt_ALL)
-  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cf, i)
+  print "(a)", repeat("=", 111)
+  cfv = [ 0, 100, 200, 300, 400, 500]
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cfv, i)
 
-  print "(a)", repeat("=", 186)
-  cf = 0
-  call make_cashflow_vector_delayed_arithmetic_annuity(cf, 100.0_rk, 100.0_rk, 1, 0, status)
-  call cashflow_vector_pv_fv(cf, i, pv, fv, status, prt_o=prt_ALL)
-  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cf, i)
+  print "(a)", repeat("=", 111)
+  cfv = 0
+  call make_cashflow_vector_delayed_arithmetic_annuity(cfv, 100.0_rk, 100.0_rk, 1, 0, status)
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cfv, i)
 
-  print "(a)", repeat("=", 186)
-  cf = [ 100, 200, 300, 400, 500, 0]
-  call cashflow_vector_pv_fv(cf, i, pv, fv, status, prt_o=prt_ALL)
-  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cf, i)
+  print "(a)", repeat("=", 111)
+  cfv = [ 100, 200, 300, 400, 500, 0]
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cfv, i)
 
-  print "(a)", repeat("=", 186)
-  cf = 0
-  call make_cashflow_vector_delayed_arithmetic_annuity(cf, 100.0_rk, 100.0_rk, 0, 1, status)
-  call cashflow_vector_pv_fv(cf, i, pv, fv, status, prt_o=prt_ALL)
-  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cf, i)
+  print "(a)", repeat("=", 111)
+  cfv = 0
+  call make_cashflow_vector_delayed_arithmetic_annuity(cfv, 100.0_rk, 100.0_rk, 0, 1, status)
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cfv, i)
 
-  print "(a)", repeat("=", 186)
-  cf = 0
-  call make_cashflow_vector_delayed_geometric_annuity(cf, 10.0_rk, 100.0_rk, 0, 1, status)
-  call cashflow_vector_pv_fv(cf, i, pv, fv, status, prt_o=prt_ALL)
-  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cf, i)
+  print "(a)", repeat("=", 111)
+  cfv = 0
+  call make_cashflow_vector_delayed_geometric_annuity(cfv, 10.0_rk, 100.0_rk, 0, 1, status)
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cfv, i)
 
-  print "(a)", repeat("=", 186)
-  cf = 0
-  call make_cashflow_vector_delayed_geometric_annuity(cf, 10.0_rk, 100.0_rk, 3, 1, status)
-  call cashflow_vector_pv_fv(cf, i, pv, fv, status, prt_o=prt_ALL)
-  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cf, i)
+  print "(a)", repeat("=", 111)
+  cfv = 0
+  call make_cashflow_vector_delayed_geometric_annuity(cfv, 10.0_rk, 100.0_rk, 3, 1, status)
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cfv, i)
 
-  print "(a)", repeat("=", 186)
-  cf = 0
-  call make_cashflow_vector_delayed_level_annuity(cf, 100.0_rk, 3, 1, status)
-  call cashflow_vector_pv_fv(cf, i, pv, fv, status, prt_o=prt_ALL)
-  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cf, i)
+  print "(a)", repeat("=", 111)
+  cfv = 0
+  call make_cashflow_vector_delayed_level_annuity(cfv, 100.0_rk, 3, 1, status)
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cfv, i)
 
-  print "(a)", repeat("=", 186)
-  cf = 0
-  call make_cashflow_vector_delayed_lump(cf, 100.0_rk, 3, status)
-  call cashflow_vector_pv_fv(cf, i, pv, fv, status, prt_o=prt_ALL)
-  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cf, i)
+  print "(a)", repeat("=", 111)
+  cfv = 0
+  call make_cashflow_vector_delayed_lump(cfv, 100.0_rk, 3, status)
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print '(a10,f30.8)', "Total PV:", cashflow_vector_total_pv(cfv, i)
 
-  print "(a)", repeat("=", 186)
+  print "(a)", repeat("=", 111)
   cfm(:,1) = [-80000,-500,4500,5500,4500,130000]
   call make_cashflow_vector_delayed_arithmetic_annuity(cfm(:,2), 100.0_rk, 100.0_rk, 1, 0, status)
   call make_cashflow_vector_delayed_arithmetic_annuity(cfm(:,3), 100.0_rk, 100.0_rk, 0, 1, status)
@@ -108,8 +108,23 @@ program utest_cashflows
   call make_cashflow_vector_delayed_geometric_annuity(cfm(:,5), 10.0_rk, 100.0_rk, 3, 1, status)
   call make_cashflow_vector_delayed_level_annuity(cfm(:,6), 100.0_rk, 3, 1, status)
   call make_cashflow_vector_delayed_lump(cfm(:,7), 100.0_rk, 3, status)
-  call cashflow_matrix_pv_fv(cfm, i, pv, fv, status, prt_o=prt_ALL)
+  call cashflow_matrix_cmp(status, cfm, i, prt_o=prt_ALL)
+  call cashflow_matrix_cmp(status, cfm, i, pv_o=pv, prt_o=prt_ALL-prt_cf-prt_param)
+  call cashflow_matrix_cmp(status, cfm, i, fv_o=fv, prt_o=prt_ALL-prt_cf-prt_param)
+  call cashflow_matrix_cmp(status, cfm, i, fv_agg_o=afv, prt_o=prt_ALL-prt_cf-prt_param)
+  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, prt_o=prt_ALL-prt_cf-prt_param)
+  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL-prt_cf-prt_param)
   print '(a10,f30.8)', "Total PV:", cashflow_matrix_total_pv(cfm, i)
-  print "(a)", repeat("=", 186)
+  print "(a)", repeat("=", 111)
+
+
+  call cashflow_matrix_cmp(status, cfm, i, pv_o=pv, fv_o=fv, fv_agg_o=afv, pv_agg_o=apv, prt_o=prt_table+prt_total+prt_param)
+  print "(a)", repeat("=", 111)
+  call cashflow_matrix_cmp(status, cfm, i, pv_o=pv, fv_o=fv, fv_agg_o=afv, pv_agg_o=apv, prt_o=prt_table+prt_total+prt_pv_agg_val+prt_pv_agg_sum+prt_title)
+  print "(a)", repeat("=", 111)
+  call cashflow_matrix_cmp(status, cfm, i, pv_o=pv, fv_o=fv, fv_agg_o=afv, pv_agg_o=apv, prt_o=          prt_total+prt_pv_agg_val+prt_pv_agg_sum+prt_title)
+  print "(a)", repeat("=", 111)
+
+
 
 end program utest_cashflows

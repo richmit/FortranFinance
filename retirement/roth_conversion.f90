@@ -52,7 +52,7 @@ program roth_conversion
   use :: mrffl_config,      only: rk
   use :: mrffl_percentages, only: percentage_of, add_percentage, percentage_to_fraction
   use :: mrffl_cashflows,   only: make_cashflow_vector_delayed_lump, add_intrest_to_cashflow_vector, &
-       &                          add_multi_intrest_to_cashflow_vector, cashflow_matrix_pv_fv
+       &                          add_multi_intrest_to_cashflow_vector, cashflow_matrix_cmp
   use :: mrffl_prt_sets,    only: prt_ALL
   !
   implicit none (type, external)
@@ -71,7 +71,7 @@ program roth_conversion
   integer       :: status
   real(kind=rk) :: ncv, wcv
 
-  print "(a)", repeat("=", 126)
+  print "(a)", repeat("=", 141)
   cf = 0
 
   call make_cashflow_vector_delayed_lump(cf(:,1), initial_ira, 0, status)
@@ -85,11 +85,11 @@ program roth_conversion
   vapr(conversion_years+1:) = add_percentage(apr, -retirement_tax)
   call add_multi_intrest_to_cashflow_vector(cf(:,3), vapr, status)
 
-  call cashflow_matrix_pv_fv(cf, rate, pv, fv, status, prt_o=prt_ALL)
+  call cashflow_matrix_cmp(status, cf, rate, pv_agg_o=pv, fv_agg_o=fv, prt_o=prt_ALL)
 
   ncv = sum(fv)
 
-  print "(a)", repeat("=", 126)
+  print "(a)", repeat("=", 141)
   cf = 0
 
   call make_cashflow_vector_delayed_lump(cf(:,1), initial_ira-conv_size, 0, status)
@@ -104,16 +104,16 @@ program roth_conversion
   vapr(conversion_years+1:) = add_percentage(apr, -retirement_tax)
   call add_multi_intrest_to_cashflow_vector(cf(:,3), vapr, status)
 
-  call cashflow_matrix_pv_fv(cf, rate, pv, fv, status, prt_o=prt_ALL)
+  call cashflow_matrix_cmp(status, cf, rate, pv_agg_o=pv, fv_agg_o=fv, prt_o=prt_ALL)
 
   wcv = sum(fv)
-  print "(a)", repeat("=", 126)
+  print "(a)", repeat("=", 141)
 
   print *
   print "(a25,f20.2)", "No conversion:", ncv
   print "(a25,f20.2)", "Conversion:",    wcv
   print "(a25,f20.2)", "Delta:",         wcv-ncv
   print *
-  print "(a)", repeat("=", 126)
+  print "(a)", repeat("=", 141)
 
 end program roth_conversion

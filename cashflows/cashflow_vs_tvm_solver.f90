@@ -44,7 +44,7 @@
 !----------------------------------------------------------------------------------------------------------------------------------
 program cashflow_vs_tvm_solver
   use :: mrffl_config,    only: rk
-  use :: mrffl_cashflows, only: cashflow_vector_pv_fv
+  use :: mrffl_cashflows, only: cashflow_vector_cmp
   use :: mrffl_prt_sets,  only: prt_ALL
   use :: mrffl_tvm,       only: tvm_delayed_lump_sum_solve
   use :: mrffl_var_sets,  only: var_fv, var_pv
@@ -54,15 +54,15 @@ program cashflow_vs_tvm_solver
   integer,          parameter :: years = 5
 
   real(kind=rk)    :: cfv(years+1) = [-80000,-500,4500,5500,4500,130000]
-  real(kind=rk)    :: fvv(years+1),  pvv(years+1)
+  real(kind=rk)    :: afv(years+1),  apv(years+1)
   real(kind=rk)    :: i = 13.0
   real(kind=rk)    :: s_i, s_pv, s_fv, s_n, s_a, pv_sum, fv_sum = 0
   integer          :: s_d, status
 
   print "(a)", repeat("=", 100)
   print *, "Here we use the manually constructed cashflow to compute PV/FV"
-  call cashflow_vector_pv_fv(cfv, i, pvv, fvv, status, prt_o=prt_ALL)
-  print "(a30,i15)", "cashflow_matrix_pv_fv status: ", status
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print "(a30,i15)", "cashflow_matrix_cmp status: ", status
   print *
   print "(a)", repeat("=", 100)
 

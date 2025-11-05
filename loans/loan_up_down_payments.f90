@@ -51,7 +51,7 @@ program loan_level_payments
   use :: mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
   use :: mrffl_var_sets,  only: var_fv, var_a, var_pv
   use :: mrffl_prt_sets,  only: prt_ALL
-  use :: mrffl_cashflows, only: cashflow_matrix_pv_fv, make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity
+  use :: mrffl_cashflows, only: cashflow_matrix_cmp, make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity
 
   implicit none (type, external)
 
@@ -74,21 +74,21 @@ program loan_level_payments
 
   integer          :: status
 
-  real(kind=rk)    :: cfm(years+1,2), fvv(years+1),  pvv(years+1)
+  real(kind=rk)    :: cfm(years+1,2), afv(years+1), apv(years+1)
 
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   print "(a60,f15.4)", "n: ", n
   print "(a60,f15.4)", "i: ", i
 
   ! First we find the PV & FV for the principal.
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   call tvm_lump_sum_solve(n, i, p_pv, p_fv, var_fv, status)
   print "(a60,i15)", "tvm_lump_sum_solve status: ", status
   print "(a60,f15.4)", "Loan PV: ", p_pv
   print "(a60,f15.4)", "Loan FV: ", p_fv
 
   ! Now we solve for the payment (a in the annuity) and the fv
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   call tvm_delayed_level_annuity_solve(n, i, a_pv, a_fv, a_a, a_d, a_e, var_fv+var_a, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
   print "(a60,f15.4)", "Annuity PV: ", a_pv
@@ -96,20 +96,20 @@ program loan_level_payments
   print "(a60,f15.4)", "Annuity A: ",  a_a
 
   ! Now we round a_a UP to the nearest cent.
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   a_a = ceiling(100*a_a)
   a_a = a_a / 100
   print "(a60,f15.4)", "Rounded Up Annuity A: ",  a_a
 
   ! Now we find PV & FV for an annuity with the rounded payment that ends one period early
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   call tvm_delayed_level_annuity_solve(n, i, a_pv, a_fv, a_a, a_d, a_e+1, var_fv+var_pv, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
   print "(a60,f15.4)", "Rounded (n-1) Annuity PV: ", a_pv
   print "(a60,f15.4)", "Rounded (n-1) Annuity FV: ", a_fv
 
   ! The final payment needs to be the difference between the principal FV and the rounded annuity FV
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   a_final = floor(-(p_fv+a_fv)*100)
   a_final = a_final / 100
   print "(a60,f15.4)", "Final Payment: ",  a_final
@@ -117,12 +117,12 @@ program loan_level_payments
   ! Now we construct the cashflows so we can print a nice table
 
   ! We start with the principal
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   call make_cashflow_vector_delayed_lump(cfm(:,1), p_pv, p_d, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_lump status: ", status
 
   ! Next we add the rounded up
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   call make_cashflow_vector_delayed_level_annuity(cfm(:,2), a_a, a_d, a_e+1, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
@@ -130,7 +130,7 @@ program loan_level_payments
   cfm(years+1, 2) = a_final
 
   ! Now we print the cashflow
-  call cashflow_matrix_pv_fv(cfm, i, pvv, fvv, status, prt_o=prt_ALL)
-  print "(a)", repeat("=", 111)
+  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL)
+  print "(a)", repeat("=", 127)
 
 end program loan_level_payments

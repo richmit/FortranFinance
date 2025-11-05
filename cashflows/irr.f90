@@ -37,7 +37,7 @@
 program irr
   use :: mrffl_config,    only: rk
   use :: mrffl_cashflows, only: cashflow_vector_total_pv, cashflow_vector_irr, cashflow_matrix_total_pv, cashflow_matrix_irr, &
-       &                        cashflow_vector_pv_fv, cashflow_matrix_pv_fv
+       &                        cashflow_vector_cmp, cashflow_matrix_cmp
   use :: mrffl_prt_sets,  only: prt_ALL
 
   implicit none (type, external)
@@ -45,28 +45,28 @@ program irr
   integer,          parameter :: years = 3
   real(kind=rk)               :: cfv(years+1) = [-125, 50, 60, 70]
   real(kind=rk)               :: cfm(years+1, 2) = reshape([-125, 0, 0, 0, 0, 50, 60, 70], [years+1, 2])
-  real(kind=rk)               :: fvv(years+1),  pvv(years+1)
+  real(kind=rk)               :: afv(years+1),  apv(years+1)
   real(kind=rk)               :: i
   integer                     :: status
 
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   i = 4
-  call cashflow_vector_pv_fv(cfv, i, pvv, fvv, status, prt_o=prt_ALL)
-  print "(a30,i15)", "cashflow_matrix_pv_fv status: ", status
+  call cashflow_vector_cmp(status, cfv, i, apv, afv, prt_o=prt_ALL)
+  print "(a30,i15)", "cashflow_matrix_cmp status: ", status
   print *
   print '(a10,f20.5)', "total pv:", cashflow_vector_total_pv(cfv, i)
   call cashflow_vector_irr(cfv, i, status)
   print '(a10,f20.5,i10)', "irr:", i, status
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
 
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
   i = 4
-  call cashflow_matrix_pv_fv(cfm, i, pvv, fvv, status, prt_ALL)
-  print "(a30,i15)", "cashflow_matrix_pv_fv status: ", status
+  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL)
+  print "(a30,i15)", "cashflow_matrix_cmp status: ", status
   print *
   print '(a10,f20.5)', "total pv:", cashflow_matrix_total_pv(cfm, i)
   call cashflow_matrix_irr(cfm, i, status)
   print '(a10,f20.5,i10)', "irr:", i, status
-  print "(a)", repeat("=", 111)
+  print "(a)", repeat("=", 127)
 
 end program irr

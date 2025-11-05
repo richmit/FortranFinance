@@ -39,7 +39,7 @@ program utest_tvm_delayed_arithmetic_annuity_solve
   use :: mrffl_config,    only: rk
   use :: mrffl_tvm,       only: tvm_delayed_arithmetic_annuity_solve
   use :: mrffl_var_sets,  only: var_pv, var_fv, var_i, var_n, var_a, var_NONE, var_q
-  use :: mrffl_cashflows, only: cashflow_matrix_pv_fv
+  use :: mrffl_cashflows, only: cashflow_matrix_cmp
   implicit none (type, external)
 
   real(kind=rk)    :: n, i, q, pv, fv, a

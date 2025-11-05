@@ -40,12 +40,42 @@ module mrffl_prt_sets
   implicit none (type, external)
   private
 
-  integer, parameter, public :: prt_NONE  = 0   !< Print nothing
-  integer, parameter, public :: prt_param = 1   !< Print parameters before the table/titles
-  integer, parameter, public :: prt_title = 2   !< Print titles on the tables
-  integer, parameter, public :: prt_table = 4   !< Print a table
-  integer, parameter, public :: prt_total = 8   !< Print totals PV & FV after the table
-  integer, parameter, public :: prt_space = 16  !< Print vertical whitespace between parameters & table/titles & totals
-  integer, parameter, public :: prt_ALL   = 31  !< Print everything
+  integer, parameter, public :: prt_param       =          1   !< Print parameters before the table/titles
+  integer, parameter, public :: prt_title       =          2   !< Print titles on the tables
+  integer, parameter, public :: prt_table       =          4   !< Print a table
+  integer, parameter, public :: prt_total       =          8   !< Print totals pv & fv after the table
+  integer, parameter, public :: prt_space       =         16   !< Print vertical whitespace between parameters & table/titles & totals
+  integer, parameter, public :: prt_fv          =         32   !< Print FV in table
+  integer, parameter, public :: prt_fv_agg_val  =         64   !< Print FV aggregate in table
+  integer, parameter, public :: prt_fv_agg_sum  =        128   !< Print FV aggregate running sum in table
+  integer, parameter, public :: prt_pv          =        256   !< Print PV in table            
+  integer, parameter, public :: prt_pv_agg_val  =        512   !< Print PV aggregate in table  
+  integer, parameter, public :: prt_pv_agg_sum  =       1024   !< Print PV aggregate running sum in table      
+  integer, parameter, public :: prt_cf          =       2048   !< Print CF in table            
+  integer, parameter, public :: prt_cf_agg_val  =       4096   !< Print CF aggregate in table  
+  integer, parameter, public :: prt_cf_agg_sum  =       8192   !< Print CF aggregate running sum in table      
+  integer, parameter, public :: prt_U14         =      16384   !< Unallocated
+  integer, parameter, public :: prt_U15         =      32768   !< Unallocated
+  integer, parameter, public :: prt_U16         =      65536   !< Unallocated
+  integer, parameter, public :: prt_U17         =     131072   !< Unallocated
+  integer, parameter, public :: prt_U18         =     262144   !< Unallocated
+  integer, parameter, public :: prt_U19         =     524288   !< Unallocated
+  integer, parameter, public :: prt_U20         =    1048576   !< Unallocated
+  integer, parameter, public :: prt_U21         =    2097152   !< Unallocated
+  integer, parameter, public :: prt_U22         =    4194304   !< Unallocated
+  integer, parameter, public :: prt_U23         =    8388608   !< Unallocated
+  integer, parameter, public :: prt_U24         =   16777216   !< Unallocated
+  integer, parameter, public :: prt_U25         =   33554432   !< Unallocated
+  integer, parameter, public :: prt_U26         =   67108864   !< Unallocated
+  integer, parameter, public :: prt_U27         =  134217728   !< Unallocated
+  integer, parameter, public :: prt_U28         =  268435456   !< Unallocated
+  integer, parameter, public :: prt_U29         =  536870912   !< Unallocated
+  integer, parameter, public :: prt_U30         = 1073741824   !< Unallocated
 
+  integer, parameter, public :: prt_NONE        =          0   !< Print nothing
+  integer, parameter, public :: prt_ALL         = 2147483647   !< Print everything
+
+  integer, parameter, public :: prt_all_agg_val  = prt_fv_agg_val + prt_pv_agg_val + prt_cf_agg_val
+  integer, parameter, public :: prt_all_agg_sum  = prt_fv_agg_sum + prt_pv_agg_sum + prt_cf_agg_sum
+  
 end module mrffl_prt_sets

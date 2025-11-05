@@ -72,18 +72,18 @@
 !!
 module mrffl_cashflows
   use :: mrffl_config,      only: rk, fvfmt_ai, ftfmt_ai, zero_epsilon
-  use :: mrffl_bitset,      only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp
+  use :: mrffl_bitset,      only: bitset_subsetp, bitset_not_subsetp, bitset_intersectp, bitset_minus
   use :: mrffl_percentages, only: percentage_to_fraction
-  use :: mrffl_prt_sets,    only: prt_NONE, prt_param, prt_title, prt_table, prt_total, prt_space
+  use :: mrffl_prt_sets,    only: prt_NONE, prt_param, prt_title, prt_table, prt_total, prt_space, prt_fv, prt_fv_agg_val, prt_fv_agg_sum, prt_pv, prt_pv_agg_val, prt_pv_agg_sum, prt_cf, prt_cf_agg_val, prt_cf_agg_sum, prt_ALL
   use :: mrffl_solver,      only: multi_bisection
   implicit none (type, external)
   private
 
   ! Work with one or more cashflow series in the columns of a matrix
-  public :: cashflow_matrix_pv_fv, cashflow_matrix_total_pv, cashflow_matrix_irr
+  public :: cashflow_matrix_cmp, cashflow_matrix_total_pv, cashflow_matrix_irr
 
   ! Work with one cashflow series in a vector
-  public :: cashflow_vector_pv_fv, cashflow_vector_total_pv, cashflow_vector_irr
+  public :: cashflow_vector_cmp, cashflow_vector_total_pv, cashflow_vector_irr
 
   ! Construct cashflow series
   public :: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity
@@ -120,7 +120,7 @@ contains
   !> Compute pv for a cashflow matrix.
   !!
   !! In this library, initial cashflows are simply at time 0.  NPV and PV are the same value in this context.  The value
-  !! returned by this function is identical to summing the pv_vec returned by cashflow_matrix_pv_fv; however, this function is
+  !! returned by this function is identical to summing the pv_vec returned by cashflow_matrix_cmp; however, this function is
   !! much faster and requires no temporary arrays.
   !!
   !! @param cf_mat    Matrix of cashflows (one cashflow sequence per column)
@@ -215,9 +215,9 @@ contains
   !------------------------------------------------------------------------------------------------------------------------------
   !> Compute present and future values for a cashflow vector.
   !!
-  !! See: cashflow_matrix_pv_fv()
+  !! See: cashflow_matrix_cmp()
   !!
-  subroutine cashflow_vector_pv_fv(cf_vec, i, pv_vec, fv_vec, status, prt_o, fvfmt_o, ftfmt_o)
+  subroutine cashflow_vector_cmp(status, cf_vec, i, pv_vec, fv_vec, prt_o, fvfmt_o, ftfmt_o)
     ! Arguments
     real(kind=rk),              intent(in)  :: cf_vec(:)
     real(kind=rk),              intent(in)  :: i
@@ -236,36 +236,45 @@ contains
     ftfmt = ftfmt_ai
     if (present(ftfmt_o)) ftfmt = ftfmt_o
     ! Perform Computation
-    call cashflow_matrix_pv_fv(reshape(cf_vec, [size(cf_vec), 1]), i, pv_vec, fv_vec, status, prt_o=prt, fvfmt_o=fvfmt, ftfmt_o=ftfmt)
-  end subroutine cashflow_vector_pv_fv
+    call cashflow_matrix_cmp(status, reshape(cf_vec, [size(cf_vec), 1]), i, pv_agg_o=pv_vec, fv_agg_o=fv_vec, prt_o=prt, fvfmt_o=fvfmt, ftfmt_o=ftfmt)
+  end subroutine cashflow_vector_cmp
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Compute present and future values for a cashflow matrix.
   !!
   !! As a side effect, the cashflows may be printed.
   !!
-  !! @param cf_mat    Matrix of cashflows (one cashflow sequence per column)
-  !! @param i         Interest/Rate/Growth
-  !! @param pv_vec    Returns the present value vector
-  !! @param fv_vec    Returns the future value vector
   !! @param status    Returns status of operation.  0 if everything worked. Range: 0 & 2129-2160.
-  !! @param prt_o Bitset built from the following constants prt_param, prt_title, prt_table, prt_total, & prt_space
+  !! @param cf        Matrix of cashflows (one cashflow sequence per column)
+  !! @param i         Interest/Rate/Growth
+  !! @param pv_agg_o  Returns the summary/aggregate 'present value' vector.  Default: NONE
+  !! @param fv_agg_o  Returns the summary/aggregate 'future value' vector.  Default: NONE
+  !! @param pv_o      Returns the 'present value' matrix with a column for each cashflow sequence.  Default: NONE
+  !! @param fv_o      Returns the 'future value' matrix with a column for each cashflow sequence.  Default: NONE
+  !! @param prt_o     Bitset built from the following constants prt_param, prt_title, prt_table, prt_total, & prt_space
+  !!                   - Print requests for items not computed will be silglentedly ignored.  
+  !!                      - prt_cf_* requires one of pv_agg_o or fv_agg_o. 
+  !!                      - prt_pv_* requires pv_agg_o
+  !!                      - prt_fv_* requires fv_agg_o.  
+  !!                      - prt_pv requires pv_o, and prt_fv requires fv_o.
+  !!                   - If flows==1, then prt_*_agg is ignored if the matching prt_* is set.
   !! @param fvfmt_o   Floating point value output format.  Default: fvfmt_ai
   !! @param ftfmt_o   Floating point tital output format.  Default: ftfmt_ai
   !!
-  subroutine cashflow_matrix_pv_fv(cf_mat, i, pv_vec, fv_vec, status, prt_o, fvfmt_o, ftfmt_o)
+  subroutine cashflow_matrix_cmp(status, cf, i, pv_o, pv_agg_o, fv_o, fv_agg_o, prt_o, fvfmt_o, ftfmt_o)
     implicit none (type, external)
     ! Arguments
-    real(kind=rk),              intent(in)  :: cf_mat(:,:)
+    real(kind=rk),              intent(in)  :: cf(:,:)
     real(kind=rk),              intent(in)  :: i
-    real(kind=rk),              intent(out) :: pv_vec(:), fv_vec(:)
     integer,                    intent(out) :: status
-    integer, optional,          intent(in)  :: prt_o
+    real(kind=rk),    optional, intent(out) :: pv_o(:,:), fv_o(:,:)
+    real(kind=rk),    optional, intent(out) :: pv_agg_o(:), fv_agg_o(:)
+    integer,          optional, intent(in)  :: prt_o
     character(len=*), optional, intent(in)  :: fvfmt_o, ftfmt_o
     ! Local Variables
     integer                       :: num_bdrys, num_flows, j, flow, prt
     character(len=:), allocatable :: fvfmt, ftfmt
-    real(kind=rk), allocatable    :: dfactors(:), cf_aggr(:), total_pv(:), total_fv(:)
+    real(kind=rk),    allocatable :: dfactors(:), cf_agg(:)
     ! Process Optional Arguments
     prt = prt_NONE
     if (present(prt_o)) prt = prt_o
@@ -274,95 +283,175 @@ contains
     ftfmt = ftfmt_ai
     if (present(ftfmt_o)) ftfmt = ftfmt_o
     ! Process & Check Arguments
-    num_bdrys = size(cf_mat, 1)
-    num_flows = size(cf_mat, 2)
+    num_bdrys = size(cf, 1)
+    num_flows = size(cf, 2)
     if (num_flows < 1) then
-       status = 2130 ! "ERROR(cashflow_matrix_pv_fv): No flows found in matrix!"
+       status = 2130 ! "ERROR(cashflow_matrix_cmp): No flows found in matrix!"
        return
-    else if (abs(i+100) < zero_epsilon) then
-       status = 2132 ! "ERROR(cashflow_matrix_pv_fv): Value for i is too close -100%!"
+    end if
+    if (abs(i+100) < zero_epsilon) then
+       status = 2131 ! "ERROR(cashflow_matrix_cmp): Value for i is too close -100%!"
        return
-    else if (num_bdrys < 2) then
-       status = 2133 ! "ERROR(cashflow_matrix_pv_fv): Number of periods in cashflow is too small!"
+    end if
+    if (num_bdrys < 2) then
+       status = 2132 ! "ERROR(cashflow_matrix_cmp): Number of periods in cashflow is too small!"
        return
-    else if (num_bdrys > size(pv_vec)) then
-       status = 2134 ! "ERROR(cashflow_matrix_pv_fv): The pv_vec array is not long enough!"
-       return
-    else if (num_bdrys > size(fv_vec)) then
-       status = 2135 ! "ERROR(cashflow_matrix_pv_fv): The fv_vec array is not long enough!"
-       return
+    end if
+    if (present(pv_agg_o)) then
+       if (num_bdrys > size(pv_agg_o)) then
+          status = 2133 ! "ERROR(cashflow_matrix_cmp): The pv_agg_o array is not long enough!"
+          return
+       end if
     else
-       status = 0
+       prt = bitset_minus(prt, prt_pv_agg_val)
+       prt = bitset_minus(prt, prt_pv_agg_sum)
     end if
+    if (present(fv_agg_o)) then
+       if (num_bdrys > size(fv_agg_o)) then
+          status = 2134 ! "ERROR(cashflow_matrix_cmp): The fv_agg_o array is not long enough!"
+          return
+       end if
+    else
+       prt = bitset_minus(prt, prt_fv_agg_val)
+       prt = bitset_minus(prt, prt_fv_agg_sum)
+    end if
+    if ( .not. (present(fv_agg_o) .or. present(pv_agg_o))) then
+       prt = bitset_minus(prt, prt_cf_agg_val)
+       prt = bitset_minus(prt, prt_cf_agg_sum)
+    end if
+    if (present(pv_o)) then
+       if (num_bdrys > size(pv_o, 1)) then
+          status = 2136 ! "ERROR(cashflow_matrix_cmp): The pv_o array is not long enough!"
+          return
+       end if
+       if (size(cf, 2) > size(pv_o, 2)) then
+          status = 2137 ! "ERROR(cashflow_matrix_cmp): The pv_o array is not wide enough!"
+          return
+       end if
+    else
+       prt = bitset_minus(prt, prt_pv)
+    end if
+    if (present(fv_o)) then
+       if (num_bdrys > size(fv_o, 1)) then
+          status = 2138 ! "ERROR(cashflow_matrix_cmp): The fv_o array is not long enough!"
+          return
+       end if
+       if (size(cf, 2) > size(fv_o, 2)) then
+          status = 2139 ! "ERROR(cashflow_matrix_cmp): The fv_o array is not wide enough!"
+          return
+       end if
+    else
+       prt = bitset_minus(prt, prt_fv)
+    end if
+    ! Suppress columns with duplicate data
+    if ((num_flows == 1) .and. bitset_subsetp(prt_cf_agg_val+prt_cf, prt)) then
+       prt = bitset_minus(prt, prt_cf_agg_val)
+    end if
+    if ((num_flows == 1) .and. bitset_subsetp(prt_pv_agg_val+prt_pv, prt)) then
+       prt = bitset_minus(prt, prt_pv_agg_val)
+    end if
+    if ((num_flows == 1) .and. bitset_subsetp(prt_fv_agg_val+prt_fv, prt)) then
+       prt = bitset_minus(prt, prt_fv_agg_val)
+    end if
+    ! If we have nothing to print in a table or total...
+    if (.not. bitset_intersectp(prt, prt_fv+prt_fv_agg_val+prt_fv_agg_sum+ &
+         &                           prt_pv+prt_pv_agg_val+prt_pv_agg_sum+ &
+         &                           prt_cf+prt_cf_agg_val+prt_cf_agg_sum)) then
+       prt = bitset_minus(prt, prt_table+prt_total)
+    end if
+    ! Args look good
+    status = 0
     ! Perform Computation
-    if (bitset_subsetp(prt_space, prt) .and. bitset_intersectp(prt_param+prt_table+prt_total, prt)) then
-       print *, ""
-    end if
-    cf_aggr = sum(cf_mat,2)
     if (abs(i+100) < zero_epsilon) then
        dfactors = [(1,j=1,num_bdrys)]
     else
        dfactors = (1.0_rk+percentage_to_fraction(i))**[(j-1,j=1,num_bdrys)]
     end if
-    pv_vec = cf_aggr / dfactors
-    fv_vec = cf_aggr * dfactors(num_bdrys:1:-1)
-    ! TODO: Add this to the API.
-    ! cp_vec is the 'cash position' vector
-    ! cp_vec(1) = cf_aggr(1)
-    ! do j=2, years
-    !    cp_vec(j) = cp_vec(j-1) * (1.0_rk+percentage_to_fraction(i)) + cf_aggr(j)
-    ! end do
-    if (bitset_intersectp(prt_param+prt_title+prt_table+prt_total+prt_space, prt)) then
+    ! Compute the vector values
+    if (present(pv_agg_o) .or. present(fv_agg_o)) then
+       cf_agg = sum(cf, 2)
+       if (present(pv_agg_o)) pv_agg_o = cf_agg / dfactors
+       if (present(fv_agg_o)) fv_agg_o = cf_agg * dfactors(num_bdrys:1:-1)
+    else
+       cf_agg = [0] ! Suppress unbound/uninitialized warning
+    end if
+    ! Compute the matrix values
+    if (present(pv_o)) then
+       do flow=1, num_flows
+          pv_o(:, flow) = cf(:, flow) / dfactors
+       end do
+    end if
+    if (present(fv_o)) then
+       do flow=1, num_flows
+          fv_o(:, flow) = cf(:, flow) * dfactors(num_bdrys:1:-1)
+       end do
+    end if
+    ! Print stuff
+    if (bitset_subsetp(prt_space, prt) .and. bitset_intersectp(prt_param+prt_table+prt_total, prt)) then
+       write (*, *) ""
+    end if
+    if (bitset_intersectp(prt_param+prt_table+prt_total+prt_space, prt)) then
        if (bitset_subsetp(prt_param, prt)) then
-          print "(a15, i25)",   "Period Count: ",  (num_bdrys-1)
-          print "(a15, f25.4)", "Discount Rate: ", i
+          write (*, fmt="(a15, i25)")   "Period Count: ",  (num_bdrys-1)
+          write (*, fmt="(a15, f25.4)") "Discount Rate: ", i
+          if (bitset_subsetp(prt_space, prt) .and. bitset_intersectp(prt_table+prt_total, prt)) then
+             write (*, *) ""
+          end if
        end if
-       if (bitset_subsetp(prt_space, prt) .and. bitset_intersectp(prt_title+prt_total, prt)) then
-          print *, ""
-       end if
-       if (bitset_subsetp(prt_title+prt_table, prt)) then
-          if (num_flows > 1) then
-             print "(a6,*("//ftfmt//"))",  "Time", ( "CF_"//i2s(flow), flow = 1_rk, num_flows ), &
-                  "CF_Aggregate", "PV", "FV", "PV_Total", "FV_Total"
-          else
-             print "(a6,*("//ftfmt//"))",  "Time", "CF", "PV", "FV", "PV_Total", "FV_Total"
+       if (bitset_subsetp(prt_title, prt)) then
+          if (bitset_intersectp(prt_table+prt_total, prt)) then
+             if (bitset_subsetp(prt_table, prt)) then
+                write (*, fmt="(a6)",    advance='no')  "Time"
+             else
+                write (*, fmt="(a6)",    advance='no')  ""
+             end if
+             if (bitset_subsetp(prt_cf,         prt)) write (*, fmt="(*("//ftfmt//"))", advance='no')  ("CF_"//i2s(flow), flow = 1, num_flows )
+             if (bitset_subsetp(prt_cf_agg_val, prt)) write (*, fmt="(*("//ftfmt//"))", advance='no')  "CF_Aggregate"
+             if (bitset_subsetp(prt_pv,         prt)) write (*, fmt="(*("//ftfmt//"))", advance='no')  ("PV_"//i2s(flow), flow = 1, num_flows )
+             if (bitset_subsetp(prt_pv_agg_val, prt)) write (*, fmt="(*("//ftfmt//"))", advance='no')  "PV_Aggregate"
+             if (bitset_subsetp(prt_fv,         prt)) write (*, fmt="(*("//ftfmt//"))", advance='no')  ("FV_"//i2s(flow), flow = 1, num_flows )
+             if (bitset_subsetp(prt_fv_agg_val, prt)) write (*, fmt="(*("//ftfmt//"))", advance='no')  "FV_Aggregate"
+             if (bitset_subsetp(prt_table, prt)) then
+                if (bitset_subsetp(prt_cf_agg_sum, prt)) write (*, fmt="(*("//ftfmt//"))", advance='no')  "CF_Sum"
+                if (bitset_subsetp(prt_pv_agg_sum, prt)) write (*, fmt="(*("//ftfmt//"))", advance='no')  "PV_Sum"
+                if (bitset_subsetp(prt_fv_agg_sum, prt)) write (*, fmt="(*("//ftfmt//"))", advance='no')  "FV_Sum"
+             end if
+             write (*, *) ""
           end if
        end if
        if (bitset_subsetp(prt_table, prt)) then
           do j = 1, num_bdrys
-             if (num_flows > 1) then
-                print "(i6,*("//fvfmt//"))", (j-1), cf_mat(j, :), cf_aggr(j), pv_vec(j), fv_vec(j), sum(pv_vec(1:j)), sum(fv_vec(1:j))
-             else
-                print "(i6,5("//fvfmt//"))", (j-1), cf_aggr(j), pv_vec(j), fv_vec(j), sum(pv_vec(1:j)), sum(fv_vec(1:j))
-             end if
+             write (*, fmt="(i6)",    advance='no')  (j-1)
+             if (bitset_subsetp(prt_cf,         prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  cf(j, :)
+             if (bitset_subsetp(prt_cf_agg_val, prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  cf_agg(j)
+             if (bitset_subsetp(prt_pv,         prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  pv_o(j, :)
+             if (bitset_subsetp(prt_pv_agg_val, prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  pv_agg_o(j)
+             if (bitset_subsetp(prt_fv,         prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  fv_o(j, :)
+             if (bitset_subsetp(prt_fv_agg_val, prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  fv_agg_o(j)
+             if (bitset_subsetp(prt_cf_agg_sum, prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  sum(cf_agg(1:j))
+             if (bitset_subsetp(prt_pv_agg_sum, prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  sum(pv_agg_o(1:j))
+             if (bitset_subsetp(prt_fv_agg_sum, prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  sum(fv_agg_o(1:j))
+             write (*, *) ""
           end do
-       end if
-       if (bitset_subsetp(prt_space+prt_total+prt_table, prt)) then
-          print *, ""
+          if (bitset_subsetp(prt_space+prt_total, prt)) then
+             write (*, *) ""
+          end if
        end if
        if (bitset_subsetp(prt_total, prt)) then
-          if (bitset_subsetp(prt_title, prt) .and. bitset_not_subsetp(prt_table, prt)) then
-             if (num_flows > 1) then
-                print "(a6,*("//ftfmt//"))",  "", ( "CF_"//i2s(flow), flow = 1, num_flows ), "CF_Aggregate"
-             else
-                print "(a6,*("//ftfmt//"))",  "", "CF"
-             end if
-          end if
-          total_pv = [(sum(cf_mat(:,flow) / dfactors), flow = 1, num_flows)]
-          total_fv = [(sum(cf_mat(:,flow) * dfactors(num_bdrys:1:-1)), flow = 1, num_flows)]
-          if (num_flows > 1) then
-             print "(a6,*("//fvfmt//"))", "PV", total_pv, sum(pv_vec)
-             print "(a6,*("//fvfmt//"))", "FV", total_fv, sum(fv_vec)
-          else
-             print "(a6,*("//fvfmt//"))", "PV", total_pv
-             print "(a6,*("//fvfmt//"))", "FV", total_fv
-          end if
+          write (*, fmt="(a6)",    advance='no')  "TOTAL"
+          if (bitset_subsetp(prt_cf,         prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  sum(cf, 1)
+          if (bitset_subsetp(prt_cf_agg_val, prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  sum(cf_agg)
+          if (bitset_subsetp(prt_pv,         prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  sum(pv_o, 1)
+          if (bitset_subsetp(prt_pv_agg_val, prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  sum(pv_agg_o)
+          if (bitset_subsetp(prt_fv,         prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  sum(fv_o, 1)
+          if (bitset_subsetp(prt_fv_agg_val, prt)) write (*, fmt="(*("//fvfmt//"))", advance='no')  sum(fv_agg_o)
+          write (*, *) ""
        end if
        if (bitset_subsetp(prt_space, prt) .and. bitset_intersectp(prt_param+prt_table+prt_total, prt)) then
-          print *, ""
+          write (*, *) ""
        end if
     end if
-  end subroutine cashflow_matrix_pv_fv
+  end subroutine cashflow_matrix_cmp
 
   !------------------------------------------------------------------------------------------------------------------------------
   !> Create a cashflow with a single (lump sum) payment.

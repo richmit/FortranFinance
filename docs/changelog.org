@@ -53,11 +53,11 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
   - Known Issues
     - N/A
   - API breaking Changes
-    - Removed cashflow_*_pv_fv_print (functionality now in cashflow_*_pv_fv)
+    - Complete refactor of cashflow API.
   - Deprecated functionality
     - N/A
   - New functionality
-    - cashflow_*_pv_fv optional arguments provide cashflow_*_pv_fv_print functionality.
+    - N/A
   - Documentation
     - N/A
   - Examples

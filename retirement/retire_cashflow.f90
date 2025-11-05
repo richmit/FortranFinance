@@ -48,7 +48,7 @@
 program cashflow_retire
   use :: mrffl_config,    only: rk
   use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, &
-       &                        make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_pv_fv
+       &                        make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_cmp
   use :: mrffl_prt_sets,  only: prt_ALL
 
   implicit none (type, external)
@@ -59,7 +59,7 @@ program cashflow_retire
   integer            :: status
 
   ! First we add a cashflow for our savings
-  print "(a)", repeat("=", 126)
+  print "(a)", repeat("=", 141)
   call make_cashflow_vector_delayed_lump(cfm(:,1), 2.0e6_rk, 0, status)
   print "(a30,i15)", "make_cashflow_vector_delayed_lump status: ", status
 
@@ -72,9 +72,9 @@ program cashflow_retire
   print "(a30,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Finally we print it all out.
-  print "(a)", repeat("=", 126)
-  call cashflow_matrix_pv_fv(cfm, cfi, pv, fv, status, prt_ALL)
-  print "(a30,i15)", "cashflow_matrix_pv_fv status: ", status
-  print "(a)", repeat("=", 126)
+  print "(a)", repeat("=", 141)
+  call cashflow_matrix_cmp(status, cfm, cfi, pv_agg_o=pv, fv_agg_o=fv, prt_o=prt_ALL)
+  print "(a30,i15)", "cashflow_matrix_cmp status: ", status
+  print "(a)", repeat("=", 141)
 
 end program cashflow_retire
