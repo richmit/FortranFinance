@@ -1009,7 +1009,7 @@ contains
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
   !! @param e         Early end counted from time end (t=n). i.e. e=0 means the last payment is at end of period n.
   !! @param unknowns  What variables to solve for.
-  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4129-4160.
+  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1225-1257.
   !!
   subroutine tvm_delayed_arithmetic_annuity_solve(n, i, q, pv, fv, a, d, e, unknowns, status)
     ! Arguments
@@ -1069,7 +1069,7 @@ contains
        lst_unk = cur_unk
     end do
     if (bitset_size(cur_unk) > 0) then
-       status = 4129 ! "ERROR(tvm_delayed_arithmetic_annuity_solve): Unable to solve for some variables!"
+       status = 1225 ! "ERROR(tvm_delayed_arithmetic_annuity_solve): Unable to solve for some variables!"
     else
        call tvm_delayed_arithmetic_annuity_check(n, i, q, pv, fv, a, d, e, status)
     end if
@@ -1086,7 +1086,7 @@ contains
   !! @param a         First payment (Annuity)
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
   !! @param e         Early end counted from time end (t=n). i.e. e=0 means the last payment is at end of period n.
-  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4097-4128.
+  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 1258-1290.
   !!
   subroutine tvm_delayed_arithmetic_annuity_check(n, i, q, pv, fv, a, d, e, status)
     ! Arguments
@@ -1097,55 +1097,55 @@ contains
     real(kind=rk) :: iq
     ! Perform Computation
     if (d < 0) then
-       status = 4097 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d<0)!"
+       status = 1258 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d<0)!"
     else if (e < 0) then
-       status = 4098 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (e<0)!"
+       status = 1259 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (e<0)!"
     else if (.not. ieee_is_finite(n)) then
-       status = 4099 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n is infinite)!"
+       status = 1260 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n is infinite)!"
     else if (ieee_is_nan(n)) then
-       status = 4100 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n is NaN)!"
+       status = 1261 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n is NaN)!"
     else if (d > nint(n)) then
-       status = 4101 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d>n)!"
+       status = 1262 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d>n)!"
     else if (e > nint(n)) then
-       status = 4102 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (e>n)!"
+       status = 1263 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (e>n)!"
     else if ((d+e) > nint(n)) then
-       status = 4103 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d+e>n)!"
+       status = 1264 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (d+e>n)!"
     else if (n < zero_epsilon) then
-       status = 4104 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n<0)!"
+       status = 1265 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n<0)!"
     else if (n < 1) then
-       status = 4105 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n<1)!"
+       status = 1266 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (n<1)!"
     else if (.not. ieee_is_finite(i)) then
-       status = 4106 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (i is infinite)!"
+       status = 1267 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (i is infinite)!"
     else if (ieee_is_nan(i)) then
-       status = 4107 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (i is NaN)!"
+       status = 1268 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (i is NaN)!"
     else if (abs(i) < zero_epsilon) then
-       status = 4108 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (i is 0%)!"
+       status = 1269 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (i is 0%)!"
     else if (abs(100+i) < zero_epsilon) then
-       status = 4109 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (i is -100%)!"
+       status = 1270 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (i is -100%)!"
     else if (.not. ieee_is_finite(q)) then
-       status = 4110 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (q is infinite)!"
+       status = 1271 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (q is infinite)!"
     else if (ieee_is_nan(q)) then
-       status = 4111 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (q is NaN)!"
+       status = 1272 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (q is NaN)!"
     else if (abs(q) < zero_epsilon) then
-       status = 4112 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (q is 0%)!"
+       status = 1273 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (q is 0%)!"
     else if (.not. ieee_is_finite(pv)) then
-       status = 4113 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (pv is infinite)!"
+       status = 1274 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (pv is infinite)!"
     else if (.not. ieee_is_finite(fv)) then
-       status = 4114 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (fv is infinite)!"
+       status = 1275 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (fv is infinite)!"
     else if (ieee_is_nan(pv)) then
-       status = 4115 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (pv is NaN)!"
+       status = 1276 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (pv is NaN)!"
     else if (ieee_is_nan(fv)) then
-       status = 4116 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (fv is NaN)!"
+       status = 1277 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (fv is NaN)!"
     else if (.not. ieee_is_finite(a)) then
-       status = 4117 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (a is infinite)!"
+       status = 1278 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (a is infinite)!"
     else if (ieee_is_nan(a)) then
-       status = 4118 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (a is NaN)!"
+       status = 1279 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Parameters inconsistent (a is NaN)!"
     else
        iq = p2f(i)
        if (abs(((1 + iq) ** (1 + n - d) * (a * iq + q) - (1 + iq) ** e * (((1 + n - e - d) * q + a) * iq + q)) / iq ** 2 - fv) > consistent_epsilon) then
-          status = 4119 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Inconsistent parameters (i!=g & fv equation)!"
+          status = 1280 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Inconsistent parameters (i!=g & fv equation)!"
        else if (abs(((((d - 1 - n + e) * q - a) * iq - q) * (1 / (1 + iq)) ** (n - e) + (a * iq + q) * (1 + iq) * (1 / (1 + iq)) ** d) / iq ** 2 - pv) > consistent_epsilon) then
-          status = 4120 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Inconsistent parameters (i!=g & pv equation)!"
+          status = 1281 ! "ERROR(tvm_delayed_arithmetic_annuity_check): Inconsistent parameters (i!=g & pv equation)!"
        else
           status = 0
        end if

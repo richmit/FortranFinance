@@ -149,7 +149,7 @@ contains
   !!
   !! @param cf_vec    Vector of cashflows
   !! @param irr       If the solver is successful, this will be the irr on return.
-  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4193-4224
+  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2161-2193.
   !!
   subroutine cashflow_vector_irr(cf_vec, irr, status)
     ! Arguments
@@ -162,7 +162,7 @@ contains
     ! Perform Computation
     call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
     if (status /= 0) then
-       status = 4161 ! "ERROR(cashflow_vector_irr): irr solver failed!"
+       status = 2161 ! "ERROR(cashflow_vector_irr): irr solver failed!"
     end if
     return
   contains
@@ -177,7 +177,7 @@ contains
   !!
   !! @param cf_mat    Matrix of cashflows (one cashflow sequence per column)
   !! @param irr       If the solver is successful, this will be the irr on return.
-  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 4193-4224
+  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2194-2226.
   !!
   subroutine cashflow_matrix_irr(cf_mat, irr, status)
     ! Arguments
@@ -190,7 +190,7 @@ contains
     ! Perform Computation
     call multi_bisection(irr, islvivl0, islvivl1, irr_solve, 1.0e-5_rk, 1.0e-5_rk, 1000, status, .false.)
     if (status /= 0) then
-       status = 4193 ! "ERROR(cashflow_matrix_irr): irr solver failed!"
+       status = 2194 ! "ERROR(cashflow_matrix_irr): irr solver failed!"
     end if
     return
   contains
@@ -581,7 +581,7 @@ contains
   !! @param a         First annuity payment.
   !! @param d         Delay from time zero.  i.e. d=0 is the beginning of period 1 otherwise d=j is the end if period j.
   !! @param e         Early end counted from time end (t=n). i.e. e=0 means the last payment is at end of period n.
-  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2001- 2032.
+  !! @param status    Returns status of computation. 0 if everything worked. Range: 0 & 2001-2032.
   !!
   subroutine make_cashflow_vector_delayed_arithmetic_annuity(cf_vec, q, a, d, e, status)
     ! Arguments
@@ -613,11 +613,11 @@ contains
   end subroutine make_cashflow_vector_delayed_arithmetic_annuity
 
   !------------------------------------------------------------------------------------------------------------------------------
-  !> Add interest cashflows to a cashflow sequence as if the sequence were being added to an interest baring account over time.
+  !> Add interest cashflows to a cashflow sequence as if the sequence were being added to an interest-bearing account over time.
   !!
   !! @param cf_vec  The cashflow vector to modify (one cashflow per period boundary).
   !! @param rate    The rate
-  !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 4033-4064.
+  !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 2227-2259.
   !!
   subroutine add_intrest_to_cashflow_vector(cf_vec, rate, status)
     ! Arguments
@@ -644,7 +644,7 @@ contains
   !!
   !! @param cf_vec  The cashflow vector to modify (one cashflow per period boundary).
   !! @param vrate   A vector of rates (one rate per period).
-  !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 4065-4096.
+  !! @param status  Returns status of computation. 0 if everything worked. Range: 0 & 2260-2292.
   !!
   subroutine add_multi_intrest_to_cashflow_vector(cf_vec, vrate, status)
     ! Arguments
@@ -658,7 +658,7 @@ contains
     nb = size(cf_vec)
     if (nb > 1) then
        if (size(vrate) < (nb-1)) then
-          status = 4065 ! "ERROR(add_multi_intrest_to_cashflow_vector): More periods than rates!"
+          status = 2260 ! "ERROR(add_multi_intrest_to_cashflow_vector): More periods than rates!"
        else
           rsum = cf_vec(1)
           do j=2,nb

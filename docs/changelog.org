@@ -54,6 +54,7 @@ Copyright \copy {{{time(%Y)}}} Mitch Richling. All rights reserved.
     - N/A
   - API breaking Changes
     - Complete refactor of cashflow API.
+    - Error codes corrected for several experimental routines
   - Deprecated functionality
     - N/A
   - New functionality

@@ -65,7 +65,7 @@ contains
   !! @param x_epsilon  Used to test if current search interval is too small
   !! @param y_epsilon  Used to test if f is near zero
   !! @param max_itr    Maximum number of iterations before giving up
-  !! @param status     Returns status of computation. 0 if everything worked. Range: 0 & 4001-4032.
+  !! @param status     Returns status of computation. 0 if everything worked. Range: 0 & 5001-5032.
   !! @param progress   Print progress as solver searches for a solution
   !!
   subroutine bisection(xc, x0_init, x1_init, f, r_dat, i_dat, x_epsilon, y_epsilon, max_itr, status, progress)
@@ -107,12 +107,12 @@ contains
        else
           if (progress)  print *, 0, x0, f0, x1, f1
           if (((f0 < 0) .and. (f1 < 0)) .or. ((f0 > 0) .and. (f1 > 0))) then
-             status = 4001 ! "ERROR(bisection): f is the same sign on initial interval endpoints!"
+             status = 5001 ! "ERROR(bisection): f is the same sign on initial interval endpoints!"
           else
              do itr=1,max_itr
                 xc = (x0 + x1) / 2
                 if (abs(x0-x1) < x_epsilon) then
-                   status = 4002 ! "ERROR(bisection): Interval is smaller than x_epsilon!"
+                   status = 5002 ! "ERROR(bisection): Interval is smaller than x_epsilon!"
                 end if
                 fc = f(xc, r_dat, i_dat)
                 if (progress)  print *, itr, x0, f0, x1, f1, xc, fc
@@ -138,7 +138,7 @@ contains
                    end if
                 end if
              end do
-             status = 4003 ! "ERROR(bisection): Failed to converge!"
+             status = 5003 ! "ERROR(bisection): Failed to converge!"
           end if
        end if
     end if
@@ -156,7 +156,7 @@ contains
   !! @param x_epsilon  Used to test if current search interval is too small
   !! @param y_epsilon  Used to test if f is near zero
   !! @param max_itr    Maximum number of iterations before giving up
-  !! @param status     Returns status of computation. 0 if everything worked. Range: 0 & 4033-4064.
+  !! @param status     Returns status of computation. 0 if everything worked. Range: 0 & 5033-5064.
   !! @param progress   Print progress as solver searches for a solution
   !!
   subroutine multi_bisection(xc, x0_init, x1_init, f, r_dat, i_dat, x_epsilon, y_epsilon, max_itr, status, progress)
@@ -191,7 +191,7 @@ contains
           return
        end if
     end do
-    status = 4033 ! "ERROR(bisection): No root found in any interval!"
+    status = 5033 ! "ERROR(bisection): No root found in any interval!"
   end subroutine multi_bisection
 
 end module mrffl_solver_ne

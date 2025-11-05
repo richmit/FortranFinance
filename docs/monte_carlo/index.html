@@ -3,7 +3,7 @@
 "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
 <head>
-<!-- 2025-09-23 Tue 13:22 -->
+<!-- 2025-11-06 Thu 09:21 -->
 <meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
 <meta name="viewport" content="width=1024, initial-scale=1" />
 <title>Fortran Finance</title>
@@ -235,12 +235,12 @@
 
 <tr>
 <td class="org-right"><b>Updated:</b></td>
-<td class="org-left"><i>2025-09-23 13:22:14</i></td>
+<td class="org-left"><i>2025-11-06 09:21:32</i></td>
 </tr>
 
 <tr>
 <td class="org-right"><b>Generated:</b></td>
-<td class="org-left"><i>2025-09-23 13:22:16</i></td>
+<td class="org-left"><i>2025-11-06 09:21:33</i></td>
 </tr>
 </tbody>
 </table>
@@ -265,7 +265,7 @@ code to visualize them.  One of the examples illustrates endpoint distribution f
 <div id="outline-container-inflation" class="outline-2">
 <h2 id="inflation"><span class="section-number-2">1.</span> <code>inflation.f90</code> &amp; <code>inflation.R</code></h2>
 <div class="outline-text-2" id="text-inflation">
-<div class="org" id="orgfc1393c">
+<div class="org" id="orgac9a3dc">
 <p>
 This program runs 100000 (<code>tirals</code>) Monte Carlo simulations of inflation for $100 (<code>initial_value</code>) over 20 (<code>years</code>) years
 using the last 30 (<code>mc_history_years</code>) years of historical US inflation data.  This program prints the value after 20 years
@@ -276,7 +276,7 @@ showing the probability of the value after 100 years.
 </div>
 
 
-<div id="org75805d7" class="figure">
+<div id="orgc70bb91" class="figure">
 <p><a href="pics/inflation_full.png"><img src="pics/inflation_800x.png" alt="inflation_800x.png" /></a>
 </p>
 </div>
@@ -287,8 +287,8 @@ Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blo
 
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">inflation</span>
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>,       <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_inflation</span>, <span style="color: #00ffff;">only</span>: inf_resample
+  <span style="color: #00ffff;">use</span> :: mrffl_config,       <span style="color: #00ffff;">only</span>: rk
+  <span style="color: #00ffff;">use</span> :: mrffl_us_inflation, <span style="color: #00ffff;">only</span>: inf_resample
 
   <span style="color: #00ffff;">implicit</span> <span style="color: #63b8ff;">none</span> (type, <span style="color: #00ffff;">external</span>)
 
@@ -321,19 +321,7 @@ And here is the R code (<a href="https://github.com/richmit/FortranFinance/blob/
 </p>
 
 <div class="org-src-container">
-<pre class="src src-R"><span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images</span>
-imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #63b8ff;">TRUE</span>
-
-<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Try and find an image viewer</span>
-<span style="color: #00ffff;">if</span> (imageV == <span style="color: #63b8ff;">TRUE</span>) {
-  <span style="color: #00ffff;">if</span> (.Platform$OS == <span style="color: #fa8072;">"windows"</span>) {
-    imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"explorer"</span>
-  } <span style="color: #00ffff;">else</span> {
-    <span style="color: #00ffff;">for</span>(piv <span style="color: #00ffff;">in</span> c(<span style="color: #fa8072;">"/usr/bin/display"</span>, <span style="color: #fa8072;">"/usr/bin/pqiv"</span>, <span style="color: #fa8072;">"/usr/bin/nomacs"</span>))
-      <span style="color: #00ffff;">if</span>(file.exists(piv))
-        imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> piv
-  }
-}
+<pre class="src src-R"><span style="color: #8470ff; font-weight: bold;">source</span>(<span style="color: #fa8072;">'../setup.R'</span>)
 
 daDat <span style="color: #8470ff; font-weight: bold;">&lt;-</span> fread(<span style="color: #fa8072;">"inflation.txt"</span>)
 
@@ -351,7 +339,7 @@ ggsave(fname, width=12, height=10)
 <div id="outline-container-stocks" class="outline-2">
 <h2 id="stocks"><span class="section-number-2">2.</span> <code>stocks.f90</code> &amp; <code>stocks.R</code></h2>
 <div class="outline-text-2" id="text-stocks">
-<div class="org" id="orgb144015">
+<div class="org" id="orgf2377a8">
 <p>
 This program runs 2000 (<code>trials</code>) stocks simulations on $100 (<code>initial_value</code>).  Each simulation is over 20 (<code>years</code>) years
 using the last 30 (<code>mc_history_years</code>) years of historical US stocks data.  This program prints the resulting value of each
@@ -362,13 +350,13 @@ probability of the value after 100 years.
 </div>
 
 
-<div id="orgf37ee40" class="figure">
+<div id="orgb3aead6" class="figure">
 <p><a href="pics/stocks_paths_full.png"><img src="pics/stocks_paths_800x.png" alt="stocks_paths_800x.png" /></a>
 </p>
 </div>
 
 
-<div id="orga459841" class="figure">
+<div id="orgcefd660" class="figure">
 <p><a href="pics/stocks_ranges_full.png"><img src="pics/stocks_ranges_800x.png" alt="stocks_ranges_800x.png" /></a>
 </p>
 </div>
@@ -379,9 +367,9 @@ Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blo
 
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">stocks</span>
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>,      <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_markets</span>,  <span style="color: #00ffff;">only</span>: rut_resample
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_percentages</span>, <span style="color: #00ffff;">only</span>: add_percentage
+  <span style="color: #00ffff;">use</span> :: mrffl_config,      <span style="color: #00ffff;">only</span>: rk
+  <span style="color: #00ffff;">use</span> :: mrffl_us_markets,  <span style="color: #00ffff;">only</span>: rut_resample
+  <span style="color: #00ffff;">use</span> :: mrffl_percentages, <span style="color: #00ffff;">only</span>: add_percentage
 
   <span style="color: #00ffff;">implicit</span> <span style="color: #63b8ff;">none</span> (type, <span style="color: #00ffff;">external</span>)
 
@@ -415,19 +403,7 @@ And here is the R code (<a href="https://github.com/richmit/FortranFinance/blob/
 </p>
 
 <div class="org-src-container">
-<pre class="src src-R"><span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images</span>
-imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #63b8ff;">TRUE</span>
-
-<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Try and find an image viewer</span>
-<span style="color: #00ffff;">if</span> (imageV == <span style="color: #63b8ff;">TRUE</span>) {
-  <span style="color: #00ffff;">if</span> (.Platform$OS == <span style="color: #fa8072;">"windows"</span>) {
-    imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"explorer"</span>
-  } <span style="color: #00ffff;">else</span> {
-    <span style="color: #00ffff;">for</span>(piv <span style="color: #00ffff;">in</span> c(<span style="color: #fa8072;">"/usr/bin/display"</span>, <span style="color: #fa8072;">"/usr/bin/pqiv"</span>, <span style="color: #fa8072;">"/usr/bin/nomacs"</span>))
-      <span style="color: #00ffff;">if</span>(file.exists(piv))
-        imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> piv
-  }
-}
+<pre class="src src-R"><span style="color: #8470ff; font-weight: bold;">source</span>(<span style="color: #fa8072;">'../setup.R'</span>)
 
 daDat <span style="color: #8470ff; font-weight: bold;">&lt;-</span> fread(<span style="color: #fa8072;">"stocks.txt"</span>) <span style="color: #8470ff; font-weight: bold;">%&gt;%</span> mutate(trial=factor(trial))
 
@@ -472,7 +448,7 @@ ggsave(fname, width=12, height=10, dpi=100, units=<span style="color: #fa8072;">
 <div id="outline-container-blend_risk" class="outline-2">
 <h2 id="blend_risk"><span class="section-number-2">3.</span> <code>blend_risk.f90</code> &amp; <code>blend_risk.R</code></h2>
 <div class="outline-text-2" id="text-blend_risk">
-<div class="org" id="orgae600c6">
+<div class="org" id="orgc3b7c42">
 <p>
 Scenario:
 </p>
@@ -498,7 +474,7 @@ used with low resolution data it can create bias in the results.  Note we can sw
 </div>
 
 
-<div id="orge13a7d8" class="figure">
+<div id="orgb711cd6" class="figure">
 <p><a href="pics/blend_risk_full.png"><img src="pics/blend_risk_800x.png" alt="blend_risk_800x.png" /></a>
 </p>
 </div>
@@ -509,7 +485,7 @@ particular scenario.
 </p>
 
 
-<div id="org19aea62" class="figure">
+<div id="org96156cf" class="figure">
 <p><a href="pics/blend_risk_cvuc_full.png"><img src="pics/blend_risk_cvuc_800x.png" alt="blend_risk_cvuc_800x.png" /></a>
 </p>
 </div>
@@ -520,11 +496,12 @@ Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blo
 
 <div class="org-src-container">
 <pre class="src src-f90"><span style="color: #00ffff;">program</span> <span style="color: #00fa9a; font-weight: bold;">blend_risk</span>
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_config</span>,       <span style="color: #00ffff;">only</span>: rk=&gt;mrfflrk
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_markets</span>,   <span style="color: #00ffff;">only</span>: snp_dat, dgs10_dat
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_stats</span>,        <span style="color: #00ffff;">only</span>: rand_int
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_us_inflation</span>, <span style="color: #00ffff;">only</span>: inf_dat
-  <span style="color: #00ffff;">use</span> <span style="color: #00fa9a; font-weight: bold;">mrffl_percentages</span>,  <span style="color: #00ffff;">only</span>: p_add=&gt;add_percentage, p_of=&gt;percentage_of
+  <span style="color: #00ffff;">use</span>, <span style="color: #00ffff;">intrinsic</span> :: <span style="color: #00fa9a; font-weight: bold;">iso_fortran_env</span>,    <span style="color: #00ffff;">only</span>: <span style="color: #8470ff; font-weight: bold;">output_unit</span>, <span style="color: #8470ff; font-weight: bold;">error_unit</span>
+  <span style="color: #00ffff;">use</span>            :: mrffl_config,       <span style="color: #00ffff;">only</span>: rk
+  <span style="color: #00ffff;">use</span>            :: mrffl_us_markets,   <span style="color: #00ffff;">only</span>: snp_dat, dgs10_dat
+  <span style="color: #00ffff;">use</span>            :: mrffl_stats,        <span style="color: #00ffff;">only</span>: rand_int
+  <span style="color: #00ffff;">use</span>            :: mrffl_us_inflation, <span style="color: #00ffff;">only</span>: inf_dat
+  <span style="color: #00ffff;">use</span>            :: mrffl_percentages,  <span style="color: #00ffff;">only</span>: p_add=&gt;add_percentage, p_of=&gt;percentage_of
 
   <span style="color: #00ffff;">implicit</span> <span style="color: #63b8ff;">none</span> (type, <span style="color: #00ffff;">external</span>)
 
@@ -539,8 +516,9 @@ Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blo
   <span style="color: #63b8ff;">integer</span>                     ::<span style="color: #7fffd4;"> rand_year</span>
 
   <span style="color: #ffa500;">! </span><span style="color: #ff7f24;">Run monte carlo simulations and dump the results to STDOUT</span>
-  <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">'(a10,a10,a20)'</span>, <span style="color: #fa8072;">"trial"</span>, <span style="color: #fa8072;">"hp"</span>, <span style="color: #fa8072;">"balance"</span>
+  <span style="color: #00ffff;">write</span> (<span style="color: #8470ff; font-weight: bold;">output_unit</span>, <span style="color: #fa8072;">'(a10,a10,a20)'</span>) <span style="color: #fa8072;">"trial"</span>, <span style="color: #fa8072;">"hp"</span>, <span style="color: #fa8072;">"balance"</span>
   <span style="color: #00ffff;">do</span> hp=0,100
+     <span style="color: #00ffff;">write</span> (<span style="color: #8470ff; font-weight: bold;">error_unit</span>, <span style="color: #fa8072;">'(a6,i0)'</span>) <span style="color: #fa8072;">"hp="</span>, hp
      <span style="color: #00ffff;">do</span> trial=1,trials
         balance = initial_balance
         withdrawal = initial_withdrawal
@@ -559,7 +537,7 @@ Here is the Fortran code (<a href="https://github.com/richmit/FortranFinance/blo
            balance = balance - <span style="color: #00ffff;">min</span>(withdrawal, balance)
            withdrawal = p_add(withdrawal, <span style="color: #00ffff;">max</span>(0.0_rk, c_inf))
         <span style="color: #00ffff;">end do</span>
-        <span style="color: #00ffff;">print</span> <span style="color: #fa8072;">'(i10,i10,f20.5)'</span>, trial, hp, balance
+        <span style="color: #00ffff;">write</span> (<span style="color: #8470ff; font-weight: bold;">output_unit</span>, <span style="color: #fa8072;">'(i10,i10,f20.5)'</span>) trial, hp, balance
      <span style="color: #00ffff;">end do</span>
   <span style="color: #00ffff;">end do</span>
 
@@ -572,19 +550,7 @@ And here is the R code (<a href="https://github.com/richmit/FortranFinance/blob/
 </p>
 
 <div class="org-src-container">
-<pre class="src src-R"><span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Set this to your favorite image viewer, or TRUE to attempt to find one automatically, or FALSE to not load images</span>
-imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #63b8ff;">TRUE</span>
-
-<span style="color: #ffa500;"># </span><span style="color: #ff7f24;">Try and find an image viewer</span>
-<span style="color: #00ffff;">if</span> (imageV == <span style="color: #63b8ff;">TRUE</span>) {
-  <span style="color: #00ffff;">if</span> (.Platform$OS == <span style="color: #fa8072;">"windows"</span>) {
-    imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> <span style="color: #fa8072;">"explorer"</span>
-  } <span style="color: #00ffff;">else</span> {
-    <span style="color: #00ffff;">for</span>(piv <span style="color: #00ffff;">in</span> c(<span style="color: #fa8072;">"/usr/bin/display"</span>, <span style="color: #fa8072;">"/usr/bin/pqiv"</span>, <span style="color: #fa8072;">"/usr/bin/nomacs"</span>))
-      <span style="color: #00ffff;">if</span>(file.exists(piv))
-        imageV <span style="color: #8470ff; font-weight: bold;">&lt;-</span> piv
-  }
-}
+<pre class="src src-R"><span style="color: #8470ff; font-weight: bold;">source</span>(<span style="color: #fa8072;">'../setup.R'</span>)
 
 daDat <span style="color: #8470ff; font-weight: bold;">&lt;-</span> fread(<span style="color: #fa8072;">"blend_risk.txt"</span>) <span style="color: #8470ff; font-weight: bold;">%&gt;%</span> mutate(hp=factor(hp))
 

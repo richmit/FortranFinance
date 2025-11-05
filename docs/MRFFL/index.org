@@ -251,7 +251,7 @@ compile/link everything together.
 
 To simplify matters, you can use the same global setup used in the example makefiles.  In this case your makefile will look something like this:
 
-#+begin_src makefile
+#+begin_src makefile :eval never
 #------------------------------------------------------------------------------------------------------------
 # Set Global Variables.  
 include /path/to/MRFFL/repository/setup.mk
@@ -265,7 +265,7 @@ Note the rule in the makefile above takes the lazy approach of adding every MRFF
 all.  This is how most people use the modules because it's simple.  The cost might be a couple seconds of extra compile time.  You can explicitly list out the
 modules in the makefile if you wish.  Such a rule might look like the following:
 
-#+begin_src makefile
+#+begin_src makefile :eval never
 your_program : your_program.f90 mrffl_config$(OBJ_SUFFIX) mrffl_tvm$(OBJ_SUFFIX) mrffl_solver$(OBJ_SUFFIX)
     $(FC) $(FFLAGS) $^ -o $@
 #+end_src
@@ -310,7 +310,7 @@ A rule to make a static library is included in ~include.mk~.  A build rule like 
 I'm just including the library file on the command line instead of linker like options (i.e. ~-L~ and ~-l~ for GNU compilers).  That's because simply including
 the library on the command line is broadly supported across more compilers -- this way I don't have to document how to do the same thing for each one. ;)
 
-#+begin_src makefile
+#+begin_src makefile :eval never
 your_program : your_program.f90 $(MRFFL_STATIC_LIB_FILE)
     $(FC) $(FFLAGS) $^ $(MRFFL_STATIC_LIB_FILE) -o $@
 #+end_src
