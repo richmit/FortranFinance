@@ -74,7 +74,7 @@ Here is the Fortran code ([[https://github.com/richmit/FortranFinance/blob/main/
 program loan_level_payments
   use :: mrffl_config,    only: rk
   use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, cashflow_matrix_cmp
-  use :: mrffl_prt_sets,  only: prt_ALL, prt_table
+  use :: mrffl_prt_sets,  only: prt_ALL, prt_all_agg_sum
   use :: mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
   use :: mrffl_var_sets,  only: var_fv, var_a
 
@@ -89,15 +89,15 @@ program loan_level_payments
                      
   integer            :: status
                      
-  real(kind=rk)      :: cfm(periods+1,2), afv(periods+1),  apv(periods+1)
+  real(kind=rk)      :: cfm(periods+1,2), afv(periods+1),  apv(periods+1), fv(periods+1,2), pv(periods+1,2) 
 
   ! First, we print out the term and interest.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   print "(a60,f15.4)", "n: ", n
   print "(a60,f15.4)", "i: ", i
 
   ! Now we compute the PV & FV of the principal cashflow.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   p_pv = -1000000
   p_d = 0
   call tvm_lump_sum_solve(n, i, p_pv, p_fv, var_fv, status)
@@ -105,7 +105,7 @@ program loan_level_payments
   print "(a60,f15.4)", "Loan PV: ", p_pv
   print "(a60,f15.4)", "Loan FV: ", p_fv
 
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   ! Now we compute the PV & FV of the repayment cashflow stream.
   a_pv = -p_pv
   a_d = 1
@@ -119,26 +119,26 @@ program loan_level_payments
   ! Just for fun, let's create cashflow sequences for everything, and print it out.
 
   ! First the principal cashflow.  Note we use the variables we used with the TVM solver.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call make_cashflow_vector_delayed_lump(cfm(:,1), p_pv, p_d, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_lump status: ", status
 
   ! Next the repayment cashflow.  Note we use the variables we used with the TVM solver.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call make_cashflow_vector_delayed_level_annuity(cfm(:,2), a_a, a_d, a_e, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Now we print it out.  Notice the PV & FV of the combined cashflow series is zero.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv)
   print "(a60,i15)", "cashflow_matrix_cmp status: ", status
   print "(a60,f15.4)", "cashflow_matrix_cmp Sum: ",   sum(cfm)
   print "(a60,f15.4)", "cashflow_matrix_cmp PV Sum: ", sum(apv)
   print "(a60,f15.4)", "cashflow_matrix_cmp FV Sum: ", sum(afv)
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
 
-  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL-prt_table)
-  print "(a)", repeat("=", 127)
+  call cashflow_matrix_cmp(status, cfm, i, pv_o=pv, fv_o=fv, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL-prt_all_agg_sum)
+  print "(a)", repeat("=", 141)
 
 end program loan_level_payments
 #+end_src
@@ -174,31 +174,31 @@ Here is the Fortran code ([[https://github.com/richmit/FortranFinance/blob/main/
 program loan_geometric_payments
   use :: mrffl_config, only: rk
   use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_geometric_annuity, cashflow_matrix_cmp
-  use :: mrffl_prt_sets,  only: prt_ALL
+  use :: mrffl_prt_sets,  only: prt_ALL, prt_all_agg_sum
   use :: mrffl_tvm,       only: tvm_delayed_geometric_annuity_solve, tvm_lump_sum_solve
   use :: mrffl_var_sets,  only: var_fv, var_a, var_n
 
   implicit none (type, external)
 
-  real(kind=rk)    :: n
-  real(kind=rk)    :: i  = 7
+  real(kind=rk)              :: n
+  real(kind=rk)              :: i  = 7
 
-  real(kind=rk)    :: a_pv = 1000000
-  real(kind=rk)    :: a_fv
-  real(kind=rk)    :: a_g = 10
-  real(kind=rk)    :: a_a = 95000
-  integer          :: a_d = 1
-  integer          :: a_e = 0
+  real(kind=rk)              :: a_pv = 1000000
+  real(kind=rk)              :: a_fv
+  real(kind=rk)              :: a_g = 10
+  real(kind=rk)              :: a_a = 95000
+  integer                    :: a_d = 1
+  integer                    :: a_e = 0
 
-  real(kind=rk)    :: p_pv = -1000000
-  real(kind=rk)    :: p_fv
+  real(kind=rk)              :: p_pv = -1000000
+  real(kind=rk)              :: p_fv
 
-  integer          :: status
+  integer                    :: status
 
-  real(kind=rk), allocatable    :: cfm(:,:), afv(:),  apv(:)
+  real(kind=rk), allocatable :: cfm(:,:), afv(:), apv(:), fv(:,:), pv(:,:)
 
   ! First we solve for the number of years and future value of our loan.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call tvm_delayed_geometric_annuity_solve(n, i, a_g, a_pv, a_fv, a_a, a_d, a_e, var_n+var_fv, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
   print "(a60,f15.4)", "Annuity n: ", n
@@ -207,7 +207,7 @@ program loan_geometric_payments
 
   ! Instead of using an odd term, we decide on an even 10 year term.
   ! So we must copute the initial loan payment, and loan FV
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   n = ceiling(n)
   call tvm_delayed_geometric_annuity_solve(n, i, a_g, a_pv, a_fv, a_a, a_d, a_e, var_a+var_fv, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
@@ -215,35 +215,37 @@ program loan_geometric_payments
   print "(a60,f15.4)", "Annuity FV: ", a_fv
 
   ! Next we check our work by solving for the FV of the lump sum.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call tvm_lump_sum_solve(n, i, p_pv, p_fv, var_fv, status)
   print "(a60,i15)", "tvm_lump_sum_solve status: ", status
   print "(a60,f15.4)", "Loan FV: ", p_fv
 
-  ! Allocate space for our cashflow matrix and the PV/FV vectors.  We don't check for allocation errors. ;)
+  ! Allocate space for our cashflow matrix and the aggregate PV/FV vectors.  We don't check for allocation errors. ;)
   allocate(cfm(nint(n)+1,2))
   allocate(afv(nint(n)+1))
   allocate(apv(nint(n)+1))
 
   ! Now we populate a cashflow matrix with our two cashflows.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call make_cashflow_vector_delayed_lump(cfm(:,1), p_pv, 0, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_lump status: ", status
   call make_cashflow_vector_delayed_geometric_annuity(cfm(:,2), a_g, a_a, a_d, a_e, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! We can check our work by making sure our cashflows sum to zero.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv)
   print "(a60,i15)", "cashflow_matrix_cmp status: ", status
   print "(a60,f15.4)", "cashflow_matrix_cmp PV Sum: ", sum(apv)
   print "(a60,f15.4)", "cashflow_matrix_cmp FV Sum: ", sum(afv)
 
   ! Finally we an print out our cashflows.
-  print "(a)", repeat("=", 127)
-  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL)
+  allocate(pv(nint(n)+1,2))
+  allocate(fv(nint(n)+1,2))
+  print "(a)", repeat("=", 141)
+  call cashflow_matrix_cmp(status, cfm, i, pv_o=pv, fv_o=fv, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL-prt_all_agg_sum)
 
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
 
 end program loan_geometric_payments
 #+end_src
@@ -276,47 +278,47 @@ Here is the Fortran code ([[https://github.com/richmit/FortranFinance/blob/main/
 #+begin_src f90 :eval never :tangle no
 program loan_level_payments
   use :: mrffl_config,    only: rk
+  use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, cashflow_matrix_cmp
+  use :: mrffl_prt_sets,  only: prt_ALL, prt_all_agg_sum
   use :: mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
   use :: mrffl_var_sets,  only: var_fv, var_a, var_pv
-  use :: mrffl_prt_sets,  only: prt_ALL
-  use :: mrffl_cashflows, only: cashflow_matrix_cmp, make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity
 
   implicit none (type, external)
 
-  integer, parameter :: years = 10
+  integer, parameter :: periods = 10
 
-  real(kind=rk)    :: n  = years
-  real(kind=rk)    :: i  = 7
+  real(kind=rk)      :: n  = periods
+  real(kind=rk)      :: i  = 7
 
-  real(kind=rk)    :: a_pv = 1000000
-  real(kind=rk)    :: a_fv
-  real(kind=rk)    :: a_a
-  integer          :: a_d = 1
-  integer          :: a_e = 0
+  real(kind=rk)      :: a_pv = 1000000
+  real(kind=rk)      :: a_fv
+  real(kind=rk)      :: a_a
+  integer            :: a_d = 1
+  integer            :: a_e = 0
 
-  real(kind=rk)    :: p_pv = -1000000
-  real(kind=rk)    :: p_fv
-  integer          :: p_d = 0
+  real(kind=rk)      :: p_pv = -1000000
+  real(kind=rk)      :: p_fv
+  integer            :: p_d = 0
 
-  real(kind=rk)    :: a_final
+  real(kind=rk)      :: a_final
 
-  integer          :: status
+  integer            :: status
 
-  real(kind=rk)    :: cfm(years+1,2), afv(years+1), apv(years+1)
+  real(kind=rk)      :: cfm(periods+1,2), afv(periods+1), apv(periods+1), fv(periods+1,2), pv(periods+1,2) 
 
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   print "(a60,f15.4)", "n: ", n
   print "(a60,f15.4)", "i: ", i
 
   ! First we find the PV & FV for the principal.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call tvm_lump_sum_solve(n, i, p_pv, p_fv, var_fv, status)
   print "(a60,i15)", "tvm_lump_sum_solve status: ", status
   print "(a60,f15.4)", "Loan PV: ", p_pv
   print "(a60,f15.4)", "Loan FV: ", p_fv
 
   ! Now we solve for the payment (a in the annuity) and the fv
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call tvm_delayed_level_annuity_solve(n, i, a_pv, a_fv, a_a, a_d, a_e, var_fv+var_a, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
   print "(a60,f15.4)", "Annuity PV: ", a_pv
@@ -324,20 +326,20 @@ program loan_level_payments
   print "(a60,f15.4)", "Annuity A: ",  a_a
 
   ! Now we round a_a UP to the nearest cent.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   a_a = ceiling(100*a_a)
   a_a = a_a / 100
   print "(a60,f15.4)", "Rounded Up Annuity A: ",  a_a
 
   ! Now we find PV & FV for an annuity with the rounded payment that ends one period early
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call tvm_delayed_level_annuity_solve(n, i, a_pv, a_fv, a_a, a_d, a_e+1, var_fv+var_pv, status)
   print "(a60,i15)", "tvm_level_annuity_solve status: ", status
   print "(a60,f15.4)", "Rounded (n-1) Annuity PV: ", a_pv
   print "(a60,f15.4)", "Rounded (n-1) Annuity FV: ", a_fv
 
   ! The final payment needs to be the difference between the principal FV and the rounded annuity FV
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   a_final = floor(-(p_fv+a_fv)*100)
   a_final = a_final / 100
   print "(a60,f15.4)", "Final Payment: ",  a_final
@@ -345,21 +347,21 @@ program loan_level_payments
   ! Now we construct the cashflows so we can print a nice table
 
   ! We start with the principal
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call make_cashflow_vector_delayed_lump(cfm(:,1), p_pv, p_d, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_lump status: ", status
 
   ! Next we add the rounded up
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call make_cashflow_vector_delayed_level_annuity(cfm(:,2), a_a, a_d, a_e+1, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Finally we add the last payment
-  cfm(years+1, 2) = a_final
+  cfm(periods+1, 2) = a_final
 
   ! Now we print the cashflow
-  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL)
-  print "(a)", repeat("=", 127)
+  call cashflow_matrix_cmp(status, cfm, i, pv_o=pv, fv_o=fv, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL-prt_all_agg_sum)
+  print "(a)", repeat("=", 141)
 
 end program loan_level_payments
 #+end_src

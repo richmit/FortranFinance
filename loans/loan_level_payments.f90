@@ -53,7 +53,7 @@
 program loan_level_payments
   use :: mrffl_config,    only: rk
   use :: mrffl_cashflows, only: make_cashflow_vector_delayed_lump, make_cashflow_vector_delayed_level_annuity, cashflow_matrix_cmp
-  use :: mrffl_prt_sets,  only: prt_ALL, prt_table
+  use :: mrffl_prt_sets,  only: prt_ALL, prt_all_agg_sum
   use :: mrffl_tvm,       only: tvm_lump_sum_solve, tvm_delayed_level_annuity_solve
   use :: mrffl_var_sets,  only: var_fv, var_a
 
@@ -68,15 +68,15 @@ program loan_level_payments
                      
   integer            :: status
                      
-  real(kind=rk)      :: cfm(periods+1,2), afv(periods+1),  apv(periods+1)
+  real(kind=rk)      :: cfm(periods+1,2), afv(periods+1),  apv(periods+1), fv(periods+1,2), pv(periods+1,2) 
 
   ! First, we print out the term and interest.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   print "(a60,f15.4)", "n: ", n
   print "(a60,f15.4)", "i: ", i
 
   ! Now we compute the PV & FV of the principal cashflow.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   p_pv = -1000000
   p_d = 0
   call tvm_lump_sum_solve(n, i, p_pv, p_fv, var_fv, status)
@@ -84,7 +84,7 @@ program loan_level_payments
   print "(a60,f15.4)", "Loan PV: ", p_pv
   print "(a60,f15.4)", "Loan FV: ", p_fv
 
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   ! Now we compute the PV & FV of the repayment cashflow stream.
   a_pv = -p_pv
   a_d = 1
@@ -98,25 +98,25 @@ program loan_level_payments
   ! Just for fun, let's create cashflow sequences for everything, and print it out.
 
   ! First the principal cashflow.  Note we use the variables we used with the TVM solver.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call make_cashflow_vector_delayed_lump(cfm(:,1), p_pv, p_d, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_lump status: ", status
 
   ! Next the repayment cashflow.  Note we use the variables we used with the TVM solver.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call make_cashflow_vector_delayed_level_annuity(cfm(:,2), a_a, a_d, a_e, status)
   print "(a60,i15)", "make_cashflow_vector_delayed_level_annuity status: ", status
 
   ! Now we print it out.  Notice the PV & FV of the combined cashflow series is zero.
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
   call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv)
   print "(a60,i15)", "cashflow_matrix_cmp status: ", status
   print "(a60,f15.4)", "cashflow_matrix_cmp Sum: ",   sum(cfm)
   print "(a60,f15.4)", "cashflow_matrix_cmp PV Sum: ", sum(apv)
   print "(a60,f15.4)", "cashflow_matrix_cmp FV Sum: ", sum(afv)
-  print "(a)", repeat("=", 127)
+  print "(a)", repeat("=", 141)
 
-  call cashflow_matrix_cmp(status, cfm, i, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL-prt_table)
-  print "(a)", repeat("=", 127)
+  call cashflow_matrix_cmp(status, cfm, i, pv_o=pv, fv_o=fv, pv_agg_o=apv, fv_agg_o=afv, prt_o=prt_ALL-prt_all_agg_sum)
+  print "(a)", repeat("=", 141)
 
 end program loan_level_payments
